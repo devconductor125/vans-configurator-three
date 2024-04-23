@@ -1,0 +1,829 @@
+<head>
+	<meta charset="utf-8">
+	<title>Van</title>
+	<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+	<style>
+		.threejs-container {
+			position: relative;
+			/* background-color: #333333; */
+			background: linear-gradient(180deg, #fff 60%, #e4e4e4) !important;
+			margin: 0;
+			color: #333;
+			font-family: Monospace;
+			font-size: 13px;
+			line-height: 24px;
+			overscroll-behavior: none;
+			-webkit-user-select: none;
+			-moz-user-select: none;
+			-ms-user-select: none;
+			user-select: none;
+			overflow: hidden;
+		}
+
+		.d-flex {
+			display: flex;
+		}
+
+		.items-container {
+			position: absolute;
+			bottom: 16px;
+			left: 50%;
+			transform: translateX(-50%);
+		}
+
+		.item-box {
+			margin-left: 8px;
+			margin-right: 8px;
+			border-radius: 15px;
+			text-align: center;
+			cursor: grab;
+			opacity: 0.8;
+			transition: opacity .15s ease-in-out, transform .08s linear;
+		}
+
+		.item-box:active {
+			cursor: grabbing;
+			cursor: -moz-grabbing;
+			cursor: -webkit-grabbing;
+		}
+
+		.item-box:hover {
+			opacity: 1;
+			transform: scale(1.04);
+		}
+
+		.item-img {
+			width: 100px;
+			height: 100px;
+			border-radius: 15px;
+			background-size: cover;
+			box-shadow: 0.6px 0.6px 1.9px rgba(0, 0, 0, .035), 5px 5px 15px rgba(0, 0, 0, .07);
+		}
+
+		p {
+			font-size: 11px;
+			line-height: 1.5;
+			margin-bottom: 12px;
+		}
+
+		#airconditioner {
+			background-image: url('https://cdn.shopify.com/s/files/1/0412/9898/5124/files/airconditioner.jpg?v=1711798448');
+			display: block;
+		}
+
+		#maxxair {
+			background-image: url('https://cdn.shopify.com/s/files/1/0412/9898/5124/files/maxxair.jpg?v=1711798448');
+			display: block;
+		}
+
+		#solar_panel200 {
+			background-image: url('https://cdn.shopify.com/s/files/1/0412/9898/5124/files/200W.jpg?v=1711798448');
+			display: block;
+		}
+
+		#solar_panel50 {
+			background-image: url('https://cdn.shopify.com/s/files/1/0412/9898/5124/files/55W.jpg?v=1711798448');
+			display: block;
+		}
+
+		#solar_panel30 {
+			background-image: url('https://cdn.shopify.com/s/files/1/0412/9898/5124/files/30W.jpg?v=1711798448');
+			display: block;
+		}
+
+		button {
+			cursor: pointer;
+		}
+
+		#deleteButton {
+			position: absolute;
+			top: 0;
+			right: 0;
+			display: none;
+			justify-content: center;
+			align-items: center;
+			background-color: transparent;
+			border: 0;
+			cursor: pointer;
+			color: #333;
+			padding: 5px;
+			opacity: 0.8;
+			transition: opacity ease .3s;
+		}
+
+		#deleteButton:hover {
+			opacity: 1;
+		}
+
+		#deleteButton svg {
+			padding-right: 4px;
+		}
+
+		.action-btn-list {
+			position: absolute;
+			bottom: 125px;
+			right: 16px;
+		}
+
+		.action-btn-list button {
+			width: 40px;
+			height: 40px;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			background: #333;
+			border-radius: 22px;
+			border: none;
+		}
+
+		.text-center {
+			text-align: center;
+		}
+
+		.mb-3 {
+			margin-bottom: 8px;
+		}
+
+		.text-title1 {
+			color: #333;
+			opacity: 0;
+			animation: textAnimation 2s linear 3s infinite alternate;
+		}
+
+		.text-body1 {
+			color: #333;
+			font-size: 20px;
+		}
+
+		.items-container>div:first-child {
+			position: relative;
+			text-align: center;
+		}
+
+		@keyframes textAnimation {
+			0% {
+				opacity: 0;
+			}
+
+			100% {
+				opacity: 0.7;
+			}
+		}
+	</style>
+</head>
+<body>
+
+<div class="threejs-container">
+	<div>
+
+	</div>
+	<div class="items-container">
+		<div class="text-center">
+			<h2 class="text-title1">Drag & drop items onto van roof</h2>
+			<button id="deleteButton">
+				<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 40 40">
+					<path fill="#333333"
+						d="M21.499 19.994L32.755 8.727a1.064 1.064 0 0 0-.001-1.502c-.398-.396-1.099-.398-1.501.002L20 18.494L8.743 7.224c-.4-.395-1.101-.393-1.499.002a1.05 1.05 0 0 0-.309.751c0 .284.11.55.309.747L18.5 19.993L7.245 31.263a1.064 1.064 0 0 0 .003 1.503c.193.191.466.301.748.301h.006c.283-.001.556-.112.745-.305L20 21.495l11.257 11.27c.199.198.465.308.747.308a1.058 1.058 0 0 0 1.061-1.061c0-.283-.11-.55-.31-.747z" />
+				</svg>
+				Delete
+			</button>
+		</div>
+		<div class="d-flex">
+			<div class="item-box">
+				<div class="item-img" id="airconditioner" draggable="true"></div>
+				<div class="item-name">
+					<p>Air Conditioner</p>
+				</div>
+			</div>
+			<div class="item-box">
+				<div class="item-img" id="maxxair" draggable="true"></div>
+				<div class="item-name">
+					<p>Maxxair</p>
+				</div>
+			</div>
+			<div class="item-box">
+				<div class="item-img" id="solar_panel200" draggable="true"></div>
+				<div class="item-name">
+					<p>Solar Panel<br />(200W)</p>
+				</div>
+			</div>
+			<div class="item-box">
+				<div class="item-img" id="solar_panel50" draggable="true"></div>
+				<div class="item-name">
+					<p>Solar Panel<br />(55W)</p>
+				</div>
+			</div>
+			<div class="item-box">
+				<div class="item-img" id="solar_panel30" draggable="true"></div>
+				<div class="item-name">
+					<p>Solar Panel<br />(30W)</p>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="action-btn-list">
+		<div>
+			<p class="text-body1">$<span id="total_price">3000</span></p>
+		</div>
+		<button class="mb-3" id="imgDownloadBtn">
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+				<g fill="none" stroke="#ffffff" stroke-linecap="round" stroke-width="1.5">
+					<path stroke-linejoin="round"
+						d="M21.25 13V8.5a5 5 0 0 0-5-5h-8.5a5 5 0 0 0-5 5v7a5 5 0 0 0 5 5h6.26" />
+					<path stroke-linejoin="round"
+						d="m3.01 17l2.74-3.2a2.2 2.2 0 0 1 2.77-.27a2.2 2.2 0 0 0 2.77-.27l2.33-2.33a4 4 0 0 1 5.16-.43l2.47 1.91M8.01 10.17a1.66 1.66 0 1 0-.02-3.32a1.66 1.66 0 0 0 .02 3.32" />
+					<path stroke-miterlimit="10" d="M18.707 20v-5" />
+					<path stroke-linejoin="round" d="m16.414 17.895l1.967 1.967a.459.459 0 0 0 .652 0L21 17.895" />
+				</g>
+			</svg>
+		</button>
+		<button id="camChangeBtn">
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 72 72">
+				<circle cx="22.258" cy="26.11" r="3" fill="#ffffff" />
+				<circle cx="46.153" cy="26.11" r="3" fill="#ffffff" />
+				<path fill="none"
+					d="M46.153 16.11c-5.514 0-10 4.486-10 10s4.486 10 10 10s10-4.485 10-10s-4.485-10-10-10m0 13c-1.654 0-3-1.346-3-3s1.346-3 3-3s3 1.346 3 3s-1.345 3-3 3m-23.895-13c-5.514 0-10 4.486-10 10s4.486 10 10 10s10-4.485 10-10c0-5.514-4.486-10-10-10m0 13c-1.655 0-3-1.346-3-3s1.345-3 3-3s3 1.346 3 3s-1.346 3-3 3m-1.829 15.127l6.998.815c.376-.147 2.842-.37 2.842-.37s2.814 1.782 3.188 4.571c.375 2.79-4.643 3.815-4.869 3.815c-2.515 0-3.628-4.56-3.632-4.603l-4.527-.695l.57 2.249c.285 1.13.424 2.292.413 3.458l-.016 1.613c0 .447 1.387 1.808 1.865 1.808h24.826V40.031H20.43z" />
+				<path fill="#fff" d="m51.727 42.827l-.005.003l.164-.057z" />
+				<path fill="#fff"
+					d="m61.183 54.97l-.238-13.608s-9.289 1.498-9.246 1.482c.008-.003.015-.01.023-.014l-3.445.983v9.22l3.629 1.034l-.142-.043c-.018-.005 9.418.946 9.418.946" />
+				<path fill="#ffffff"
+					d="M24.218 48.465c.113.02 2.597 3.539 2.675 3.603c.064.054 3.39 1.027 3.602 1c.21-.029 2.295-2.027 2.353-2.135c.019-.034 1.175-1.76.83-3.2c-.243-1.01-2.005-1.881-2.07-1.93c-.158-.121-3.69-.735-3.7-.737c0 0-15.537-2.56-15.65-2.638l-4.365-3.515l-1.332 8.05l4.745-.735c.111-.017 12.912 2.236 12.912 2.236" />
+				<g fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+					<path d="M21.396 40.03h26.692v16.868H23.26c-1.03 0-1.865-.81-1.865-1.808v-3.124" />
+					<path
+						d="m7.915 39.39l-1.152 7.573l5.017-.779l13.594 2.492a4.105 4.105 0 1 0 2.359-3.435l-15.268-2.799z" />
+					<circle cx="46.154" cy="26.11" r="10" />
+					<circle cx="46.154" cy="26.11" r="3" />
+					<circle cx="22.258" cy="26.11" r="10" />
+					<circle cx="22.258" cy="26.11" r="3" />
+					<path d="m52.053 53.068l8.892 2.113v-13.82l-8.892 2.412" />
+				</g>
+			</svg>
+		</button>
+	</div>
+	<div id="container"></div>
+
+	<script type="importmap" async>
+		{
+			"imports": {
+				"three": "https://cdn.jsdelivr.net/npm/three@0.163.0/build/three.module.js"
+			}
+		}
+	</script>
+
+	<script src="https://unpkg.com/es-module-shims@1.3.0/dist/es-module-shims.js"></script>
+
+	<script type="module">
+		import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.163.0/build/three.module.js';
+		import { OrbitControls } from 'https://cdn.jsdelivr.net/npm/three@0.163.0/examples/jsm/controls/OrbitControls.js';
+		import { GLTFLoader } from 'https://cdn.jsdelivr.net/npm/three@0.163.0/examples/jsm/loaders/GLTFLoader.js';
+		import { DRACOLoader } from 'https://cdn.jsdelivr.net/npm/three@0.163.0/examples/jsm/loaders/DRACOLoader.js';
+		import { ViewHelper } from 'https://cdn.jsdelivr.net/npm/three@0.163.0/examples/jsm/helpers/ViewHelper.js';
+
+		let vanPrice = 3000;
+		let airConPrice = 200;
+		let maxxAirPrice = 100;
+		let solar200Price = 150;
+		let solar55Price = 100;
+		let solar30Price = 50;
+		let totalPrice = vanPrice;
+
+		let canvas, camera, scene, renderer;
+		let cameraType = "perspective";
+		let canvasContainer = document.getElementById("container");
+
+		let grid;
+		let controls;
+
+		let selectedFeature;
+		var targetForDragging;
+
+		let isDragging = false;
+
+		let intersects;
+		let raycaster;
+		let workPlane;
+
+		let edges;
+		let line;
+		let edgeLine = null;
+		const lineMaterial = new THREE.LineBasicMaterial({ color: "#fff" });
+
+		let vanItem;
+		let cloneVanItem = null;
+		let loadItemDirectory;
+
+		let carModel;
+		let shodowMesh;
+		let model = null;
+
+		const shadow = new THREE.TextureLoader().load('https://cdn.shopify.com/s/files/1/0412/9898/5124/files/ford_ao.png?v=1711858184');
+
+		let helper;
+		let clock;
+
+		let delelteBtn = document.getElementById("deleteButton")
+
+		document.addEventListener('dragstart', function (event) {
+			model = null;
+			vanItem = event.target;
+			//Hide the default drag image
+			event.dataTransfer.setDragImage(document.createElement('div'), 0, 0);
+
+			cloneVanItem = vanItem.cloneNode(true);
+			cloneVanItem.style.position = "absolute";
+			cloneVanItem.style.display = "none"; // Hide the clone initially
+			document.body.appendChild(cloneVanItem);
+
+			switch (event.target.id) {
+				case "airconditioner":
+					loadItemDirectory = "https://cdn.shopify.com/3d/models/4ffe214498ea4572/airconditioner.glb";
+					break;
+				case "maxxair":
+					loadItemDirectory = "https://cdn.shopify.com/3d/models/79d9acc725fd9588/maxxair.glb";
+					break;
+				case "solar_panel200":
+					loadItemDirectory = "https://cdn.shopify.com/3d/models/5cfa600915383f66/200W.glb";
+					break;
+				case "solar_panel50":
+					loadItemDirectory = "https://cdn.shopify.com/3d/models/e69c7ddeafcf261c/55W.glb";
+					break;
+				case "solar_panel30":
+					loadItemDirectory = "https://cdn.shopify.com/3d/models/2a9229deef12ff01/30W.glb";
+					break;
+			}
+
+			const dracoLoader = new DRACOLoader();
+			dracoLoader.setDecoderPath('https://res.cloudinary.com/dbloegsbv/raw/upload/v1/jsm/');
+
+
+			const loader = new GLTFLoader();
+			loader.setDRACOLoader(dracoLoader);
+
+			// loader.load(loadItemDirectory, function (gltf) {
+			// 	model = gltf.scene;
+			// });
+			const loadModel = (url) => {
+				return new Promise((resolve, reject) => {
+					loader.load(url, function (gltf) {
+						resolve(gltf.scene);
+					}, undefined, reject);
+				});
+			};
+
+			// Usage example
+			loadModel(loadItemDirectory)
+				.then((modelItem) => {
+					// Do something with the loaded model
+					model = modelItem;
+					console.log("loaded")
+				})
+				.catch((error) => {
+					console.error('An error occurred while loading the model:', error);
+				});
+		});
+		document.addEventListener('dragover', function (event) {
+			let a = 2 * event.clientX / window.innerWidth - 1;
+			let b = 1 - 2 * event.clientY / window.innerHeight;
+
+			raycaster.setFromCamera(new THREE.Vector2(a, b), camera);
+			intersects = raycaster.intersectObjects([workPlane]);
+			if (intersects.length > 0) {
+
+				event.preventDefault();
+				cloneVanItem.style.display = "none";
+
+				let item = intersects[0];
+				let objectHit = item.object;
+
+				let locationX = item.point.x;
+				let locationZ = item.point.z;
+				let coords = new THREE.Vector3(locationX, 0, locationZ);
+				scene.worldToLocal(coords);
+
+				// if (event.target.id === 'airconditioner') {
+				if (model) {
+					scene.remove(model);
+
+					model.position.x = coords.x;
+					model.position.y = 2.35;
+					// model.position.z = coords.z;
+					model.position.z = 0;
+					scene.add(model);
+				}
+				// else {
+
+
+			} else {
+				// Update the position of the clone based on the mouse cursor position
+				cloneVanItem.style.display = "block";
+				cloneVanItem.style.left = event.clientX + 'px';
+				cloneVanItem.style.top = event.clientY + 'px';
+				cloneVanItem.style.transform = "translate(-50%,-50%)";
+				if (model) {
+					scene.remove(model);
+				}
+			}
+		});
+
+		document.addEventListener('dragend', function (event) {
+			if (cloneVanItem) {
+				document.body.removeChild(cloneVanItem);
+			}
+			if (model) {
+				scene.remove(model);
+			}
+			event.preventDefault();
+			let a = 2 * event.clientX / window.innerWidth - 1;
+			let b = 1 - 2 * event.clientY / window.innerHeight;
+
+			raycaster.setFromCamera(new THREE.Vector2(a, b), camera);
+			intersects = raycaster.intersectObjects([workPlane]);
+
+			if (intersects.length == 0) {
+				return false;
+			}
+			else {
+				let item = intersects[0];
+				let objectHit = item.object;
+
+				let locationX = item.point.x;
+				let locationZ = item.point.z;
+				let coords = new THREE.Vector3(locationX, 0, locationZ);
+				scene.worldToLocal(coords);
+
+				const dracoLoader = new DRACOLoader();
+				dracoLoader.setDecoderPath('https://res.cloudinary.com/dbloegsbv/raw/upload/v1/jsm/');
+
+				const loader = new GLTFLoader();
+				loader.setDRACOLoader(dracoLoader);
+
+				loader.load(loadItemDirectory, function (gltf) {
+					const itemModel = gltf.scene;
+					itemModel.position.x = coords.x;
+					itemModel.position.y = 2.35;
+					// solar100Model.position.z = coords.z;
+					itemModel.position.z = 0;
+					scene.add(itemModel);
+
+					calcPrice(itemModel.children[0].name, true)
+					console.log("itemModel", itemModel.children[0].name)
+				});
+				render();
+			}
+			isDragging = false;
+		});
+
+		canvasContainer.addEventListener('mousedown', (event) => {
+			if (event.button === 0) {
+				isDragging = true;
+				doMouseDown(event.clientX, event.clientY);
+			}
+		});
+		canvasContainer.addEventListener('mousemove', (event) => {
+			if (selectedFeature) {
+				if (selectedFeature.parent.name !== "van") {
+					if (isDragging) {
+
+						let a = 2 * event.clientX / window.innerWidth - 1;
+						let b = 1 - 2 * event.clientY / window.innerHeight;
+						raycaster.setFromCamera(new THREE.Vector2(a, b), camera);
+						intersects = raycaster.intersectObject(targetForDragging);
+						if (intersects.length === 0) {
+							return;
+						}
+
+						let objectHit = intersects[0].object;
+						let locationX = intersects[0].point.x;
+						let locationZ = intersects[0].point.z;
+						let coords = new THREE.Vector3(locationX, 0, locationZ);
+						coords = scene.worldToLocal(coords);
+
+						const boundingBox = new THREE.Box3().setFromObject(selectedFeature);
+						const size = new THREE.Vector3();
+						boundingBox.getSize(size);
+
+						// Extract the width from the dimensions
+						const selectedFeatureWidth = size.x;
+
+						console.log(coords.x)
+						a = Math.min(0.428 - selectedFeatureWidth / 2, Math.max(-2.2, coords.x));
+						// b = Math.min(0.32, Math.max(-0.32, coords.z));
+
+						selectedFeature.parent.position.x = a;
+						selectedFeature.parent.position.z = 0;
+
+						render();
+					}
+				}
+				controls.enableRotate = false;
+			}
+			else {
+				controls.enableRotate = true;
+			}
+		});
+		canvasContainer.addEventListener('mouseup', () => {
+			isDragging = false;
+		});
+
+		document.getElementById('deleteButton').addEventListener('click', function () {
+			if (selectedFeature) {
+				scene.remove(selectedFeature.parent); // Remove the selected feature from the scene
+				this.style.display = "none";
+
+				calcPrice(selectedFeature.name, false)
+				console.log(selectedFeature)
+
+				render();
+
+				selectedFeature = null; // Reset the selected feature
+			}
+		});
+
+		document.getElementById('imgDownloadBtn').addEventListener('click', function () {
+			// Render the scene
+			renderer.render(scene, camera);
+			var imgData = renderer.domElement.toDataURL();
+			var link = document.createElement('a');
+			link.download = 'scene.png';
+			link.href = imgData;
+			link.click();
+		});
+
+		document.getElementById('camChangeBtn').addEventListener('click', function () {
+			const cameraPosition = camera.position;
+
+			if (cameraType === "perspective") {
+				camera = new THREE.OrthographicCamera(-window.innerWidth / 340, window.innerWidth / 340, window.innerHeight / 340, -window.innerHeight / 340, 1, 10000);
+				cameraType = "orthographic"
+			}
+			else {
+				camera = new THREE.PerspectiveCamera(40, window.innerWidth / window.innerHeight, 1, 10000);
+				cameraType = "perspective"
+			}
+			camera.position.set(cameraPosition.x, cameraPosition.y, cameraPosition.z);
+			setCameraView();
+			setViewCube()
+		});
+		function doMouseDown(x, y) {
+			controls.enableRotate = false;
+			if (selectedFeature) {
+				removeEdgeLines(selectedFeature);
+				selectedFeature = null;
+			}
+			scene.remove(targetForDragging);
+			delelteBtn.style.display = "none";
+
+			let a = 2 * x / window.innerWidth - 1;
+			let b = 1 - 2 * y / window.innerHeight;
+			raycaster.setFromCamera(new THREE.Vector2(a, b), camera);
+			intersects = raycaster.intersectObjects(scene.children);  // no need for recusion since all objects are top-level
+			if (intersects.length == 0) {
+				return false;
+			}
+			let item = intersects[0];
+			let objectHit = item.object;
+			if (objectHit.parent &&
+				objectHit.parent.name != "van" &&
+				objectHit != workPlane &&
+				objectHit != shodowMesh) {
+				scene.add(targetForDragging);
+				targetForDragging.position.set(0, item.point.y, 0);
+
+				// Add or remove edge lines based on selection
+				if (objectHit != selectedFeature) {
+					selectedFeature = objectHit;
+					addEdgeLines(selectedFeature);
+					delelteBtn.style.display = "flex";
+				}
+				else {
+					selectedFeature = null;
+					removeEdgeLines(selected);
+					delelteBtn.style.display = "none";
+				}
+
+				render();
+			}
+
+
+		}
+
+		document.addEventListener('DOMContentLoaded', function () {
+			canvas = document.querySelector('canvas[data-engine="three.js r162"]');
+		});
+
+		function addEdgeLines(object) {
+			// Remove existing edge line if it exists
+			if (edgeLine) {
+				object.remove(edgeLine);
+				edgeLine.geometry.dispose();
+				edgeLine.material.dispose();
+			}
+
+			// Create new edge lines
+			const edges = new THREE.EdgesGeometry(object.geometry);
+			edgeLine = new THREE.LineSegments(edges, lineMaterial);
+			object.add(edgeLine);
+		}
+
+		function removeEdgeLines(object) {
+			if (edgeLine) {
+				object.remove(edgeLine);
+				edgeLine.geometry.dispose();
+				edgeLine.material.dispose();
+				edgeLine = null;
+			}
+		}
+
+		function calcPrice(modelName, flag) {
+			let itemPrice = 0;
+			switch (modelName) {
+				case "air_conditioner":
+					itemPrice = 150;
+					break;
+				case "maxxair":
+					itemPrice = 100;
+					break;
+				case "solar200":
+					itemPrice = 150;
+					break;
+				case "solar55":
+					itemPrice = 100;
+					break;
+				case "solar30":
+					itemPrice = 50;
+					break;
+				default:
+					itemPrice = 0;
+			}
+			if (flag)
+				totalPrice = totalPrice + itemPrice;
+			else
+				totalPrice = totalPrice - itemPrice;
+
+			document.getElementById("total_price").innerHTML = totalPrice;
+		}
+
+		// function collision(selectedFeatureBoundingBox, collidableMeshList) {
+		// 	// Check for collisions with each bounding box in the array
+		// 	let collisionDetected = false;
+		// 	for (const boundingBox of collidableMeshList) {
+		// 		if (selectedFeatureBoundingBox.intersectsBox(boundingBox)) {
+		// 			collisionDetected = true;
+		// 			break; // Exit the loop if collision is detected
+		// 		}
+		// 	}
+
+		// 	if (collisionDetected) {
+		// 		console.log("Collision detected!");
+		// 	} else {
+		// 		console.log("No collision");
+		// 	}
+
+		// 	return collisionDetected;
+		// }
+
+		function setViewCube() {
+			clock = new THREE.Clock();
+			// helper
+			helper = new ViewHelper(camera, renderer.domElement);
+			helper.controls = controls;
+			helper.controls.center = controls.target;
+
+			const div = document.createElement('div');
+			div.id = 'viewHelper';
+			div.style.position = 'absolute';
+			div.style.right = 0;
+			div.style.bottom = 0;
+			div.style.height = '128px';
+			div.style.width = '128px';
+
+			document.body.appendChild(div);
+			div.addEventListener('pointerup', (event) => (helper.handleClick(event)));
+			animate();
+		}
+		function animate() {
+			requestAnimationFrame(animate);
+			const delta = clock.getDelta();
+			if (helper.animating) helper.update(delta);
+			helper.render(renderer);
+		}
+		function setCameraView() {
+			controls = new OrbitControls(camera, container);
+
+			controls.maxDistance = 20;
+			controls.minDistance = 3;
+
+			controls.maxZoom = 3;
+			controls.minZoom = 0.5;
+
+			controls.maxPolarAngle = THREE.MathUtils.degToRad(90);
+
+			controls.target.set(0, 0.5, 0);
+		}
+
+		function init() {
+			const container = document.getElementById('container');
+
+			renderer = new THREE.WebGLRenderer({ antialias: true });
+			renderer.setPixelRatio(window.devicePixelRatio);
+			renderer.setSize(window.innerWidth, window.innerHeight);
+			renderer.setAnimationLoop(render);
+			renderer.toneMapping = THREE.ACESFilmicToneMapping;
+			renderer.toneMappingExposure = 0.85;
+			renderer.autoClear = false;
+
+			container.appendChild(renderer.domElement);
+
+			window.addEventListener('resize', onWindowResize);
+
+			// Create an OrthographicCamera
+			camera = new THREE.PerspectiveCamera(40, window.innerWidth / window.innerHeight, 1, 10000);
+			camera.position.set(1, 6, 6);
+			setCameraView();
+
+			// controls.update();
+
+			scene = new THREE.Scene();
+			scene.background = new THREE.Color("#ffffff");
+
+			setViewCube();
+
+			const directionalLight1 = new THREE.DirectionalLight(0xffffff, 1);
+			directionalLight1.position.set(1, 1, 0);
+			scene.add(directionalLight1);
+
+			const directionalLight2 = new THREE.DirectionalLight(0xffffff, 1);
+			directionalLight2.position.set(-1, 1, 0);
+			scene.add(directionalLight2);
+
+			const directionalLight3 = new THREE.DirectionalLight(0xffffff, 1);
+			directionalLight3.position.set(0, 1, 1);
+			scene.add(directionalLight3);
+
+			const directionalLight4 = new THREE.DirectionalLight(0xffffff, 1);
+			directionalLight4.position.set(0, 1, -1);
+			scene.add(directionalLight4);
+
+			const ambientLight = new THREE.AmbientLight('#ffffff', 1); // color, intensity
+			scene.add(ambientLight);
+
+			const dracoLoader = new DRACOLoader();
+			dracoLoader.setDecoderPath('https://res.cloudinary.com/dbloegsbv/raw/upload/v1/jsm/');
+
+			const loader = new GLTFLoader();
+			loader.setDRACOLoader(dracoLoader);
+
+			loader.load('https://cdn.shopify.com/3d/models/1592d4300520a9a0/van1.glb', function (gltf) {
+				carModel = gltf.scene;
+
+				shodowMesh = new THREE.Mesh(
+					new THREE.PlaneGeometry(2.8, 6.5),
+					new THREE.MeshBasicMaterial({
+						map: shadow, blending: THREE.MultiplyBlending, toneMapped: false, transparent: true
+					})
+				);
+				shodowMesh.rotation.x = - Math.PI / 2;
+				shodowMesh.rotation.z = Math.PI / 2;
+				shodowMesh.renderOrder = 2;
+				carModel.add(shodowMesh);
+
+				scene.add(carModel);
+
+				workPlane = new THREE.Mesh(
+					new THREE.BoxGeometry(3, 0.01, 1.55),
+					new THREE.MeshLambertMaterial({ color: "green" })
+				);
+				workPlane.material.visible = false;
+
+				workPlane.position.set(-1.08, 2.37, 0); // Set position
+				scene.add(workPlane);
+
+				targetForDragging = new THREE.Mesh(
+					new THREE.BoxGeometry(100, 0.01, 100),
+					new THREE.MeshBasicMaterial()
+				);
+				targetForDragging.material.visible = false;
+
+				raycaster = new THREE.Raycaster();
+			});
+		}
+
+		function onWindowResize() {
+			camera.aspect = window.innerWidth / window.innerHeight;
+			camera.updateProjectionMatrix();
+
+			renderer.setSize(window.innerWidth, window.innerHeight);
+		}
+
+		function render() {
+			controls.update();
+			renderer.render(scene, camera);
+		}
+
+		init();
+
+	</script>
+
+</div>
+</body>
