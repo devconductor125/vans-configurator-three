@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>3D Rectangles on a Circle</title>
+    <style>
+        body { margin: 0; }
+        canvas { display: block; }
+    </style>
+</head>
+<body>
+  <script type="importmap" async>
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.163.0/build/three.module.js"
+      }
+    }
+  </script>
+  
+  
+  <script type="module">
+    let lastHoveredRectangle;
+    import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.163.0/build/three.module.js';
+    // Setup
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+const renderer = new THREE.WebGLRenderer();
+renderer.setSize(window.innerWidth, window.innerHeight);
+document.body.appendChild(renderer.domElement);
+
+// Create rectangles
+const radiusX = 10; // Radius of the ellipse along the X-axis
+const radiusY = 5; // Radius of the ellipse along the Y-axis
+const gap = 0.5; // Gap between rectangles
+const rectangles = 30; // Number of rectangles
+const geometry = new THREE.BoxGeometry(1, 1, 1); // Rectangle geometry
+const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 }); // Rectangle material
+
+// Function to calculate position on an octagon path
+function getOctagonPosition(index, total, radiusX, radiusY) {
+    const angle = (2 * Math.PI / total) * index;
+    const x = radiusX * Math.cos(angle);
+    const y = radiusY * Math.sin(angle);
+    return { x, y };
+}
+
+for (let i = 0; i < rectangles; i++) {
+    const { x, y } = getOctagonPosition(i, rectangles, radiusX, radiusY);
+    const z = 0; // Z position, adjust as needed
+
+    const rectangle = new THREE.Mesh(geometry, material);
+    rectangle.position.set(x, y, z);
+    rectangle.userData.originalPosition = rectangle.position.clone(); // Store original position for hover effect
+    scene.add(rectangle);
+}
+
+// Camera position
+camera.position.z = 20;
+
+// Animation loop
+function animate() {
+    requestAnimationFrame(animate);
+    renderer.render(scene, camera);
+}
+animate();
+
+// Mouseover effect
+renderer.domElement.addEventListener('mousemove', (event) => {
+    const mouse = new THREE.Vector2();
+    mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+    mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+    const raycaster = new THREE.Raycaster();
+    raycaster.setFromCamera(mouse, camera);
+
+    const intersects = raycaster.intersectObjects(scene.children);
+
+    if (intersects.length > 0) {
+        const rectangle = intersects[0].object;
+        if (rectangle !== lastHoveredRectangle) {
+            if (lastHoveredRectangle) {
+                // Reset the last hovered rectangle to its original position
+                lastHoveredRectangle.position.set(
+                    lastHoveredRectangle.userData.originalPosition.x,
+                    lastHoveredRectangle.userData.originalPosition.y,
+                    lastHoveredRectangle.userData.originalPosition.z
+                );
+            }
+            rectangle.position.y += 0.5; // Rise up effect
+            lastHoveredRectangle = rectangle;
+        }
+    } else if (lastHoveredRectangle) {
+        // Reset the last hovered rectangle to its original position
+        lastHoveredRectangle.position.set(
+            lastHoveredRectangle.userData.originalPosition.x,
+            lastHoveredRectangle.userData.originalPosition.y,
+            lastHoveredRectangle.userData.originalPosition.z
+        );
+        lastHoveredRectangle = null;
+    }
+});
+
+// Resize handler
+window.addEventListener('resize', () => {
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+    renderer.setSize(width, height);
+    camera.aspect = width / height;
+    camera.updateProjectionMatrix();
+});
+
+
+    </script>
+</body>
+</html>

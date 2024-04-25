@@ -91,6 +91,11 @@
 			display: block;
 		}
 
+		#ladder {
+			background-image: url('https://cdn.shopify.com/s/files/1/0412/9898/5124/files/ladder.jpg?v=1714006260');
+			display: block;
+		}
+
 		button {
 			cursor: pointer;
 		}
@@ -219,6 +224,13 @@
 					<p>Solar Panel<br />(30W)</p>
 				</div>
 			</div>
+
+			<div class="item-box">
+				<div class="item-img" id="ladder" draggable="true"></div>
+				<div class="item-name">
+					<p>Ladder</p>
+				</div>
+			</div>
 		</div>
 	</div>
 	<div class="action-btn-list">
@@ -322,11 +334,15 @@
 		let helper;
 		let clock;
 
+		let selectedItem = '';
+		let ladderPlane;
+
 		let delelteBtn = document.getElementById("deleteButton")
 
 		document.addEventListener('dragstart', function (event) {
 			model = null;
 			vanItem = event.target;
+			selectedItem = event.target.id;
 			//Hide the default drag image
 			event.dataTransfer.setDragImage(document.createElement('div'), 0, 0);
 
@@ -350,6 +366,9 @@
 					break;
 				case "solar_panel30":
 					loadItemDirectory = "https://cdn.shopify.com/3d/models/2a9229deef12ff01/30W.glb";
+					break;
+				case "ladder":
+					loadItemDirectory = "models/ladder.glb";
 					break;
 			}
 
@@ -383,11 +402,37 @@
 				});
 		});
 		document.addEventListener('dragover', function (event) {
+
 			let a = 2 * event.clientX / window.innerWidth - 1;
 			let b = 1 - 2 * event.clientY / window.innerHeight;
 
-			raycaster.setFromCamera(new THREE.Vector2(a, b), camera);
-			intersects = raycaster.intersectObjects([workPlane]);
+			let positionX = 0;
+			let positionY = 0;
+			let positionZ = 0;
+
+			if(selectedItem == 'ladder') {
+				raycaster.setFromCamera(new THREE.Vector2(a, b), camera);
+				intersects = raycaster.intersectObjects([ladderPlane]);
+
+				event.preventDefault();
+
+				// positionX = -0.85216;
+				positionX = -0.6;
+				positionY = 1.1717;
+				positionZ = -0.97864;
+			} else {
+				
+
+				raycaster.setFromCamera(new THREE.Vector2(a, b), camera);
+				intersects = raycaster.intersectObjects([workPlane]);
+
+				event.preventDefault();
+				
+				positionY = 2.35;
+				positionZ = 0;
+
+			}
+
 			if (intersects.length > 0) {
 
 				event.preventDefault();
@@ -401,21 +446,15 @@
 				let coords = new THREE.Vector3(locationX, 0, locationZ);
 				scene.worldToLocal(coords);
 
-				// if (event.target.id === 'airconditioner') {
 				if (model) {
 					scene.remove(model);
-
-					model.position.x = coords.x;
-					model.position.y = 2.35;
-					// model.position.z = coords.z;
-					model.position.z = 0;
+					model.position.x = selectedItem == 'ladder' ? positionX: coords.x;
+					model.position.y = positionY;
+					model.position.z = positionZ;
 					scene.add(model);
 				}
-				// else {
-
-
 			} else {
-				// Update the position of the clone based on the mouse cursor position
+				console.log("remove model")
 				cloneVanItem.style.display = "block";
 				cloneVanItem.style.left = event.clientX + 'px';
 				cloneVanItem.style.top = event.clientY + 'px';
@@ -437,9 +476,32 @@
 			let a = 2 * event.clientX / window.innerWidth - 1;
 			let b = 1 - 2 * event.clientY / window.innerHeight;
 
-			raycaster.setFromCamera(new THREE.Vector2(a, b), camera);
-			intersects = raycaster.intersectObjects([workPlane]);
+			let positionX = 0;
+			let positionY = 0;
+			let positionZ = 0;
 
+			if(selectedItem == 'ladder') {
+				raycaster.setFromCamera(new THREE.Vector2(a, b), camera);
+				intersects = raycaster.intersectObjects([ladderPlane]);
+
+				event.preventDefault();
+
+				// positionX = -0.85216;
+				positionX = -0.6;
+				positionY = 1.1717;
+				positionZ = -0.97864;
+			} else {
+				
+				raycaster.setFromCamera(new THREE.Vector2(a, b), camera);
+				intersects = raycaster.intersectObjects([workPlane]);
+
+				event.preventDefault();
+				
+				positionY = 2.35;
+				positionZ = 0;
+
+			}
+		
 			if (intersects.length == 0) {
 				return false;
 			}
@@ -460,14 +522,16 @@
 
 				loader.load(loadItemDirectory, function (gltf) {
 					const itemModel = gltf.scene;
-					itemModel.position.x = coords.x;
-					itemModel.position.y = 2.35;
-					// solar100Model.position.z = coords.z;
-					itemModel.position.z = 0;
+
+					console.log(selectedItem)
+					itemModel.position.x = selectedItem == 'ladder' ? positionX: coords.x;
+					itemModel.position.y = positionY;
+					itemModel.position.z = positionZ;
 					scene.add(itemModel);
 
 					calcPrice(itemModel.children[0].name, true)
 					console.log("itemModel", itemModel.children[0].name)
+					selectedItem = ""
 				});
 				render();
 			}
@@ -725,7 +789,7 @@
 		function init() {
 			const container = document.getElementById('container');
 
-			renderer = new THREE.WebGLRenderer({ antialias: true });
+			renderer = new THREE.WebGLRenderer({ antialias: true }); 
 			renderer.setPixelRatio(window.devicePixelRatio);
 			renderer.setSize(window.innerWidth, window.innerHeight);
 			renderer.setAnimationLoop(render);
@@ -739,7 +803,7 @@
 
 			// Create an OrthographicCamera
 			camera = new THREE.PerspectiveCamera(40, window.innerWidth / window.innerHeight, 1, 10000);
-			camera.position.set(1, 6, 6);
+			camera.position.set(-1, 6, -6);
 			setCameraView();
 
 			// controls.update();
@@ -790,6 +854,7 @@
 
 				scene.add(carModel);
 
+				// Rack plane
 				workPlane = new THREE.Mesh(
 					new THREE.BoxGeometry(3, 0.01, 1.55),
 					new THREE.MeshLambertMaterial({ color: "green" })
@@ -798,6 +863,16 @@
 
 				workPlane.position.set(-1.08, 2.37, 0); // Set position
 				scene.add(workPlane);
+
+				// Ladder plane
+				ladderPlane = new THREE.Mesh(
+					new THREE.BoxGeometry(3, 2, 0.01),
+					new THREE.MeshLambertMaterial({color: 'green'})
+				)
+				ladderPlane.material.visible = false;
+
+				ladderPlane.position.set(-1.08, 1.3, -0.85); 
+				scene.add(ladderPlane);
 
 				targetForDragging = new THREE.Mesh(
 					new THREE.BoxGeometry(100, 0.01, 100),

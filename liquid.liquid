@@ -18,6 +18,10 @@
 			-ms-user-select: none;
 			user-select: none;
 			overflow: hidden;
+      width: 96vw;
+      margin: 0 auto;
+      margin-bottom: 50px;
+      border-radius: 20px;
 		}
 
 		.d-flex {
@@ -88,6 +92,11 @@
 
 		#solar_panel30 {
 			background-image: url('https://cdn.shopify.com/s/files/1/0412/9898/5124/files/30W.jpg?v=1711798448');
+			display: block;
+		}
+
+    #ladder {
+			background-image: url('https://cdn.shopify.com/s/files/1/0412/9898/5124/files/ladder.jpg?v=1714006260');
 			display: block;
 		}
 
@@ -174,7 +183,8 @@
 			}
 		}
     #configurator-container {
-      position: relative
+      position: relative;
+      border-radius: 20px;
     }
 
     .item-container .announce-bar {
@@ -227,6 +237,12 @@
 						<p>Solar Panel<br />(30W)</p>
 					</div>
 				</div>
+        <div class="item-box">
+          <div class="item-img" id="ladder" draggable="true"></div>
+          <div class="item-name">
+            <p>Ladder</p>
+          </div>
+        </div>
 			</div>
 		</div>
 		<div class="action-btn-list">
@@ -390,11 +406,16 @@
   let clock;
   let offsetTopCanvas
 
+  
+  let selectedItem = '';
+  let ladderPlane;
+
   let delelteBtn = document.getElementById("deleteButton")
 
   document.addEventListener('dragstart', function (event) {
     model = null;
     vanItem = event.target;
+    selectedItem = event.target.id;
     //Hide the default drag image
     event.dataTransfer.setDragImage(document.createElement('div'), 0, 0);
 
@@ -419,6 +440,9 @@
       case "solar_panel30":
         loadItemDirectory = "https://cdn.shopify.com/3d/models/2a9229deef12ff01/30W.glb";
         break;
+      case "ladder":
+        loadItemDirectory = "https://cdn.shopify.com/3d/models/a13d7ca8fec779da/ladder.glb";
+        break;
     }
 
     const dracoLoader = new DRACOLoader();
@@ -428,6 +452,9 @@
     const loader = new GLTFLoader();
     loader.setDRACOLoader(dracoLoader);
 
+    // loader.load(loadItemDirectory, function (gltf) {
+    // 	model = gltf.scene;
+    // });
     const loadModel = (url) => {
       return new Promise((resolve, reject) => {
         loader.load(url, function (gltf) {
@@ -439,6 +466,7 @@
     // Usage example
     loadModel(loadItemDirectory)
       .then((modelItem) => {
+        // Do something with the loaded model
         model = modelItem;
         console.log("loaded")
       })
@@ -447,13 +475,38 @@
       });
   });
   document.addEventListener('dragover', function (event) {
-    
+
     offsetTopCanvas = canvasContainer.getBoundingClientRect().top;
     let a = 2 * event.clientX / window.innerWidth - 1;
     let b = 1 - 2 * (event.clientY - offsetTopCanvas) / window.innerHeight;
 
-    raycaster.setFromCamera(new THREE.Vector2(a, b), camera);
-    intersects = raycaster.intersectObjects([workPlane]);
+    let positionX = 0;
+    let positionY = 0;
+    let positionZ = 0;
+
+    if(selectedItem == 'ladder') {
+      raycaster.setFromCamera(new THREE.Vector2(a, b), camera);
+      intersects = raycaster.intersectObjects([ladderPlane]);
+
+      event.preventDefault();
+
+      // positionX = -0.85216;
+      positionX = -0.6;
+      positionY = 1.1717;
+      positionZ = -0.97864;
+    } else {
+      
+
+      raycaster.setFromCamera(new THREE.Vector2(a, b), camera);
+      intersects = raycaster.intersectObjects([workPlane]);
+
+      event.preventDefault();
+      
+      positionY = 2.35;
+      positionZ = 0;
+
+    }
+
     if (intersects.length > 0) {
 
       event.preventDefault();
@@ -467,21 +520,15 @@
       let coords = new THREE.Vector3(locationX, 0, locationZ);
       scene.worldToLocal(coords);
 
-      // if (event.target.id === 'airconditioner') {
       if (model) {
         scene.remove(model);
-
-        model.position.x = coords.x;
-        model.position.y = 2.35;
-        // model.position.z = coords.z;
-        model.position.z = 0;
+        model.position.x = selectedItem == 'ladder' ? positionX: coords.x;
+        model.position.y = positionY;
+        model.position.z = positionZ;
         scene.add(model);
       }
-      // else {
-
-
     } else {
-      // Update the position of the clone based on the mouse cursor position
+      console.log("remove model")
       cloneVanItem.style.display = "block";
       cloneVanItem.style.left = event.clientX + 'px';
       cloneVanItem.style.top = event.clientY + 'px';
@@ -503,9 +550,32 @@
     let a = 2 * event.clientX / window.innerWidth - 1;
     let b = 1 - 2 * (event.clientY - offsetTopCanvas) / window.innerHeight;
 
-    raycaster.setFromCamera(new THREE.Vector2(a, b), camera);
-    intersects = raycaster.intersectObjects([workPlane]);
+    let positionX = 0;
+    let positionY = 0;
+    let positionZ = 0;
 
+    if(selectedItem == 'ladder') {
+      raycaster.setFromCamera(new THREE.Vector2(a, b), camera);
+      intersects = raycaster.intersectObjects([ladderPlane]);
+
+      event.preventDefault();
+
+      // positionX = -0.85216;
+      positionX = -0.6;
+      positionY = 1.1717;
+      positionZ = -0.97864;
+    } else {
+      
+      raycaster.setFromCamera(new THREE.Vector2(a, b), camera);
+      intersects = raycaster.intersectObjects([workPlane]);
+
+      event.preventDefault();
+      
+      positionY = 2.35;
+      positionZ = 0;
+
+    }
+  
     if (intersects.length == 0) {
       return false;
     }
@@ -526,14 +596,16 @@
 
       loader.load(loadItemDirectory, function (gltf) {
         const itemModel = gltf.scene;
-        itemModel.position.x = coords.x;
-        itemModel.position.y = 2.35;
-        // solar100Model.position.z = coords.z;
-        itemModel.position.z = 0;
+
+        console.log(selectedItem)
+        itemModel.position.x = selectedItem == 'ladder' ? positionX: coords.x;
+        itemModel.position.y = positionY;
+        itemModel.position.z = positionZ;
         scene.add(itemModel);
 
         calcPrice(itemModel.children[0].name, true)
         console.log("itemModel", itemModel.children[0].name)
+        selectedItem = ""
       });
       render();
     }
@@ -802,7 +874,7 @@
     const div = document.createElement('div');
     div.id = 'viewHelper';
     div.style.position = 'absolute';
-    div.style.right = 0;
+    div.style.right = '2vw';
     div.style.bottom = 0;
     div.style.height = '128px';
     div.style.width = '128px';
@@ -851,7 +923,7 @@
 
     // Create an OrthographicCamera
     camera = new THREE.PerspectiveCamera(40, window.innerWidth / window.innerHeight, 1, 10000);
-    camera.position.set(1, 6, 6);
+    camera.position.set(-1, 6, -6);
     setCameraView();
 
     // controls.update();
@@ -910,6 +982,16 @@
 
       workPlane.position.set(-1.08, 2.37, 0); // Set position
       scene.add(workPlane);
+
+      // Ladder plane
+      ladderPlane = new THREE.Mesh(
+        new THREE.BoxGeometry(3, 2, 0.01),
+        new THREE.MeshLambertMaterial({color: 'green'})
+      )
+      ladderPlane.material.visible = false;
+
+      ladderPlane.position.set(-1.08, 1.3, -0.85); 
+      scene.add(ladderPlane);
 
       targetForDragging = new THREE.Mesh(
         new THREE.BoxGeometry(100, 0.01, 100),
