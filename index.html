@@ -339,6 +339,43 @@
 
 		let delelteBtn = document.getElementById("deleteButton")
 
+		const cutOffArea = [3.19, 25.7, 32.09, 64.72, 71.11, 85.19];
+		const vanDiff = 3.2
+
+		const vansInfo = [
+    {
+      type: 'transit_148',
+      vanModel: 'https://cdn.shopify.com/3d/models/1592d4300520a9a0/van1.glb',
+      modelDiff: 3.2,
+      cutOffArea: [3.19, 25.7, 32.09, 64.72, 71.11, 85.19],
+      topPlane: {
+        size: [3, 0.01, 1.55],
+        position: [-1.08, 2.37, 0]
+      },
+      ladderPlane: {
+        size: [3, 2, 0.01],
+        position: [-1.08, 1.3, -0.85]
+      },
+      parts: [
+        {
+          type: 'ac',
+          model: 'https://cdn.shopify.com/3d/models/4ffe214498ea4572/airconditioner.glb',
+          cutOffset: 7.2
+        },
+        {
+          type: 'fan',
+          model: 'https://cdn.shopify.com/3d/models/79d9acc725fd9588/maxxair.glb',
+          cutOffset: 7
+        },
+        {
+          type: 'ladder',
+          model: 'https://cdn.shopify.com/3d/models/ddf3dc617c9fd414/ladder.glb',
+          
+        }
+      ]
+    }
+  ]
+
 		document.addEventListener('dragstart', function (event) {
 			model = null;
 			vanItem = event.target;
@@ -446,13 +483,40 @@
 				let coords = new THREE.Vector3(locationX, 0, locationZ);
 				scene.worldToLocal(coords);
 
-				if (model) {
-					scene.remove(model);
-					model.position.x = selectedItem == 'ladder' ? positionX: coords.x;
-					model.position.y = positionY;
-					model.position.z = positionZ;
-					scene.add(model);
+				const modelName = model.children[0].name;
+
+				if(modelName == "air_conditioner"){
+					if(isValueInScale(coords.x * 1000 / 25.4 * -1, cutOffArea, 7.2, vanDiff)) {
+						console.log("avaialble")
+						if (model) {
+							scene.remove(model);
+							model.position.x = selectedItem == 'ladder' ? positionX: coords.x;
+							model.position.y = positionY;
+							model.position.z = positionZ;
+							scene.add(model);
+						}
+					} 
+				} else if(modelName == 'maxxair'){
+					if(isValueInScale(coords.x * 1000 / 25.4 * -1, cutOffArea, 7, vanDiff)){
+						console.log("avaialble")
+						if (model) {
+							scene.remove(model);
+							model.position.x = selectedItem == 'ladder' ? positionX: coords.x;
+							model.position.y = positionY;
+							model.position.z = positionZ;
+							scene.add(model);
+						}
+					} 
+				} else {
+					if (model) {
+							scene.remove(model);
+							model.position.x = selectedItem == 'ladder' ? positionX: coords.x;
+							model.position.y = positionY;
+							model.position.z = positionZ;
+							scene.add(model);
+						}
 				}
+				
 			} else {
 				console.log("remove model")
 				cloneVanItem.style.display = "block";
@@ -522,9 +586,7 @@
 
 				loader.load(loadItemDirectory, function (gltf) {
 					const itemModel = gltf.scene;
-
-					console.log(selectedItem)
-					itemModel.position.x = selectedItem == 'ladder' ? positionX: coords.x;
+					itemModel.position.x = selectedItem == 'ladder' ? positionX: model.position.x ?? coords.x;
 					itemModel.position.y = positionY;
 					itemModel.position.z = positionZ;
 					scene.add(itemModel);
@@ -570,13 +632,25 @@
 						// Extract the width from the dimensions
 						const selectedFeatureWidth = size.x;
 
-						console.log(coords.x)
-						a = Math.min(0.428 - selectedFeatureWidth / 2, Math.max(-2.2, coords.x));
-						// b = Math.min(0.32, Math.max(-0.32, coords.z));
-
-						selectedFeature.parent.position.x = a;
-						selectedFeature.parent.position.z = 0;
-
+						if(selectedFeature.name == "air_conditioner"){
+							if(isValueInScale(coords.x * 1000 / 25.4 * -1, cutOffArea, 7.2, vanDiff)) {
+								a = Math.min(0.428 - selectedFeatureWidth / 2, Math.max(-2.2, coords.x));
+								console.log("avaialble");
+								selectedFeature.parent.position.x = a;
+								selectedFeature.parent.position.z = 0;
+							} 
+						} else if(selectedFeature.name == 'maxxair'){
+							if(isValueInScale(coords.x * 1000 / 25.4 * -1, cutOffArea, 7, vanDiff)){
+								a = Math.min(0.428 - selectedFeatureWidth / 2, Math.max(-2.2, coords.x));
+								console.log("avaialble");
+								selectedFeature.parent.position.x = a;
+								selectedFeature.parent.position.z = 0;
+							} 
+						} else {
+							a = Math.min(0.428 - selectedFeatureWidth / 2, Math.max(-2.2, coords.x));
+							selectedFeature.parent.position.x = a;
+							selectedFeature.parent.position.z = 0;
+						}
 						render();
 					}
 				}
@@ -897,6 +971,15 @@
 		}
 
 		init();
+
+		function isValueInScale(value, scale, radius, vanDiff) {
+			for (let i = 0; i < scale.length; i += 2) {
+					if (value + 100 >= (scale[i] + radius - vanDiff + 100 ) && value + 100 <= (scale[i + 1] - radius - vanDiff + 100)) {
+						return true;
+					}
+			}
+			return false;
+		}
 
 	</script>
 
