@@ -39,6 +39,22 @@
 			cursor: grab;
 			opacity: 0.8;
 			transition: opacity .15s ease-in-out, transform .08s linear;
+			position: relative;
+		}
+
+		.item-box .carted-item {
+			position: absolute;
+			top: -5px;
+			right: -5px;
+			background-color: red;
+			border-radius: 50%;
+			align-items: center;
+			display: flex;
+			justify-content: center;
+			width: 25px;
+			height: 25px;
+			color: white;
+			display: none;
 		}
 
 		.item-box:active {
@@ -174,13 +190,98 @@
 				opacity: 0.7;
 			}
 		}
+
+		.van-detail {
+			position: absolute;
+			top: 20px;
+			left: 50%;
+			transform: translateX(-50%);
+		}
+
+		#rack_title {
+			font-size: 24px;
+			text-shadow: 0px 0px 4px #fff;
+			color: black;
+		}
+		.vans-list {
+			position: absolute;
+			top: 50%;
+			transform: translateY(-50%);
+			left: 20px;
+		}
+		.van-item {
+			cursor: pointer;
+			width: 100px;
+			height: 75px;
+			border-radius: 10px;
+			box-shadow: rgba(17, 12, 46, 1) 0px 0px 15px 0px;
+			margin: 25px 0px;
+			border-radius: 10px;
+			border: 1px solid #fff;
+			position: relative;
+			display: flex;
+		}
+		.van-item img {
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+			border-radius: 10px;
+		}
+		.vans-list .list-title {
+			text-align: center;
+			font-size: 20px;
+			font-weight: bold;
+			text-shadow: 0px 0px 4px #fff;
+			color: black;
+		}
+
+		.tooltip .tooltiptext {
+			visibility: hidden;
+			width: 120px;
+			background-color: rgba(17, 12, 46, 1);
+			color: #fff;
+			text-align: center;
+			border-radius: 6px;
+			padding: 5px 0;
+			top: 35%;
+    	margin-left: 10px;
+			position: absolute;
+			z-index: 1;
+			transform: translateY(-23%);
+      left: 100%;
+		}
+
+		.tooltip:hover .tooltiptext {
+			visibility: visible;
+		}
+		.tooltip .tooltiptext:before {
+			content: "";
+			display: block;
+			width: 0;
+			height: 0;
+			border-top: 9px solid transparent;
+			border-bottom: 9px solid transparent;
+			border-left: 9px solid rgba(17,9, 46, 1);
+			position: absolute;
+			left: -9px;
+			top: 50%;
+			transform: rotate(180deg) translateY(50%);
+		}
+
 	</style>
 </head>
 <body>
 
 <div class="threejs-container">
-	<div>
-
+	<div class="van-detail">
+		<h2 id="rack_title">Ford Transit Roof Rack - HSLD - 148 High Roof</h2>
+	</div>
+	<div class="vans-list">
+		<p class="list-title">Vans</p>
+		<div class="van-item tooltip">
+			<img src="https://cdn.shopify.com/s/files/1/0412/9898/5124/files/ford-transit-820-rack.jpg?v=1714572993" draggable="false"/>
+			<span class="tooltiptext">Ford Transit 820</span>
+		</div>
 	</div>
 	<div class="items-container">
 		<div class="text-center">
@@ -195,38 +296,50 @@
 		</div>
 		<div class="d-flex">
 			<div class="item-box">
-				<div class="item-img" id="airconditioner" draggable="true"></div>
+				<div class="item-img" id="airconditioner" draggable="true">
+					<div class="carted-item">1</div>
+				</div>
 				<div class="item-name">
 					<p>Air Conditioner</p>
 				</div>
 			</div>
 			<div class="item-box">
-				<div class="item-img" id="maxxair" draggable="true"></div>
+				<div class="item-img" id="maxxair" draggable="true">
+					<div class="carted-item">1</div>
+				</div>
 				<div class="item-name">
 					<p>Maxxair</p>
 				</div>
 			</div>
 			<div class="item-box">
-				<div class="item-img" id="solar_panel200" draggable="true"></div>
+				<div class="item-img" id="solar_panel200" draggable="true">
+					<div class="carted-item">1</div>
+				</div>
 				<div class="item-name">
 					<p>Solar Panel<br />(200W)</p>
 				</div>
 			</div>
 			<div class="item-box">
-				<div class="item-img" id="solar_panel50" draggable="true"></div>
+				<div class="item-img" id="solar_panel50" draggable="true">
+					<div class="carted-item">1</div>
+				</div>
 				<div class="item-name">
 					<p>Solar Panel<br />(55W)</p>
 				</div>
 			</div>
 			<div class="item-box">
-				<div class="item-img" id="solar_panel30" draggable="true"></div>
+				<div class="item-img" id="solar_panel30" draggable="true">
+					<div class="carted-item">1</div>
+				</div>
 				<div class="item-name">
 					<p>Solar Panel<br />(30W)</p>
 				</div>
 			</div>
 
 			<div class="item-box">
-				<div class="item-img" id="ladder" draggable="true"></div>
+				<div class="item-img" id="ladder" draggable="true">
+					<div class="carted-item">1</div>
+				</div>
 				<div class="item-name">
 					<p>Ladder</p>
 				</div>
@@ -345,7 +458,7 @@
 		const vansInfo = [
     {
       type: 'transit_148',
-      vanModel: 'https://cdn.shopify.com/3d/models/1592d4300520a9a0/van1.glb',
+      vanModel: 'models/van1.glb',
       modelDiff: 3.2,
       cutOffArea: [3.19, 25.7, 32.09, 64.72, 71.11, 85.19],
       topPlane: {
@@ -552,7 +665,7 @@
 
 				// positionX = -0.85216;
 				positionX = -0.6;
-				positionY = 1.1717;
+				positionY = 1.16251;
 				positionZ = -0.97864;
 			} else {
 				
@@ -912,7 +1025,7 @@
 			const loader = new GLTFLoader();
 			loader.setDRACOLoader(dracoLoader);
 
-			loader.load('https://cdn.shopify.com/3d/models/1592d4300520a9a0/van1.glb', function (gltf) {
+			loader.load('models/van1.glb', function (gltf) {
 				carModel = gltf.scene;
 
 				shodowMesh = new THREE.Mesh(

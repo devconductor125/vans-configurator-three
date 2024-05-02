@@ -5,7 +5,6 @@
 	<style>
 		.threejs-container {
 			position: relative;
-			/* background-color: #333333; */
 			background: linear-gradient(180deg, #fff 60%, #e4e4e4) !important;
 			margin: 0;
 			color: #333;
@@ -43,6 +42,22 @@
 			cursor: grab;
 			opacity: 0.8;
 			transition: opacity .15s ease-in-out, transform .08s linear;
+			position: relative;
+		}
+
+		.item-box .carted-item {
+			position: absolute;
+			top: -5px;
+			right: -5px;
+			background-color: red;
+			border-radius: 50%;
+			align-items: center;
+			display: flex;
+			justify-content: center;
+			width: 25px;
+			height: 25px;
+			color: white;
+      display: none;
 		}
 
 		.item-box:active {
@@ -190,10 +205,97 @@
     .item-container .announce-bar {
       margin-bottom: 20px !important;
     }
+
+		.van-detail {
+			position: absolute;
+			top: 20px;
+			left: 50%;
+			transform: translateX(-50%);
+		}
+
+		#rack_title {
+			font-size: 24px;
+			text-shadow: 0px 0px 4px #fff;
+			color: black;
+		}
+		.vans-list {
+			position: absolute;
+			top: 50%;
+			transform: translateY(-50%);
+			left: 20px;
+		}
+		.van-item {
+			cursor: pointer;
+			width: 100px;
+			height: 75px;
+			border-radius: 10px;
+			box-shadow: rgba(17, 12, 46, 1) 0px 0px 15px 0px;
+			margin: 25px 0px;
+			border-radius: 10px;
+			border: 1px solid #fff;
+			position: relative;
+      display: flex;
+		}
+		.van-item img {
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+			border-radius: 10px;
+		}
+		.vans-list .list-title {
+			text-align: center;
+			font-size: 20px;
+			font-weight: bold;
+			text-shadow: 0px 0px 4px #fff;
+			color: black;
+		}
+
+		.tooltip .tooltiptext {
+			visibility: hidden;
+			width: 120px;
+			background-color: rgba(17, 12, 46, 1);
+			color: #fff;
+			text-align: center;
+			border-radius: 6px;
+			padding: 5px 0;
+			top: 35%;
+    	margin-left: 10px;
+			position: absolute;
+			z-index: 1;
+			transform: translateY(-23%);
+      left: 100%;
+		}
+
+		.tooltip:hover .tooltiptext {
+			visibility: visible;
+		}
+		.tooltip .tooltiptext:before {
+			content: "";
+			display: block;
+			width: 0;
+			height: 0;
+			border-top: 9px solid transparent;
+			border-bottom: 9px solid transparent;
+			border-left: 9px solid rgba(17,9, 46, 1);
+			position: absolute;
+			left: -9px;
+			top: 50%;
+			transform: rotate(180deg) translateY(50%);
+		}
 	</style>
 </head>
 <div class="threejs-container">
 	<div id="configurator-container">
+    <div class="van-detail">
+      <h2 id="rack_title">Ford Transit Roof Rack - HSLD - 148 High Roof</h2>
+    </div>
+    <div class="vans-list">
+      <p class="list-title">Vans</p>
+      <div class="van-item tooltip">
+        <img src="https://cdn.shopify.com/s/files/1/0412/9898/5124/files/ford-transit-820-rack.jpg?v=1714572993" draggable="false"/>
+        <span class="tooltiptext">Ford Transit 820</span>
+      </div>
+    </div>
 		<div id="container"></div>
 		<div class="items-container">
 			<div class="text-center announce-bar" >
@@ -208,37 +310,49 @@
 			</div>
 			<div class="d-flex">
 				<div class="item-box">
-					<div class="item-img" id="airconditioner" draggable="true"></div>
+					<div class="item-img" id="airconditioner" draggable="true">
+            <div class="carted-item">1</div>
+          </div>
 					<div class="item-name">
 						<p>Air Conditioner</p>
 					</div>
 				</div>
 				<div class="item-box">
-					<div class="item-img" id="maxxair" draggable="true"></div>
+					<div class="item-img" id="maxxair" draggable="true">
+            <div class="carted-item">1</div>
+          </div>
 					<div class="item-name">
 						<p>Maxxair</p>
 					</div>
 				</div>
 				<div class="item-box">
-					<div class="item-img" id="solar_panel200" draggable="true"></div>
+					<div class="item-img" id="solar_panel200" draggable="true">
+            <div class="carted-item">1</div>
+          </div>
 					<div class="item-name">
 						<p>Solar Panel<br />(200W)</p>
 					</div>
 				</div>
 				<div class="item-box">
-					<div class="item-img" id="solar_panel50" draggable="true"></div>
+					<div class="item-img" id="solar_panel50" draggable="true">
+            <div class="carted-item">1</div>
+          </div>
 					<div class="item-name">
 						<p>Solar Panel<br />(55W)</p>
 					</div>
 				</div>
 				<div class="item-box">
-					<div class="item-img" id="solar_panel30" draggable="true"></div>
+					<div class="item-img" id="solar_panel30" draggable="true">
+            <div class="carted-item">1</div>
+          </div>
 					<div class="item-name">
 						<p>Solar Panel<br />(30W)</p>
 					</div>
 				</div>
         <div class="item-box">
-          <div class="item-img" id="ladder" draggable="true"></div>
+          <div class="item-img" id="ladder" draggable="true">
+            <div class="carted-item">1</div>
+          </div>
           <div class="item-name">
             <p>Ladder</p>
           </div>
@@ -323,15 +437,15 @@
   let totalPrice = 0;
 
   let availableProducts = [
-    {type: 'rack', handle: 'transithsld148-roof-rack', id: 43238854328539, price: 0, quantity: 1},
-    {type: 'air_conditioner', handle: 'dometic-rtx-2000', id: 43261478764763, price: 0, quantity: 0},
-    {type: 'maxxair', handle: 'maxxair-fan-deluxe', id: 40771325264036, price: 0, quantity: 0},
-    {type: 'solar200', handle: 'new-powa-200w-monocrystalline-solar-panel-12v', id: 42641211228379, price: 0, quantity: 0},
-    {type: 'solar55', handle: 'rich-solar-50w-solar-panel', id: 45081892683995, price: 0, quantity: 0},
-    {type: 'ac_cross', handle: 'ford-transit-hsld-roof-rack-maxxfan-cross-bars-1', id: 44018089623771, price: 0, quantity: 0},
-    {type: 'solar_cross', handle: 'ford-transit-high-speed-low-drag-roof-rack-cross-bars', id: 43279255503067, price: 0, quantity: 0},
-    {type: 'max_cross', handle: 'ford-transit-hsld-roof-rack-maxxfan-cross-bars', id: 44018083234011, price: 0, quantity: 0},
-    {type: 'ladder', handle: 'transit-side-mount-ladder-high-roof', id: 44020238385371, price: 0, quantity: 0},
+    {htmlId: '', type: 'rack', handle: 'transithsld148-roof-rack', id: 43238854328539, price: 0, quantity: 1},
+    {htmlId: 'airconditioner', type: 'air_conditioner', handle: 'dometic-rtx-2000', id: 43261478764763, price: 0, quantity: 0},
+    {htmlId: 'maxxair', type: 'maxxair', handle: 'maxxair-fan-deluxe', id: 40771325264036, price: 0, quantity: 0},
+    {htmlId: 'solar_panel200', type: 'solar200', handle: 'new-powa-200w-monocrystalline-solar-panel-12v', id: 42641211228379, price: 0, quantity: 0},
+    {htmlId: 'solar_panel50', type: 'solar55', handle: 'rich-solar-50w-solar-panel', id: 45081892683995, price: 0, quantity: 0},
+    {htmlId: '', type: 'ac_cross', handle: 'ford-transit-hsld-roof-rack-maxxfan-cross-bars-1', id: 44018089623771, price: 0, quantity: 0},
+    {htmlId: '', type: 'solar_cross', handle: 'ford-transit-high-speed-low-drag-roof-rack-cross-bars', id: 43279255503067, price: 0, quantity: 0},
+    {htmlId: '', type: 'max_cross', handle: 'ford-transit-hsld-roof-rack-maxxfan-cross-bars', id: 44018083234011, price: 0, quantity: 0},
+    {htmlId: 'ladder', type: 'ladder', handle: 'transit-side-mount-ladder-high-roof', id: 44020238385371, price: 0, quantity: 0},
   ]
 
 
@@ -442,7 +556,7 @@
         loadItemDirectory = "https://cdn.shopify.com/3d/models/2a9229deef12ff01/30W.glb";
         break;
       case "ladder":
-        loadItemDirectory = "https://cdn.shopify.com/3d/models/ddf3dc617c9fd414/ladder.glb";
+        loadItemDirectory = "https://cdn.shopify.com/3d/models/f01bcbdc140b498a/ladder.glb";
         break;
     }
 
@@ -901,12 +1015,28 @@
         itemPrice = availableProducts.filter(product => product.type == 'rack')[0].price;
     }
 
+    updateCartState();
+
     if (flag)
       totalPrice = totalPrice + itemPrice;
     else
       totalPrice = totalPrice - itemPrice;
 
     document.getElementById("total_price").innerHTML = totalPrice.toFixed(2);
+  }
+
+  function updateCartState() {
+    availableProducts.map((product) => {
+      if(product.htmlId != "") {
+        let dragItem = document.getElementById(product.htmlId).childNodes[1];
+        if (product.quantity > 0) {
+          dragItem.innerHTML = product?.quantity.toString();
+          dragItem.style.display = 'block';
+        } else {
+          dragItem.style.display = 'none';
+        }
+      }
+    })
   }
 
   function setViewCube() {
@@ -1002,7 +1132,7 @@
     const loader = new GLTFLoader();
     loader.setDRACOLoader(dracoLoader);
 
-    loader.load('https://cdn.shopify.com/3d/models/1592d4300520a9a0/van1.glb', function (gltf) {
+    loader.load('https://cdn.shopify.com/3d/models/41684418358535aa/van1.glb', function (gltf) {
       carModel = gltf.scene;
 
       shodowMesh = new THREE.Mesh(
