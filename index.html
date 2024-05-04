@@ -455,6 +455,25 @@
 		const cutOffArea = [3.19, 25.7, 32.09, 64.72, 71.11, 85.19];
 		const vanDiff = 3.2
 
+		let vanArea = [-16.535, 101.968];
+		let addedState = [];
+		let selectedIndexOfState = -1;
+		let solar35Area = [];
+		let solar50Area = [];
+
+		let availableProducts = [
+			{htmlId: '', type: 'rack', handle: 'transithsld148-roof-rack', id: 43238854328539, price: 0, quantity: 1, xRadius: null},
+			{htmlId: 'airconditioner', type: 'air_conditioner', handle: 'dometic-rtx-2000', id: 43261478764763, price: 0, quantity: 0, xRadius: 16.9},
+			{htmlId: 'maxxair', type: 'maxxair', handle: 'maxxair-fan-deluxe', id: 40771325264036, price: 0, quantity: 0, xRadius: 13.11},
+			{htmlId: 'solar_panel200', type: 'solar200', handle: 'new-powa-200w-monocrystalline-solar-panel-12v', id: 42641211228379, price: 0, quantity: 0, xRadius: 14.323},
+			{htmlId: 'solar_panel50', type: 'solar55', handle: 'rich-solar-50w-solar-panel', id: 45081892683995, price: 0, quantity: 0, xRadius: 13.11},
+			{htmlId: 'solar_panel30', type: 'solar30', handle: '', id: null, price: 0, quantity: 0, xRadius: 16.889},
+			{htmlId: '', type: 'ac_cross', handle: 'ford-transit-hsld-roof-rack-maxxfan-cross-bars-1', id: 44018089623771, price: 0, quantity: 0},
+			{htmlId: '', type: 'solar_cross', handle: 'ford-transit-high-speed-low-drag-roof-rack-cross-bars', id: 43279255503067, price: 0, quantity: 0},
+			{htmlId: '', type: 'max_cross', handle: 'ford-transit-hsld-roof-rack-maxxfan-cross-bars', id: 44018083234011, price: 0, quantity: 0},
+			{htmlId: 'ladder', type: 'ladder', handle: 'transit-side-mount-ladder-high-roof', id: 44020238385371, price: 0, quantity: 0},
+		]
+
 		const vansInfo = [
     {
       type: 'transit_148',
@@ -492,7 +511,9 @@
 		document.addEventListener('dragstart', function (event) {
 			model = null;
 			vanItem = event.target;
-			selectedItem = event.target.id;
+
+			selectedItem = availableProducts.filter(product => product.htmlId == event.target.id)[0]?.type ?? event.target.id;
+
 			//Hide the default drag image
 			event.dataTransfer.setDragImage(document.createElement('div'), 0, 0);
 
@@ -598,9 +619,16 @@
 
 				const modelName = model.children[0].name;
 
+				let checkCollision = false;
+
+				if(selectedItem != 'ladder' && modelName != 'solar30' && modelName != 'solar55'){
+					checkCollision = checkIsAvailable(coords.x, modelName, 1);
+				}
+
 				if(modelName == "air_conditioner"){
-					if(isValueInScale(coords.x * 1000 / 25.4 * -1, cutOffArea, 7.2, vanDiff)) {
-						console.log("avaialble")
+					if(isValueInScale(coords.x * 1000 / 25.4 * -1, cutOffArea, 7.2, vanDiff) >= 0 && checkCollision) {
+						updateSolarArea(coords.x, modelName, 1);
+
 						if (model) {
 							scene.remove(model);
 							model.position.x = selectedItem == 'ladder' ? positionX: coords.x;
@@ -610,8 +638,8 @@
 						}
 					} 
 				} else if(modelName == 'maxxair'){
-					if(isValueInScale(coords.x * 1000 / 25.4 * -1, cutOffArea, 7, vanDiff)){
-						console.log("avaialble")
+					if(isValueInScale(coords.x * 1000 / 25.4 * -1, cutOffArea, 7, vanDiff) >= 0 && checkCollision){
+						updateSolarArea(coords.x, modelName, 1)
 						if (model) {
 							scene.remove(model);
 							model.position.x = selectedItem == 'ladder' ? positionX: coords.x;
@@ -620,8 +648,26 @@
 							scene.add(model);
 						}
 					} 
-				} else {
+				} else if(modelName == 'solar30') {
 					if (model) {
+						
+						scene.remove(model);
+						model.position.x = -1 * solar35Area[0] * 0.0254;
+						model.position.y = positionY;
+						model.position.z = positionZ;
+						scene.add(model);
+					}
+				} else if(modelName == 'solar55') {
+					if (model) {
+						
+						scene.remove(model);
+						model.position.x = -1 * solar50Area[0] * 0.0254;
+						model.position.y = positionY;
+						model.position.z = positionZ;
+						scene.add(model);
+					}
+				} else {
+					if (model && checkCollision) {
 							scene.remove(model);
 							model.position.x = selectedItem == 'ladder' ? positionX: coords.x;
 							model.position.y = positionY;
@@ -664,8 +710,8 @@
 				event.preventDefault();
 
 				// positionX = -0.85216;
-				positionX = -0.6;
-				positionY = 1.16251;
+				positionX = -0.602;
+				positionY = 1.1717;
 				positionZ = -0.97864;
 			} else {
 				
@@ -704,8 +750,12 @@
 					itemModel.position.z = positionZ;
 					scene.add(itemModel);
 
+					if(selectedItem != 'solar30' && selectedItem != 'solar55') {
+						console.log("*****: ", addedState)
+						updateModelState(1, selectedItem, itemModel.position.x);
+					}
+
 					calcPrice(itemModel.children[0].name, true)
-					console.log("itemModel", itemModel.children[0].name)
 					selectedItem = ""
 				});
 				render();
@@ -745,24 +795,40 @@
 						// Extract the width from the dimensions
 						const selectedFeatureWidth = size.x;
 
+						let checkCollision = true;
+						const xPos = Math.min(0.428 - selectedFeatureWidth / 2, Math.max(-2.2, coords.x));
+
+						if(selectedFeature.name != 'ladder' && selectedFeature.name != 'solar30' && selectedFeature.name != 'solar55'){
+							checkCollision = checkIsAvailable(xPos, selectedFeature.name, 2);
+						}
+
 						if(selectedFeature.name == "air_conditioner"){
-							if(isValueInScale(coords.x * 1000 / 25.4 * -1, cutOffArea, 7.2, vanDiff)) {
-								a = Math.min(0.428 - selectedFeatureWidth / 2, Math.max(-2.2, coords.x));
-								console.log("avaialble");
-								selectedFeature.parent.position.x = a;
+							if(isValueInScale(coords.x * 1000 / 25.4 * -1, cutOffArea, 7.2, vanDiff)  >= 0 && checkCollision) {
+
+								updateSolarArea(xPos, selectedFeature.name, 1)
+								selectedFeature.parent.position.x = xPos;
 								selectedFeature.parent.position.z = 0;
+								updateModelState(2, selectedFeature.name, xPos)
 							} 
 						} else if(selectedFeature.name == 'maxxair'){
-							if(isValueInScale(coords.x * 1000 / 25.4 * -1, cutOffArea, 7, vanDiff)){
-								a = Math.min(0.428 - selectedFeatureWidth / 2, Math.max(-2.2, coords.x));
-								console.log("avaialble");
-								selectedFeature.parent.position.x = a;
+							if(isValueInScale(coords.x * 1000 / 25.4 * -1, cutOffArea, 7, vanDiff)  >= 0 && checkCollision){
+								updateSolarArea(xPos, selectedFeature.name, 1)
+								selectedFeature.parent.position.x = xPos;
 								selectedFeature.parent.position.z = 0;
+								updateModelState(2, selectedFeature.name, xPos)
 							} 
-						} else {
-							a = Math.min(0.428 - selectedFeatureWidth / 2, Math.max(-2.2, coords.x));
-							selectedFeature.parent.position.x = a;
+						} else if(selectedFeature.name == 'solar30') {
+							selectedFeature.parent.position.x = -1 * solar35Area[0] * 0.0254;
 							selectedFeature.parent.position.z = 0;
+						} else if(selectedFeature.name == 'solar55') {
+							selectedFeature.parent.position.x = -1 * solar50Area[0] * 0.0254;
+							selectedFeature.parent.position.z = 0;
+						}else {
+							if(checkCollision) {
+								selectedFeature.parent.position.x = xPos;
+								selectedFeature.parent.position.z = 0;
+								updateModelState(2, selectedFeature.name, xPos)
+							}
 						}
 						render();
 					}
@@ -783,7 +849,8 @@
 				this.style.display = "none";
 
 				calcPrice(selectedFeature.name, false)
-				console.log(selectedFeature)
+
+				updateModelState(3, selectedFeature.name, selectedFeature.parent.position.x)
 
 				render();
 
@@ -821,6 +888,7 @@
 			if (selectedFeature) {
 				removeEdgeLines(selectedFeature);
 				selectedFeature = null;
+				selectedIndexOfState = -1;
 			}
 			scene.remove(targetForDragging);
 			delelteBtn.style.display = "none";
@@ -846,11 +914,13 @@
 					selectedFeature = objectHit;
 					addEdgeLines(selectedFeature);
 					delelteBtn.style.display = "flex";
+					selectedIndexOfState = checkIsAvailable(objectHit.parent.position.x, selectedFeature.name, 3);
 				}
 				else {
 					selectedFeature = null;
 					removeEdgeLines(selected);
 					delelteBtn.style.display = "none";
+					selectedIndexOfState = -1;
 				}
 
 				render();
@@ -1088,10 +1158,111 @@
 		function isValueInScale(value, scale, radius, vanDiff) {
 			for (let i = 0; i < scale.length; i += 2) {
 					if (value + 100 >= (scale[i] + radius - vanDiff + 100 ) && value + 100 <= (scale[i + 1] - radius - vanDiff + 100)) {
-						return true;
+						return i;
 					}
 			}
-			return false;
+			return -1;
+		}
+
+		function updateSolarArea(xPos, modelName, flag) {
+			let productInfo = availableProducts.filter((product) => product.type == modelName)[0];
+			let xRadius = productInfo.xRadius;
+			let inchXPos = -1 * xPos/0.0254;
+			let startValue = inchXPos - xRadius;
+			let endValue = inchXPos + xRadius;
+
+			if(modelName == "air_conditioner"){
+				console.log(solar35Area, inchXPos)
+				if(solar35Area.length > 0 ){
+					// for(let i in solar35Area) {
+					// 	if(isValueInScale(solar35Area[i], [startValue, endValue], 0, 0) >= 0){
+					// 		solar35Area.splice(i, 1, inchXPos);
+					// 		return;
+					// 	}
+					// }
+					solar35Area = [inchXPos];
+				} else {
+					solar35Area.push(inchXPos)
+				}
+			} else if(modelName == "maxxair"){
+				if(solar50Area.length > 0 ){
+					solar50Area = [inchXPos];
+				} else {
+					solar50Area.push(inchXPos)
+				}
+			}
+
+			// isValueInScale(inchXPos, addedState, 0, 0);
+
+		}
+
+		function checkIsAvailable(xPos, modelName, flag) {
+			let productInfo = availableProducts.filter((product) => product.type == modelName)[0];
+			let xRadius = productInfo.xRadius;
+			let inchXPos = -1 * xPos/0.0254;
+			let startValue = inchXPos - xRadius;
+			let endValue = inchXPos + xRadius;
+			let startPointCheck, endPointCheck, centerPointCheck = -1;
+			
+			if(flag == 1) {
+				startPointCheck = isValueInScale(startValue, addedState, 0, 0);
+				endPointCheck = isValueInScale(endValue, addedState, 0, 0);
+				centerPointCheck = isValueInScale(inchXPos, addedState, 0, 0);
+			} else if(flag == 2) {
+				const currentState = [...addedState];
+
+				if(selectedIndexOfState >= 0)currentState.splice(selectedIndexOfState, 2);
+
+				startPointCheck = isValueInScale(startValue, currentState, 0, 0);
+				endPointCheck = isValueInScale(endValue, currentState, 0, 0);
+				centerPointCheck = isValueInScale(inchXPos, currentState, 0, 0);
+
+			} else {
+				let modelIndex = isValueInScale(inchXPos, addedState, 0, 0);
+				let startIndex = isValueInScale(inchXPos, addedState, xRadius/2, 0);
+				let endIndex = isValueInScale(inchXPos, addedState, xRadius/2, 0);
+
+				console.log(modelIndex, startIndex, endIndex)
+
+				if(modelIndex == startIndex && modelIndex == endIndex) {
+
+					console.log(modelIndex)
+					return modelIndex
+				} else {
+					return -1;
+				}
+			}
+
+			if(startPointCheck == -1 && endPointCheck == -1 && centerPointCheck == -1) {
+				return true;
+			} else return false;
+		}
+
+		function updateModelState(flag, modelType, xPos) {
+			if(modelType == "ladder") return;
+
+			let productInfo = availableProducts.filter((product) => product.type == modelType)[0];
+			let xRadius = productInfo.xRadius;
+			let inchXPos = -1 * xPos/0.0254
+			let startValue = inchXPos - xRadius;
+			let endValue = inchXPos + xRadius;
+
+			switch(flag) {
+				case 1: 
+					addedState.push(startValue, endValue)
+					break;
+				case 2: 
+					if(selectedIndexOfState >= 0) {
+						addedState.splice(selectedIndexOfState, 2);
+						addedState.splice(selectedIndexOfState, 0, startValue, endValue)
+					}
+					break;
+				case 3:
+					if(selectedIndexOfState >= 0) {
+						addedState.splice(selectedIndexOfState, 2);
+					}
+					break;
+			}
 		}
 
 	</script>
