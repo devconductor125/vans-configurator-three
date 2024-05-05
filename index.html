@@ -619,7 +619,7 @@
 
 				const modelName = model.children[0].name;
 
-				let checkCollision = false;
+				let checkCollision = true;
 
 				if(selectedItem != 'ladder' && modelName != 'solar30' && modelName != 'solar55'){
 					checkCollision = checkIsAvailable(coords.x, modelName, 1);
