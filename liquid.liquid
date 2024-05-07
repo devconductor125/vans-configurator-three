@@ -133,6 +133,7 @@
 			padding: 5px;
 			opacity: 0.8;
 			transition: opacity ease .3s;
+      font-size: 20px;
 		}
 
 		#deleteButton:hover {
@@ -185,7 +186,7 @@
 		.items-container>div:first-child {
 			position: relative;
 			text-align: center;
-      margin-bottom: 20px;
+      margin-bottom: 30px;
 		}
 
 		@keyframes textAnimation {
@@ -282,6 +283,45 @@
 			top: 50%;
 			transform: rotate(180deg) translateY(50%);
 		}
+
+    .left-tooltip {
+			position: relative;
+		}
+
+		.left-tooltip .tooltiptext {
+			visibility: hidden;
+			width: 120px;
+			background-color: rgba(17, 12, 46, 1);
+			color: #fff;
+			text-align: center;
+			border-radius: 6px;
+			padding: 5px 0;
+			top: 35%;
+    	margin-left: 10px;
+			position: absolute;
+			z-index: 1;
+      right: 100%;
+			margin-right: 8px;
+			transform: translateY(-30%);
+		}
+
+		.left-tooltip:hover .tooltiptext {
+			visibility: visible;
+		}
+		.left-tooltip .tooltiptext:after {
+			content: "";
+			display: block;
+			width: 0;
+			height: 0;
+			border-top: 8px solid transparent;
+			border-bottom: 8px solid transparent;
+			border-right: 8px solid rgba(17, 9, 46, 1);
+			position: absolute;
+			top: 50%;
+			transform: rotate(180deg) translateY(50%);
+			right: -6px;
+		}
+
 	</style>
 </head>
 <div class="threejs-container">
@@ -293,7 +333,7 @@
       <p class="list-title">Vans</p>
       <div class="van-item tooltip">
         <img src="https://cdn.shopify.com/s/files/1/0412/9898/5124/files/ford-transit-820-rack.jpg?v=1714572993" draggable="false"/>
-        <span class="tooltiptext">Ford Transit 820</span>
+        <span class="tooltiptext">Ford Transit 8020</span>
       </div>
     </div>
 		<div id="container"></div>
@@ -363,25 +403,27 @@
 			<div>
 				<p class="text-body1">$<span id="total_price">800</span></p>
 			</div>
-      <button id="addCartBtn" class="mb-3">
+      <button id="addCartBtn" class="mb-3 left-tooltip">
+        <span class="tooltiptext">Add to Cart</span>
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 14 14"><path fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" d="M10.946 13.5a.5.5 0 1 1 0-1a.5.5 0 0 1 0 1m-6.5 0a.5.5 0 1 1 0-1a.5.5 0 0 1 0 1m5.158-7h-3m1.5-1.5v3M.5.5H3L3.263 3m0 0l.643 6.105A1 1 0 0 0 4.9 10h6.32a1 1 0 0 0 .97-.757l1.25-5A1 1 0 0 0 12.47 3z"/></svg>
       </button>
-
-			<button class="mb-3" id="imgDownloadBtn">
-				<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-					<g fill="none" stroke="#ffffff" stroke-linecap="round" stroke-width="1.5">
-						<path stroke-linejoin="round"
-							d="M21.25 13V8.5a5 5 0 0 0-5-5h-8.5a5 5 0 0 0-5 5v7a5 5 0 0 0 5 5h6.26" />
-						<path stroke-linejoin="round"
-							d="m3.01 17l2.74-3.2a2.2 2.2 0 0 1 2.77-.27a2.2 2.2 0 0 0 2.77-.27l2.33-2.33a4 4 0 0 1 5.16-.43l2.47 1.91M8.01 10.17a1.66 1.66 0 1 0-.02-3.32a1.66 1.66 0 0 0 .02 3.32" />
-						<path stroke-miterlimit="10" d="M18.707 20v-5" />
-						<path stroke-linejoin="round" d="m16.414 17.895l1.967 1.967a.459.459 0 0 0 .652 0L21 17.895" />
-					</g>
-				</svg>
-			</button>
-
+  
+      <button class="mb-3 left-tooltip" id="imgDownloadBtn">
+        <span class="tooltiptext">Download Image</span>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+          <g fill="none" stroke="#ffffff" stroke-linecap="round" stroke-width="1.5">
+            <path stroke-linejoin="round"
+              d="M21.25 13V8.5a5 5 0 0 0-5-5h-8.5a5 5 0 0 0-5 5v7a5 5 0 0 0 5 5h6.26" />
+            <path stroke-linejoin="round"
+              d="m3.01 17l2.74-3.2a2.2 2.2 0 0 1 2.77-.27a2.2 2.2 0 0 0 2.77-.27l2.33-2.33a4 4 0 0 1 5.16-.43l2.47 1.91M8.01 10.17a1.66 1.66 0 1 0-.02-3.32a1.66 1.66 0 0 0 .02 3.32" />
+            <path stroke-miterlimit="10" d="M18.707 20v-5" />
+            <path stroke-linejoin="round" d="m16.414 17.895l1.967 1.967a.459.459 0 0 0 .652 0L21 17.895" />
+          </g>
+        </svg>
+      </button>
       
-			<button id="camChangeBtn">
+      <button id="camChangeBtn" class="left-tooltip">
+        <span class="tooltiptext">Change Camera</span>
 				<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 72 72">
 					<circle cx="22.258" cy="26.11" r="3" fill="#ffffff" />
 					<circle cx="46.153" cy="26.11" r="3" fill="#ffffff" />
@@ -448,7 +490,7 @@
     {htmlId: 'maxxair', type: 'maxxair', handle: 'maxxair-fan-deluxe', id: 40771325264036, price: 0, quantity: 0, xRadius: 13.11},
     {htmlId: 'solar_panel200', type: 'solar200', handle: 'new-powa-200w-monocrystalline-solar-panel-12v', id: 42641211228379, price: 0, quantity: 0, xRadius: 14.323},
     {htmlId: 'solar_panel50', type: 'solar55', handle: 'rich-solar-50w-solar-panel', id: 45081892683995, price: 0, quantity: 0, xRadius: 13.11},
-    {htmlId: 'solar_panel30', type: 'solar30', handle: '', id: null, price: 0, quantity: 0, xRadius: 16.889},
+    {htmlId: 'solar_panel30', type: 'solar30', handle: 'rich-solar-50w-solar-panel', id: 45081892683995, price: 0, quantity: 0, xRadius: 16.889},
     {htmlId: '', type: 'ac_cross', handle: 'ford-transit-hsld-roof-rack-maxxfan-cross-bars-1', id: 44018089623771, price: 0, quantity: 0},
     {htmlId: '', type: 'solar_cross', handle: 'ford-transit-high-speed-low-drag-roof-rack-cross-bars', id: 43279255503067, price: 0, quantity: 0},
     {htmlId: '', type: 'max_cross', handle: 'ford-transit-hsld-roof-rack-maxxfan-cross-bars', id: 44018083234011, price: 0, quantity: 0},
@@ -599,8 +641,8 @@
   document.addEventListener('dragover', function (event) {
 
     offsetTopCanvas = canvasContainer.getBoundingClientRect().top;
-    let a = 2 * event.clientX / window.innerWidth - 1;
-    let b = 1 - 2 * (event.clientY - offsetTopCanvas) / window.innerHeight;
+    let a = 2 * (event.clientX / (window.innerWidth * 0.96)) - 1;
+    let b = 1 - 2 * (event.clientY - offsetTopCanvas) / (window.innerHeight * 0.9);
 
     let positionX = 0;
     let positionY = 0;
@@ -721,8 +763,8 @@
       scene.remove(model);
     }
     event.preventDefault();
-    let a = 2 * event.clientX / window.innerWidth - 1;
-    let b = 1 - 2 * (event.clientY - offsetTopCanvas) / window.innerHeight;
+    let a = 2 * (event.clientX / (window.innerWidth * 0.96)) - 1;
+    let b = 1 - 2 * (event.clientY - offsetTopCanvas) / (window.innerHeight * 0.9);
 
     let positionX = 0;
     let positionY = 0;
@@ -762,6 +804,28 @@
       let coords = new THREE.Vector3(locationX, 0, locationZ);
       scene.worldToLocal(coords);
 
+      let checkCollision = true;
+
+      if(selectedItem != 'ladder' && selectedItem != 'solar30' && selectedItem != 'solar55'){
+        checkCollision = checkIsAvailable(locationX, selectedItem, 2);
+      }
+
+      if(!checkCollision) return;
+
+
+      if(selectedItem == "air_conditioner"){
+
+        console.log(isValueInScale(locationX * 1000 / 25.4 * -1, cutOffArea, 7.2, vanDiff))
+        if(isValueInScale(locationX * 1000 / 25.4 * -1, cutOffArea, 7.2, vanDiff) == -1) {
+          return;
+        } 
+      } else if(selectedItem == 'maxxair'){
+        console.log(isValueInScale(locationX * 1000 / 25.4 * -1, cutOffArea, 7, vanDiff))
+        if(isValueInScale(locationX * 1000 / 25.4 * -1, cutOffArea, 7, vanDiff) == -1) {
+          return;
+        } 
+      }
+
       const dracoLoader = new DRACOLoader();
       dracoLoader.setDecoderPath('https://res.cloudinary.com/dbloegsbv/raw/upload/v1/jsm/');
 
@@ -799,11 +863,11 @@
   });
   canvasContainer.addEventListener('mousemove', (event) => {
     if (selectedFeature) {
-      if (selectedFeature.parent.name !== "van") {
+      if (selectedFeature.parent.name !== "van" && selectedFeature.name !== "ladder") {
         if (isDragging) {
           offsetTopCanvas = canvasContainer.getBoundingClientRect().top;
-          let a = 2 * event.clientX / window.innerWidth - 1;
-          let b = 1 - 2 * (event.clientY - offsetTopCanvas) / window.innerHeight;
+          let a = 2 * (event.clientX / (window.innerWidth * 0.96)) - 1;
+          let b = 1 - 2 * (event.clientY - offsetTopCanvas) / (window.innerHeight * 0.9);
           raycaster.setFromCamera(new THREE.Vector2(a, b), camera);
           intersects = raycaster.intersectObject(targetForDragging);
           if (intersects.length === 0) {
@@ -1063,10 +1127,10 @@
         availableProducts[5] = addProduct;
         break;
       case "ladder":
-        addProduct = availableProducts[8];
+        addProduct = availableProducts[9];
         flag ? addProduct.quantity += 1 : addProduct.quantity -= 1;
         itemPrice = addProduct.price;
-        availableProducts[8] = addProduct;
+        availableProducts[9] = addProduct;
         break;
       default:
         itemPrice = availableProducts.filter(product => product.type == 'rack')[0].price;
@@ -1142,7 +1206,7 @@
 
     renderer = new THREE.WebGLRenderer({ antialias: true });
     renderer.setPixelRatio(window.devicePixelRatio);
-    renderer.setSize((window.innerWidth - window.innerWidth * 0.04), window.innerHeight);
+    renderer.setSize(window.innerWidth * 0.96, window.innerHeight * 0.9);
     renderer.setAnimationLoop(render);
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.toneMappingExposure = 0.85;
@@ -1155,6 +1219,8 @@
     // Create an OrthographicCamera
     camera = new THREE.PerspectiveCamera(40, window.innerWidth / window.innerHeight, 1, 10000);
     camera.position.set(-1, 6, -6);
+    camera.aspect = window.innerWidth / (window.innerHeight * 0.9);
+    camera.updateProjectionMatrix();
     setCameraView();
 
     // controls.update();
@@ -1220,7 +1286,6 @@
         new THREE.MeshLambertMaterial({color: 'green'})
       )
       ladderPlane.material.visible = false;
-
       ladderPlane.position.set(-1.08, 1.3, -0.85); 
       scene.add(ladderPlane);
 
@@ -1229,16 +1294,14 @@
         new THREE.MeshBasicMaterial()
       );
       targetForDragging.material.visible = false;
-
       raycaster = new THREE.Raycaster();
     });
   }
 
   function onWindowResize() {
-    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.aspect = window.innerWidth / (window.innerHeight * 0.9);
     camera.updateProjectionMatrix();
-
-    renderer.setSize((window.innerWidth - window.innerWidth * 0.04), window.innerHeight);
+    renderer.setSize(window.innerWidth * 0.96, window.innerHeight * 0.9);
   }
 
   function render() {
@@ -1265,12 +1328,6 @@
     if(modelName == "air_conditioner"){
       console.log(solar35Area, inchXPos)
       if(solar35Area.length > 0 ){
-        // for(let i in solar35Area) {
-        // 	if(isValueInScale(solar35Area[i], [startValue, endValue], 0, 0) >= 0){
-        // 		solar35Area.splice(i, 1, inchXPos);
-        // 		return;
-        // 	}
-        // }
         solar35Area = [inchXPos];
       } else {
         solar35Area.push(inchXPos)
@@ -1282,9 +1339,6 @@
         solar50Area.push(inchXPos)
       }
     }
-
-    // isValueInScale(inchXPos, addedState, 0, 0);
-
   }
 
   function checkIsAvailable(xPos, modelName, flag) {
@@ -1294,6 +1348,8 @@
     let startValue = inchXPos - xRadius;
     let endValue = inchXPos + xRadius;
     let startPointCheck, endPointCheck, centerPointCheck = -1;
+
+    if(startValue < vanArea[0] || endValue > vanArea[1]) return false;
     
     if(flag == 1) {
       startPointCheck = isValueInScale(startValue, addedState, 0, 0);
@@ -1301,9 +1357,7 @@
       centerPointCheck = isValueInScale(inchXPos, addedState, 0, 0);
     } else if(flag == 2) {
       const currentState = [...addedState];
-
       if(selectedIndexOfState >= 0)currentState.splice(selectedIndexOfState, 2);
-
       startPointCheck = isValueInScale(startValue, currentState, 0, 0);
       endPointCheck = isValueInScale(endValue, currentState, 0, 0);
       centerPointCheck = isValueInScale(inchXPos, currentState, 0, 0);
@@ -1312,12 +1366,7 @@
       let modelIndex = isValueInScale(inchXPos, addedState, 0, 0);
       let startIndex = isValueInScale(inchXPos, addedState, xRadius/2, 0);
       let endIndex = isValueInScale(inchXPos, addedState, xRadius/2, 0);
-
-      console.log(modelIndex, startIndex, endIndex)
-
       if(modelIndex == startIndex && modelIndex == endIndex) {
-
-        console.log(modelIndex)
         return modelIndex
       } else {
         return -1;

@@ -130,6 +130,7 @@
 			padding: 5px;
 			opacity: 0.8;
 			transition: opacity ease .3s;
+			font-size: 24px;
 		}
 
 		#deleteButton:hover {
@@ -179,6 +180,7 @@
 		.items-container>div:first-child {
 			position: relative;
 			text-align: center;
+			margin-bottom: 30px;
 		}
 
 		@keyframes textAnimation {
@@ -247,7 +249,6 @@
     	margin-left: 10px;
 			position: absolute;
 			z-index: 1;
-			transform: translateY(-23%);
       left: 100%;
 		}
 
@@ -266,6 +267,44 @@
 			left: -9px;
 			top: 50%;
 			transform: rotate(180deg) translateY(50%);
+		}
+
+		.left-tooltip {
+			position: relative;
+		}
+
+		.left-tooltip .tooltiptext {
+			visibility: hidden;
+			width: 120px;
+			background-color: rgba(17, 12, 46, 1);
+			color: #fff;
+			text-align: center;
+			border-radius: 6px;
+			padding: 5px 0;
+			top: 35%;
+    	margin-left: 10px;
+			position: absolute;
+			z-index: 1;
+      right: 100%;
+			margin-right: 8px;
+			transform: translateY(-30%);
+		}
+
+		.left-tooltip:hover .tooltiptext {
+			visibility: visible;
+		}
+		.left-tooltip .tooltiptext:after {
+			content: "";
+			display: block;
+			width: 0;
+			height: 0;
+			border-top: 8px solid transparent;
+			border-bottom: 8px solid transparent;
+			border-right: 8px solid rgba(17, 9, 46, 1);
+			position: absolute;
+			top: 50%;
+			transform: rotate(180deg) translateY(50%);
+			right: -6px;
 		}
 
 	</style>
@@ -350,7 +389,14 @@
 		<div>
 			<p class="text-body1">$<span id="total_price">3000</span></p>
 		</div>
-		<button class="mb-3" id="imgDownloadBtn">
+
+		<button id="addCartBtn" class="mb-3 left-tooltip">
+			<span class="tooltiptext">Add to Cart</span>
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 14 14"><path fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" d="M10.946 13.5a.5.5 0 1 1 0-1a.5.5 0 0 1 0 1m-6.5 0a.5.5 0 1 1 0-1a.5.5 0 0 1 0 1m5.158-7h-3m1.5-1.5v3M.5.5H3L3.263 3m0 0l.643 6.105A1 1 0 0 0 4.9 10h6.32a1 1 0 0 0 .97-.757l1.25-5A1 1 0 0 0 12.47 3z"/></svg>
+		</button>
+
+		<button class="mb-3 left-tooltip" id="imgDownloadBtn">
+			<span class="tooltiptext">Download Image</span>
 			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
 				<g fill="none" stroke="#ffffff" stroke-linecap="round" stroke-width="1.5">
 					<path stroke-linejoin="round"
@@ -362,7 +408,9 @@
 				</g>
 			</svg>
 		</button>
-		<button id="camChangeBtn">
+		
+		<button id="camChangeBtn" class="left-tooltip">
+			<span class="tooltiptext">Change Camera</span>
 			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 72 72">
 				<circle cx="22.258" cy="26.11" r="3" fill="#ffffff" />
 				<circle cx="46.153" cy="26.11" r="3" fill="#ffffff" />
@@ -735,7 +783,28 @@
 				let locationX = item.point.x;
 				let locationZ = item.point.z;
 				let coords = new THREE.Vector3(locationX, 0, locationZ);
-				scene.worldToLocal(coords);
+
+				let checkCollision = true;
+
+				if(selectedItem != 'ladder' && selectedItem != 'solar30' && selectedItem != 'solar55'){
+					checkCollision = checkIsAvailable(locationX, selectedItem, 2);
+				}
+
+				if(!checkCollision) return;
+
+
+				if(selectedItem == "air_conditioner"){
+
+					console.log(isValueInScale(locationX * 1000 / 25.4 * -1, cutOffArea, 7.2, vanDiff))
+					if(isValueInScale(locationX * 1000 / 25.4 * -1, cutOffArea, 7.2, vanDiff) == -1) {
+						return;
+					} 
+				} else if(selectedItem == 'maxxair'){
+					console.log(isValueInScale(locationX * 1000 / 25.4 * -1, cutOffArea, 7, vanDiff))
+					if(isValueInScale(locationX * 1000 / 25.4 * -1, cutOffArea, 7, vanDiff) == -1) {
+						return;
+					} 
+				}
 
 				const dracoLoader = new DRACOLoader();
 				dracoLoader.setDecoderPath('https://res.cloudinary.com/dbloegsbv/raw/upload/v1/jsm/');
@@ -771,7 +840,7 @@
 		});
 		canvasContainer.addEventListener('mousemove', (event) => {
 			if (selectedFeature) {
-				if (selectedFeature.parent.name !== "van") {
+				if (selectedFeature.parent.name !== "van" && selectedFeature.name !== "ladder") {
 					if (isDragging) {
 
 						let a = 2 * event.clientX / window.innerWidth - 1;
@@ -1203,6 +1272,8 @@
 			let startValue = inchXPos - xRadius;
 			let endValue = inchXPos + xRadius;
 			let startPointCheck, endPointCheck, centerPointCheck = -1;
+
+			if(startValue < vanArea[0] || endValue > vanArea[1]) return false;
 			
 			if(flag == 1) {
 				startPointCheck = isValueInScale(startValue, addedState, 0, 0);
