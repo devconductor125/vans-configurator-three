@@ -1,0 +1,108 @@
+{%- assign text_direction = 'localization.text_direction_trigger' | t | downcase -%}
+<!doctype html>
+<html class="no-js" lang="{{ request.locale.iso_code }}" dir="{{ text_direction }}">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="{{ settings.color_button_background }}">
+  <link rel="canonical" href="{{ canonical_url }}">
+  <link rel="preconnect" href="https://cdn.shopify.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.shopifycdn.com" crossorigin>
+  {% # theme-check-disable RemoteAsset %}
+  <link rel="dns-prefetch" href="https://productreviews.shopifycdn.com">
+  <link rel="dns-prefetch" href="https://ajax.googleapis.com">
+  <link rel="dns-prefetch" href="https://maps.googleapis.com">
+  <link rel="dns-prefetch" href="https://maps.gstatic.com">
+  {% # theme-check-enable RemoteAsset %}
+
+  {%- if settings.favicon != blank -%}
+    <link rel="shortcut icon" href="{{ settings.favicon | image_url: width: 32, height: 32 }}" type="image/png" />
+  {%- endif -%}
+
+  <title>
+    {{- page_title -}}
+    {%- if current_tags -%}
+      {%- assign meta_tags = current_tags | join: ', ' %} &ndash; {{ 'general.meta.tags' | t: tags: meta_tags -}}
+    {%- endif -%}
+    {%- if current_page != 1 %} &ndash; {{ 'general.meta.page' | t: page: current_page }}{% endif -%}
+    {%- if template == 'password' -%}
+      {{- shop.name -}}
+    {%- else -%}
+      {%- unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless -%}
+    {%- endif -%}
+  </title>
+
+  {%- if page_description -%}
+    <meta name="description" content="{{ page_description | escape }}">
+  {%- endif -%}
+
+  {%- liquid
+    render 'social-meta-tags'
+    
+    render 'css-variables'
+    echo 'theme.css' | asset_url | stylesheet_tag: preload: true
+    
+    if text_direction == 'rtl'
+      echo 'rtl.css' | asset_url | stylesheet_tag: preload: true
+    endif
+  -%}
+
+  <link rel="stylesheet" href="{{ 'apps.css' | asset_url }}" media="print" fetchpriority="low" onload="this.media='all'">
+
+  {{ content_for_header }}
+
+  {% unless template contains 'blank' %}
+
+  <script src="{{ 'vendor.js' | asset_url }}" defer="defer"></script>
+  <script src="{{ 'theme.js' | asset_url }}" defer="defer"></script>
+
+  {%- if request.page_type contains 'customers/' -%}
+    <script src="{{ 'shopify_common.js' | shopify_asset_url }}" defer="defer"></script>
+  {%- endif -%}
+
+  {%- render 'js-variables' -%}
+
+  {% endunless %}
+</head>
+
+<body class="template-{{ template | replace: '.', ' ' | truncatewords: 1, '' | handle }}{% if request.path == '/challenge' %} template-challange{% endif %}{% if request.design_mode %} shopify-design-mode{% endif %}" data-rounded-button="{{ settings.rounded_button }}" data-rounded-input="{{ settings.rounded_input }}" data-rounded-block="{{ settings.rounded_block }}" data-button_hover="{{ settings.buttons_hover }}"{% if settings.enable_lazy_image %} data-lazy-image{% endif %} data-page-rendering>
+   {% unless template contains 'blank' %}
+  
+  <a class="sr-only skip-link" href="#MainContent">{{ 'general.accessibility.skip_to_content' | t }}</a>
+
+  {%- liquid
+    if settings.enable_page_transition
+      render 'loading-bar'
+    endif
+    
+    render 'mouse-cursor'
+
+    sections 'header-group'
+    sections 'overlay-group'
+  -%}
+
+  {% endunless %}
+
+  <div class="page-container" id="PageContainer">
+    <main class="main-content relative" id="MainContent" role="main">
+      {{ content_for_layout }}
+    </main>
+
+    {% unless template contains 'blank' %}
+    
+    <footer-group class="footer-group block w-full">
+      {%- sections 'footer-group' -%}
+    </footer-group>
+
+    {% endunless %}
+  </div>
+
+  {% unless template contains 'blank' %}
+  <ul hidden>
+    <li id="a11y-refresh-page-message">{{ 'general.accessibility.refresh_page' | t }}</li>
+    <li id="a11y-new-window-message">{{ 'general.accessibility.link_messages.new_window' | t }}</li>
+  </ul>
+  {% endunless %}
+</body>
+</html>
