@@ -347,11 +347,11 @@
 		}
 
 		.tab-content {
-			height: calc(100vh - 150px);
+			height: calc(100vh - 170px);
 			overflow-y: auto;
 			margin-top: 50px;
 			margin-bottom: 100px;
-			padding: 0 10px;
+			padding: 10px 10px;
 		}
 		.checkout-area {
 			position: absolute;
@@ -406,6 +406,58 @@
 			left: 30px;
 		}
 
+		.build-item {
+			margin-top: 12px;
+		}
+
+		.build-item .item-overview {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+		}
+
+		.item-overview .item-name {
+			font-size: 12px;
+			display: -webkit-box;
+			-webkit-line-clamp: 2;
+			-webkit-box-orient: vertical;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			word-break: break-all;
+		}
+
+		.item-overview img {
+			border: 1px solid rgb(134, 133, 133);
+    	border-radius: 6px;
+			margin-right: 6px;
+		}
+
+		.build-item .item-variants {
+			margin-top: 6px;
+			display: flex;
+			flex-direction: column;
+			margin-left: 12px;
+		}
+
+		.item-variants .variant {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+		}
+
+		.item-variants .variant div {
+			display: flex;
+			align-items: center;
+		}
+
+		.item-variants .variant input{
+			margin: 0;
+			margin-right: 4px;
+		}
+
+		.build-item .divider {
+			border: 1px solid rgb(159, 159, 159);
+		}
 	</style>
 </head>
 <body>
@@ -537,8 +589,31 @@
 			</ul>
 			<div class="tab-content">
 				<div id="build-list" data-tab-content class="active">
-					<h1>Home</h1>
-					<p>This is the home</p>
+					<div class="build-item">
+						<div class="item-overview">
+							<img src="https://cdn.shopify.com/s/files/1/0412/9898/5124/products/NEW200WMonocrystalline12VSolarPanel_1.jpg?v=1651929182&width=50" width="50" height="50"/>
+							<span class="item-name">Newpowa - 200W 24V Monocrystalline Rigid Solar Panel</span>
+						</div>
+						<div class="item-variants">
+							<div class="variant">
+								<div>
+									<input type="radio" name="Solar Panel" checked onclick=""><label>Silver</label>
+								</div>
+								<div>
+									$<span class="price">1000</span>
+								</div>
+							</div>
+							<div class="variant">
+								<div>
+									<input type="radio" name="Solar Panel" ><label>Black</label>
+								</div>
+								<div>
+									$<span class="price">1000</span>
+								</div>
+							</div>
+						</div>
+						<div class="divider"></div>
+					</div>
 				</div>
 				<div id="rack-tab" data-tab-content>
 					<h1>Pricing</h1>
@@ -547,8 +622,8 @@
 			</div>
 			<div class="checkout-area">
 				<div id="products-detail">
-					<label id="products-num">0 Items</label>
-					<span id="products-cost">$0</span>
+					<div><span id="products-num">0</span> Items</div>
+					<div>$<span id="products-cost">0</span></div>
 				</div>
 				<button>
 					Checkout
@@ -652,7 +727,9 @@
 		let solar50Area = [];
 
 		let availableProducts = [
-			{htmlId: '', type: 'rack', handle: 'transithsld148-roof-rack', id: 43238854328539, price: 0, quantity: 1, xRadius: null},
+			{htmlId: '', type: 'rack', handle: 'transithsld148-roof-rack', id: 43238854328539, price: 0, quantity: 1, xRadius: null
+				 
+			},
 			{htmlId: 'airconditioner', type: 'air_conditioner', handle: 'dometic-rtx-2000', id: 43261478764763, price: 0, quantity: 0, xRadius: 16.9},
 			{htmlId: 'maxxair', type: 'maxxair', handle: 'maxxair-fan-deluxe', id: 40771325264036, price: 0, quantity: 0, xRadius: 13.11},
 			{htmlId: 'solar_panel200', type: 'solar200', handle: 'new-powa-200w-monocrystalline-solar-panel-12v', id: 42641211228379, price: 0, quantity: 0, xRadius: 14.323},
@@ -1168,33 +1245,78 @@
 		}
 
 		function calcPrice(modelName, flag) {
-			let itemPrice = 0;
-			switch (modelName) {
-				case "air_conditioner":
-					itemPrice = 150;
-					break;
-				case "maxxair":
-					itemPrice = 100;
-					break;
-				case "solar200":
-					itemPrice = 150;
-					break;
-				case "solar55":
-					itemPrice = 100;
-					break;
-				case "solar30":
-					itemPrice = 50;
-					break;
-				default:
-					itemPrice = 0;
-			}
-			if (flag)
-				totalPrice = totalPrice + itemPrice;
-			else
-				totalPrice = totalPrice - itemPrice;
+    let itemPrice = 0;
+    let addProduct = {}
 
-			document.getElementById("total_price").innerHTML = totalPrice;
-		}
+    switch (modelName) {
+      case "air_conditioner":
+        addProduct = availableProducts[1];
+        flag ? addProduct.quantity += 1 : addProduct.quantity -= 1;
+        itemPrice = addProduct.price;
+        availableProducts[1] = addProduct;
+
+        break;
+      case "maxxair":
+        addProduct = availableProducts[2];
+        flag ? addProduct.quantity += 1 : addProduct.quantity -= 1;
+        itemPrice = addProduct.price;
+        availableProducts[2] = addProduct;
+        break;
+      case "solar200":
+        addProduct = availableProducts[3];
+        flag ? addProduct.quantity += 1 : addProduct.quantity -= 1;
+        availableProducts[3] = addProduct;
+        itemPrice = addProduct.price
+
+        addProduct = availableProducts[6];
+        flag ? addProduct.quantity += 1 : addProduct.quantity -= 1;
+        availableProducts[6] = addProduct;
+
+        itemPrice += addProduct.price;
+        break;
+      case "solar55":
+        addProduct = availableProducts[4];
+        flag ? addProduct.quantity += 1 : addProduct.quantity -= 1;
+        availableProducts[4] = addProduct;
+        itemPrice = addProduct.price
+
+        addProduct = availableProducts[7];
+        flag ? addProduct.quantity += 1 : addProduct.quantity -= 1;
+        availableProducts[7] = addProduct;
+
+        itemPrice += addProduct.price;
+        break;
+      case "solar30":
+        addProduct = availableProducts[5];
+        flag ? addProduct.quantity += 1 : addProduct.quantity -= 1;
+        itemPrice = addProduct.price;
+        availableProducts[5] = addProduct;
+        break;
+      case "ladder":
+        addProduct = availableProducts[9];
+        flag ? addProduct.quantity += 1 : addProduct.quantity -= 1;
+        itemPrice = addProduct.price;
+        availableProducts[9] = addProduct;
+        break;
+      default:
+        itemPrice = availableProducts.filter(product => product.type == 'rack')[0].price;
+    }
+
+    // updateCartState();
+
+    if (flag)
+      totalPrice = totalPrice + itemPrice;
+    else
+      totalPrice = totalPrice - itemPrice;
+		
+		let totalItems = 0;
+		availableProducts.map((product) => {
+			totalItems += product.quantity
+		})
+
+		document.getElementById('products-num').innerHTML = totalItems
+    document.getElementById("products-cost").innerHTML = totalPrice.toFixed(2);
+  }
 
 		// function collision(selectedFeatureBoundingBox, collidableMeshList) {
 		// 	// Check for collisions with each bounding box in the array
@@ -1479,6 +1601,10 @@
 					break;
 			}
 		}
+
+	function updateBuildState() {
+
+	}
 
 	</script>
 

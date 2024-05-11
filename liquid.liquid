@@ -354,7 +354,7 @@
 			overflow-y: auto;
 			margin-top: 50px;
 			margin-bottom: 100px;
-			padding: 0 10px;
+			padding: 10px 10px;
 		}
 		.checkout-area {
 			position: absolute;
@@ -407,6 +407,69 @@
 			top: 20px;
 			left: 30px;
       z-index: 10;
+		}
+
+    .build-item {
+			margin-top: 12px;
+      border-bottom: 2px solid rgb(134, 134, 134);
+      padding-bottom: 10px;
+		}
+
+		.build-item .item-overview {
+			display: flex;
+			align-items: center;
+		}
+
+		.item-overview .item-name {
+			font-size: 12px;
+			display: -webkit-box;
+			-webkit-line-clamp: 2;
+			-webkit-box-orient: vertical;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			word-break: break-all;
+		}
+
+		.item-overview img {
+			border: 1px solid rgb(134, 133, 133);
+    	border-radius: 6px;
+			margin-right: 6px;
+		}
+
+		.build-item .item-variants {
+			margin-top: 6px;
+			display: flex;
+			flex-direction: column;
+			margin-left: 12px;
+		}
+
+		.item-variants .variant {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+		}
+
+		.item-variants .variant div {
+			display: flex;
+			align-items: center;
+		}
+
+		.item-variants .variant input{
+			margin: 0;
+			margin-right: 4px;
+		}
+
+    .item-variants .variant .price{
+			font-weight: bold;
+		}
+
+    .item-variants .variant label{
+			letter-spacing: -0.3px;
+      font-size: 11px;
+		}
+
+		.build-item .divider {
+			border: 1px solid rgb(159, 159, 159);
 		}
 
 	</style>
@@ -483,10 +546,6 @@
 			</div>
 		</div>
 		<div class="action-btn-list">
-			<div>
-				<p class="text-body1">$<span id="total_price">800</span></p>
-			</div>
-  
       <button class="mb-3 left-tooltip" id="imgDownloadBtn">
         <span class="tooltiptext">Download Image</span>
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
@@ -534,9 +593,6 @@
     </ul>
     <div class="tab-content">
       <div id="build-list" data-tab-content class="active">
-        <div>
-          Products
-        </div>
       </div>
       <div id="rack-tab" data-tab-content>
         <div>
@@ -546,8 +602,8 @@
     </div>
     <div class="checkout-area">
       <div id="products-detail">
-        <label id="products-num">0 Items</label>
-        <span id="products-cost">$0</span>
+        <div><span id="products-num">0</span> Items</div>
+        <div>$<span id="products-cost">0</span></div>
       </div>
       <button id="addCartBtn">
         Checkout
@@ -629,8 +685,6 @@
     const dataPromises = availableProducts.map(async (product) => {
        const response = await fetch(window.Shopify.routes.root + `products/${product.handle}.js`);
        const productData = await response.json();
-
-       console.log("productData: ", productData)
        return productData;
     });
    
@@ -650,16 +704,21 @@
           }
           if(product.type == 'rack') {
             totalPrice = productPrice;
-            document.getElementById('total_price').innerHTML = productPrice;
+            document.getElementById('products-num').innerHTML = 1
+            document.getElementById("products-cost").innerHTML = productPrice;
+            
           }
-          return { ...product, price: productPrice };
-         });
-   
-         availableProducts = priceProducts
-       })
-       .catch(error => console.error('Error fetching product data:', error));
+          return { ...product, price: productPrice, title: productData?.title, image: productData?.featured_image, variants: productData?.variants };
+        });
+
+        console.log(priceProducts)
+
+        updateBuildState(priceProducts);
+
+        availableProducts = priceProducts
+      })
+      .catch(error => console.error('Error fetching product data:', error));
   }
-   
   getPrices();
 
   let canvas, camera, scene, renderer;
@@ -1304,11 +1363,16 @@
     else
       totalPrice = totalPrice - itemPrice;
 
-    document.getElementById("total_price").innerHTML = totalPrice.toFixed(2);
+    document.getElementById("products-cost").innerHTML = totalPrice.toFixed(2);
+    
+    updateBuildState(availableProducts);
   }
 
   function updateCartState() {
+    let totalItems = 0;
     availableProducts.map((product) => {
+      totalItems += product.quantity
+
       if(product.htmlId != "") {
         let dragItem = document.getElementById(product.htmlId).childNodes[1];
         if (product.quantity > 0) {
@@ -1318,7 +1382,9 @@
           dragItem.style.display = 'none';
         }
       }
-    })
+    });
+
+    document.getElementById('products-num').innerHTML = totalItems
   }
 
   function setViewCube() {
@@ -1569,7 +1635,73 @@
     }
   }
 
+  function handleVariant(id, type) {
+    console.log(id, type)
+  }
+
   init();
+
+  function updateBuildState(products) {
+    const buildListDom = document.getElementById('build-list');
+    let buildText = ''
+    for(let i=0; i < products.length; i++) {
+      const availableProduct = products[i];
+      if(availableProduct.quantity > 0) {
+        buildText += '<div class="build-item"><div class="item-overview">'
+        buildText += '<img src="'+ availableProduct?.image +'&width=50" width="50" height="50"/>'
+        buildText += '<span class="item-name">'+ availableProduct?.title +'</span></div><div class="item-variants">'
+
+        availableProduct?.variants?.map((variant, index) => {
+          buildText += '<div class="variant"><div>'
+          buildText += '<input type="radio" class="variant-handler" id="'+ (availableProduct?.type+"___"+variant?.id) +'" name="'+ availableProduct?.type +'" ' + (Number(variant?.id) == Number(availableProduct?.id) ? 'checked' : '') + '/><label for="'+ (availableProduct?.type+"___"+variant?.id) +'">'+ (variant.public_title ? variant.public_title : variant.name) +'</label>'
+          buildText += '</div><div>'
+          buildText += '$<span class="price">'+ variant.price / 100 +'</span>'
+          buildText += '</div></div>'
+        })
+        buildText += '</div><div class="divider"></div></div>'
+      }
+    }
+
+    buildListDom.innerHTML = buildText;
+
+    buildListDom.addEventListener('click', handleRadioChange);
+  }
+
+  function handleRadioChange(event) {
+    if (event.target.type === 'radio') {
+      console.log('Radio button changed:', event.target.id);
+      const targetVariant = event.target.id?.split('___');
+
+      availableProducts = availableProducts.map((product) => {
+        if(targetVariant[0] == product.type) {
+
+          const selectedProduct = product.variants.find((variant) => variant.id == targetVariant[1]);
+
+          let newProduct = {...product, id: selectedProduct.id, price: selectedProduct.price / 100};
+
+          console.log(selectedProduct, newProduct);
+
+
+          return newProduct;
+        }
+
+        else return product;
+      });
+
+      calculatePrice(availableProducts)
+    }
+  }
+
+  function calculatePrice(products) {
+    let totalPrice = 0;
+    products.map((product) => {
+      if(product.quantity > 0){
+        totalPrice += product.quantity * product.price;
+      }
+    })
+    document.getElementById("products-cost").innerHTML = totalPrice.toFixed(2);
+  }
+  
 
 </script>
 
