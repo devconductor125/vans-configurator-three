@@ -656,8 +656,6 @@
   import { RGBELoader } from 'https://cdn.jsdelivr.net/npm/three@0.163.0/examples/jsm/loaders/RGBELoader.js';
   import { GroundedSkybox } from 'https://cdn.jsdelivr.net/npm/three@0.163.0/examples/jsm/objects/GroundedSkybox.js';
 
-  
-
   let vanPrice = 0;
   let airConPrice = 0;
   let maxxAirPrice = 0;
@@ -685,13 +683,10 @@
     {htmlId: 'ladder', type: 'ladder', handle: 'transit-side-mount-ladder-high-roof', id: 44020238385371, price: 0, quantity: 0},
   ]
 
-
   function getPrices() {
     const dataPromises = availableProducts.map(async (product) => {
        const response = await fetch(window.Shopify.routes.root + `products/${product.handle}.js`);
        const productData = await response.json();
-
-       console.log(productData)
        return productData;
     });
    
@@ -713,15 +708,11 @@
             totalPrice = productPrice;
             document.getElementById('products-num').innerHTML = 1
             document.getElementById("products-cost").innerHTML = productPrice;
-            
           }
           return { ...product, price: productPrice, title: productData?.title, image: productData?.featured_image, variants: productData?.variants, url: productData?.url };
         });
 
-        console.log(priceProducts)
-
         updateBuildState(priceProducts);
-
         availableProducts = priceProducts
       })
       .catch(error => console.error('Error fetching product data:', error));
@@ -775,12 +766,11 @@
     model = null;
     vanItem = event.target;
     selectedItem = availableProducts.filter(product => product.htmlId == event.target.id)[0]?.type ?? event.target.id;
-    //Hide the default drag image
     event.dataTransfer.setDragImage(document.createElement('div'), 0, 0);
 
     cloneVanItem = vanItem.cloneNode(true);
     cloneVanItem.style.position = "fixed";
-    cloneVanItem.style.display = "none"; // Hide the clone initially
+    cloneVanItem.style.display = "none";
     document.body.appendChild(cloneVanItem);
 
     switch (event.target.id) {
@@ -807,13 +797,9 @@
     const dracoLoader = new DRACOLoader();
     dracoLoader.setDecoderPath('https://res.cloudinary.com/dbloegsbv/raw/upload/v1/jsm/');
 
-
     const loader = new GLTFLoader();
     loader.setDRACOLoader(dracoLoader);
 
-    // loader.load(loadItemDirectory, function (gltf) {
-    // 	model = gltf.scene;
-    // });
     const loadModel = (url) => {
       return new Promise((resolve, reject) => {
         loader.load(url, function (gltf) {
@@ -822,12 +808,9 @@
       });
     };
 
-    // Usage example
     loadModel(loadItemDirectory)
       .then((modelItem) => {
-        // Do something with the loaded model
         model = modelItem;
-        console.log("loaded")
       })
       .catch((error) => {
         console.error('An error occurred while loading the model:', error);
@@ -846,28 +829,19 @@
     if(selectedItem == 'ladder') {
       raycaster.setFromCamera(new THREE.Vector2(a, b), camera);
       intersects = raycaster.intersectObjects([ladderPlane]);
-
       event.preventDefault();
-
-      // positionX = -0.85216;
       positionX = -0.6;
       positionY = 1.1717;
       positionZ = -0.97864;
     } else {
-      
-
       raycaster.setFromCamera(new THREE.Vector2(a, b), camera);
       intersects = raycaster.intersectObjects([workPlane]);
-
       event.preventDefault();
-      
       positionY = 2.35;
       positionZ = 0;
-
     }
 
     if (intersects.length > 0) {
-
       event.preventDefault();
       cloneVanItem.style.display = "none";
 
@@ -880,7 +854,6 @@
       scene.worldToLocal(coords);
 
       const modelName = model.children[0].name;
-
       let checkCollision = true;
 
       if(selectedItem != 'ladder' && modelName != 'solar30' && modelName != 'solar55'){
@@ -890,7 +863,6 @@
       if(modelName == "air_conditioner"){
         if(isValueInScale(coords.x * 1000 / 25.4 * -1, cutOffArea, 7.2, vanDiff) >= 0 && checkCollision) {
           updateSolarArea(coords.x, modelName, 1);
-
           if (model) {
             scene.remove(model);
             model.position.x = selectedItem == 'ladder' ? positionX: coords.x;
@@ -911,8 +883,7 @@
           }
         } 
       } else if(modelName == 'solar30') {
-        if (model) {
-          
+        if (model && solar35Area.length > 0) {
           scene.remove(model);
           model.position.x = -1 * solar35Area[0] * 0.0254;
           model.position.y = positionY;
@@ -920,8 +891,7 @@
           scene.add(model);
         }
       } else if(modelName == 'solar55') {
-        if (model) {
-          
+        if (model && solar50Area.length > 0) {
           scene.remove(model);
           model.position.x = -1 * solar50Area[0] * 0.0254;
           model.position.y = positionY;
@@ -937,9 +907,7 @@
             scene.add(model);
           }
       }
-
     } else {
-      console.log("remove model")
       cloneVanItem.style.display = "block";
       cloneVanItem.style.left = event.clientX + 'px';
       cloneVanItem.style.top = event.clientY + 'px';
@@ -968,23 +936,16 @@
     if(selectedItem == 'ladder') {
       raycaster.setFromCamera(new THREE.Vector2(a, b), camera);
       intersects = raycaster.intersectObjects([ladderPlane]);
-
       event.preventDefault();
-
-      // positionX = -0.85216;
       positionX = -0.602;
       positionY = 1.1717;
       positionZ = -0.97864;
     } else {
-      
       raycaster.setFromCamera(new THREE.Vector2(a, b), camera);
       intersects = raycaster.intersectObjects([workPlane]);
-
       event.preventDefault();
-      
       positionY = 2.35;
       positionZ = 0;
-
     }
   
     if (intersects.length == 0) {
@@ -1003,19 +964,21 @@
 
       if(selectedItem != 'ladder' && selectedItem != 'solar30' && selectedItem != 'solar55'){
         checkCollision = checkIsAvailable(locationX, selectedItem, 2);
+      } else if(selectedItem == 'solar30'){
+        checkCollision = false;
+        if(solar35Area.length > 0) checkCollision = true;
+      } else if( selectedItem == 'solar55') {
+        checkCollision = false;
+        if(solar50Area.length > 0) checkCollision = true;
       }
 
       if(!checkCollision) return;
 
-
       if(selectedItem == "air_conditioner"){
-
-        console.log(isValueInScale(locationX * 1000 / 25.4 * -1, cutOffArea, 7.2, vanDiff))
         if(isValueInScale(locationX * 1000 / 25.4 * -1, cutOffArea, 7.2, vanDiff) == -1) {
           return;
         } 
       } else if(selectedItem == 'maxxair'){
-        console.log(isValueInScale(locationX * 1000 / 25.4 * -1, cutOffArea, 7, vanDiff))
         if(isValueInScale(locationX * 1000 / 25.4 * -1, cutOffArea, 7, vanDiff) == -1) {
           return;
         } 
@@ -1030,18 +993,16 @@
       loader.load(loadItemDirectory, function (gltf) {
         const itemModel = gltf.scene;
 
-        console.log(selectedItem)
         itemModel.position.x = selectedItem == 'ladder' ? positionX: model.position.x ?? coords.x;
         itemModel.position.y = positionY;
         itemModel.position.z = positionZ;
         scene.add(itemModel);
 
         if(selectedItem != 'solar30' && selectedItem != 'solar55') {
-          console.log("*****: ", addedState)
           updateModelState(1, selectedItem, itemModel.position.x);
         }
 
-        calcPrice(itemModel.children[0].name, true)
+        calcPrice(itemModel.children[0].name, true);
         selectedItem = ""
       });
       render();
@@ -1169,7 +1130,6 @@
         return response.json();
       })
       .then((data) => {
-        console.log("xxxxxxxxxxx: ", data);
         token = data.token;
       })
       .catch((error) => {
@@ -1188,7 +1148,6 @@
         return response.json();
       })
       .then((addedData) => {
-        console.log('addedData: ', addedData);
         gotoCheckout(token)
       })
       .catch((error) => {
@@ -1201,11 +1160,6 @@
   function gotoCheckout(token) {
     window.open(`/checkouts/cn/${token}`, '_blank')
   }
-
-  Shopify.onError = function(XMLHttpRequest, textStatus) {
-    alert(textStatus);
-    console.log(textStatus)
-  };
 
   document.getElementById('imgDownloadBtn').addEventListener('click', function () {
     // Render the scene
@@ -1275,8 +1229,6 @@
 
       render();
     }
-
-
   }
 
   document.addEventListener('DOMContentLoaded', function () {
@@ -1290,7 +1242,6 @@
       edgeLine.geometry.dispose();
       edgeLine.material.dispose();
     }
-
     // Create new edge lines
     const edges = new THREE.EdgesGeometry(object.geometry);
     edgeLine = new THREE.LineSegments(edges, lineMaterial);
@@ -1365,9 +1316,7 @@
     }
 
     updateCartState();
-
     calculatePrice(availableProducts)
-    
     updateBuildState(availableProducts);
   }
 
@@ -1375,7 +1324,6 @@
     let totalItems = 0;
     availableProducts.map((product) => {
       totalItems += product.quantity
-
       if(product.htmlId != "") {
         let dragItem = document.getElementById(product.htmlId).childNodes[1];
         if (product.quantity > 0) {
@@ -1386,7 +1334,6 @@
         }
       }
     });
-
     document.getElementById('products-num').innerHTML = totalItems
   }
 
@@ -1458,8 +1405,6 @@
     camera.updateProjectionMatrix();
     setCameraView();
 
-    // controls.update();
-
     scene = new THREE.Scene();
     scene.background = new THREE.Color("#ffffff");
 
@@ -1483,7 +1428,6 @@
 
     const ambientLight = new THREE.AmbientLight('#ffffff', 1); // color, intensity
     scene.add(ambientLight);
-
 
     const hdrLoader = new RGBELoader();
     hdrLoader.loadAsync( 'https://cdn.shopify.com/s/files/1/0412/9898/5124/files/mt1.hdr?v=1715607373' ).then(envMap=>{
@@ -1576,7 +1520,6 @@
     let endValue = inchXPos + xRadius;
 
     if(modelName == "air_conditioner"){
-      console.log(solar35Area, inchXPos)
       if(solar35Area.length > 0 ){
         solar35Area = [inchXPos];
       } else {
@@ -1655,10 +1598,6 @@
     }
   }
 
-  function handleVariant(id, type) {
-    console.log(id, type)
-  }
-
   init();
 
   function updateBuildState(products) {
@@ -1709,7 +1648,6 @@
     })
     document.getElementById("products-cost").innerHTML = totalPrice.toFixed(2);
   }
-  
 
 </script>
 

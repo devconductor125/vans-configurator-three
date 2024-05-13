@@ -918,7 +918,7 @@
 						}
 					} 
 				} else if(modelName == 'solar30') {
-					if (model) {
+					if (model && solar35Area.length > 0) {
 						
 						scene.remove(model);
 						model.position.x = -1 * solar35Area[0] * 0.0254;
@@ -927,7 +927,7 @@
 						scene.add(model);
 					}
 				} else if(modelName == 'solar55') {
-					if (model) {
+					if (model && solar50Area.length > 0) {
 						
 						scene.remove(model);
 						model.position.x = -1 * solar50Area[0] * 0.0254;
@@ -1009,6 +1009,12 @@
 
 				if(selectedItem != 'ladder' && selectedItem != 'solar30' && selectedItem != 'solar55'){
 					checkCollision = checkIsAvailable(locationX, selectedItem, 2);
+				} else if(selectedItem == 'solar30'){
+					checkCollision = false;
+					if(solar35Area.length > 0) checkCollision = true;
+				} else if( selectedItem == 'solar55') {
+					checkCollision = false;
+					if(solar50Area.length > 0) checkCollision = true;
 				}
 
 				if(!checkCollision) return;
@@ -1045,7 +1051,10 @@
 						updateModelState(1, selectedItem, itemModel.position.x);
 					}
 
-					calcPrice(itemModel.children[0].name, true)
+					calcPrice(itemModel.children[0].name, true);
+
+
+					console.log("adssadfsdfadfs")
 					selectedItem = ""
 				});
 				render();
