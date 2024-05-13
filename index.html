@@ -664,11 +664,13 @@
 	<script src="https://unpkg.com/es-module-shims@1.3.0/dist/es-module-shims.js"></script>
 
 	<script type="module">
-		import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.163.0/build/three.module.js';
+		import * as THREE from 'three';
 		import { OrbitControls } from 'https://cdn.jsdelivr.net/npm/three@0.163.0/examples/jsm/controls/OrbitControls.js';
 		import { GLTFLoader } from 'https://cdn.jsdelivr.net/npm/three@0.163.0/examples/jsm/loaders/GLTFLoader.js';
 		import { DRACOLoader } from 'https://cdn.jsdelivr.net/npm/three@0.163.0/examples/jsm/loaders/DRACOLoader.js';
 		import { ViewHelper } from 'https://cdn.jsdelivr.net/npm/three@0.163.0/examples/jsm/helpers/ViewHelper.js';
+		import { RGBELoader } from 'https://cdn.jsdelivr.net/npm/three@0.163.0/examples/jsm/loaders/RGBELoader.js';
+		import { GroundedSkybox } from 'https://cdn.jsdelivr.net/npm/three@0.163.0/examples/jsm/objects/GroundedSkybox.js';
 
 		let vanPrice = 3000;
 		let airConPrice = 200;
@@ -1190,7 +1192,9 @@
 			}
 			let item = intersects[0];
 			let objectHit = item.object;
+
 			if (objectHit.parent &&
+				objectHit.parent.name != "" &&
 				objectHit.parent.name != "van" &&
 				objectHit != workPlane &&
 				objectHit != shodowMesh) {
@@ -1366,13 +1370,15 @@
 		function setCameraView() {
 			controls = new OrbitControls(camera, container);
 
-			controls.maxDistance = 20;
-			controls.minDistance = 3;
+			controls.maxDistance = 12;
+			controls.minDistance = 4;
 
 			controls.maxZoom = 3;
 			controls.minZoom = 0.5;
 
 			controls.maxPolarAngle = THREE.MathUtils.degToRad(90);
+
+			controls.screenSpacePanning = false;
 
 			controls.target.set(0, 0.5, 0);
 		}
@@ -1424,6 +1430,39 @@
 
 			const ambientLight = new THREE.AmbientLight('#ffffff', 1); // color, intensity
 			scene.add(ambientLight);
+
+			const hdrLoader = new RGBELoader();
+			hdrLoader.loadAsync( 'https://cdn.shopify.com/s/files/1/0412/9898/5124/files/mt1.hdr?v=1715607373' ).then(envMap=>{
+				envMap.mapping = THREE.EquirectangularReflectionMapping;
+				const params = {
+					height: 15,
+					radius: 100,
+					enabled: true,
+				};
+				let skybox = new GroundedSkybox( envMap, params.height, params.radius );
+				skybox.position.y = params.height - 0.01;
+				scene.add( skybox );
+				scene.environment = envMap;
+			});
+
+
+			// Assuming you have a Three.js scene and camera set up
+			// const textureLoader = new THREE.TextureLoader();
+
+			// textureLoader.load('images/bg (1).webp', function(texture) {
+			// 		// Apply the texture as an environment map
+			// 		scene.environment = texture;
+			// 		// Optionally, you can also set the skybox if you're using one
+			// 		const params = {
+			// 				height: 15,
+			// 				radius: 100,
+			// 				enabled: true,
+			// 		};
+			// 		let skybox = new GroundedSkybox(texture, params.height, params.radius);
+			// 		skybox.position.y = params.height - 0.01;
+			// 		scene.add(skybox);
+			// });
+
 
 			const dracoLoader = new DRACOLoader();
 			dracoLoader.setDecoderPath('https://res.cloudinary.com/dbloegsbv/raw/upload/v1/jsm/');
