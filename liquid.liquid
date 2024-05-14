@@ -418,7 +418,13 @@
 		.build-item .item-overview {
 			display: flex;
 			align-items: center;
+      justify-content: space-between;
 		}
+
+    .item-overview .product-info {
+      display: flex;
+      align-items: center;
+    }
 
 		.item-overview .item-name {
 			font-size: 12px;
@@ -431,7 +437,15 @@
       font-weight: bold;
       color: black;
       margin-left: 6px;
+      text-decoration: underline;
+      line-height: 16px;
 		}
+
+    .item-overview .remove-product {
+      margin-left: 8px;
+      border-radius: 4px;
+      font-size: 22px;
+    }
 
 		.item-overview img {
 			border: 1px solid rgb(134, 133, 133);
@@ -592,7 +606,7 @@
   <div id="side-section">
     <ul class="tabs">
       <li data-tab-target="#build-list" class="active tab">Build List</li>
-      <li data-tab-target="#rack-tab" class="tab">Roof Racks</li>
+      <li data-tab-target="#rack-tab" class="tab">Van</li>
     </ul>
     <div class="tab-content">
       <div id="build-list" data-tab-content class="active">
@@ -1002,7 +1016,7 @@
           updateModelState(1, selectedItem, itemModel.position.x);
         }
 
-        calcPrice(itemModel.children[0].name, true);
+        calcPrice(itemModel.children[0].name, true, itemModel);
         selectedItem = ""
       });
       render();
@@ -1096,7 +1110,7 @@
       scene.remove(selectedFeature.parent); // Remove the selected feature from the scene
       this.style.display = "none";
 
-      calcPrice(selectedFeature.name, false)
+      calcPrice(selectedFeature.name, false, null)
 
       updateModelState(3, selectedFeature.name, selectedFeature.parent.position.x)
       render();
@@ -1257,62 +1271,78 @@
     }
   }
 
-  function calcPrice(modelName, flag) {
-    let itemPrice = 0;
+  function calcPrice(modelName, flag, model) {
     let addProduct = {}
 
     switch (modelName) {
       case "air_conditioner":
         addProduct = availableProducts[1];
         flag ? addProduct.quantity += 1 : addProduct.quantity -= 1;
-        itemPrice = addProduct.price;
+        addProduct.model = model;
+        addProduct.model = model;
         availableProducts[1] = addProduct;
 
         break;
       case "maxxair":
         addProduct = availableProducts[2];
         flag ? addProduct.quantity += 1 : addProduct.quantity -= 1;
-        itemPrice = addProduct.price;
+        addProduct.model = model;
         availableProducts[2] = addProduct;
         break;
       case "solar200":
         addProduct = availableProducts[3];
         flag ? addProduct.quantity += 1 : addProduct.quantity -= 1;
+        addProduct.model = model;
         availableProducts[3] = addProduct;
-        itemPrice = addProduct.price
 
         addProduct = availableProducts[6];
-        flag ? addProduct.quantity += 1 : addProduct.quantity -= 1;
+        if(addProduct.quantity > 0 && !flag){
+          addProduct.quantity -= 1;
+        } else if(flag) {
+          addProduct.quantity += 1;
+        }
         availableProducts[6] = addProduct;
 
-        itemPrice += addProduct.price;
         break;
       case "solar55":
         addProduct = availableProducts[4];
         flag ? addProduct.quantity += 1 : addProduct.quantity -= 1;
+        addProduct.model = model;
         availableProducts[4] = addProduct;
-        itemPrice = addProduct.price
 
         addProduct = availableProducts[7];
-        flag ? addProduct.quantity += 1 : addProduct.quantity -= 1;
+        if(addProduct.quantity > 0 && !flag){
+          addProduct.quantity -= 1;
+        } else if(flag) {
+          addProduct.quantity += 1;
+        }
         availableProducts[7] = addProduct;
-
-        itemPrice += addProduct.price;
+        
         break;
       case "solar30":
         addProduct = availableProducts[5];
+        
         flag ? addProduct.quantity += 1 : addProduct.quantity -= 1;
-        itemPrice = addProduct.price;
+        addProduct.model = model;
         availableProducts[5] = addProduct;
+
+        addProduct = availableProducts[8];
+        if(addProduct.quantity > 0 && !flag){
+          addProduct.quantity -= 1;
+        } else if(flag) {
+          addProduct.quantity += 1;
+        }
+        availableProducts[8] = addProduct;
+
         break;
       case "ladder":
         addProduct = availableProducts[9];
         flag ? addProduct.quantity += 1 : addProduct.quantity -= 1;
-        itemPrice = addProduct.price;
+        addProduct.model = model;
         availableProducts[9] = addProduct;
         break;
       default:
-        itemPrice = availableProducts.filter(product => product.type == 'rack')[0].price;
+        break;
     }
 
     updateCartState();
@@ -1607,8 +1637,8 @@
       const availableProduct = products[i];
       if(availableProduct.quantity > 0) {
         buildText += '<div class="build-item"><div class="item-overview">'
-        buildText += '<img src="'+ availableProduct?.image +'&width=50" width="50" height="50"/>'
-        buildText += '<a class="item-name" href="'+availableProduct?.url+'" target="_blank">'+ availableProduct?.title +'</a></div><div class="item-variants">'
+        buildText += '<div class="product-info"><img src="'+ availableProduct?.image +'&width=50" width="50" height="50"/>'
+        buildText += '<a class="item-name" href="'+availableProduct?.url+'" target="_blank">'+ availableProduct?.title +'</a></div><button class="remove-product" id="'+ (availableProduct?.type + "___") +'">&#10799;</div><div class="item-variants">'
         availableProduct?.variants?.map((variant, index) => {
           buildText += '<div class="variant"><div>'
           buildText += '<input type="radio" class="variant-handler" id="'+ (availableProduct?.type+"___"+variant?.id) +'" name="'+ availableProduct?.type +'" ' + (Number(variant?.id) == Number(availableProduct?.id) ? 'checked' : '') + '/><label for="'+ (availableProduct?.type+"___"+variant?.id) +'">'+ (variant.public_title ? variant.public_title : variant.name) +'</label>'
@@ -1630,12 +1660,33 @@
         if(targetVariant[0] == product.type) {
           const selectedProduct = product.variants.find((variant) => variant.id == targetVariant[1]);
           let newProduct = {...product, id: selectedProduct.id, price: selectedProduct.price / 100};
-          console.log(selectedProduct, newProduct);
           return newProduct;
         }
         else return product;
       });
       calculatePrice(availableProducts)
+    } else if(event.target.type === 'submit') {
+      const targetType = event.target.id?.split('___')[0];
+
+      if(targetType == 'ac_cross' || targetType == 'solar_cross' || targetType == 'max_cross' || targetType == 'rack') {
+        const toRemoveIndex = availableProducts.findIndex((product) => product.type == targetType);
+        const quantity = availableProducts[toRemoveIndex].quantity;
+
+        if(quantity > 0) availableProducts[toRemoveIndex].quantity = quantity - 1;
+
+        updateBuildState(availableProducts)
+        calculatePrice(availableProducts)
+        updateCartState();
+        
+      } else {
+        const toRemoveModel = availableProducts.find((product) => product.type == targetType)?.model;
+        scene.remove(toRemoveModel);
+
+        selectedIndexOfState = checkIsAvailable(toRemoveModel.position.x, toRemoveModel.children[0].name, 3);
+
+        calcPrice(toRemoveModel.children[0].name, false, null)
+        updateModelState(3, toRemoveModel.children[0].name, toRemoveModel.position.x)
+      }
     }
   }
 

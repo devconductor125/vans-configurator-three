@@ -540,6 +540,10 @@
 					<span class="tooltiptext">Add to Cart</span>
 					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 14 14"><path fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" d="M10.946 13.5a.5.5 0 1 1 0-1a.5.5 0 0 1 0 1m-6.5 0a.5.5 0 1 1 0-1a.5.5 0 0 1 0 1m5.158-7h-3m1.5-1.5v3M.5.5H3L3.263 3m0 0l.643 6.105A1 1 0 0 0 4.9 10h6.32a1 1 0 0 0 .97-.757l1.25-5A1 1 0 0 0 12.47 3z"/></svg>
 				</button>
+
+				<button id="resetBtn">
+					Reset
+				</button>
 		
 				<button class="mb-3 left-tooltip" id="imgDownloadBtn">
 					<span class="tooltiptext">Download Image</span>
@@ -593,6 +597,7 @@
 						<div class="item-overview">
 							<img src="https://cdn.shopify.com/s/files/1/0412/9898/5124/products/NEW200WMonocrystalline12VSolarPanel_1.jpg?v=1651929182&width=50" width="50" height="50"/>
 							<span class="item-name">Newpowa - 200W 24V Monocrystalline Rigid Solar Panel</span>
+							<button id="removeModelBtn">&#10799;</button>
 						</div>
 						<div class="item-variants">
 							<div class="variant">
@@ -727,6 +732,9 @@
 		let selectedIndexOfState = -1;
 		let solar35Area = [];
 		let solar50Area = [];
+
+
+		let modelList = [];
 
 		let availableProducts = [
 			{htmlId: '', type: 'rack', handle: 'transithsld148-roof-rack', id: 43238854328539, price: 0, quantity: 1, xRadius: null
@@ -1046,12 +1054,14 @@
 					itemModel.position.z = positionZ;
 					scene.add(itemModel);
 
+					modelList.push(itemModel)
+
 					if(selectedItem != 'solar30' && selectedItem != 'solar55') {
 						console.log("*****: ", addedState)
 						updateModelState(1, selectedItem, itemModel.position.x);
 					}
 
-					calcPrice(itemModel.children[0].name, true);
+					calcPrice(itemModel.children[0].name, true, itemModel);
 
 
 					console.log("adssadfsdfadfs")
@@ -1147,7 +1157,7 @@
 				scene.remove(selectedFeature.parent); // Remove the selected feature from the scene
 				this.style.display = "none";
 
-				calcPrice(selectedFeature.name, false)
+				calcPrice(selectedFeature.name, false, null)
 
 				updateModelState(3, selectedFeature.name, selectedFeature.parent.position.x)
 
@@ -1257,7 +1267,7 @@
 			}
 		}
 
-		function calcPrice(modelName, flag) {
+	function calcPrice(modelName, flag, model) {
     let itemPrice = 0;
     let addProduct = {}
 
@@ -1266,6 +1276,7 @@
         addProduct = availableProducts[1];
         flag ? addProduct.quantity += 1 : addProduct.quantity -= 1;
         itemPrice = addProduct.price;
+				addProduct.model = model;
         availableProducts[1] = addProduct;
 
         break;
@@ -1273,62 +1284,56 @@
         addProduct = availableProducts[2];
         flag ? addProduct.quantity += 1 : addProduct.quantity -= 1;
         itemPrice = addProduct.price;
+				addProduct.model = model;
         availableProducts[2] = addProduct;
         break;
       case "solar200":
         addProduct = availableProducts[3];
         flag ? addProduct.quantity += 1 : addProduct.quantity -= 1;
+				addProduct.model = model;
         availableProducts[3] = addProduct;
-        itemPrice = addProduct.price
 
         addProduct = availableProducts[6];
         flag ? addProduct.quantity += 1 : addProduct.quantity -= 1;
+				addProduct.model = model;
         availableProducts[6] = addProduct;
 
-        itemPrice += addProduct.price;
         break;
       case "solar55":
         addProduct = availableProducts[4];
         flag ? addProduct.quantity += 1 : addProduct.quantity -= 1;
+				addProduct.model = model;
         availableProducts[4] = addProduct;
-        itemPrice = addProduct.price
 
         addProduct = availableProducts[7];
         flag ? addProduct.quantity += 1 : addProduct.quantity -= 1;
         availableProducts[7] = addProduct;
 
-        itemPrice += addProduct.price;
         break;
       case "solar30":
         addProduct = availableProducts[5];
         flag ? addProduct.quantity += 1 : addProduct.quantity -= 1;
-        itemPrice = addProduct.price;
+				addProduct.model = model;
         availableProducts[5] = addProduct;
         break;
       case "ladder":
         addProduct = availableProducts[9];
         flag ? addProduct.quantity += 1 : addProduct.quantity -= 1;
-        itemPrice = addProduct.price;
+				addProduct.model = model;
         availableProducts[9] = addProduct;
         break;
       default:
-        itemPrice = availableProducts.filter(product => product.type == 'rack')[0].price;
+				break;
     }
 
     // updateCartState();
 
-    if (flag)
-      totalPrice = totalPrice + itemPrice;
-    else
-      totalPrice = totalPrice - itemPrice;
-		
 		let totalItems = 0;
 		availableProducts.map((product) => {
 			totalItems += product.quantity
 		})
 
 		document.getElementById('products-num').innerHTML = totalItems
-    document.getElementById("products-cost").innerHTML = totalPrice.toFixed(2);
   }
 
 		// function collision(selectedFeatureBoundingBox, collidableMeshList) {
@@ -1653,6 +1658,22 @@
 	function updateBuildState() {
 
 	}
+
+
+	document.getElementById('resetBtn').addEventListener('click', function () {
+		console.log("Resetting...");
+
+		console.log(scene)
+
+		modelList.map((model) => {
+			scene.remove(model)
+		})
+	});
+
+	document.getElementById('removeModelBtn').addEventListener('click', function() {
+		let productInfo = availableProducts.filter((product) => product.type == 'air_conditioner')[0];
+		scene.remove(productInfo.model)
+	})
 
 	</script>
 
