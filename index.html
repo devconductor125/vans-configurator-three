@@ -51,6 +51,9 @@
 			bottom: 16px;
 			left: 50%;
 			transform: translateX(-50%);
+			max-width: 80%;
+			overflow-x: auto;
+			overflow-y: hidden;
 		}
 
 		.item-box {
@@ -458,6 +461,79 @@
 		.build-item .divider {
 			border: 1px solid rgb(159, 159, 159);
 		}
+		#side-collapse {
+			display: none;
+		}
+
+		@media only screen and (max-width: 1350px) {
+			.item-img {
+				width: 80px;
+				height: 80px;
+			}
+		}
+
+		@media only screen and (max-width: 1024px) {
+			.item-img {
+				width: 70px;
+				height: 70px;
+				margin-bottom: 10px;
+			}
+			.item-name {
+				display: none;
+			}
+			#configurator-container {
+				width: 100vw;
+			}
+			#side-section {
+				position: absolute;
+				right: -300px;
+				transition: right .4s;
+				transition-timing-function: linear;
+			}
+			.van-detail {
+				display: none;
+			}
+			.text-title1 {
+				display: none;
+			}
+			.action-btn-list {
+				/* bottom: 160px; */
+				right: 8px;
+			}
+			.unaka-logo img{
+				width: 60px;
+			}
+			#viewHelper {
+				display: none;
+			}
+			#side-collapse {
+				display: block;
+				position: absolute;
+				top: 30vh;
+				left: -36px;
+    		border: none;
+				width: 36px;
+				background-color: white;
+				border-top-left-radius: 10px;
+				border-bottom-left-radius: 10px;
+			}
+			#side-collapse div {
+				padding: 14px 8px;
+				transition: all .2s;
+				z-index: 10;
+			}
+			#side-collapse div svg{
+				transform: scaleY(2);
+			}
+			#side-collapse div.collapsed {
+				text-align: left;
+			}
+			#side-collapse div.expanded {
+				transform: rotate(180deg);
+				text-align: right;
+			}
+		}
+
 	</style>
 </head>
 <body>
@@ -533,17 +609,6 @@
 				</div>
 			</div>
 			<div class="action-btn-list">
-				<div>
-					<p class="text-body1">$<span id="total_price">800</span></p>
-				</div>
-				<button id="addCartBtn" class="mb-3 left-tooltip">
-					<span class="tooltiptext">Add to Cart</span>
-					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 14 14"><path fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" d="M10.946 13.5a.5.5 0 1 1 0-1a.5.5 0 0 1 0 1m-6.5 0a.5.5 0 1 1 0-1a.5.5 0 0 1 0 1m5.158-7h-3m1.5-1.5v3M.5.5H3L3.263 3m0 0l.643 6.105A1 1 0 0 0 4.9 10h6.32a1 1 0 0 0 .97-.757l1.25-5A1 1 0 0 0 12.47 3z"/></svg>
-				</button>
-
-				<button id="resetBtn">
-					Reset
-				</button>
 		
 				<button class="mb-3 left-tooltip" id="imgDownloadBtn">
 					<span class="tooltiptext">Download Image</span>
@@ -587,6 +652,11 @@
 		</div>
 
 		<div id="side-section">
+			<div id="side-collapse" >
+				<div class="collapsed">
+					<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 256 256"><path fill="currentColor" d="M210.84 205.13a12 12 0 0 1-16 5.71l-152-72a12 12 0 0 1 0-21.68l152-72a12 12 0 1 1 10.27 21.69L76 128l129.1 61.15a12 12 0 0 1 5.74 15.98"/></svg>
+				</div>
+			</div>
 			<ul class="tabs">
 				<li data-tab-target="#build-list" class="active tab">Build List</li>
 				<li data-tab-target="#rack-tab" class="tab">Roof Racks</li>
@@ -663,6 +733,20 @@
 				tab.classList.add('active')
 				target.classList.add('active')
 			})
+		});
+
+		document.getElementById("side-collapse").addEventListener('click', function () {
+			console.log(this.firstChild.nextSibling);
+			let iconElement = this.firstChild.nextSibling
+			if(iconElement.classList.contains('expanded')){ 
+				iconElement.classList.remove("expanded");
+				iconElement.classList.add("collapsed");
+				document.getElementById('side-section').style.right = '-300px'
+			} else if(iconElement.classList.contains('collapsed')) {
+				iconElement.classList.remove("collapsed");
+				iconElement.classList.add("expanded");
+				document.getElementById('side-section').style.right = '0px'
+			}
 		})
 	</script>
 
@@ -1374,7 +1458,10 @@
 			document.body.appendChild(div);
 			div.addEventListener('pointerup', (event) => (helper.handleClick(event)));
 			animate();
+
+			if(window.innerWidth < 1024) helper.visible = false;
 		}
+		
 		function animate() {
 			requestAnimationFrame(animate);
 			const delta = clock.getDelta();
@@ -1384,7 +1471,7 @@
 		function setCameraView() {
 			controls = new OrbitControls(camera, container);
 
-			controls.maxDistance = 12;
+			controls.maxDistance = 15;
 			controls.minDistance = 4;
 
 			controls.maxZoom = 3;
@@ -1402,7 +1489,7 @@
 
 			renderer = new THREE.WebGLRenderer({ antialias: true }); 
 			renderer.setPixelRatio(window.devicePixelRatio);
-			renderer.setSize((window.innerWidth - 300), window.innerHeight);
+			renderer.setSize(((window.innerWidth < 1024 ? window.innerWidth : window.innerWidth - 300)), window.innerHeight);
 			renderer.setAnimationLoop(render);
 			renderer.toneMapping = THREE.ACESFilmicToneMapping;
 			renderer.toneMappingExposure = 0.85;
@@ -1413,9 +1500,9 @@
 			window.addEventListener('resize', onWindowResize);
 
 			// Create an OrthographicCamera
-			camera = new THREE.PerspectiveCamera(40, (window.innerWidth - 300) / window.innerHeight, 1, 10000);
+			camera = new THREE.PerspectiveCamera(40, ((window.innerWidth < 1024 ? window.innerWidth : window.innerWidth - 300)) / window.innerHeight, 1, 10000);
 			camera.position.set(-1, 6, -6);
-			camera.aspect = (window.innerWidth - 300) / (window.innerHeight);
+			camera.aspect = ((window.innerWidth < 1024 ? window.innerWidth : window.innerWidth - 300)) / (window.innerHeight);
     	camera.updateProjectionMatrix();
 			setCameraView();
 
@@ -1531,9 +1618,17 @@
 		}
 
 		function onWindowResize() {
-			camera.aspect = (window.innerWidth - 300) / window.innerHeight;
-			camera.updateProjectionMatrix();
-			renderer.setSize((window.innerWidth - 300), window.innerHeight);
+			if(window.innerWidth < 1024) {
+				camera.aspect = window.innerWidth / window.innerHeight;
+				camera.updateProjectionMatrix();
+				renderer.setSize(window.innerWidth, window.innerHeight);
+				helper.visible = false;
+			} else {
+				camera.aspect = (window.innerWidth - 300) / window.innerHeight;
+				camera.updateProjectionMatrix();
+				renderer.setSize((window.innerWidth - 300), window.innerHeight);
+				helper.visible = true;
+			}
 		}
 
 		function render() {
@@ -1659,21 +1754,6 @@
 
 	}
 
-
-	document.getElementById('resetBtn').addEventListener('click', function () {
-		console.log("Resetting...");
-
-		console.log(scene)
-
-		modelList.map((model) => {
-			scene.remove(model)
-		})
-	});
-
-	document.getElementById('removeModelBtn').addEventListener('click', function() {
-		let productInfo = availableProducts.filter((product) => product.type == 'air_conditioner')[0];
-		scene.remove(productInfo.model)
-	})
 
 	</script>
 
