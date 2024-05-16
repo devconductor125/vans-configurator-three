@@ -51,9 +51,11 @@
 			left: 50%;
 			transform: translateX(-50%);
       max-width: 80%;
-			overflow-x: auto;
-			overflow-y: hidden;
 		}
+    .drag-items {
+      overflow-x: auto;
+      overflow-y: hidden;
+    }
 		.item-box {
 			margin-left: 8px;
 			margin-right: 8px;
@@ -63,6 +65,8 @@
 			opacity: 0.8;
 			transition: opacity .15s ease-in-out, transform .08s linear;
 			position: relative;
+      margin-bottom: 10px;
+      margin-top: 10px;
 		}
 		.item-box .carted-item {
 			position: absolute;
@@ -526,7 +530,7 @@
 					Delete
 				</button>
 			</div>
-			<div class="d-flex">
+			<div class="d-flex drag-items">
 				<div class="item-box">
 					<div class="item-img" id="airconditioner" draggable="true">
             <div class="carted-item">1</div>
