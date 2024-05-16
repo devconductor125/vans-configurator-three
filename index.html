@@ -548,7 +548,6 @@
 			<div id="container"></div>
 			<div class="items-container">
 				<div class="text-center announce-bar" >
-					<h2 class="text-title1">Drag & drop items onto van roof</h2>
 					<button id="deleteButton">
 						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 40 40">
 							<path fill="#ff0000"
@@ -559,7 +558,7 @@
 				</div>
 				<div class="d-flex">
 					<div class="item-box">
-						<div class="item-img" id="airconditioner" draggable="true">
+						<div class="item-img" id="airconditioner" draggable="false">
 							<div class="carted-item">1</div>
 						</div>
 						<div class="item-name">
@@ -567,7 +566,7 @@
 						</div>
 					</div>
 					<div class="item-box">
-						<div class="item-img" id="maxxair" draggable="true">
+						<div class="item-img" id="maxxair" draggable="false">
 							<div class="carted-item">1</div>
 						</div>
 						<div class="item-name">
@@ -575,7 +574,7 @@
 						</div>
 					</div>
 					<div class="item-box">
-						<div class="item-img" id="solar_panel200" draggable="true">
+						<div class="item-img" id="solar_panel200" draggable="false">
 							<div class="carted-item">1</div>
 						</div>
 						<div class="item-name">
@@ -583,7 +582,7 @@
 						</div>
 					</div>
 					<div class="item-box">
-						<div class="item-img" id="solar_panel50" draggable="true">
+						<div class="item-img" id="solar_panel50" draggable="false">
 							<div class="carted-item">1</div>
 						</div>
 						<div class="item-name">
@@ -591,7 +590,7 @@
 						</div>
 					</div>
 					<div class="item-box">
-						<div class="item-img" id="solar_panel30" draggable="true">
+						<div class="item-img" id="solar_panel30" draggable="false">
 							<div class="carted-item">1</div>
 						</div>
 						<div class="item-name">
@@ -599,7 +598,7 @@
 						</div>
 					</div>
 					<div class="item-box">
-						<div class="item-img" id="ladder" draggable="true">
+						<div class="item-img" id="ladder" draggable="false">
 							<div class="carted-item">1</div>
 						</div>
 						<div class="item-name">
@@ -821,11 +820,9 @@
 		let modelList = [];
 
 		let availableProducts = [
-			{htmlId: '', type: 'rack', handle: 'transithsld148-roof-rack', id: 43238854328539, price: 0, quantity: 1, xRadius: null
-				 
-			},
-			{htmlId: 'airconditioner', type: 'air_conditioner', handle: 'dometic-rtx-2000', id: 43261478764763, price: 0, quantity: 0, xRadius: 16.9},
-			{htmlId: 'maxxair', type: 'maxxair', handle: 'maxxair-fan-deluxe', id: 40771325264036, price: 0, quantity: 0, xRadius: 13.11},
+			{htmlId: '', type: 'rack', handle: 'transithsld148-roof-rack', id: 43238854328539, price: 0, quantity: 1, xRadius: null},
+			{htmlId: 'airconditioner', type: 'air_conditioner', handle: 'dometic-rtx-2000', id: 43261478764763, price: 0, quantity: 0, xRadius: 17.2},
+			{htmlId: 'maxxair', type: 'maxxair', handle: 'maxxair-fan-deluxe', id: 40771325264036, price: 0, quantity: 0, xRadius: 13.41},
 			{htmlId: 'solar_panel200', type: 'solar200', handle: 'new-powa-200w-monocrystalline-solar-panel-12v', id: 42641211228379, price: 0, quantity: 0, xRadius: 14.323},
 			{htmlId: 'solar_panel50', type: 'solar55', handle: 'rich-solar-50w-solar-panel', id: 45081892683995, price: 0, quantity: 0, xRadius: 13.11},
 			{htmlId: 'solar_panel30', type: 'solar30', handle: '', id: null, price: 0, quantity: 0, xRadius: 16.889},
@@ -933,6 +930,193 @@
 					console.error('An error occurred while loading the model:', error);
 				});
 		});
+
+	function excludeRanges(vanArea, addedState) {
+    // Sort addedState into pairs of ranges
+    let ranges = [];
+    for (let i = 0; i < addedState.length; i += 2) {
+        ranges.push([addedState[i], addedState[i + 1]]);
+    }
+
+    // Sort ranges by start point
+    ranges.sort((a, b) => a[0] - b[0]);
+
+    let result = [];
+    let currentStart = vanArea[0];
+    let currentEnd = vanArea[1];
+
+    for (let range of ranges) {
+        let [rangeStart, rangeEnd] = range;
+
+        // If the current range starts after the current segment ends, skip it
+        if (rangeStart > currentEnd) continue;
+
+        // If the current range overlaps with the current segment
+        if (rangeStart > currentStart) {
+            result.push(currentStart, rangeStart);
+        }
+
+        // Adjust the current start to be after the range end
+        currentStart = Math.max(currentStart, rangeEnd);
+    }
+
+    // If there is any remaining part of the vanArea after the last range
+    if (currentStart < currentEnd) {
+        result.push(currentStart, currentEnd);
+    }
+
+    return result;
+	}
+
+	function findFittingIntervalIndex(result, radius) {
+    // The minimum length required for the new area to fit
+    let requiredLength = 2 * radius;
+
+    // Iterate through each interval in the result array
+    for (let i = 0; i < result.length; i += 2) {
+        let intervalStart = result[i];
+        let intervalEnd = result[i + 1];
+
+        // Check if the interval is long enough to fit the new area
+        if (intervalEnd - intervalStart >= requiredLength) {
+            return i; // Return the index of the interval
+        }
+    }
+
+    return -1; // No suitable interval found
+	}
+
+	function getIntersectionIntervals(intervals1, intervals2, diff) {
+    let intersections = [];
+
+    for (let i = 0; i < intervals1.length; i += 2) {
+        let start1 = intervals1[i];
+        let end1 = intervals1[i + 1];
+
+        for (let j = 0; j < intervals2.length; j += 2) {
+            let start2 = intervals2[j] - diff;
+            let end2 = intervals2[j + 1] + diff;
+
+            // Find the intersection of intervals [start1, end1] and [start2, end2]
+            let maxStart = Math.max(start1, start2);
+            let minEnd = Math.min(end1, end2);
+
+            if (maxStart < minEnd) {
+                intersections.push(maxStart, minEnd);
+            }
+        }
+    }
+
+    return intersections;
+	}
+
+	function getAvailablePoint(selectedItem) {
+		let result = excludeRanges(vanArea, addedState);
+
+		if(selectedItem.type == 'air_conditioner') {
+			let intersections = getIntersectionIntervals(result, cutOffArea, selectedItem.xRadius - 7.2);
+			let canIndex = findFittingIntervalIndex(intersections, selectedItem.xRadius);
+			let xCenter = intersections[canIndex] + selectedItem.xRadius;
+			let positionX = -1 * xCenter * 0.0254;
+			return positionX;
+		} else if(selectedItem.type == 'maxxair') {
+			let intersections = getIntersectionIntervals(result, cutOffArea, selectedItem.xRadius - 7);
+			let canIndex = findFittingIntervalIndex(intersections, selectedItem.xRadius);
+			let xCenter = intersections[canIndex] + selectedItem.xRadius;
+			let positionX = -1 * xCenter * 0.0254;
+			return positionX;
+		} else {
+			let canIndex = findFittingIntervalIndex(result, selectedItem.xRadius);
+			let xCenter = result[canIndex] + selectedItem.xRadius;
+			let positionX = -1 * xCenter * 0.0254;
+			return positionX;
+		}
+
+	}
+
+	document.addEventListener('click', function (event) {
+		let positionX = 0;
+		let positionY = 2.35;
+		let positionZ = 0;
+
+		model = null;
+		vanItem = event.target;
+
+		selectedItem = availableProducts.filter(product => product.htmlId == event.target.id)[0];
+
+		if(!selectedItem) return;
+
+		if(selectedItem.type == 'ladder') {
+			positionX = -0.6;
+			positionY = 1.1717;
+			positionZ = -0.97864;
+		} else{
+			positionY = 2.35;
+			positionZ = 0;
+			if(selectedItem.type == 'solar30') {
+				if(solar35Area.length > 0) positionX = -1 * solar35Area[0] * 0.0254;
+				else return;
+			} else if(selectedItem.type == 'solar55') {
+				if(solar50Area.length > 0) positionX = -1 * solar50Area[0] * 0.0254;
+				else return;
+			} else {
+				positionX = getAvailablePoint(selectedItem);
+				updateModelState(1, selectedItem.type, positionX);
+			}
+		}
+
+		switch (event.target.id) {
+      case "airconditioner":
+        loadItemDirectory = "https://cdn.shopify.com/3d/models/4ffe214498ea4572/airconditioner.glb";
+        break;
+      case "maxxair":
+        loadItemDirectory = "https://cdn.shopify.com/3d/models/79d9acc725fd9588/maxxair.glb";
+        break;
+      case "solar_panel200":
+        loadItemDirectory = "https://cdn.shopify.com/3d/models/5cfa600915383f66/200W.glb";
+        break;
+      case "solar_panel50":
+        loadItemDirectory = "https://cdn.shopify.com/3d/models/e69c7ddeafcf261c/55W.glb";
+        break;
+      case "solar_panel30":
+        loadItemDirectory = "https://cdn.shopify.com/3d/models/2a9229deef12ff01/30W.glb";
+        break;
+      case "ladder":
+        loadItemDirectory = "https://cdn.shopify.com/3d/models/055283c9ebf899d6/ladder.glb";
+        break;
+    }
+
+    const dracoLoader = new DRACOLoader();
+    dracoLoader.setDecoderPath('https://res.cloudinary.com/dbloegsbv/raw/upload/v1/jsm/');
+
+    const loader = new GLTFLoader();
+    loader.setDRACOLoader(dracoLoader);
+
+    const loadModel = (url) => {
+      return new Promise((resolve, reject) => {
+        loader.load(url, function (gltf) {
+          resolve(gltf.scene);
+        }, undefined, reject);
+      });
+    };
+
+    loadModel(loadItemDirectory)
+      .then((modelItem) => {
+        model = modelItem;
+				model.position.x = positionX;
+				model.position.y = positionY;
+				model.position.z = positionZ;
+				scene.add(model);
+
+				updateSolarArea(positionX, selectedItem.type, 1)
+				// calcPrice(selectedItem.type, true, model);
+      })
+      .catch((error) => {
+        console.error('An error occurred while loading the model:', error);
+      });
+	});
+
+	
 		document.addEventListener('dragover', function (event) {
 
 			let a = 2 * event.clientX / (window.innerWidth - 300) - 1;
@@ -1205,6 +1389,7 @@
 							} 
 						} else if(selectedFeature.name == 'maxxair'){
 							if(isValueInScale(coords.x * 1000 / 25.4 * -1, cutOffArea, 7, vanDiff)  >= 0 && checkCollision){
+
 								updateSolarArea(xPos, selectedFeature.name, 1)
 								selectedFeature.parent.position.x = xPos;
 								selectedFeature.parent.position.z = 0;
