@@ -725,7 +725,7 @@
     {htmlId: '', type: 'rack', handle: 'transithsld148-roof-rack', id: 43238854328539, price: 0, quantity: 1, xRadius: null},
     {htmlId: 'airconditioner', type: 'air_conditioner', handle: 'dometic-rtx-2000', id: 43261478764763, price: 0, quantity: 0, xRadius: 17.2},
     {htmlId: 'maxxair', type: 'maxxair', handle: 'maxxair-fan-deluxe', id: 40771325264036, price: 0, quantity: 0, xRadius: 13.41},
-    {htmlId: 'solar_panel200', type: 'solar200', handle: 'new-powa-200w-monocrystalline-solar-panel-12v', id: 42641211228379, price: 0, quantity: 0, xRadius: 14.323},
+    {htmlId: 'solar_panel200', type: 'solar200', handle: 'new-powa-200w-monocrystalline-solar-panel-12v', id: 42641211228379, price: 0, quantity: 0, xRadius: 14.423},
     {htmlId: 'solar_panel50', type: 'solar55', handle: 'rich-solar-50w-solar-panel', id: 45081892683995, price: 0, quantity: 0, xRadius: 13.11},
     {htmlId: 'solar_panel30', type: 'solar30', handle: 'rich-solar-50w-solar-panel', id: 45081892683995, price: 0, quantity: 0, xRadius: 16.889},
     {htmlId: '', type: 'ac_cross', handle: 'ford-transit-hsld-roof-rack-maxxfan-cross-bars-1', id: 44018089623771, price: 0, quantity: 0},
@@ -857,8 +857,8 @@
       let end1 = intervals1[i + 1];
 
       for (let j = 0; j < intervals2.length; j += 2) {
-        let start2 = intervals2[j] - diff;
-        let end2 = intervals2[j + 1] + diff;
+        let start2 = intervals2[j] - diff - vanDiff;
+            let end2 = intervals2[j + 1] + diff - vanDiff;
         let maxStart = Math.max(start1, start2);
         let minEnd = Math.min(end1, end2);
         if (maxStart < minEnd) {
@@ -893,19 +893,23 @@
 
 	}
 
-	document.addEventListener('click', function (event) {
+  var productElements = document.getElementsByClassName("item-img");
+
+	for (var i = 0; i < productElements.length; i++) {
+    productElements[i].addEventListener('click', event => handleClickProduct(event), false);
+	}
+
+	function handleClickProduct(event){
 		let positionX = 0;
 		let positionY = 2.35;
 		let positionZ = 0;
-
 		model = null;
 		vanItem = event.target;
-
 		selectedItem = availableProducts.filter(product => product.htmlId == event.target.id)[0];
-
 		if(!selectedItem) return;
 
 		if(selectedItem.type == 'ladder') {
+			if(selectedItem.quantity > 0 ) return false;
 			positionX = -0.6;
 			positionY = 1.1717;
 			positionZ = -0.97864;
@@ -913,13 +917,20 @@
 			positionY = 2.35;
 			positionZ = 0;
 			if(selectedItem.type == 'solar30') {
+				let acItem = availableProducts.filter(product => product.type == 'air_conditioner')[0];
+				if (selectedItem.quantity >= acItem.quantity) return false;
+
 				if(solar35Area.length > 0) positionX = -1 * solar35Area[0] * 0.0254;
 				else return;
 			} else if(selectedItem.type == 'solar55') {
+				let fanItem = availableProducts.filter(product => product.type == 'maxxair')[0];
+				if (selectedItem.quantity >= fanItem.quantity) return false;
+
 				if(solar50Area.length > 0) positionX = -1 * solar50Area[0] * 0.0254;
 				else return;
 			} else {
 				positionX = getAvailablePoint(selectedItem);
+				if(!positionX) return;
 				updateModelState(1, selectedItem.type, positionX);
 			}
 		}
@@ -973,7 +984,7 @@
       .catch((error) => {
         console.error('An error occurred while loading the model:', error);
       });
-	});
+  }
 
   canvasContainer.addEventListener('mousedown', (event) => {
     if (event.button === 0) {
@@ -1132,12 +1143,14 @@
 
   document.getElementById('camChangeBtn').addEventListener('click', function () {
     const cameraPosition = camera.position;
+    const widthValue = window.innerWidth < 1024 ? window.innerWidth : (window.innerWidth - 300)
+
     if (cameraType === "perspective") {
-      camera = new THREE.OrthographicCamera(-window.innerWidth / 340, window.innerWidth / 340, window.innerHeight / 340, -window.innerHeight / 340, 1, 10000);
+      camera = new THREE.OrthographicCamera(-widthValue / 340, widthValue / 340, window.innerHeight / 340, -window.innerHeight / 340, 1, 10000);
       cameraType = "orthographic"
     }
     else {
-      camera = new THREE.PerspectiveCamera(40, window.innerWidth / window.innerHeight, 1, 10000);
+      camera = new THREE.PerspectiveCamera(40, widthValue / window.innerHeight, 1, 10000);
       cameraType = "perspective"
     }
     camera.position.set(cameraPosition.x, cameraPosition.y, cameraPosition.z);
@@ -1353,8 +1366,6 @@
     renderer.setPixelRatio(window.devicePixelRatio);
     renderer.setSize(((window.innerWidth < 1024 ? window.innerWidth : window.innerWidth - 300)), window.innerHeight);
     renderer.setAnimationLoop(render);
-    renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 0.85;
     renderer.autoClear = false;
     container.appendChild(renderer.domElement);
     window.addEventListener('resize', onWindowResize);
@@ -1369,13 +1380,23 @@
     scene.background = new THREE.Color("#ffffff");
     setViewCube();
 
-    const directionalLight1 = new THREE.DirectionalLight(0xffffff, 1);
+    const directionalLight1 = new THREE.DirectionalLight(0xffffff, 2);
     directionalLight1.position.set(1, 1, 0);
     scene.add(directionalLight1);
-    const directionalLight4 = new THREE.DirectionalLight(0xffffff, 1);
+
+    const directionalLight2 = new THREE.DirectionalLight(0xffffff, 2);
+    directionalLight2.position.set(-1, 1, 0);
+    scene.add(directionalLight2);
+
+    const directionalLight3 = new THREE.DirectionalLight(0xffffff, 2);
+    directionalLight3.position.set(0, 1, 1);
+    scene.add(directionalLight3);
+
+    const directionalLight4 = new THREE.DirectionalLight(0xffffff, 2);
     directionalLight4.position.set(0, 1, -1);
     scene.add(directionalLight4);
-    const ambientLight = new THREE.AmbientLight('#ffffff', 1);
+
+    const ambientLight = new THREE.AmbientLight('#ffffff', 1); // color, intensity
     scene.add(ambientLight);
 
     const hdrLoader = new RGBELoader();
@@ -1400,6 +1421,17 @@
 
     loader.load('https://cdn.shopify.com/3d/models/41684418358535aa/van1.glb', function (gltf) {
       carModel = gltf.scene;
+
+      let bodyMesh = carModel.getObjectByName("van").getObjectByName("Mesh001_5");
+
+      console.log(carModel, carModel.getObjectByName("van"), bodyMesh)
+
+      const bodyMaterial = new THREE.MeshPhysicalMaterial( {
+        color: 0xffffff, metalness: 1.0, roughness: 0.9, clearcoat: 1.0, clearcoatRoughness: 0.1
+      } );
+
+      bodyMesh.material = bodyMaterial
+
 
       shodowMesh = new THREE.Mesh(
         new THREE.PlaneGeometry(2.8, 6.5),
