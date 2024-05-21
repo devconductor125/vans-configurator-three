@@ -40,7 +40,7 @@
 			border-left: 1px solid rgb(159, 159, 159);
 			height: 100%;
 			z-index: 1;
-			background: linear-gradient(180deg, #fff 60%, #e4e4e4) !important;
+			background-color: #d3d3d3;
 		}
 		.d-flex {
 			display: flex;
@@ -307,7 +307,8 @@
 			text-align: center;
 		}
 		.tab.active {
-			background-color: #CCC;
+			background-color: #676767;
+			color: white;
 		}
 		.tab:hover {
 			background-color: #AAA;
@@ -439,6 +440,23 @@
     }
     #side-collapse {
 			display: none;
+		}
+    .select-colors {
+			display: flex;
+			flex-wrap: wrap;
+		}
+		.color-item {
+      display: block !important;
+			width: 29px;
+			height: 29px;
+			border-radius: 20px;
+			border: 2px solid #fff;
+			margin: 3px;
+			cursor: pointer;
+			opacity: 0.7;
+		}
+		.color-item.color-selected {
+			opacity: 1;
 		}
 
 		@media only screen and (max-width: 1350px) {
@@ -635,8 +653,18 @@
       <div id="build-list" data-tab-content class="active">
       </div>
       <div id="rack-tab" data-tab-content>
-        <div>
-          Roof racks
+        <div>Select van color</div>
+        <div class="select-colors" id="color-selectable">
+          <div class="color-item color-selected" style="background-color: rgb(255, 255, 255);"></div>
+          <div class="color-item" style="background-color: rgb(205, 36, 0);"></div>
+          <div class="color-item" style="background-color: rgb(0, 0, 0);"></div>
+          <div class="color-item" style="background-color: rgb(173, 175, 184);"></div>
+          <div class="color-item" style="background-color: rgb(141 140 144);"></div>
+          <div class="color-item" style="background-color: rgb(185, 168, 133);"></div>
+          <div class="color-item" style="background-color: rgb(146, 17, 18);"></div>
+          <div class="color-item" style="background-color: rgb(72, 115, 163);"></div>
+          <div class="color-item" style="background-color: rgb(59, 82, 67);"></div>
+          <div class="color-item" style="background-color: rgb(146, 173, 62);"></div>
         </div>
       </div>
     </div>
@@ -809,6 +837,9 @@
   let ladderPlane;
   const cutOffArea = [3.19, 25.7, 32.09, 64.72, 71.11, 85.19];
   const vanDiff = 3.2
+
+  let bodyMaterial;
+  let bodyMesh;
 
   let delelteBtn = document.getElementById("deleteButton")
 
@@ -1205,6 +1236,22 @@
     canvas = document.querySelector('canvas[data-engine="three.js r162"]');
   });
 
+  document.getElementById('color-selectable').addEventListener('click', function(event) {
+    if(event.target.classList.contains("color-item")) {
+
+      const options = document.querySelectorAll('.color-item');
+      options.forEach(option => {
+        option.classList.remove('color-selected')
+      })
+
+      event.target.classList.add('color-selected');
+      bodyMaterial = new THREE.MeshPhysicalMaterial( {
+        color: event.target.style.backgroundColor ?? 0xffffff, metalness: 1.0, roughness: 0.9, clearcoat: 1.0, clearcoatRoughness: 0.08
+      });
+      bodyMesh.material = bodyMaterial
+    }
+  })
+
   function addEdgeLines(object) {
     if (edgeLine) {
       object.remove(edgeLine);
@@ -1366,6 +1413,7 @@
     renderer.setPixelRatio(window.devicePixelRatio);
     renderer.setSize(((window.innerWidth < 1024 ? window.innerWidth : window.innerWidth - 300)), window.innerHeight);
     renderer.setAnimationLoop(render);
+    renderer.toneMappingExposure = 0.85;
     renderer.autoClear = false;
     container.appendChild(renderer.domElement);
     window.addEventListener('resize', onWindowResize);
@@ -1380,19 +1428,19 @@
     scene.background = new THREE.Color("#ffffff");
     setViewCube();
 
-    const directionalLight1 = new THREE.DirectionalLight(0xffffff, 2);
+    const directionalLight1 = new THREE.DirectionalLight(0xffffff, 2.5);
     directionalLight1.position.set(1, 1, 0);
     scene.add(directionalLight1);
 
-    const directionalLight2 = new THREE.DirectionalLight(0xffffff, 2);
+    const directionalLight2 = new THREE.DirectionalLight(0xffffff, 2.5);
     directionalLight2.position.set(-1, 1, 0);
     scene.add(directionalLight2);
 
-    const directionalLight3 = new THREE.DirectionalLight(0xffffff, 2);
+    const directionalLight3 = new THREE.DirectionalLight(0xffffff, 2.5);
     directionalLight3.position.set(0, 1, 1);
     scene.add(directionalLight3);
 
-    const directionalLight4 = new THREE.DirectionalLight(0xffffff, 2);
+    const directionalLight4 = new THREE.DirectionalLight(0xffffff, 2.5);
     directionalLight4.position.set(0, 1, -1);
     scene.add(directionalLight4);
 
@@ -1419,19 +1467,14 @@
     const loader = new GLTFLoader();
     loader.setDRACOLoader(dracoLoader);
 
-    loader.load('https://cdn.shopify.com/3d/models/41684418358535aa/van1.glb', function (gltf) {
+    loader.load('https://cdn.shopify.com/3d/models/ef2473f570af2015/van2.glb', function (gltf) {
       carModel = gltf.scene;
 
       let bodyMesh = carModel.getObjectByName("van").getObjectByName("Mesh001_5");
-
-      console.log(carModel, carModel.getObjectByName("van"), bodyMesh)
-
       const bodyMaterial = new THREE.MeshPhysicalMaterial( {
         color: 0xffffff, metalness: 1.0, roughness: 0.9, clearcoat: 1.0, clearcoatRoughness: 0.1
       } );
-
       bodyMesh.material = bodyMaterial
-
 
       shodowMesh = new THREE.Mesh(
         new THREE.PlaneGeometry(2.8, 6.5),
