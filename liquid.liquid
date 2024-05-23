@@ -710,7 +710,6 @@
   })
 
   document.getElementById("side-collapse").addEventListener('click', function () {
-    console.log(this.firstChild.nextSibling);
     let iconElement = this.firstChild.nextSibling
     if(iconElement.classList.contains('expanded')){ 
       iconElement.classList.remove("expanded");
@@ -751,7 +750,7 @@
 
   let availableProducts = [
     {htmlId: '', type: 'rack', handle: 'transithsld148-roof-rack', id: 43238854328539, price: 0, quantity: 1, xRadius: null},
-    {htmlId: 'airconditioner', type: 'air_conditioner', handle: 'dometic-rtx-2000', id: 43261478764763, price: 0, quantity: 0, xRadius: 17.2},
+    {htmlId: 'airconditioner', type: 'air_conditioner', handle: 'dometic-rtx-2000', id: 43261478764763, price: 0, quantity: 0, xRadius: 16.56},
     {htmlId: 'maxxair', type: 'maxxair', handle: 'maxxair-fan-deluxe', id: 40771325264036, price: 0, quantity: 0, xRadius: 12.75},
     {htmlId: 'solar_panel200', type: 'solar200', handle: 'new-powa-200w-monocrystalline-solar-panel-12v', id: 42641211228379, price: 0, quantity: 0, xRadius: 13.5},
     {htmlId: 'solar_panel50', type: 'solar55', handle: 'rich-solar-50w-solar-panel', id: 45081892683995, price: 0, quantity: 0, xRadius: 12.75},
@@ -835,7 +834,7 @@
 
   let selectedItem = '';
   let ladderPlane;
-  const cutOffArea = [3.19, 25.7, 32.09, 64.72, 71.11, 85.19];
+  const cutOffArea = [3.19, 25.7, 32.09, 64.72, 71.11, 90.19];
   const vanDiff = 3.2
 
   let bodyMaterial;
@@ -904,7 +903,7 @@
 		let result = excludeRanges(vanArea, addedState);
 
 		if(selectedItem.type == 'air_conditioner') {
-			let intersections = getIntersectionIntervals(result, cutOffArea, selectedItem.xRadius - 7.2);
+			let intersections = getIntersectionIntervals(result, cutOffArea, selectedItem.xRadius - 7.001);
 			let canIndex = findFittingIntervalIndex(intersections, selectedItem.xRadius);
 			let xCenter = intersections[canIndex] + selectedItem.xRadius;
 			let positionX = -1 * xCenter * 0.0254;
@@ -968,7 +967,7 @@
 
 		switch (event.target.id) {
       case "airconditioner":
-        loadItemDirectory = "https://cdn.shopify.com/3d/models/4ffe214498ea4572/airconditioner.glb";
+        loadItemDirectory = "https://cdn.shopify.com/3d/models/3c312cc59fdb9f81/airconditioner.glb";
         break;
       case "maxxair":
         loadItemDirectory = "https://cdn.shopify.com/3d/models/c3eeb44577bd8f6a/maxxair.glb";
@@ -983,7 +982,7 @@
         loadItemDirectory = "https://cdn.shopify.com/3d/models/dfcf1aaf24802514/30W.glb";
         break;
       case "ladder":
-        loadItemDirectory = "https://cdn.shopify.com/3d/models/055283c9ebf899d6/ladder.glb";
+        loadItemDirectory = "https://cdn.shopify.com/3d/models/e1c66ba4aca3d154/ladder.glb";
         break;
     }
 
@@ -1057,7 +1056,7 @@
           }
 
           if(selectedFeature.name == "air_conditioner"){
-            if(isValueInScale(coords.x * 1000 / 25.4 * -1, cutOffArea, 7.2, vanDiff)  >= 0 && checkCollision) {
+            if(isValueInScale(coords.x * 1000 / 25.4 * -1, cutOffArea, 7.001, vanDiff)  >= 0 && checkCollision) {
               updateSolarArea(xPos, selectedFeature.name, 1)
               selectedFeature.parent.position.x = xPos;
               selectedFeature.parent.position.z = 0;
@@ -1237,6 +1236,9 @@
   });
 
   document.getElementById('color-selectable').addEventListener('click', function(event) {
+
+    console.log(addedState, solar50Area, solar35Area);
+
     if(event.target.classList.contains("color-item")) {
 
       const options = document.querySelectorAll('.color-item');
@@ -1246,11 +1248,9 @@
 
       event.target.classList.add('color-selected');
 
-      console.log(event.target.style.backgroundColor )
       bodyMaterial = new THREE.MeshPhysicalMaterial( {
         color: event.target.style.backgroundColor ?? 0xffffff, metalness: 1.0, roughness: 0.9, clearcoat: 1.0, clearcoatRoughness: 0.08
       });
-      console.log(bodyMesh, bodyMaterial)
       bodyMesh.material = bodyMaterial
     }
   })
@@ -1298,13 +1298,13 @@
         addProduct.model = model;
         availableProducts[3] = addProduct;
 
-        addProduct = availableProducts[6];
+        addProduct = availableProducts[7];
         if(addProduct.quantity > 0 && !flag){
           addProduct.quantity -= 1;
         } else if(flag) {
           addProduct.quantity += 1;
         }
-        availableProducts[6] = addProduct;
+        availableProducts[7] = addProduct;
 
         break;
       case "solar55":
@@ -1313,13 +1313,13 @@
         addProduct.model = model;
         availableProducts[4] = addProduct;
 
-        addProduct = availableProducts[7];
+        addProduct = availableProducts[8];
         if(addProduct.quantity > 0 && !flag){
           addProduct.quantity -= 1;
         } else if(flag) {
           addProduct.quantity += 1;
         }
-        availableProducts[7] = addProduct;
+        availableProducts[8] = addProduct;
         
         break;
       case "solar30":
@@ -1328,13 +1328,13 @@
         addProduct.model = model;
         availableProducts[5] = addProduct;
 
-        addProduct = availableProducts[8];
+        addProduct = availableProducts[6];
         if(addProduct.quantity > 0 && !flag){
           addProduct.quantity -= 1;
         } else if(flag) {
           addProduct.quantity += 1;
         }
-        availableProducts[8] = addProduct;
+        availableProducts[6] = addProduct;
 
         break;
       case "ladder":

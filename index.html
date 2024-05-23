@@ -339,6 +339,7 @@
 			padding: 10px;
 			width: 100%;
 			text-align: center;
+			border-right: 1px solid #676767;
 		}
 
 		.tab.active {
@@ -552,6 +553,16 @@
 			}
 		}
 
+		#select-template {
+			padding-top: 10px;
+		}
+		#select-template .selectable {
+			display: flex;
+			justify-content: center;
+			margin-top: 20px;
+			cursor: pointer;
+		}
+
 	</style>
 </head>
 <body>
@@ -677,6 +688,7 @@
 			<ul class="tabs">
 				<li data-tab-target="#build-list" class="active tab">Build List</li>
 				<li data-tab-target="#rack-tab" class="tab">Van</li>
+				<li data-tab-target="#select-template" class="tab">Template</li>
 			</ul>
 			<div class="tab-content">
 				<div id="build-list" data-tab-content class="active">
@@ -721,6 +733,13 @@
 						<div class="color-item" style="background-color: rgb(59, 82, 67);"></div>
 						<div class="color-item" style="background-color: rgb(146, 173, 62);"></div>
 					</div>
+				</div>
+
+				<div id="select-template" data-tab-content>
+					<div class="selectable">
+						<img src="images/temp-1.png" width="240" draggable="false"/>
+					</div>
+					
 				</div>
 			</div>
 			<div class="checkout-area">
@@ -836,7 +855,7 @@
 
 		let delelteBtn = document.getElementById("deleteButton")
 
-		const cutOffArea = [3.19, 25.7, 32.09, 64.72, 71.11, 85.19];
+		const cutOffArea = [3.19, 25.7, 32.09, 64.72, 71.11, 90.19];
 		const vanDiff = 3.2
 
 		let vanArea = [-16.535, 101.968];
@@ -851,13 +870,17 @@
 
 		let modelList = [];
 
+		let tempAddState = [-16.535, 10.465, 10.465, 37.465, 37.465, 62.965];
+		let temp55Area = [50.215]
+
+
 		let availableProducts = [
 			{htmlId: '', type: 'rack', handle: 'transithsld148-roof-rack', id: 43238854328539, price: 0, quantity: 1, xRadius: null},
-			{htmlId: 'airconditioner', type: 'air_conditioner', handle: 'dometic-rtx-2000', id: 43261478764763, price: 0, quantity: 0, xRadius: 17.2},
-			{htmlId: 'maxxair', type: 'maxxair', handle: 'maxxair-fan-deluxe', id: 40771325264036, price: 0, quantity: 0, xRadius: 13.41},
-			{htmlId: 'solar_panel200', type: 'solar200', handle: 'new-powa-200w-monocrystalline-solar-panel-12v', id: 42641211228379, price: 0, quantity: 0, xRadius: 13.6},
-			{htmlId: 'solar_panel50', type: 'solar55', handle: 'rich-solar-50w-solar-panel', id: 45081892683995, price: 0, quantity: 0, xRadius: 12.7},
-			{htmlId: 'solar_panel30', type: 'solar30', handle: '', id: null, price: 0, quantity: 0, xRadius: 16.889},
+			{htmlId: 'airconditioner', type: 'air_conditioner', handle: 'dometic-rtx-2000', id: 43261478764763, price: 0, quantity: 0, xRadius: 16.5},
+			{htmlId: 'maxxair', type: 'maxxair', handle: 'maxxair-fan-deluxe', id: 40771325264036, price: 0, quantity: 0, xRadius: 12.75},
+			{htmlId: 'solar_panel200', type: 'solar200', handle: 'new-powa-200w-monocrystalline-solar-panel-12v', id: 42641211228379, price: 0, quantity: 0, xRadius: 13.5},
+			{htmlId: 'solar_panel50', type: 'solar55', handle: 'rich-solar-50w-solar-panel', id: 45081892683995, price: 0, quantity: 0, xRadius: 12.75},
+			{htmlId: 'solar_panel30', type: 'solar30', handle: 'rich-solar-50w-solar-panel', id: 45081892683995, price: 0, quantity: 0, xRadius: 16.75},
 			{htmlId: '', type: 'ac_cross', handle: 'ford-transit-hsld-roof-rack-maxxfan-cross-bars-1', id: 44018089623771, price: 0, quantity: 0},
 			{htmlId: '', type: 'solar_cross', handle: 'ford-transit-high-speed-low-drag-roof-rack-cross-bars', id: 43279255503067, price: 0, quantity: 0},
 			{htmlId: '', type: 'max_cross', handle: 'ford-transit-hsld-roof-rack-maxxfan-cross-bars', id: 44018083234011, price: 0, quantity: 0},
@@ -1046,10 +1069,10 @@
 		let result = excludeRanges(vanArea, addedState);
 
 		if(selectedItem.type == 'air_conditioner') {
-			let intersections = getIntersectionIntervals(result, cutOffArea, selectedItem.xRadius - 7.2);
+			let intersections = getIntersectionIntervals(result, cutOffArea, selectedItem.xRadius - 7.02);
 			let canIndex = findFittingIntervalIndex(intersections, selectedItem.xRadius);
 			let xCenter = intersections[canIndex] + selectedItem.xRadius;
-			let positionX = -1 * xCenter * 0.0254;
+			let positionX = -1 * xCenter * 0.0254 - 0.;
 			return positionX;
 		} else if(selectedItem.type == 'maxxair') {
 			let intersections = getIntersectionIntervals(result, cutOffArea, selectedItem.xRadius - 7);
@@ -1119,7 +1142,7 @@
         loadItemDirectory = "https://cdn.shopify.com/3d/models/4ffe214498ea4572/airconditioner.glb";
         break;
       case "maxxair":
-        loadItemDirectory = "https://cdn.shopify.com/3d/models/79d9acc725fd9588/maxxair.glb";
+        loadItemDirectory = "models/maxxair.glb";
         break;
       case "solar_panel200":
         loadItemDirectory = "models/200W.glb";
@@ -1131,7 +1154,7 @@
         loadItemDirectory = "models/30W.glb";
         break;
       case "ladder":
-        loadItemDirectory = "https://cdn.shopify.com/3d/models/055283c9ebf899d6/ladder.glb";
+        loadItemDirectory = "models/ladder.glb";
         break;
     }
 
@@ -1220,7 +1243,7 @@
 				}
 
 				if(modelName == "air_conditioner"){
-					if(isValueInScale(coords.x * 1000 / 25.4 * -1, cutOffArea, 7.2, vanDiff) >= 0 && checkCollision) {
+					if(isValueInScale(coords.x * 1000 / 25.4 * -1, cutOffArea, 6.80001, vanDiff) >= 0 && checkCollision) {
 						updateSolarArea(coords.x, modelName, 1);
 
 						if (model) {
