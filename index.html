@@ -139,6 +139,8 @@
 
 		button {
 			cursor: pointer;
+			display: flex;
+			justify-content: center;
 		}
 
 		#deleteButton {
@@ -156,6 +158,22 @@
 			opacity: 0.8;
 			transition: opacity ease .3s;
       font-size: 20px;
+			font-weight: bold;
+		}
+		#resetButton {
+			position: absolute;
+			top: 0;
+			left: 0;
+			justify-content: center;
+			align-items: center;
+			background-color: transparent;
+			border: 0;
+			cursor: pointer;
+			padding: 5px;
+			opacity: 0.8;
+			transition: opacity ease .3s;
+      font-size: 20px;
+			font-weight: bold;
 		}
 
 		#deleteButton:hover {
@@ -567,16 +585,20 @@
 </head>
 <body>
 	<div class="threejs-container">
+		<a class="unaka-logo" href="/">
+			<img src="https://cdn.shopify.com/s/files/1/0412/9898/5124/files/Unaka_Brand_v2-03.png?v=1706796409&width=95" draggable="false" width="95" height="95"/>
+		</a>
 		<div id="configurator-container">
-			<a class="unaka-logo" href="/">
-				<img src="https://unakagearco.com/cdn/shop/files/Unaka_Brand_v2-03_e21d40f6-9b8b-4e20-b5e2-9354fcf6ce94.png?v=1707487297&width=95" draggable="false"/>
-			</a>
 			<div class="van-detail">
 				<h2 id="rack_title">Ford Transit Roof Rack - HSLD - 148 High Roof</h2>
 			</div>
 			<div id="container"></div>
 			<div class="items-container">
 				<div class="text-center announce-bar" >
+					<button id="resetButton">
+						<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 32 32"><path fill="currentColor" d="M18 28A12 12 0 1 0 6 16v6.2l-3.6-3.6L1 20l6 6l6-6l-1.4-1.4L8 22.2V16a10 10 0 1 1 10 10Z"/></svg>
+						Reset
+					</button>
 					<button id="deleteButton">
 						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 40 40">
 							<path fill="#ff0000"
@@ -585,7 +607,7 @@
 						Delete
 					</button>
 				</div>
-				<div class="d-flex">
+				<div class="d-flex drag-items">
 					<div class="item-box">
 						<div class="item-img" id="airconditioner" draggable="false">
 							<div class="carted-item">1</div>
@@ -637,7 +659,6 @@
 				</div>
 			</div>
 			<div class="action-btn-list">
-		
 				<button class="mb-3 left-tooltip" id="imgDownloadBtn">
 					<span class="tooltiptext">Download Image</span>
 					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
@@ -678,7 +699,6 @@
 				</button>
 			</div>
 		</div>
-
 		<div id="side-section">
 			<div id="side-collapse" >
 				<div class="collapsed">
@@ -692,32 +712,6 @@
 			</ul>
 			<div class="tab-content">
 				<div id="build-list" data-tab-content class="active">
-					<div class="build-item">
-						<div class="item-overview">
-							<img src="https://cdn.shopify.com/s/files/1/0412/9898/5124/products/NEW200WMonocrystalline12VSolarPanel_1.jpg?v=1651929182&width=50" width="50" height="50"/>
-							<span class="item-name">Newpowa - 200W 24V Monocrystalline Rigid Solar Panel</span>
-							<button id="removeModelBtn">&#10799;</button>
-						</div>
-						<div class="item-variants">
-							<div class="variant">
-								<div>
-									<input type="radio" name="Solar Panel" checked onclick=""><label>Silver</label>
-								</div>
-								<div>
-									$<span class="price">1000</span>
-								</div>
-							</div>
-							<div class="variant">
-								<div>
-									<input type="radio" name="Solar Panel" ><label>Black</label>
-								</div>
-								<div>
-									$<span class="price">1000</span>
-								</div>
-							</div>
-						</div>
-						<div class="divider"></div>
-					</div>
 				</div>
 				<div id="rack-tab" data-tab-content>
 					<div>Select van color</div>
@@ -734,12 +728,11 @@
 						<div class="color-item" style="background-color: rgb(146, 173, 62);"></div>
 					</div>
 				</div>
-
+	
 				<div id="select-template" data-tab-content>
 					<div class="selectable">
-						<img src="images/temp-1.png" width="240" draggable="false"/>
+						<img src="https://cdn.shopify.com/s/files/1/0412/9898/5124/files/temp-1.png?v=1716430453&width=240" width="240" height='' draggable="false" id="temp_1"/>
 					</div>
-					
 				</div>
 			</div>
 			<div class="checkout-area">
@@ -747,14 +740,14 @@
 					<div><span id="products-num">0</span> Items</div>
 					<div>$<span id="products-cost">0</span></div>
 				</div>
-				<button>
+				<button id="addCartBtn">
 					Checkout
 					&nbsp;
 					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 50 50"><path fill="#fff" d="M25 42c-9.4 0-17-7.6-17-17S15.6 8 25 8s17 7.6 17 17s-7.6 17-17 17m0-32c-8.3 0-15 6.7-15 15s6.7 15 15 15s15-6.7 15-15s-6.7-15-15-15"/><path fill="#fff" d="m24.7 34.7l-1.4-1.4l8.3-8.3l-8.3-8.3l1.4-1.4l9.7 9.7z"/><path fill="#fff" d="M16 24h17v2H16z"/></svg>
 				</button>
 			</div>
 		</div>
-	</div> 
+	</div>
 
 	<script type="importmap" async>
 		{
@@ -808,260 +801,391 @@
 		import { RGBELoader } from 'https://cdn.jsdelivr.net/npm/three@0.163.0/examples/jsm/loaders/RGBELoader.js';
 		import { GroundedSkybox } from 'https://cdn.jsdelivr.net/npm/three@0.163.0/examples/jsm/objects/GroundedSkybox.js';
 
-		let vanPrice = 3000;
-		let airConPrice = 200;
-		let maxxAirPrice = 100;
-		let solar200Price = 150;
-		let solar55Price = 100;
-		let solar30Price = 50;
-		let totalPrice = vanPrice;
+		
+		let vanPrice = 0;
+  let airConPrice = 0;
+  let maxxAirPrice = 0;
+  let solar200Price = 0;
+  let solar55Price = 0;
+  let solar30Price = 0;
+  let totalPrice = 0;
 
-		let canvas, camera, scene, renderer;
-		let cameraType = "perspective";
-		let canvasContainer = document.getElementById("container");
+  let vanArea = [-16.535, 101.968];
+  let addedState = [];
+  let selectedIndexOfState = -1;
+  let solar35Area = [];
+  let solar50Area = [];
 
-		let grid;
-		let controls;
+  let canvas, camera, scene, renderer;
+  let cameraType = "perspective";
+  let canvasContainer = document.getElementById("container");
 
-		let selectedFeature;
-		var targetForDragging;
+  let grid;
+  let controls;
 
-		let isDragging = false;
+  let selectedFeature;
+  var targetForDragging;
 
-		let intersects;
-		let raycaster;
-		let workPlane;
+  let isDragging = false;
 
-		let edges;
-		let line;
-		let edgeLine = null;
-		const lineMaterial = new THREE.LineBasicMaterial({ color: "#fff" });
+  let intersects;
+  let raycaster;
+  let workPlane;
 
-		let vanItem;
-		let cloneVanItem = null;
-		let loadItemDirectory;
+  let edges;
+  let line;
+  let edgeLine = null;
+  const lineMaterial = new THREE.LineBasicMaterial({ color: "#fff" });
 
-		let carModel;
-		let shodowMesh;
-		let model = null;
+  let vanItem;
+  let cloneVanItem = null;
+  let loadItemDirectory;
 
-		const shadow = new THREE.TextureLoader().load('https://cdn.shopify.com/s/files/1/0412/9898/5124/files/ford_ao.png?v=1711858184');
+  let carModel;
+  let shodowMesh;
+  let model = null;
 
-		let helper;
-		let clock;
+  let helper;
+  let clock;
+  let offsetTopCanvas
 
-		let selectedItem = '';
-		let ladderPlane;
+  let selectedItem = '';
+  let ladderPlane;
+  const cutOffArea = [3.19, 25.7, 32.09, 64.72, 71.11, 90.19];
+  const vanDiff = 3.2
 
-		let delelteBtn = document.getElementById("deleteButton")
+  let bodyMaterial;
+  let bodyMesh;
 
-		const cutOffArea = [3.19, 25.7, 32.09, 64.72, 71.11, 90.19];
-		const vanDiff = 3.2
-
-		let vanArea = [-16.535, 101.968];
-		let addedState = [];
-		let selectedIndexOfState = -1;
-		let solar35Area = [];
-		let solar50Area = [];
-
-		let bodyMaterial;
-		let bodyMesh;
-
-
-		let modelList = [];
-
-		let tempAddState = [-16.535, 10.465, 10.465, 37.465, 37.465, 62.965];
-		let temp55Area = [50.215]
-
-
-		let availableProducts = [
-			{htmlId: '', type: 'rack', handle: 'transithsld148-roof-rack', id: 43238854328539, price: 0, quantity: 1, xRadius: null},
-			{htmlId: 'airconditioner', type: 'air_conditioner', handle: 'dometic-rtx-2000', id: 43261478764763, price: 0, quantity: 0, xRadius: 16.5},
-			{htmlId: 'maxxair', type: 'maxxair', handle: 'maxxair-fan-deluxe', id: 40771325264036, price: 0, quantity: 0, xRadius: 12.75},
-			{htmlId: 'solar_panel200', type: 'solar200', handle: 'new-powa-200w-monocrystalline-solar-panel-12v', id: 42641211228379, price: 0, quantity: 0, xRadius: 13.5},
-			{htmlId: 'solar_panel50', type: 'solar55', handle: 'rich-solar-50w-solar-panel', id: 45081892683995, price: 0, quantity: 0, xRadius: 12.75},
-			{htmlId: 'solar_panel30', type: 'solar30', handle: 'rich-solar-50w-solar-panel', id: 45081892683995, price: 0, quantity: 0, xRadius: 16.75},
-			{htmlId: '', type: 'ac_cross', handle: 'ford-transit-hsld-roof-rack-maxxfan-cross-bars-1', id: 44018089623771, price: 0, quantity: 0},
-			{htmlId: '', type: 'solar_cross', handle: 'ford-transit-high-speed-low-drag-roof-rack-cross-bars', id: 43279255503067, price: 0, quantity: 0},
-			{htmlId: '', type: 'max_cross', handle: 'ford-transit-hsld-roof-rack-maxxfan-cross-bars', id: 44018083234011, price: 0, quantity: 0},
-			{htmlId: 'ladder', type: 'ladder', handle: 'transit-side-mount-ladder-high-roof', id: 44020238385371, price: 0, quantity: 0},
-		]
-
-		const vansInfo = [
-    {
-      type: 'transit_148',
-      vanModel: 'models/van1.glb',
-      modelDiff: 3.2,
-      cutOffArea: [3.19, 25.7, 32.09, 64.72, 71.11, 85.19],
-      topPlane: {
-        size: [3, 0.01, 1.55],
-        position: [-1.08, 2.37, 0]
-      },
-      ladderPlane: {
-        size: [3, 2, 0.01],
-        position: [-1.08, 1.3, -0.85]
-      },
-      parts: [
-        {
-          type: 'ac',
-          model: 'https://cdn.shopify.com/3d/models/4ffe214498ea4572/airconditioner.glb',
-          cutOffset: 7.2
-        },
-        {
-          type: 'fan',
-          model: 'https://cdn.shopify.com/3d/models/79d9acc725fd9588/maxxair.glb',
-          cutOffset: 7
-        },
-        {
-          type: 'ladder',
-          model: 'https://cdn.shopify.com/3d/models/ddf3dc617c9fd414/ladder.glb',
-          
-        }
-      ]
-    }
+  let availableProducts = [
+    {htmlId: '', type: 'rack', handle: 'transithsld148-roof-rack', id: 43238854328539, price: 0, quantity: 1, xRadius: null},
+    {htmlId: 'airconditioner', type: 'air_conditioner', handle: 'dometic-rtx-2000', id: 43261478764763, price: 0, quantity: 0, xRadius: 16.56},
+    {htmlId: 'maxxair', type: 'maxxair', handle: 'maxxair-fan-deluxe', id: 40771325264036, price: 0, quantity: 0, xRadius: 12.75},
+    {htmlId: 'solar_panel200', type: 'solar200', handle: 'new-powa-200w-monocrystalline-solar-panel-12v', id: 42641211228379, price: 0, quantity: 0, xRadius: 13.5},
+    {htmlId: 'solar_panel50', type: 'solar55', handle: 'rich-solar-50w-solar-panel', id: 45081892683995, price: 0, quantity: 0, xRadius: 12.75},
+    {htmlId: 'solar_panel30', type: 'solar30', handle: 'rich-solar-50w-solar-panel', id: 45081892683995, price: 0, quantity: 0, xRadius: 16.75},
+    {htmlId: '', type: 'ac_cross', handle: 'ford-transit-hsld-roof-rack-maxxfan-cross-bars-1', id: 44018089623771, price: 0, quantity: 0},
+    {htmlId: '', type: 'solar_cross', handle: 'ford-transit-high-speed-low-drag-roof-rack-cross-bars', id: 43279255503067, price: 0, quantity: 0},
+    {htmlId: '', type: 'max_cross', handle: 'ford-transit-hsld-roof-rack-maxxfan-cross-bars', id: 44018083234011, price: 0, quantity: 0},
+    {htmlId: 'ladder', type: 'ladder', handle: 'transit-side-mount-ladder-high-roof', id: 44020238385371, price: 0, quantity: 0},
   ]
 
-		document.addEventListener('dragstart', function (event) {
-			model = null;
-			vanItem = event.target;
+  const shadow = new THREE.TextureLoader().load('https://cdn.shopify.com/s/files/1/0412/9898/5124/files/ford_ao.png?v=1711858184');
 
-			selectedItem = availableProducts.filter(product => product.htmlId == event.target.id)[0]?.type ?? event.target.id;
+  const dracoLoader = new DRACOLoader();
+  dracoLoader.setDecoderPath('https://res.cloudinary.com/dbloegsbv/raw/upload/v1/jsm/');
 
-			//Hide the default drag image
-			event.dataTransfer.setDragImage(document.createElement('div'), 0, 0);
+  const loader = new GLTFLoader();
+  loader.setDRACOLoader(dracoLoader);
 
-			cloneVanItem = vanItem.cloneNode(true);
-			cloneVanItem.style.position = "absolute";
-			cloneVanItem.style.display = "none"; // Hide the clone initially
-			document.body.appendChild(cloneVanItem);
+  let delelteBtn = document.getElementById("deleteButton")
 
-			switch (event.target.id) {
-				case "airconditioner":
-					loadItemDirectory = "https://cdn.shopify.com/3d/models/4ffe214498ea4572/airconditioner.glb";
-					break;
-				case "maxxair":
-					loadItemDirectory = "https://cdn.shopify.com/3d/models/79d9acc725fd9588/maxxair.glb";
-					break;
-				case "solar_panel200":
-					loadItemDirectory = "models/200W.glb";
-					break;
-				case "solar_panel50":
-					loadItemDirectory = "models/55W.glb";
-					break;
-				case "solar_panel30":
-					loadItemDirectory = "models/30W.glb";
-					break;
-				case "ladder":
-					loadItemDirectory = "models/ladder.glb";
-					break;
-			}
+  canvasContainer.addEventListener('mousedown', (event) => {
+    if (event.button === 0) {
+      offsetTopCanvas = canvasContainer.getBoundingClientRect().top;
+      isDragging = true;
+      doMouseDown(event.clientX, event.clientY - offsetTopCanvas);
+    }
+  });
 
-			const dracoLoader = new DRACOLoader();
-			dracoLoader.setDecoderPath('https://res.cloudinary.com/dbloegsbv/raw/upload/v1/jsm/');
+  canvasContainer.addEventListener('mousemove', (event) => {
+    if (selectedFeature) {
+      if (selectedFeature.parent.name !== "van" && selectedFeature.name !== "ladder") {
+        if (isDragging) {
+          offsetTopCanvas = canvasContainer.getBoundingClientRect().top;
+          let a = 2 * (event.clientX / ((window.innerWidth < 1024 ? window.innerWidth: window.innerWidth - 300))) - 1;
+          let b = 1 - 2 * (event.clientY - offsetTopCanvas) / (window.innerHeight);
+          raycaster.setFromCamera(new THREE.Vector2(a, b), camera);
+          intersects = raycaster.intersectObject(targetForDragging);
+          if (intersects.length === 0) {
+            return;
+          }
 
+          let objectHit = intersects[0].object;
+          let locationX = intersects[0].point.x;
+          let locationZ = intersects[0].point.z;
+          let coords = new THREE.Vector3(locationX, 0, locationZ);
+          coords = scene.worldToLocal(coords);
 
-			const loader = new GLTFLoader();
-			loader.setDRACOLoader(dracoLoader);
+          const boundingBox = new THREE.Box3().setFromObject(selectedFeature);
+          const size = new THREE.Vector3();
+          boundingBox.getSize(size);
 
-			// loader.load(loadItemDirectory, function (gltf) {
-			// 	model = gltf.scene;
-			// });
-			const loadModel = (url) => {
-				return new Promise((resolve, reject) => {
-					loader.load(url, function (gltf) {
-						resolve(gltf.scene);
-					}, undefined, reject);
-				});
-			};
+          const selectedFeatureWidth = size.x;
+          let checkCollision = true;
+          const xPos = Math.min(0.428 - selectedFeatureWidth / 2, Math.max(-2.2, coords.x));
 
-			// Usage example
-			loadModel(loadItemDirectory)
-				.then((modelItem) => {
-					// Do something with the loaded model
-					model = modelItem;
-					console.log("loaded")
-				})
-				.catch((error) => {
-					console.error('An error occurred while loading the model:', error);
-				});
-		});
+          if(selectedFeature.name != 'ladder' && selectedFeature.name != 'solar30' && selectedFeature.name != 'solar55'){
+            checkCollision = checkIsAvailable(xPos, selectedFeature.name, 2);
+          }
 
-	function excludeRanges(vanArea, addedState) {
-    // Sort addedState into pairs of ranges
+          if(selectedFeature.name == "air_conditioner"){
+            if(isValueInScale(coords.x * 1000 / 25.4 * -1, cutOffArea, 7.001, vanDiff)  >= 0 && checkCollision) {
+              updateSolarArea(xPos, selectedFeature.name, 1)
+              selectedFeature.parent.position.x = xPos;
+              selectedFeature.parent.position.z = 0;
+              updateModelState(2, selectedFeature.name, xPos)
+            } 
+          } else if(selectedFeature.name == 'maxxair'){
+            if(isValueInScale(coords.x * 1000 / 25.4 * -1, cutOffArea, 7, vanDiff)  >= 0 && checkCollision){
+              updateSolarArea(xPos, selectedFeature.name, 1)
+              selectedFeature.parent.position.x = xPos;
+              selectedFeature.parent.position.z = 0;
+              updateModelState(2, selectedFeature.name, xPos)
+            } 
+          } else if(selectedFeature.name == 'solar30') {
+            selectedFeature.parent.position.x = -1 * solar35Area[0] * 0.0254;
+            selectedFeature.parent.position.z = 0;
+          } else if(selectedFeature.name == 'solar55') {
+            selectedFeature.parent.position.x = -1 * solar50Area[0] * 0.0254;
+            selectedFeature.parent.position.z = 0;
+          }else {
+            if(checkCollision) {
+              selectedFeature.parent.position.x = xPos;
+              selectedFeature.parent.position.z = 0;
+              updateModelState(2, selectedFeature.name, xPos)
+            }
+          }
+          render();
+        }
+      }
+      controls.enableRotate = false;
+    }
+    else {
+      controls.enableRotate = true;
+    }
+  });
+
+  canvasContainer.addEventListener('mouseup', () => {
+    isDragging = false;
+  });
+  
+  document.addEventListener('DOMContentLoaded', function () {
+    canvas = document.querySelector('canvas[data-engine="three.js r162"]');
+  });
+
+  document.getElementById('color-selectable').addEventListener('click', function(event) {
+
+    if(event.target.classList.contains("color-item")) {
+      const options = document.querySelectorAll('.color-item');
+      options.forEach(option => {
+        option.classList.remove('color-selected')
+      })
+      event.target.classList.add('color-selected');
+      bodyMaterial = new THREE.MeshPhysicalMaterial( {
+        color: event.target.style.backgroundColor ?? 0xffffff, metalness: 1.0, roughness: 0.9, clearcoat: 1.0, clearcoatRoughness: 0.08
+      });
+      bodyMesh.material = bodyMaterial
+    }
+  })
+
+  document.getElementById('select-template').addEventListener('click', function(event) {
+    if (event.target.id.includes('temp')) {
+      let tempOrder = ['solar_panel200', 'solar_panel200', 'maxxair', 'airconditioner', 'solar_panel50', 'solar_panel30'];
+
+      function clickWithDelay(elements, delay) {
+        elements.forEach((elementId, index) => {
+          setTimeout(() => {
+            var elem = document.getElementById(elementId);
+            if (elem) {
+              elem.click();
+            }
+          }, index * delay);
+        });
+      }
+
+      clickWithDelay(tempOrder, 500);
+    }
+  });
+
+  document.getElementById('deleteButton').addEventListener('click', function () {
+    if (selectedFeature) {
+      scene.remove(selectedFeature.parent);
+      this.style.display = "none";
+      calcPrice(selectedFeature.name, false, null)
+      updateModelState(3, selectedFeature.name, selectedFeature.parent.position.x)
+      render();
+      selectedFeature = null;
+    }
+  });
+
+  document.getElementById('addCartBtn').addEventListener('click', async function() {
+    let cartItems = []
+    availableProducts.map((product) => {
+      if(product.price > 0 && product.quantity > 0) {
+        cartItems.push({
+          'id': product.id,
+          'quantity': product.quantity
+        })
+      }
+    });
+
+    const formData = {'items': cartItems};
+
+    if(cartItems.length > 0) {
+      let token = '';
+      await fetch(window.Shopify.routes.root + 'cart/clear.js',{
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+      })
+      .then(response => {
+        return response.json();
+      })
+      .then((data) => {
+        token = data.token;
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+        return false;
+      });
+
+      await fetch(window.Shopify.routes.root + 'cart/add.js', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(formData)
+      })
+      .then(response => {
+        return response.json();
+      })
+      .then((addedData) => {
+        gotoCheckout(token)
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+        return false;
+      });
+    } 
+  });
+
+  document.getElementById('imgDownloadBtn').addEventListener('click', function () {
+    renderer.render(scene, camera);
+    var imgData = renderer.domElement.toDataURL();
+    var link = document.createElement('a');
+    link.download = 'scene.png';
+    link.href = imgData;
+    link.click();
+  });
+
+  document.getElementById('camChangeBtn').addEventListener('click', function () {
+    const cameraPosition = camera.position;
+    const widthValue = window.innerWidth < 1024 ? window.innerWidth : (window.innerWidth - 300)
+
+    if (cameraType === "perspective") {
+      camera = new THREE.OrthographicCamera(-widthValue / 340, widthValue / 340, window.innerHeight / 340, -window.innerHeight / 340, 1, 10000);
+      cameraType = "orthographic"
+    }
+    else {
+      camera = new THREE.PerspectiveCamera(40, widthValue / window.innerHeight, 1, 10000);
+      cameraType = "perspective"
+    }
+    camera.position.set(cameraPosition.x, cameraPosition.y, cameraPosition.z);
+    setCameraView();
+    setViewCube()
+  });
+
+  document.getElementById('resetButton').addEventListener('click', resetConfig);
+
+  var productElements = document.getElementsByClassName("item-img");
+
+	for (var i = 0; i < productElements.length; i++) {
+    productElements[i].addEventListener('click', event => handleClickProduct(event), false);
+	}
+
+  function getPrices() {
+    const dataPromises = availableProducts.map(async (product) => {
+       const response = await fetch(window.Shopify.routes.root + `products/${product.handle}.js`);
+       const productData = await response.json();
+       return productData;
+    });
+   
+    Promise.all(dataPromises)
+      .then(data => {
+        const priceProducts = availableProducts.map((product, index) => {
+          let productPrice = 0;
+          const productData = data[index];
+
+          if (productData.id === product.id) {
+            productPrice = productData.price / 100;
+          } else {
+            const variant = productData.variants.find(variant => variant.id === product.id);
+            if (variant) {
+              productPrice = variant.price / 100;
+            }
+          }
+          if(product.type == 'rack') {
+            totalPrice = productPrice;
+            document.getElementById('products-num').innerHTML = 1
+            document.getElementById("products-cost").innerHTML = productPrice;
+          }
+          return { ...product, price: productPrice, title: productData?.title, image: productData?.featured_image, variants: productData?.variants, url: productData?.url };
+        });
+
+        // updateBuildState(priceProducts);
+        availableProducts = priceProducts
+      })
+      .catch(error => console.error('Error fetching product data:', error));
+  }
+
+  // getPrices();
+
+  function excludeRanges(vanArea, addedState) {
     let ranges = [];
     for (let i = 0; i < addedState.length; i += 2) {
         ranges.push([addedState[i], addedState[i + 1]]);
     }
-
-    // Sort ranges by start point
     ranges.sort((a, b) => a[0] - b[0]);
-
     let result = [];
     let currentStart = vanArea[0];
     let currentEnd = vanArea[1];
 
     for (let range of ranges) {
-        let [rangeStart, rangeEnd] = range;
-
-        // If the current range starts after the current segment ends, skip it
-        if (rangeStart > currentEnd) continue;
-
-        // If the current range overlaps with the current segment
-        if (rangeStart > currentStart) {
-            result.push(currentStart, rangeStart);
-        }
-
-        // Adjust the current start to be after the range end
-        currentStart = Math.max(currentStart, rangeEnd);
+      let [rangeStart, rangeEnd] = range;
+      if (rangeStart > currentEnd) continue;
+      if (rangeStart > currentStart) {
+          result.push(currentStart, rangeStart);
+      }
+      currentStart = Math.max(currentStart, rangeEnd);
     }
 
-    // If there is any remaining part of the vanArea after the last range
     if (currentStart < currentEnd) {
-        result.push(currentStart, currentEnd);
+      result.push(currentStart, currentEnd);
     }
-
     return result;
 	}
 
 	function findFittingIntervalIndex(result, radius) {
-    // The minimum length required for the new area to fit
     let requiredLength = 2 * radius;
-
-    // Iterate through each interval in the result array
     for (let i = 0; i < result.length; i += 2) {
-        let intervalStart = result[i];
-        let intervalEnd = result[i + 1];
-
-        // Check if the interval is long enough to fit the new area
-        if (intervalEnd - intervalStart >= requiredLength) {
-            return i; // Return the index of the interval
-        }
+      let intervalStart = result[i];
+      let intervalEnd = result[i + 1];
+      if (intervalEnd - intervalStart >= requiredLength) {
+        return i;
+      }
     }
-
-    return -1; // No suitable interval found
+    return -1;
 	}
 
 	function getIntersectionIntervals(intervals1, intervals2, diff) {
     let intersections = [];
 
     for (let i = 0; i < intervals1.length; i += 2) {
-        let start1 = intervals1[i];
-        let end1 = intervals1[i + 1];
+      let start1 = intervals1[i];
+      let end1 = intervals1[i + 1];
 
-        for (let j = 0; j < intervals2.length; j += 2) {
-            let start2 = intervals2[j] - diff - vanDiff;
+      for (let j = 0; j < intervals2.length; j += 2) {
+        let start2 = intervals2[j] - diff - vanDiff;
             let end2 = intervals2[j + 1] + diff - vanDiff;
-
-            // Find the intersection of intervals [start1, end1] and [start2, end2]
-            let maxStart = Math.max(start1, start2);
-            let minEnd = Math.min(end1, end2);
-
-            if (maxStart < minEnd) {
-                intersections.push(maxStart, minEnd);
-            }
+        let maxStart = Math.max(start1, start2);
+        let minEnd = Math.min(end1, end2);
+        if (maxStart < minEnd) {
+            intersections.push(maxStart, minEnd);
         }
+      }
     }
-
     return intersections;
 	}
 
@@ -1069,10 +1193,10 @@
 		let result = excludeRanges(vanArea, addedState);
 
 		if(selectedItem.type == 'air_conditioner') {
-			let intersections = getIntersectionIntervals(result, cutOffArea, selectedItem.xRadius - 7.02);
+			let intersections = getIntersectionIntervals(result, cutOffArea, selectedItem.xRadius - 7.001);
 			let canIndex = findFittingIntervalIndex(intersections, selectedItem.xRadius);
 			let xCenter = intersections[canIndex] + selectedItem.xRadius;
-			let positionX = -1 * xCenter * 0.0254 - 0.;
+			let positionX = -1 * xCenter * 0.0254;
 			return positionX;
 		} else if(selectedItem.type == 'maxxair') {
 			let intersections = getIntersectionIntervals(result, cutOffArea, selectedItem.xRadius - 7);
@@ -1089,21 +1213,13 @@
 
 	}
 
-	var productElements = document.getElementsByClassName("item-img");
-
-	for (var i = 0; i < productElements.length; i++) {
-    productElements[i].addEventListener('click', event => handleClickProduct(event), false);
-	}
-
 	function handleClickProduct(event){
 		let positionX = 0;
 		let positionY = 2.35;
 		let positionZ = 0;
-
 		model = null;
-
-		selectedItem = availableProducts.filter(product => product.htmlId == event.target.id)[0];
-
+		vanItem = event.target;
+		let selectedItem = availableProducts.filter(product => product.htmlId == event.target.id)[0];
 		if(!selectedItem) return;
 
 		if(selectedItem.type == 'ladder') {
@@ -1115,54 +1231,44 @@
 			positionY = 2.35;
 			positionZ = 0;
 			if(selectedItem.type == 'solar30') {
-
 				let acItem = availableProducts.filter(product => product.type == 'air_conditioner')[0];
 				if (selectedItem.quantity >= acItem.quantity) return false;
 
 				if(solar35Area.length > 0) positionX = -1 * solar35Area[0] * 0.0254;
 				else return;
 			} else if(selectedItem.type == 'solar55') {
-
 				let fanItem = availableProducts.filter(product => product.type == 'maxxair')[0];
 				if (selectedItem.quantity >= fanItem.quantity) return false;
 
 				if(solar50Area.length > 0) positionX = -1 * solar50Area[0] * 0.0254;
 				else return;
 			} else {
-
 				positionX = getAvailablePoint(selectedItem);
 				if(!positionX) return;
-
 				updateModelState(1, selectedItem.type, positionX);
 			}
 		}
 
 		switch (event.target.id) {
       case "airconditioner":
-        loadItemDirectory = "https://cdn.shopify.com/3d/models/4ffe214498ea4572/airconditioner.glb";
+        loadItemDirectory = "https://cdn.shopify.com/3d/models/3c312cc59fdb9f81/airconditioner.glb";
         break;
       case "maxxair":
-        loadItemDirectory = "models/maxxair.glb";
+        loadItemDirectory = "https://cdn.shopify.com/3d/models/c3eeb44577bd8f6a/maxxair.glb";
         break;
       case "solar_panel200":
-        loadItemDirectory = "models/200W.glb";
+        loadItemDirectory = "https://cdn.shopify.com/3d/models/41179ec7afded29e/200W.glb";
         break;
       case "solar_panel50":
-        loadItemDirectory = "models/55W.glb";
+        loadItemDirectory = "https://cdn.shopify.com/3d/models/cfce53c8523cbc41/55W.glb";
         break;
       case "solar_panel30":
-        loadItemDirectory = "models/30W.glb";
+        loadItemDirectory = "https://cdn.shopify.com/3d/models/dfcf1aaf24802514/30W.glb";
         break;
       case "ladder":
-        loadItemDirectory = "models/ladder.glb";
+        loadItemDirectory = "https://cdn.shopify.com/3d/models/e1c66ba4aca3d154/ladder.glb";
         break;
     }
-
-    const dracoLoader = new DRACOLoader();
-    dracoLoader.setDecoderPath('https://res.cloudinary.com/dbloegsbv/raw/upload/v1/jsm/');
-
-    const loader = new GLTFLoader();
-    loader.setDRACOLoader(dracoLoader);
 
     const loadModel = (url) => {
       return new Promise((resolve, reject) => {
@@ -1181,840 +1287,532 @@
 				scene.add(model);
 
 				updateSolarArea(positionX, selectedItem.type, 1)
-				// calcPrice(selectedItem.type, true, model);
+				calcPrice(selectedItem.type, true, model);
       })
       .catch((error) => {
         console.error('An error occurred while loading the model:', error);
       });
-	}
-
-	
-		document.addEventListener('dragover', function (event) {
-
-			let a = 2 * event.clientX / (window.innerWidth - 300) - 1;
-			let b = 1 - 2 * event.clientY / window.innerHeight;
-
-			let positionX = 0;
-			let positionY = 0;
-			let positionZ = 0;
-
-			if(selectedItem == 'ladder') {
-				raycaster.setFromCamera(new THREE.Vector2(a, b), camera);
-				intersects = raycaster.intersectObjects([ladderPlane]);
-
-				event.preventDefault();
-
-				// positionX = -0.85216;
-				positionX = -0.6;
-				positionY = 1.1717;
-				positionZ = -0.97864;
-			} else {
-				
-
-				raycaster.setFromCamera(new THREE.Vector2(a, b), camera);
-				intersects = raycaster.intersectObjects([workPlane]);
-
-				event.preventDefault();
-				
-				positionY = 2.35;
-				positionZ = 0;
-
-			}
-
-			if (intersects.length > 0) {
-
-				event.preventDefault();
-				cloneVanItem.style.display = "none";
-
-				let item = intersects[0];
-				let objectHit = item.object;
-
-				let locationX = item.point.x;
-				let locationZ = item.point.z;
-				let coords = new THREE.Vector3(locationX, 0, locationZ);
-				scene.worldToLocal(coords);
-
-				const modelName = model.children[0].name;
-
-				let checkCollision = true;
-
-				if(selectedItem != 'ladder' && modelName != 'solar30' && modelName != 'solar55'){
-					checkCollision = checkIsAvailable(coords.x, modelName, 1);
-				}
-
-				if(modelName == "air_conditioner"){
-					if(isValueInScale(coords.x * 1000 / 25.4 * -1, cutOffArea, 6.80001, vanDiff) >= 0 && checkCollision) {
-						updateSolarArea(coords.x, modelName, 1);
-
-						if (model) {
-							scene.remove(model);
-							model.position.x = selectedItem == 'ladder' ? positionX: coords.x;
-							model.position.y = positionY;
-							model.position.z = positionZ;
-							scene.add(model);
-						}
-					} 
-				} else if(modelName == 'maxxair'){
-					if(isValueInScale(coords.x * 1000 / 25.4 * -1, cutOffArea, 7, vanDiff) >= 0 && checkCollision){
-						updateSolarArea(coords.x, modelName, 1)
-						if (model) {
-							scene.remove(model);
-							model.position.x = selectedItem == 'ladder' ? positionX: coords.x;
-							model.position.y = positionY;
-							model.position.z = positionZ;
-							scene.add(model);
-						}
-					} 
-				} else if(modelName == 'solar30') {
-					if (model && solar35Area.length > 0) {
-						
-						scene.remove(model);
-						model.position.x = -1 * solar35Area[0] * 0.0254;
-						model.position.y = positionY;
-						model.position.z = positionZ;
-						scene.add(model);
-					}
-				} else if(modelName == 'solar55') {
-					if (model && solar50Area.length > 0) {
-						
-						scene.remove(model);
-						model.position.x = -1 * solar50Area[0] * 0.0254;
-						model.position.y = positionY;
-						model.position.z = positionZ;
-						scene.add(model);
-					}
-				} else {
-					if (model && checkCollision) {
-							scene.remove(model);
-							model.position.x = selectedItem == 'ladder' ? positionX: coords.x;
-							model.position.y = positionY;
-							model.position.z = positionZ;
-							scene.add(model);
-						}
-				}
-				
-			} else {
-				console.log("remove model")
-				cloneVanItem.style.display = "block";
-				cloneVanItem.style.left = event.clientX + 'px';
-				cloneVanItem.style.top = event.clientY + 'px';
-				cloneVanItem.style.transform = "translate(-50%,-50%)";
-				if (model) {
-					scene.remove(model);
-				}
-			}
-		});
-
-		document.addEventListener('dragend', function (event) {
-			if (cloneVanItem) {
-				document.body.removeChild(cloneVanItem);
-			}
-			if (model) {
-				scene.remove(model);
-			}
-			event.preventDefault();
-			let a = 2 * event.clientX / (window.innerWidth - 300) - 1;
-			let b = 1 - 2 * event.clientY / window.innerHeight;
-
-			let positionX = 0;
-			let positionY = 0;
-			let positionZ = 0;
-
-			if(selectedItem == 'ladder') {
-				raycaster.setFromCamera(new THREE.Vector2(a, b), camera);
-				intersects = raycaster.intersectObjects([ladderPlane]);
-
-				event.preventDefault();
-
-				// positionX = -0.85216;
-				positionX = -0.602;
-				positionY = 1.1717;
-				positionZ = -0.97864;
-			} else {
-				
-				raycaster.setFromCamera(new THREE.Vector2(a, b), camera);
-				intersects = raycaster.intersectObjects([workPlane]);
-
-				event.preventDefault();
-				
-				positionY = 2.35;
-				positionZ = 0;
-
-			}
-		
-			if (intersects.length == 0) {
-				return false;
-			}
-			else {
-				let item = intersects[0];
-				let objectHit = item.object;
-
-				let locationX = item.point.x;
-				let locationZ = item.point.z;
-				let coords = new THREE.Vector3(locationX, 0, locationZ);
-
-				let checkCollision = true;
-
-				if(selectedItem != 'ladder' && selectedItem != 'solar30' && selectedItem != 'solar55'){
-					checkCollision = checkIsAvailable(locationX, selectedItem, 2);
-				} else if(selectedItem == 'solar30'){
-					checkCollision = false;
-					if(solar35Area.length > 0) checkCollision = true;
-				} else if( selectedItem == 'solar55') {
-					checkCollision = false;
-					if(solar50Area.length > 0) checkCollision = true;
-				}
-
-				if(!checkCollision) return;
-
-
-				if(selectedItem == "air_conditioner"){
-
-					console.log(isValueInScale(locationX * 1000 / 25.4 * -1, cutOffArea, 7.2, vanDiff))
-					if(isValueInScale(locationX * 1000 / 25.4 * -1, cutOffArea, 7.2, vanDiff) == -1) {
-						return;
-					} 
-				} else if(selectedItem == 'maxxair'){
-					console.log(isValueInScale(locationX * 1000 / 25.4 * -1, cutOffArea, 7, vanDiff))
-					if(isValueInScale(locationX * 1000 / 25.4 * -1, cutOffArea, 7, vanDiff) == -1) {
-						return;
-					} 
-				}
-
-				const dracoLoader = new DRACOLoader();
-				dracoLoader.setDecoderPath('https://res.cloudinary.com/dbloegsbv/raw/upload/v1/jsm/');
-
-				const loader = new GLTFLoader();
-				loader.setDRACOLoader(dracoLoader);
-
-				loader.load(loadItemDirectory, function (gltf) {
-					const itemModel = gltf.scene;
-					itemModel.position.x = selectedItem == 'ladder' ? positionX: model.position.x ?? coords.x;
-					itemModel.position.y = positionY;
-					itemModel.position.z = positionZ;
-					scene.add(itemModel);
-
-					modelList.push(itemModel)
-
-					if(selectedItem != 'solar30' && selectedItem != 'solar55') {
-						console.log("*****: ", addedState)
-						updateModelState(1, selectedItem, itemModel.position.x);
-					}
-
-					calcPrice(itemModel.children[0].name, true, itemModel);
-
-
-					console.log("adssadfsdfadfs")
-					selectedItem = ""
-				});
-				render();
-			}
-			isDragging = false;
-		});
-
-		canvasContainer.addEventListener('mousedown', (event) => {
-			if (event.button === 0) {
-				isDragging = true;
-				doMouseDown(event.clientX, event.clientY);
-			}
-		});
-		canvasContainer.addEventListener('mousemove', (event) => {
-			if (selectedFeature) {
-				if (selectedFeature.parent.name !== "van" && selectedFeature.name !== "ladder") {
-					if (isDragging) {
-
-						let a = 2 * event.clientX / (window.innerWidth - 300) - 1;
-						let b = 1 - 2 * event.clientY / window.innerHeight;
-						raycaster.setFromCamera(new THREE.Vector2(a, b), camera);
-						intersects = raycaster.intersectObject(targetForDragging);
-						if (intersects.length === 0) {
-							return;
-						}
-
-						let objectHit = intersects[0].object;
-						let locationX = intersects[0].point.x;
-						let locationZ = intersects[0].point.z;
-						let coords = new THREE.Vector3(locationX, 0, locationZ);
-						coords = scene.worldToLocal(coords);
-
-						const boundingBox = new THREE.Box3().setFromObject(selectedFeature);
-						const size = new THREE.Vector3();
-						boundingBox.getSize(size);
-
-						// Extract the width from the dimensions
-						const selectedFeatureWidth = size.x;
-
-						let checkCollision = true;
-						const xPos = Math.min(0.428 - selectedFeatureWidth / 2, Math.max(-2.2, coords.x));
-
-						if(selectedFeature.name != 'ladder' && selectedFeature.name != 'solar30' && selectedFeature.name != 'solar55'){
-							checkCollision = checkIsAvailable(xPos, selectedFeature.name, 2);
-						}
-
-						if(selectedFeature.name == "air_conditioner"){
-							if(isValueInScale(coords.x * 1000 / 25.4 * -1, cutOffArea, 7.2, vanDiff)  >= 0 && checkCollision) {
-
-								updateSolarArea(xPos, selectedFeature.name, 1)
-								selectedFeature.parent.position.x = xPos;
-								selectedFeature.parent.position.z = 0;
-								updateModelState(2, selectedFeature.name, xPos)
-							} 
-						} else if(selectedFeature.name == 'maxxair'){
-							if(isValueInScale(coords.x * 1000 / 25.4 * -1, cutOffArea, 7, vanDiff)  >= 0 && checkCollision){
-
-								updateSolarArea(xPos, selectedFeature.name, 1)
-								selectedFeature.parent.position.x = xPos;
-								selectedFeature.parent.position.z = 0;
-								updateModelState(2, selectedFeature.name, xPos)
-							} 
-						} else if(selectedFeature.name == 'solar30') {
-							selectedFeature.parent.position.x = -1 * solar35Area[0] * 0.0254;
-							selectedFeature.parent.position.z = 0;
-						} else if(selectedFeature.name == 'solar55') {
-							selectedFeature.parent.position.x = -1 * solar50Area[0] * 0.0254;
-							selectedFeature.parent.position.z = 0;
-						}else {
-							if(checkCollision) {
-								selectedFeature.parent.position.x = xPos;
-								selectedFeature.parent.position.z = 0;
-								updateModelState(2, selectedFeature.name, xPos)
-							}
-						}
-						render();
-					}
-				}
-				controls.enableRotate = false;
-			}
-			else {
-				controls.enableRotate = true;
-			}
-		});
-		canvasContainer.addEventListener('mouseup', () => {
-			isDragging = false;
-		});
-
-		document.getElementById('deleteButton').addEventListener('click', function () {
-			if (selectedFeature) {
-				scene.remove(selectedFeature.parent); // Remove the selected feature from the scene
-				this.style.display = "none";
-
-				calcPrice(selectedFeature.name, false, null)
-
-				updateModelState(3, selectedFeature.name, selectedFeature.parent.position.x)
-
-				render();
-
-				selectedFeature = null; // Reset the selected feature
-			}
-		});
-
-		document.getElementById('imgDownloadBtn').addEventListener('click', function () {
-			// Render the scene
-			renderer.render(scene, camera);
-			var imgData = renderer.domElement.toDataURL();
-			var link = document.createElement('a');
-			link.download = 'scene.png';
-			link.href = imgData;
-			link.click();
-		});
-
-		document.getElementById('camChangeBtn').addEventListener('click', function () {
-			const cameraPosition = camera.position;
-			const widthValue = window.innerWidth < 1024 ? window.innerWidth : (window.innerWidth - 300)
-
-			if (cameraType === "perspective") {
-				camera = new THREE.OrthographicCamera(-widthValue / 340, widthValue / 340, window.innerHeight / 340, -window.innerHeight / 340, 1, 10000);
-				cameraType = "orthographic"
-			}
-			else {
-				camera = new THREE.PerspectiveCamera(40, widthValue / window.innerHeight, 1, 10000);
-				cameraType = "perspective"
-			}
-			camera.position.set(cameraPosition.x, cameraPosition.y, cameraPosition.z);
-			setCameraView();
-			setViewCube()
-		});
-		function doMouseDown(x, y) {
-			controls.enableRotate = false;
-			if (selectedFeature) {
-				removeEdgeLines(selectedFeature);
-				selectedFeature = null;
-				selectedIndexOfState = -1;
-			}
-			scene.remove(targetForDragging);
-			delelteBtn.style.display = "none";
-
-			let a = 2 * x / (window.innerWidth - 300) - 1;
-			let b = 1 - 2 * y / window.innerHeight;
-			raycaster.setFromCamera(new THREE.Vector2(a, b), camera);
-			intersects = raycaster.intersectObjects(scene.children);  // no need for recusion since all objects are top-level
-			if (intersects.length == 0) {
-				return false;
-			}
-			let item = intersects[0];
-			let objectHit = item.object;
-
-			if (objectHit.parent &&
-				objectHit.parent.name != "" &&
-				objectHit.parent.name != "van" &&
-				objectHit != workPlane &&
-				objectHit != shodowMesh) {
-				scene.add(targetForDragging);
-				targetForDragging.position.set(0, item.point.y, 0);
-
-				// Add or remove edge lines based on selection
-				if (objectHit != selectedFeature) {
-					selectedFeature = objectHit;
-					addEdgeLines(selectedFeature);
-					delelteBtn.style.display = "flex";
-					selectedIndexOfState = checkIsAvailable(objectHit.parent.position.x, selectedFeature.name, 3);
-				}
-				else {
-					selectedFeature = null;
-					removeEdgeLines(selected);
-					delelteBtn.style.display = "none";
-					selectedIndexOfState = -1;
-				}
-
-				render();
-			}
-
-
-		}
-
-		document.addEventListener('DOMContentLoaded', function () {
-			canvas = document.querySelector('canvas[data-engine="three.js r162"]');
-		});
-
-		function addEdgeLines(object) {
-			// Remove existing edge line if it exists
-			if (edgeLine) {
-				object.remove(edgeLine);
-				edgeLine.geometry.dispose();
-				edgeLine.material.dispose();
-			}
-
-			// Create new edge lines
-			const edges = new THREE.EdgesGeometry(object.geometry);
-			edgeLine = new THREE.LineSegments(edges, lineMaterial);
-			object.add(edgeLine);
-		}
-
-		function removeEdgeLines(object) {
-			if (edgeLine) {
-				object.remove(edgeLine);
-				edgeLine.geometry.dispose();
-				edgeLine.material.dispose();
-				edgeLine = null;
-			}
-		}
-
-	function calcPrice(modelName, flag, model) {
-    let itemPrice = 0;
+  }
+
+  function gotoCheckout(token) {
+    window.open(`/checkouts/cn/${token}`, '_blank')
+  }
+
+  function resetConfig() {
+    let models = scene.children.filter((group) => 
+      group?.children[0]?.name == 'maxxair' || 
+      group?.children[0]?.name == 'air_conditioner' || 
+      group?.children[0]?.name == 'solar200' || 
+      group?.children[0]?.name == 'solar55' || 
+      group?.children[0]?.name == 'solar30'|| 
+      group?.children[0]?.name == 'ladder' );
+
+    for(let x in models) {
+      scene.remove(models[x])
+    }
+
+    let productList = [...availableProducts]
+
+    productList = productList.map(product => {
+      let newProduct = {...product};
+
+      if(newProduct.type == 'rack') newProduct.quantity = 1;
+      else newProduct.quantity = 0;
+
+      return newProduct
+    });
+
+    availableProducts = productList;
+
+    addedState = [];
+		selectedIndexOfState = -1;
+		solar35Area = [];
+		solar50Area = [];
+
+    updateCartState()
+    // updateBuildState(productList)
+    calculatePrice(productList)
+  }
+
+  function doMouseDown(x, y) {
+    controls.enableRotate = false;
+    if (selectedFeature) {
+      removeEdgeLines(selectedFeature);
+      selectedFeature = null;
+      selectedIndexOfState = -1;
+    }
+    scene.remove(targetForDragging);
+    delelteBtn.style.display = "none";
+
+    let a = 2 * x /( (window.innerWidth < 1024 ? window.innerWidth: window.innerWidth - 300)) - 1;
+    let b = 1 - 2 * y / window.innerHeight;
+    raycaster.setFromCamera(new THREE.Vector2(a, b), camera);
+    intersects = raycaster.intersectObjects(scene.children);
+    if (intersects.length == 0) {
+      return false;
+    }
+    let item = intersects[0];
+    let objectHit = item.object;
+    if (objectHit.parent &&
+      objectHit.parent.name != "" &&
+      objectHit.parent.name != "van" &&
+      objectHit != workPlane &&
+      objectHit != shodowMesh) {
+      scene.add(targetForDragging);
+      targetForDragging.position.set(0, item.point.y, 0);
+
+      if (objectHit != selectedFeature) {
+        selectedFeature = objectHit;
+        addEdgeLines(selectedFeature);
+        delelteBtn.style.display = "flex";
+        selectedIndexOfState = checkIsAvailable(objectHit.parent.position.x, selectedFeature.name, 3);
+      }
+      else {
+        selectedFeature = null;
+        removeEdgeLines(selected);
+        delelteBtn.style.display = "none";
+        selectedIndexOfState = -1;
+      }
+      render();
+    }
+  }
+
+
+  function addEdgeLines(object) {
+    if (edgeLine) {
+      object.remove(edgeLine);
+      edgeLine.geometry.dispose();
+      edgeLine.material.dispose();
+    }
+    const edges = new THREE.EdgesGeometry(object.geometry);
+    edgeLine = new THREE.LineSegments(edges, lineMaterial);
+    object.add(edgeLine);
+  }
+
+  function removeEdgeLines(object) {
+    if (edgeLine) {
+      object.remove(edgeLine);
+      edgeLine.geometry.dispose();
+      edgeLine.material.dispose();
+      edgeLine = null;
+    }
+  }
+
+  function calcPrice(modelName, flag, model) {
     let addProduct = {}
 
     switch (modelName) {
       case "air_conditioner":
         addProduct = availableProducts[1];
         flag ? addProduct.quantity += 1 : addProduct.quantity -= 1;
-        itemPrice = addProduct.price;
-				addProduct.model = model;
+        addProduct.model = model;
         availableProducts[1] = addProduct;
 
         break;
       case "maxxair":
         addProduct = availableProducts[2];
         flag ? addProduct.quantity += 1 : addProduct.quantity -= 1;
-        itemPrice = addProduct.price;
-				addProduct.model = model;
+        addProduct.model = model;
         availableProducts[2] = addProduct;
         break;
       case "solar200":
         addProduct = availableProducts[3];
         flag ? addProduct.quantity += 1 : addProduct.quantity -= 1;
-				addProduct.model = model;
+        addProduct.model = model;
         availableProducts[3] = addProduct;
 
-        addProduct = availableProducts[6];
-        flag ? addProduct.quantity += 1 : addProduct.quantity -= 1;
-				addProduct.model = model;
-        availableProducts[6] = addProduct;
+        addProduct = availableProducts[7];
+        if(addProduct.quantity > 0 && !flag){
+          addProduct.quantity -= 1;
+        } else if(flag) {
+          addProduct.quantity += 1;
+        }
+        availableProducts[7] = addProduct;
 
         break;
       case "solar55":
         addProduct = availableProducts[4];
         flag ? addProduct.quantity += 1 : addProduct.quantity -= 1;
-				addProduct.model = model;
+        addProduct.model = model;
         availableProducts[4] = addProduct;
 
-        addProduct = availableProducts[7];
-        flag ? addProduct.quantity += 1 : addProduct.quantity -= 1;
-        availableProducts[7] = addProduct;
-
+        addProduct = availableProducts[8];
+        if(addProduct.quantity > 0 && !flag){
+          addProduct.quantity -= 1;
+        } else if(flag) {
+          addProduct.quantity += 1;
+        }
+        availableProducts[8] = addProduct;
+        
         break;
       case "solar30":
         addProduct = availableProducts[5];
         flag ? addProduct.quantity += 1 : addProduct.quantity -= 1;
-				addProduct.model = model;
+        addProduct.model = model;
         availableProducts[5] = addProduct;
+
+        addProduct = availableProducts[6];
+        if(addProduct.quantity > 0 && !flag){
+          addProduct.quantity -= 1;
+        } else if(flag) {
+          addProduct.quantity += 1;
+        }
+        availableProducts[6] = addProduct;
+
         break;
       case "ladder":
         addProduct = availableProducts[9];
         flag ? addProduct.quantity += 1 : addProduct.quantity -= 1;
-				addProduct.model = model;
+        addProduct.model = model;
         availableProducts[9] = addProduct;
         break;
       default:
-				break;
+        break;
     }
 
-    // updateCartState();
-
-		let totalItems = 0;
-		availableProducts.map((product) => {
-			totalItems += product.quantity
-		})
-
-		document.getElementById('products-num').innerHTML = totalItems
+    updateCartState();
+    calculatePrice(availableProducts)
+    // updateBuildState(availableProducts);
   }
 
-		// function collision(selectedFeatureBoundingBox, collidableMeshList) {
-		// 	// Check for collisions with each bounding box in the array
-		// 	let collisionDetected = false;
-		// 	for (const boundingBox of collidableMeshList) {
-		// 		if (selectedFeatureBoundingBox.intersectsBox(boundingBox)) {
-		// 			collisionDetected = true;
-		// 			break; // Exit the loop if collision is detected
-		// 		}
-		// 	}
+  function updateCartState() {
+    let totalItems = 0;
+    availableProducts.map((product) => {
+      totalItems += product.quantity
+      if(product.htmlId != "") {
+        let dragItem = document.getElementById(product.htmlId).childNodes[1];
+        if (product.quantity > 0) {
+          dragItem.innerHTML = product?.quantity.toString();
+          dragItem.style.display = 'block';
+        } else {
+          dragItem.style.display = 'none';
+        }
+      }
+    });
+    document.getElementById('products-num').innerHTML = totalItems
+  }
 
-		// 	if (collisionDetected) {
-		// 		console.log("Collision detected!");
-		// 	} else {
-		// 		console.log("No collision");
-		// 	}
+  function setViewCube() {
+    clock = new THREE.Clock();
+    helper = new ViewHelper(camera, renderer.domElement);
+    helper.controls = controls;
+    helper.controls.center = controls.target;
+    const div = document.createElement('div');
+    div.id = 'viewHelper';
+    div.style.position = 'absolute';
+    div.style.right = 0;
+    div.style.bottom = 0;
+    div.style.height = '128px';
+    div.style.width = '128px';
+    div.style.zIndex = 100
 
-		// 	return collisionDetected;
-		// }
+    document.getElementById("configurator-container").appendChild(div);
+    div.addEventListener('pointerup', (event) => {
+      helper.handleClick(event)
+    });
+    animate();
 
-		function setViewCube() {
-			clock = new THREE.Clock();
-			// helper
-			helper = new ViewHelper(camera, renderer.domElement);
-			helper.controls = controls;
-			helper.controls.center = controls.target;
+    if(window.innerWidth < 1024) helper.visible = false;
+  }
 
-			const div = document.createElement('div');
-			div.id = 'viewHelper';
-			div.style.position = 'absolute';
-			div.style.right = 300;
-			div.style.bottom = 0;
-			div.style.height = '128px';
-			div.style.width = '128px';
-			div.style.zIndex = 100
+  function animate() {
+    requestAnimationFrame(animate);
+    const delta = clock.getDelta();
+    if (helper.animating) helper.update(delta);
+    helper.render(renderer);
+  }
 
-			document.body.appendChild(div);
-			div.addEventListener('pointerup', (event) => (helper.handleClick(event)));
-			animate();
+  function setCameraView() {
+    controls = new OrbitControls(camera, container);
+    controls.maxDistance = 15;
+    controls.minDistance = 4;
+    controls.maxZoom = 3;
+    controls.minZoom = 0.5;
+    controls.maxPolarAngle = THREE.MathUtils.degToRad(90);
+    controls.screenSpacePanning = false;
+    controls.target.set(0, 0.5, 0);
+  }
 
-			if(window.innerWidth < 1024) helper.visible = false;
-		}
-		
-		function animate() {
-			requestAnimationFrame(animate);
-			const delta = clock.getDelta();
-			if (helper.animating) helper.update(delta);
-			helper.render(renderer);
-		}
-		function setCameraView() {
-			controls = new OrbitControls(camera, container);
+  function init() {
+    const container = document.getElementById('container');
+    renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setPixelRatio(window.devicePixelRatio);
+    renderer.setSize(((window.innerWidth < 1024 ? window.innerWidth : window.innerWidth - 300)), window.innerHeight);
+    renderer.setAnimationLoop(render);
+    renderer.toneMappingExposure = 0.85;
+    renderer.autoClear = false;
+    container.appendChild(renderer.domElement);
+    window.addEventListener('resize', onWindowResize);
 
-			controls.maxDistance = 15;
-			controls.minDistance = 4;
+    camera = new THREE.PerspectiveCamera(40, ((window.innerWidth < 1024 ? window.innerWidth : window.innerWidth - 300)) / window.innerHeight, 1, 10000);
+    camera.position.set(-1, 6, -6);
+    camera.aspect = ((window.innerWidth < 1024 ? window.innerWidth : window.innerWidth - 300)) / (window.innerHeight);
+    camera.updateProjectionMatrix();
+    setCameraView();
 
-			controls.maxZoom = 3;
-			controls.minZoom = 0.5;
+    scene = new THREE.Scene();
+    scene.background = new THREE.Color("#ffffff");
+    setViewCube();
 
-			controls.maxPolarAngle = THREE.MathUtils.degToRad(90);
+    const directionalLight1 = new THREE.DirectionalLight(0xffffff, 2.5);
+    directionalLight1.position.set(1, 1, 0);
+    scene.add(directionalLight1);
 
-			controls.screenSpacePanning = false;
+    const directionalLight2 = new THREE.DirectionalLight(0xffffff, 2.5);
+    directionalLight2.position.set(-1, 1, 0);
+    scene.add(directionalLight2);
 
-			controls.target.set(0, 0.5, 0);
-		}
+    const directionalLight3 = new THREE.DirectionalLight(0xffffff, 2.5);
+    directionalLight3.position.set(0, 1, 1);
+    scene.add(directionalLight3);
 
-		document.getElementById('color-selectable').addEventListener('click', function(event) {
-			if(event.target.classList.contains("color-item")) {
+    const directionalLight4 = new THREE.DirectionalLight(0xffffff, 2.5);
+    directionalLight4.position.set(0, 1, -1);
+    scene.add(directionalLight4);
 
-				const options = document.querySelectorAll('.color-item');
-				options.forEach(option => {
-					option.classList.remove('color-selected')
-				})
+    const ambientLight = new THREE.AmbientLight('#ffffff', 1); // color, intensity
+    scene.add(ambientLight);
 
-				event.target.classList.add('color-selected');
-				bodyMaterial = new THREE.MeshPhysicalMaterial( {
-					color: event.target.style.backgroundColor ?? 0xffffff, metalness: 1.0, roughness: 0.9, clearcoat: 1.0, clearcoatRoughness: 0.08
-				});
-				bodyMesh.material = bodyMaterial
-			}
-		})
+    const hdrLoader = new RGBELoader();
+    hdrLoader.loadAsync( 'https://cdn.shopify.com/s/files/1/0412/9898/5124/files/mt1.hdr?v=1715607373' ).then(envMap=>{
+      envMap.mapping = THREE.EquirectangularReflectionMapping;
+      const params = {
+        height: 15,
+        radius: 100,
+        enabled: true,
+      };
+      let skybox = new GroundedSkybox( envMap, params.height, params.radius );
+      skybox.position.y = params.height - 0.01;
+      scene.add( skybox );
+      scene.environment = envMap;
+    });
 
-		function init() {
-			const container = document.getElementById('container');
+    loader.load('https://cdn.shopify.com/3d/models/ef2473f570af2015/van2.glb', function (gltf) {
+      carModel = gltf.scene;
 
-			renderer = new THREE.WebGLRenderer({ antialias: true }); 
-			renderer.setPixelRatio(window.devicePixelRatio);
-			renderer.setSize(((window.innerWidth < 1024 ? window.innerWidth : window.innerWidth - 300)), window.innerHeight);
-			renderer.setAnimationLoop(render);
-			// renderer.toneMapping = THREE.ACESFilmicToneMapping;
-			renderer.toneMappingExposure = 0.85;
-			renderer.autoClear = false;
+      bodyMesh = carModel.getObjectByName("van").getObjectByName("Mesh001_5");
+      const bodyMaterial = new THREE.MeshPhysicalMaterial( {
+        color: 0xffffff, metalness: 1.0, roughness: 0.9, clearcoat: 1.0, clearcoatRoughness: 0.1
+      } );
+      bodyMesh.material = bodyMaterial
 
-			container.appendChild(renderer.domElement);
+      shodowMesh = new THREE.Mesh(
+        new THREE.PlaneGeometry(2.8, 6.5),
+        new THREE.MeshBasicMaterial({
+          map: shadow, blending: THREE.MultiplyBlending, toneMapped: false, transparent: true
+        })
+      );
+      shodowMesh.rotation.x = - Math.PI / 2;
+      shodowMesh.rotation.z = Math.PI / 2;
+      shodowMesh.renderOrder = 2;
+      carModel.add(shodowMesh);
 
-			window.addEventListener('resize', onWindowResize);
+      scene.add(carModel);
 
-			// Create an OrthographicCamera
-			camera = new THREE.PerspectiveCamera(40, ((window.innerWidth < 1024 ? window.innerWidth : window.innerWidth - 300)) / window.innerHeight, 1, 10000);
-			camera.position.set(-1, 6, -6);
-			camera.aspect = ((window.innerWidth < 1024 ? window.innerWidth : window.innerWidth - 300)) / (window.innerHeight);
-    	camera.updateProjectionMatrix();
-			setCameraView();
+      workPlane = new THREE.Mesh(
+        new THREE.BoxGeometry(3, 0.01, 1.55),
+        new THREE.MeshLambertMaterial({ color: "green" })
+      );
+      workPlane.material.visible = false;
 
-			// controls.update();
+      workPlane.position.set(-1.08, 2.37, 0);
+      scene.add(workPlane);
 
-			scene = new THREE.Scene();
-			scene.background = new THREE.Color("#ffffff");
+      ladderPlane = new THREE.Mesh(
+        new THREE.BoxGeometry(3, 2, 0.01),
+        new THREE.MeshLambertMaterial({color: 'green'})
+      )
+      ladderPlane.material.visible = false;
+      ladderPlane.position.set(-1.08, 1.3, -0.85); 
+      scene.add(ladderPlane);
 
-			setViewCube();
+      targetForDragging = new THREE.Mesh(
+        new THREE.BoxGeometry(100, 0.01, 100),
+        new THREE.MeshBasicMaterial()
+      );
+      targetForDragging.material.visible = false;
+      raycaster = new THREE.Raycaster();
+    });
+  }
 
-			const directionalLight1 = new THREE.DirectionalLight(0xffffff, 2.5);
-			directionalLight1.position.set(1, 1, 0);
-			scene.add(directionalLight1);
+  function onWindowResize() {
+    if(window.innerWidth < 1024) {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      helper.visible = false;
+    } else {
+      camera.aspect = (window.innerWidth - 300) / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize((window.innerWidth - 300), window.innerHeight);
+      helper.visible = true;
+    }
+  }
 
-			const directionalLight2 = new THREE.DirectionalLight(0xffffff, 2.5);
-			directionalLight2.position.set(-1, 1, 0);
-			scene.add(directionalLight2);
+  function render() {
+    controls.update();
+    renderer.render(scene, camera);
+  }
 
-			const directionalLight3 = new THREE.DirectionalLight(0xffffff, 2.5);
-			directionalLight3.position.set(0, 1, 1);
-			scene.add(directionalLight3);
+  function isValueInScale(value, scale, radius, vanDiff) {
+    for (let i = 0; i < scale.length; i += 2) {
+        if (value + 100 >= (scale[i] + radius - vanDiff + 100 ) && value + 100 <= (scale[i + 1] - radius - vanDiff + 100)) {
+          return i;
+        }
+    }
+    return -1;
+  }
 
-			const directionalLight4 = new THREE.DirectionalLight(0xffffff, 2.5);
-			directionalLight4.position.set(0, 1, -1);
-			scene.add(directionalLight4);
+  function updateSolarArea(xPos, modelName, flag) {
+    let productInfo = availableProducts.filter((product) => product.type == modelName)[0];
+    let xRadius = productInfo.xRadius;
+    let inchXPos = -1 * xPos/0.0254;
+    let startValue = inchXPos - xRadius;
+    let endValue = inchXPos + xRadius;
 
-			const ambientLight = new THREE.AmbientLight('#ffffff', 1); // color, intensity
-			scene.add(ambientLight);
+    if(modelName == "air_conditioner"){
+      if(solar35Area.length > 0 ){
+        solar35Area = [inchXPos];
+      } else {
+        solar35Area.push(inchXPos)
+      }
+    } else if(modelName == "maxxair"){
+      if(solar50Area.length > 0 ){
+        solar50Area = [inchXPos];
+      } else {
+        solar50Area.push(inchXPos)
+      }
+    }
+  }
 
-			const hdrLoader = new RGBELoader();
-			hdrLoader.loadAsync( 'images/mt1.hdr' ).then(envMap=>{
-				envMap.mapping = THREE.EquirectangularReflectionMapping;
-				const params = {
-					height: 15,
-					radius: 100,
-					enabled: true,
-				};
-				let skybox = new GroundedSkybox( envMap, params.height, params.radius );
-				skybox.position.y = params.height - 0.01;
-				scene.add( skybox );
-				scene.environment = envMap;
-			});
+  function checkIsAvailable(xPos, modelName, flag) {
+    let productInfo = availableProducts.filter((product) => product.type == modelName)[0];
+    let xRadius = productInfo.xRadius;
+    let inchXPos = -1 * xPos/0.0254;
+    let startValue = inchXPos - xRadius;
+    let endValue = inchXPos + xRadius;
+    let startPointCheck, endPointCheck, centerPointCheck = -1;
 
-			const dracoLoader = new DRACOLoader();
-			dracoLoader.setDecoderPath('https://res.cloudinary.com/dbloegsbv/raw/upload/v1/jsm/');
+    if(startValue < vanArea[0] || endValue > vanArea[1]) return false;
+    
+    if(flag == 1) {
+      startPointCheck = isValueInScale(startValue, addedState, 0, 0);
+      endPointCheck = isValueInScale(endValue, addedState, 0, 0);
+      centerPointCheck = isValueInScale(inchXPos, addedState, 0, 0);
+    } else if(flag == 2) {
+      const currentState = [...addedState];
+      if(selectedIndexOfState >= 0)currentState.splice(selectedIndexOfState, 2);
+      startPointCheck = isValueInScale(startValue, currentState, 0, 0);
+      endPointCheck = isValueInScale(endValue, currentState, 0, 0);
+      centerPointCheck = isValueInScale(inchXPos, currentState, 0, 0);
 
-			const loader = new GLTFLoader();
-			loader.setDRACOLoader(dracoLoader);
+    } else {
+      let modelIndex = isValueInScale(inchXPos, addedState, 0, 0);
+      let startIndex = isValueInScale(inchXPos, addedState, xRadius/2, 0);
+      let endIndex = isValueInScale(inchXPos, addedState, xRadius/2, 0);
+      if(modelIndex == startIndex && modelIndex == endIndex) {
+        return modelIndex
+      } else {
+        return -1;
+      }
+    }
+    if(startPointCheck == -1 && endPointCheck == -1 && centerPointCheck == -1) {
+      return true;
+    } else return false;
+  }
 
-			loader.load('models/van2.glb', function (gltf) {
-				carModel = gltf.scene;
+  function updateModelState(flag, modelType, xPos) {
+    if(modelType == "ladder") return;
 
-				bodyMesh = carModel.getObjectByName("van").getObjectByName("Mesh001_5");
-				bodyMaterial = new THREE.MeshPhysicalMaterial( {
-					color: 0xffffff, metalness: 1.0, roughness: 0.9, clearcoat: 1.0, clearcoatRoughness: 0.08
-				});
-				bodyMesh.material = bodyMaterial
+    let productInfo = availableProducts.filter((product) => product.type == modelType)[0];
+    let xRadius = productInfo.xRadius;
+    let inchXPos = -1 * xPos/0.0254
+    let startValue = inchXPos - xRadius;
+    let endValue = inchXPos + xRadius;
 
-				shodowMesh = new THREE.Mesh(
-					new THREE.PlaneGeometry(2.8, 6.5),
-					new THREE.MeshBasicMaterial({
-						map: shadow, blending: THREE.MultiplyBlending, toneMapped: false, transparent: true
-					})
-				);
-				shodowMesh.rotation.x = - Math.PI / 2;
-				shodowMesh.rotation.z = Math.PI / 2;
-				shodowMesh.renderOrder = 2;
-				carModel.add(shodowMesh);
+    switch(flag) {
+      case 1: 
+        addedState.push(startValue, endValue)
+        break;
+      case 2: 
+        if(selectedIndexOfState >= 0) {
+          addedState.splice(selectedIndexOfState, 2);
+          addedState.splice(selectedIndexOfState, 0, startValue, endValue)
+        }
+        break;
+      case 3:
+        if(selectedIndexOfState >= 0) {
+          addedState.splice(selectedIndexOfState, 2);
+        }
+        break;
+    }
+  }
 
-				scene.add(carModel);
+  function updateBuildState(products) {
+    const buildListDom = document.getElementById('build-list');
+    let buildText = ''
+    for(let i=0; i < products.length; i++) {
+      const availableProduct = products[i];
+      if(availableProduct.quantity > 0) {
+        buildText += '<div class="build-item"><div class="item-overview">'
+        buildText += '<div class="product-info"><img src="'+ availableProduct?.image +'&width=50" width="50" height="50"/>'
+        buildText += '<a class="item-name" href="'+availableProduct?.url+'" target="_blank">'+ availableProduct?.title +'</a></div><button class="remove-product" id="'+ (availableProduct?.type + "___") +'">&#10799;</div><div class="item-variants">'
+        availableProduct?.variants?.map((variant, index) => {
+          buildText += '<div class="variant"><div>'
+          buildText += '<input type="radio" class="variant-handler" id="'+ (availableProduct?.type+"___"+variant?.id) +'" name="'+ availableProduct?.type +'" ' + (Number(variant?.id) == Number(availableProduct?.id) ? 'checked' : '') + '/><label for="'+ (availableProduct?.type+"___"+variant?.id) +'">'+ (variant.public_title ? variant.public_title : variant.name) +'</label>'
+          buildText += '</div><div>'
+          buildText += '$<span class="price">'+ variant.price / 100 +'</span>'
+          buildText += '</div></div>'
+        })
+        buildText += '</div><div class="divider"></div></div>'
+      }
+    }
+    buildListDom.innerHTML = buildText;
+    buildListDom.addEventListener('click', handleRadioChange);
+  }
 
-				// Rack plane
-				workPlane = new THREE.Mesh(
-					new THREE.BoxGeometry(3, 0.01, 1.55),
-					new THREE.MeshLambertMaterial({ color: "green" })
-				);
-				workPlane.material.visible = false;
+  function handleRadioChange(event) {
+    if (event.target.type === 'radio') {
+      const targetVariant = event.target.id?.split('___');
+      availableProducts = availableProducts.map((product) => {
+        if(targetVariant[0] == product.type) {
+          const selectedProduct = product.variants.find((variant) => variant.id == targetVariant[1]);
+          let newProduct = {...product, id: selectedProduct.id, price: selectedProduct.price / 100};
+          return newProduct;
+        }
+        else return product;
+      });
+      calculatePrice(availableProducts)
+    } else if(event.target.type === 'submit') {
+      const targetType = event.target.id?.split('___')[0];
+      if(targetType == 'ac_cross' || targetType == 'solar_cross' || targetType == 'max_cross' || targetType == 'rack') {
+        const toRemoveIndex = availableProducts.findIndex((product) => product.type == targetType);
+        const quantity = availableProducts[toRemoveIndex].quantity;
+        if(quantity > 0) availableProducts[toRemoveIndex].quantity = quantity - 1;
+        // updateBuildState(availableProducts)
+        calculatePrice(availableProducts)
+        updateCartState();
+      } else {
+        const toRemoveModel = availableProducts.find((product) => product.type == targetType)?.model;
+        scene.remove(toRemoveModel);
+        selectedIndexOfState = checkIsAvailable(toRemoveModel.position.x, toRemoveModel.children[0].name, 3);
+        calcPrice(toRemoveModel.children[0].name, false, null)
+        updateModelState(3, toRemoveModel.children[0].name, toRemoveModel.position.x)
+      }
+    }
+  }
 
-				workPlane.position.set(-1.08, 2.37, 0); // Set position
-				scene.add(workPlane);
+  function calculatePrice(products) {
+    let totalPrice = 0;
+    products.map((product) => {
+      if(product.quantity > 0){
+        totalPrice += product.quantity * product.price;
+      }
+    })
+    document.getElementById("products-cost").innerHTML = totalPrice.toFixed(2);
+  }
 
-				// Ladder plane
-				ladderPlane = new THREE.Mesh(
-					new THREE.BoxGeometry(3, 2, 0.01),
-					new THREE.MeshLambertMaterial({color: 'green'})
-				)
-				ladderPlane.material.visible = false;
-
-				ladderPlane.position.set(-1.08, 1.3, -0.85); 
-				scene.add(ladderPlane);
-
-				targetForDragging = new THREE.Mesh(
-					new THREE.BoxGeometry(100, 0.01, 100),
-					new THREE.MeshBasicMaterial()
-				);
-				targetForDragging.material.visible = false;
-
-				raycaster = new THREE.Raycaster();
-			});
-		}
-
-		function onWindowResize() {
-			if(window.innerWidth < 1024) {
-				camera.aspect = window.innerWidth / window.innerHeight;
-				camera.updateProjectionMatrix();
-				renderer.setSize(window.innerWidth, window.innerHeight);
-				helper.visible = false;
-			} else {
-				camera.aspect = (window.innerWidth - 300) / window.innerHeight;
-				camera.updateProjectionMatrix();
-				renderer.setSize((window.innerWidth - 300), window.innerHeight);
-				helper.visible = true;
-			}
-		}
-
-		function render() {
-			controls.update();
-			renderer.render(scene, camera);
-		}
-
-		init();
-
-		function isValueInScale(value, scale, radius, vanDiff) {
-			for (let i = 0; i < scale.length; i += 2) {
-					if (value + 100 >= (scale[i] + radius - vanDiff + 100 ) && value + 100 <= (scale[i + 1] - radius - vanDiff + 100)) {
-						return i;
-					}
-			}
-			return -1;
-		}
-
-		function updateSolarArea(xPos, modelName, flag) {
-			let productInfo = availableProducts.filter((product) => product.type == modelName)[0];
-			let xRadius = productInfo.xRadius;
-			let inchXPos = -1 * xPos/0.0254;
-			let startValue = inchXPos - xRadius;
-			let endValue = inchXPos + xRadius;
-
-			if(modelName == "air_conditioner"){
-				console.log(solar35Area, inchXPos)
-				if(solar35Area.length > 0 ){
-					// for(let i in solar35Area) {
-					// 	if(isValueInScale(solar35Area[i], [startValue, endValue], 0, 0) >= 0){
-					// 		solar35Area.splice(i, 1, inchXPos);
-					// 		return;
-					// 	}
-					// }
-					solar35Area = [inchXPos];
-				} else {
-					solar35Area.push(inchXPos)
-				}
-			} else if(modelName == "maxxair"){
-				if(solar50Area.length > 0 ){
-					solar50Area = [inchXPos];
-				} else {
-					solar50Area.push(inchXPos)
-				}
-			}
-
-			// isValueInScale(inchXPos, addedState, 0, 0);
-
-		}
-
-		function checkIsAvailable(xPos, modelName, flag) {
-			let productInfo = availableProducts.filter((product) => product.type == modelName)[0];
-			let xRadius = productInfo.xRadius;
-			let inchXPos = -1 * xPos/0.0254;
-			let startValue = inchXPos - xRadius;
-			let endValue = inchXPos + xRadius;
-			let startPointCheck, endPointCheck, centerPointCheck = -1;
-
-			if(startValue < vanArea[0] || endValue > vanArea[1]) return false;
-			
-			if(flag == 1) {
-				startPointCheck = isValueInScale(startValue, addedState, 0, 0);
-				endPointCheck = isValueInScale(endValue, addedState, 0, 0);
-				centerPointCheck = isValueInScale(inchXPos, addedState, 0, 0);
-			} else if(flag == 2) {
-				const currentState = [...addedState];
-
-				if(selectedIndexOfState >= 0)currentState.splice(selectedIndexOfState, 2);
-
-				startPointCheck = isValueInScale(startValue, currentState, 0, 0);
-				endPointCheck = isValueInScale(endValue, currentState, 0, 0);
-				centerPointCheck = isValueInScale(inchXPos, currentState, 0, 0);
-
-			} else {
-				let modelIndex = isValueInScale(inchXPos, addedState, 0, 0);
-				let startIndex = isValueInScale(inchXPos, addedState, xRadius/2, 0);
-				let endIndex = isValueInScale(inchXPos, addedState, xRadius/2, 0);
-
-				console.log(modelIndex, startIndex, endIndex)
-
-				if(modelIndex == startIndex && modelIndex == endIndex) {
-
-					console.log(modelIndex)
-					return modelIndex
-				} else {
-					return -1;
-				}
-			}
-
-			if(startPointCheck == -1 && endPointCheck == -1 && centerPointCheck == -1) {
-				return true;
-			} else return false;
-		}
-
-		function updateModelState(flag, modelType, xPos) {
-			if(modelType == "ladder") return;
-
-			let productInfo = availableProducts.filter((product) => product.type == modelType)[0];
-			let xRadius = productInfo.xRadius;
-			let inchXPos = -1 * xPos/0.0254
-			let startValue = inchXPos - xRadius;
-			let endValue = inchXPos + xRadius;
-
-			switch(flag) {
-				case 1: 
-					addedState.push(startValue, endValue)
-					break;
-				case 2: 
-					if(selectedIndexOfState >= 0) {
-						addedState.splice(selectedIndexOfState, 2);
-						addedState.splice(selectedIndexOfState, 0, startValue, endValue)
-					}
-					break;
-				case 3:
-					if(selectedIndexOfState >= 0) {
-						addedState.splice(selectedIndexOfState, 2);
-					}
-					break;
-			}
-		}
-
-	function updateBuildState() {
-
-	}
-
+  init();
 
 	</script>
 

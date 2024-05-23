@@ -129,7 +129,10 @@
 		}
 		button {
 			cursor: pointer;
+			display: flex;
+			justify-content: center;
 		}
+
 		#deleteButton {
 			position: absolute;
 			top: 0;
@@ -142,9 +145,26 @@
 			cursor: pointer;
 			color: #ff0000;
 			padding: 5px;
-			opacity: 0.8;
+			opacity: 1;
 			transition: opacity ease .3s;
       font-size: 20px;
+			font-weight: bold;
+		}
+		#resetButton {
+			position: absolute;
+			top: 0;
+			left: 0;
+			justify-content: center;
+			align-items: center;
+			background-color: transparent;
+			border: 0;
+			cursor: pointer;
+			padding: 5px;
+			opacity: 1;
+			transition: opacity ease .3s;
+      font-size: 20px;
+			font-weight: bold;
+      text-shadow: 0px 0px 4px #fff;
 		}
 		#deleteButton:hover {
 			opacity: 1;
@@ -188,7 +208,7 @@
 		.items-container>div:first-child {
 			position: relative;
 			text-align: center;
-      margin-bottom: 30px;
+      margin-bottom: 35px;
 		}
 		@keyframes textAnimation {
 			0% {
@@ -305,6 +325,7 @@
 			padding: 10px;
 			width: 100%;
 			text-align: center;
+      border-right: 1px solid #676767;
 		}
 		.tab.active {
 			background-color: #676767;
@@ -526,6 +547,16 @@
 				text-align: right;
 			}
 		}
+
+    #select-template {
+			padding-top: 10px;
+		}
+		#select-template .selectable {
+			display: flex;
+			justify-content: center;
+			margin-top: 20px;
+			cursor: pointer;
+		}
 	</style>
 </head>
 <div class="threejs-container">
@@ -539,6 +570,10 @@
 		<div id="container"></div>
 		<div class="items-container">
 			<div class="text-center announce-bar" >
+        <button id="resetButton">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 32 32"><path fill="currentColor" d="M18 28A12 12 0 1 0 6 16v6.2l-3.6-3.6L1 20l6 6l6-6l-1.4-1.4L8 22.2V16a10 10 0 1 1 10 10Z"/></svg>
+          Reset
+        </button>
 				<button id="deleteButton">
 					<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 40 40">
 						<path fill="#ff0000"
@@ -648,6 +683,7 @@
     <ul class="tabs">
       <li data-tab-target="#build-list" class="active tab">Build List</li>
       <li data-tab-target="#rack-tab" class="tab">Van</li>
+      <li data-tab-target="#select-template" class="tab">Template</li>
     </ul>
     <div class="tab-content">
       <div id="build-list" data-tab-content class="active">
@@ -665,6 +701,12 @@
           <div class="color-item" style="background-color: rgb(72, 115, 163);"></div>
           <div class="color-item" style="background-color: rgb(59, 82, 67);"></div>
           <div class="color-item" style="background-color: rgb(146, 173, 62);"></div>
+        </div>
+      </div>
+
+      <div id="select-template" data-tab-content>
+        <div class="selectable">
+          <img src="https://cdn.shopify.com/s/files/1/0412/9898/5124/files/temp-1.png?v=1716430453&width=240" width="240" height='' draggable="false" id="temp_1"/>
         </div>
       </div>
     </div>
@@ -748,6 +790,47 @@
   let solar35Area = [];
   let solar50Area = [];
 
+  let canvas, camera, scene, renderer;
+  let cameraType = "perspective";
+  let canvasContainer = document.getElementById("container");
+
+  let grid;
+  let controls;
+
+  let selectedFeature;
+  var targetForDragging;
+
+  let isDragging = false;
+
+  let intersects;
+  let raycaster;
+  let workPlane;
+
+  let edges;
+  let line;
+  let edgeLine = null;
+  const lineMaterial = new THREE.LineBasicMaterial({ color: "#fff" });
+
+  let vanItem;
+  let cloneVanItem = null;
+  let loadItemDirectory;
+
+  let carModel;
+  let shodowMesh;
+  let model = null;
+
+  let helper;
+  let clock;
+  let offsetTopCanvas
+
+  let selectedItem = '';
+  let ladderPlane;
+  const cutOffArea = [3.19, 25.7, 32.09, 64.72, 71.11, 90.19];
+  const vanDiff = 3.2
+
+  let bodyMaterial;
+  let bodyMesh;
+
   let availableProducts = [
     {htmlId: '', type: 'rack', handle: 'transithsld148-roof-rack', id: 43238854328539, price: 0, quantity: 1, xRadius: null},
     {htmlId: 'airconditioner', type: 'air_conditioner', handle: 'dometic-rtx-2000', id: 43261478764763, price: 0, quantity: 0, xRadius: 16.56},
@@ -760,6 +843,231 @@
     {htmlId: '', type: 'max_cross', handle: 'ford-transit-hsld-roof-rack-maxxfan-cross-bars', id: 44018083234011, price: 0, quantity: 0},
     {htmlId: 'ladder', type: 'ladder', handle: 'transit-side-mount-ladder-high-roof', id: 44020238385371, price: 0, quantity: 0},
   ]
+
+  const shadow = new THREE.TextureLoader().load('https://cdn.shopify.com/s/files/1/0412/9898/5124/files/ford_ao.png?v=1711858184');
+
+  const dracoLoader = new DRACOLoader();
+  dracoLoader.setDecoderPath('https://res.cloudinary.com/dbloegsbv/raw/upload/v1/jsm/');
+
+  const loader = new GLTFLoader();
+  loader.setDRACOLoader(dracoLoader);
+
+  let delelteBtn = document.getElementById("deleteButton")
+
+  canvasContainer.addEventListener('mousedown', (event) => {
+    if (event.button === 0) {
+      offsetTopCanvas = canvasContainer.getBoundingClientRect().top;
+      isDragging = true;
+      doMouseDown(event.clientX, event.clientY - offsetTopCanvas);
+    }
+  });
+
+  canvasContainer.addEventListener('mousemove', (event) => {
+    if (selectedFeature) {
+      if (selectedFeature.parent.name !== "van" && selectedFeature.name !== "ladder") {
+        if (isDragging) {
+          offsetTopCanvas = canvasContainer.getBoundingClientRect().top;
+          let a = 2 * (event.clientX / ((window.innerWidth < 1024 ? window.innerWidth: window.innerWidth - 300))) - 1;
+          let b = 1 - 2 * (event.clientY - offsetTopCanvas) / (window.innerHeight);
+          raycaster.setFromCamera(new THREE.Vector2(a, b), camera);
+          intersects = raycaster.intersectObject(targetForDragging);
+          if (intersects.length === 0) {
+            return;
+          }
+
+          let objectHit = intersects[0].object;
+          let locationX = intersects[0].point.x;
+          let locationZ = intersects[0].point.z;
+          let coords = new THREE.Vector3(locationX, 0, locationZ);
+          coords = scene.worldToLocal(coords);
+
+          const boundingBox = new THREE.Box3().setFromObject(selectedFeature);
+          const size = new THREE.Vector3();
+          boundingBox.getSize(size);
+
+          const selectedFeatureWidth = size.x;
+          let checkCollision = true;
+          const xPos = Math.min(0.428 - selectedFeatureWidth / 2, Math.max(-2.2, coords.x));
+
+          if(selectedFeature.name != 'ladder' && selectedFeature.name != 'solar30' && selectedFeature.name != 'solar55'){
+            checkCollision = checkIsAvailable(xPos, selectedFeature.name, 2);
+          }
+
+          if(selectedFeature.name == "air_conditioner"){
+            if(isValueInScale(coords.x * 1000 / 25.4 * -1, cutOffArea, 7.001, vanDiff)  >= 0 && checkCollision) {
+              updateSolarArea(xPos, selectedFeature.name, 1)
+              selectedFeature.parent.position.x = xPos;
+              selectedFeature.parent.position.z = 0;
+              updateModelState(2, selectedFeature.name, xPos)
+            } 
+          } else if(selectedFeature.name == 'maxxair'){
+            if(isValueInScale(coords.x * 1000 / 25.4 * -1, cutOffArea, 7, vanDiff)  >= 0 && checkCollision){
+              updateSolarArea(xPos, selectedFeature.name, 1)
+              selectedFeature.parent.position.x = xPos;
+              selectedFeature.parent.position.z = 0;
+              updateModelState(2, selectedFeature.name, xPos)
+            } 
+          } else if(selectedFeature.name == 'solar30') {
+            selectedFeature.parent.position.x = -1 * solar35Area[0] * 0.0254;
+            selectedFeature.parent.position.z = 0;
+          } else if(selectedFeature.name == 'solar55') {
+            selectedFeature.parent.position.x = -1 * solar50Area[0] * 0.0254;
+            selectedFeature.parent.position.z = 0;
+          }else {
+            if(checkCollision) {
+              selectedFeature.parent.position.x = xPos;
+              selectedFeature.parent.position.z = 0;
+              updateModelState(2, selectedFeature.name, xPos)
+            }
+          }
+          render();
+        }
+      }
+      controls.enableRotate = false;
+    }
+    else {
+      controls.enableRotate = true;
+    }
+  });
+
+  canvasContainer.addEventListener('mouseup', () => {
+    isDragging = false;
+  });
+  
+  document.addEventListener('DOMContentLoaded', function () {
+    canvas = document.querySelector('canvas[data-engine="three.js r162"]');
+  });
+
+  document.getElementById('color-selectable').addEventListener('click', function(event) {
+
+    if(event.target.classList.contains("color-item")) {
+      const options = document.querySelectorAll('.color-item');
+      options.forEach(option => {
+        option.classList.remove('color-selected')
+      })
+      event.target.classList.add('color-selected');
+      bodyMaterial = new THREE.MeshPhysicalMaterial( {
+        color: event.target.style.backgroundColor ?? 0xffffff, metalness: 1.0, roughness: 0.9, clearcoat: 1.0, clearcoatRoughness: 0.08
+      });
+      bodyMesh.material = bodyMaterial
+    }
+  })
+
+  document.getElementById('select-template').addEventListener('click', function(event) {
+    if (event.target.id.includes('temp')) {
+      let tempOrder = ['solar_panel200', 'solar_panel200', 'maxxair', 'airconditioner', 'solar_panel50', 'solar_panel30'];
+
+      function clickWithDelay(elements, delay) {
+        elements.forEach((elementId, index) => {
+          setTimeout(() => {
+            var elem = document.getElementById(elementId);
+            if (elem) {
+              elem.click();
+            }
+          }, index * delay);
+        });
+      }
+
+      clickWithDelay(tempOrder, 500);
+    }
+  });
+
+  document.getElementById('deleteButton').addEventListener('click', function () {
+    if (selectedFeature) {
+      scene.remove(selectedFeature.parent);
+      this.style.display = "none";
+      calcPrice(selectedFeature.name, false, null)
+      updateModelState(3, selectedFeature.name, selectedFeature.parent.position.x)
+      render();
+      selectedFeature = null;
+    }
+  });
+
+  document.getElementById('addCartBtn').addEventListener('click', async function() {
+    let cartItems = []
+    availableProducts.map((product) => {
+      if(product.price > 0 && product.quantity > 0) {
+        cartItems.push({
+          'id': product.id,
+          'quantity': product.quantity
+        })
+      }
+    });
+
+    const formData = {'items': cartItems};
+
+    if(cartItems.length > 0) {
+      let token = '';
+      await fetch(window.Shopify.routes.root + 'cart/clear.js',{
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+      })
+      .then(response => {
+        return response.json();
+      })
+      .then((data) => {
+        token = data.token;
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+        return false;
+      });
+
+      await fetch(window.Shopify.routes.root + 'cart/add.js', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(formData)
+      })
+      .then(response => {
+        return response.json();
+      })
+      .then((addedData) => {
+        gotoCheckout(token)
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+        return false;
+      });
+    } 
+  });
+
+  document.getElementById('imgDownloadBtn').addEventListener('click', function () {
+    renderer.render(scene, camera);
+    var imgData = renderer.domElement.toDataURL();
+    var link = document.createElement('a');
+    link.download = 'scene.png';
+    link.href = imgData;
+    link.click();
+  });
+
+  document.getElementById('camChangeBtn').addEventListener('click', function () {
+    const cameraPosition = camera.position;
+    const widthValue = window.innerWidth < 1024 ? window.innerWidth : (window.innerWidth - 300)
+
+    if (cameraType === "perspective") {
+      camera = new THREE.OrthographicCamera(-widthValue / 340, widthValue / 340, window.innerHeight / 340, -window.innerHeight / 340, 1, 10000);
+      cameraType = "orthographic"
+    }
+    else {
+      camera = new THREE.PerspectiveCamera(40, widthValue / window.innerHeight, 1, 10000);
+      cameraType = "perspective"
+    }
+    camera.position.set(cameraPosition.x, cameraPosition.y, cameraPosition.z);
+    setCameraView();
+    setViewCube()
+  });
+
+  document.getElementById('resetButton').addEventListener('click', resetConfig);
+
+  var productElements = document.getElementsByClassName("item-img");
+
+	for (var i = 0; i < productElements.length; i++) {
+    productElements[i].addEventListener('click', event => handleClickProduct(event), false);
+	}
 
   function getPrices() {
     const dataPromises = availableProducts.map(async (product) => {
@@ -795,52 +1103,8 @@
       })
       .catch(error => console.error('Error fetching product data:', error));
   }
+
   getPrices();
-
-  let canvas, camera, scene, renderer;
-  let cameraType = "perspective";
-  let canvasContainer = document.getElementById("container");
-
-  let grid;
-  let controls;
-
-  let selectedFeature;
-  var targetForDragging;
-
-  let isDragging = false;
-
-  let intersects;
-  let raycaster;
-  let workPlane;
-
-  let edges;
-  let line;
-  let edgeLine = null;
-  const lineMaterial = new THREE.LineBasicMaterial({ color: "#fff" });
-
-  let vanItem;
-  let cloneVanItem = null;
-  let loadItemDirectory;
-
-  let carModel;
-  let shodowMesh;
-  let model = null;
-
-  const shadow = new THREE.TextureLoader().load('https://cdn.shopify.com/s/files/1/0412/9898/5124/files/ford_ao.png?v=1711858184');
-
-  let helper;
-  let clock;
-  let offsetTopCanvas
-
-  let selectedItem = '';
-  let ladderPlane;
-  const cutOffArea = [3.19, 25.7, 32.09, 64.72, 71.11, 90.19];
-  const vanDiff = 3.2
-
-  let bodyMaterial;
-  let bodyMesh;
-
-  let delelteBtn = document.getElementById("deleteButton")
 
   function excludeRanges(vanArea, addedState) {
     let ranges = [];
@@ -923,19 +1187,13 @@
 
 	}
 
-  var productElements = document.getElementsByClassName("item-img");
-
-	for (var i = 0; i < productElements.length; i++) {
-    productElements[i].addEventListener('click', event => handleClickProduct(event), false);
-	}
-
 	function handleClickProduct(event){
 		let positionX = 0;
 		let positionY = 2.35;
 		let positionZ = 0;
 		model = null;
 		vanItem = event.target;
-		selectedItem = availableProducts.filter(product => product.htmlId == event.target.id)[0];
+		let selectedItem = availableProducts.filter(product => product.htmlId == event.target.id)[0];
 		if(!selectedItem) return;
 
 		if(selectedItem.type == 'ladder') {
@@ -986,12 +1244,6 @@
         break;
     }
 
-    const dracoLoader = new DRACOLoader();
-    dracoLoader.setDecoderPath('https://res.cloudinary.com/dbloegsbv/raw/upload/v1/jsm/');
-
-    const loader = new GLTFLoader();
-    loader.setDRACOLoader(dracoLoader);
-
     const loadModel = (url) => {
       return new Promise((resolve, reject) => {
         loader.load(url, function (gltf) {
@@ -1016,177 +1268,45 @@
       });
   }
 
-  canvasContainer.addEventListener('mousedown', (event) => {
-    if (event.button === 0) {
-      offsetTopCanvas = canvasContainer.getBoundingClientRect().top;
-      isDragging = true;
-      doMouseDown(event.clientX, event.clientY - offsetTopCanvas);
-    }
-  });
-
-  canvasContainer.addEventListener('mousemove', (event) => {
-    if (selectedFeature) {
-      if (selectedFeature.parent.name !== "van" && selectedFeature.name !== "ladder") {
-        if (isDragging) {
-          offsetTopCanvas = canvasContainer.getBoundingClientRect().top;
-          let a = 2 * (event.clientX / ((window.innerWidth < 1024 ? window.innerWidth: window.innerWidth - 300))) - 1;
-          let b = 1 - 2 * (event.clientY - offsetTopCanvas) / (window.innerHeight);
-          raycaster.setFromCamera(new THREE.Vector2(a, b), camera);
-          intersects = raycaster.intersectObject(targetForDragging);
-          if (intersects.length === 0) {
-            return;
-          }
-
-          let objectHit = intersects[0].object;
-          let locationX = intersects[0].point.x;
-          let locationZ = intersects[0].point.z;
-          let coords = new THREE.Vector3(locationX, 0, locationZ);
-          coords = scene.worldToLocal(coords);
-
-          const boundingBox = new THREE.Box3().setFromObject(selectedFeature);
-          const size = new THREE.Vector3();
-          boundingBox.getSize(size);
-
-          const selectedFeatureWidth = size.x;
-          let checkCollision = true;
-          const xPos = Math.min(0.428 - selectedFeatureWidth / 2, Math.max(-2.2, coords.x));
-
-          if(selectedFeature.name != 'ladder' && selectedFeature.name != 'solar30' && selectedFeature.name != 'solar55'){
-            checkCollision = checkIsAvailable(xPos, selectedFeature.name, 2);
-          }
-
-          if(selectedFeature.name == "air_conditioner"){
-            if(isValueInScale(coords.x * 1000 / 25.4 * -1, cutOffArea, 7.001, vanDiff)  >= 0 && checkCollision) {
-              updateSolarArea(xPos, selectedFeature.name, 1)
-              selectedFeature.parent.position.x = xPos;
-              selectedFeature.parent.position.z = 0;
-              updateModelState(2, selectedFeature.name, xPos)
-            } 
-          } else if(selectedFeature.name == 'maxxair'){
-            if(isValueInScale(coords.x * 1000 / 25.4 * -1, cutOffArea, 7, vanDiff)  >= 0 && checkCollision){
-              updateSolarArea(xPos, selectedFeature.name, 1)
-              selectedFeature.parent.position.x = xPos;
-              selectedFeature.parent.position.z = 0;
-              updateModelState(2, selectedFeature.name, xPos)
-            } 
-          } else if(selectedFeature.name == 'solar30') {
-            selectedFeature.parent.position.x = -1 * solar35Area[0] * 0.0254;
-            selectedFeature.parent.position.z = 0;
-          } else if(selectedFeature.name == 'solar55') {
-            selectedFeature.parent.position.x = -1 * solar50Area[0] * 0.0254;
-            selectedFeature.parent.position.z = 0;
-          }else {
-            if(checkCollision) {
-              selectedFeature.parent.position.x = xPos;
-              selectedFeature.parent.position.z = 0;
-              updateModelState(2, selectedFeature.name, xPos)
-            }
-          }
-          render();
-        }
-      }
-      controls.enableRotate = false;
-    }
-    else {
-      controls.enableRotate = true;
-    }
-  });
-  canvasContainer.addEventListener('mouseup', () => {
-    isDragging = false;
-  });
-
-  document.getElementById('deleteButton').addEventListener('click', function () {
-    if (selectedFeature) {
-      scene.remove(selectedFeature.parent);
-      this.style.display = "none";
-      calcPrice(selectedFeature.name, false, null)
-      updateModelState(3, selectedFeature.name, selectedFeature.parent.position.x)
-      render();
-      selectedFeature = null;
-    }
-  });
-
-  document.getElementById('addCartBtn').addEventListener('click', async function() {
-    let cartItems = []
-    availableProducts.map((product) => {
-      if(product.price > 0 && product.quantity > 0) {
-        cartItems.push({
-          'id': product.id,
-          'quantity': product.quantity
-        })
-      }
-    });
-
-    const formData = {'items': cartItems};
-
-    if(cartItems.length > 0) {
-      let token = '';
-      await fetch(window.Shopify.routes.root + 'cart/clear.js',{
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-      })
-      .then(response => {
-        return response.json();
-      })
-      .then((data) => {
-        token = data.token;
-      })
-      .catch((error) => {
-        console.error('Error:', error);
-        return false;
-      });
-
-      await fetch(window.Shopify.routes.root + 'cart/add.js', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(formData)
-      })
-      .then(response => {
-        return response.json();
-      })
-      .then((addedData) => {
-        gotoCheckout(token)
-      })
-      .catch((error) => {
-        console.error('Error:', error);
-        return false;
-      });
-    } 
-  });
-
   function gotoCheckout(token) {
     window.open(`/checkouts/cn/${token}`, '_blank')
   }
 
-  document.getElementById('imgDownloadBtn').addEventListener('click', function () {
-    renderer.render(scene, camera);
-    var imgData = renderer.domElement.toDataURL();
-    var link = document.createElement('a');
-    link.download = 'scene.png';
-    link.href = imgData;
-    link.click();
-  });
+  function resetConfig() {
+    let models = scene.children.filter((group) => 
+      group?.children[0]?.name == 'maxxair' || 
+      group?.children[0]?.name == 'air_conditioner' || 
+      group?.children[0]?.name == 'solar200' || 
+      group?.children[0]?.name == 'solar55' || 
+      group?.children[0]?.name == 'solar30'|| 
+      group?.children[0]?.name == 'ladder' );
 
-  document.getElementById('camChangeBtn').addEventListener('click', function () {
-    const cameraPosition = camera.position;
-    const widthValue = window.innerWidth < 1024 ? window.innerWidth : (window.innerWidth - 300)
+    for(let x in models) {
+      scene.remove(models[x])
+    }
 
-    if (cameraType === "perspective") {
-      camera = new THREE.OrthographicCamera(-widthValue / 340, widthValue / 340, window.innerHeight / 340, -window.innerHeight / 340, 1, 10000);
-      cameraType = "orthographic"
-    }
-    else {
-      camera = new THREE.PerspectiveCamera(40, widthValue / window.innerHeight, 1, 10000);
-      cameraType = "perspective"
-    }
-    camera.position.set(cameraPosition.x, cameraPosition.y, cameraPosition.z);
-    setCameraView();
-    setViewCube()
-  });
+    let productList = [...availableProducts]
+
+    productList = productList.map(product => {
+      let newProduct = {...product};
+
+      if(newProduct.type == 'rack') newProduct.quantity = 1;
+      else newProduct.quantity = 0;
+
+      return newProduct
+    });
+
+    availableProducts = productList;
+
+    addedState = [];
+		selectedIndexOfState = -1;
+		solar35Area = [];
+		solar50Area = [];
+
+    updateCartState()
+    updateBuildState(productList)
+    calculatePrice(productList)
+  }
 
   function doMouseDown(x, y) {
     controls.enableRotate = false;
@@ -1231,29 +1351,6 @@
     }
   }
 
-  document.addEventListener('DOMContentLoaded', function () {
-    canvas = document.querySelector('canvas[data-engine="three.js r162"]');
-  });
-
-  document.getElementById('color-selectable').addEventListener('click', function(event) {
-
-    console.log(addedState, solar50Area, solar35Area);
-
-    if(event.target.classList.contains("color-item")) {
-
-      const options = document.querySelectorAll('.color-item');
-      options.forEach(option => {
-        option.classList.remove('color-selected')
-      })
-
-      event.target.classList.add('color-selected');
-
-      bodyMaterial = new THREE.MeshPhysicalMaterial( {
-        color: event.target.style.backgroundColor ?? 0xffffff, metalness: 1.0, roughness: 0.9, clearcoat: 1.0, clearcoatRoughness: 0.08
-      });
-      bodyMesh.material = bodyMaterial
-    }
-  })
 
   function addEdgeLines(object) {
     if (edgeLine) {
@@ -1463,12 +1560,6 @@
       scene.add( skybox );
       scene.environment = envMap;
     });
-    
-    const dracoLoader = new DRACOLoader();
-    dracoLoader.setDecoderPath('https://res.cloudinary.com/dbloegsbv/raw/upload/v1/jsm/');
-
-    const loader = new GLTFLoader();
-    loader.setDRACOLoader(dracoLoader);
 
     loader.load('https://cdn.shopify.com/3d/models/ef2473f570af2015/van2.glb', function (gltf) {
       carModel = gltf.scene;
@@ -1631,8 +1722,6 @@
     }
   }
 
-  init();
-
   function updateBuildState(products) {
     const buildListDom = document.getElementById('build-list');
     let buildText = ''
@@ -1696,6 +1785,8 @@
     })
     document.getElementById("products-cost").innerHTML = totalPrice.toFixed(2);
   }
+
+  init();
 </script>
 
 {% schema %}
