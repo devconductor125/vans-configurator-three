@@ -980,12 +980,12 @@
 
   document.getElementById('select-template').addEventListener('click', async function(event) {
     if (event.target.id.includes('temp')) {
+      fromTemplate = true;
 
       let tempOrder = ['solar_panel200', 'solar_panel200', 'maxxair', 'airconditioner', 'solar_panel50', 'solar_panel30'];
 
       function clickWithDelay(elements, delay) {
         elements.forEach((elementId, index) => {
-      fromTemplate = true;
 
           setTimeout(() => {
             var elem = document.getElementById(elementId);
@@ -994,7 +994,6 @@
             }
           }, index * delay);
         });
-        fromTemplate = false;
       }
 
       clickWithDelay(tempOrder, 500);
@@ -1180,13 +1179,6 @@
 				else return;
 			} else {
 				positionX = getAvailablePoint(selectedItem);
-
-        console.log("asdfasdfasdf:", positionX)
-
-        
-        positionX = fromTemplate ? positionX - 5.2 : positionX;
-
-
 				if(!positionX) return;
 				updateModelState(1, selectedItem.type, positionX);
 			}
@@ -1242,6 +1234,7 @@
   }
 
   function resetConfig() {
+    fromTemplate = false;
     let models = scene.children.filter((group) => 
       group?.children[0]?.name == 'maxxair' || 
       group?.children[0]?.name == 'air_conditioner' || 
@@ -1817,7 +1810,7 @@
     document.getElementById("products-cost").innerHTML = totalPrice.toFixed(2);
   }
 
-  function excludeRanges(vanArea, addedState) {
+  function excludeRanges(vanArea, addedState) { // Get available area over Van
     let ranges = [];
     for (let i = 0; i < addedState.length; i += 2) {
         ranges.push([addedState[i], addedState[i + 1]]);
@@ -1854,7 +1847,7 @@
     return -1;
 	}
 
-	function getIntersectionIntervals(intervals1, intervals2, diff) {
+	function getIntersectionIntervals(intervals1, intervals2, diff, centerDevi = 0) {
     let intersections = [];
 
     for (let i = 0; i < intervals1.length; i += 2) {
@@ -1862,8 +1855,8 @@
       let end1 = intervals1[i + 1];
 
       for (let j = 0; j < intervals2.length; j += 2) {
-        let start2 = intervals2[j] - diff - vanDiff;
-        let end2 = intervals2[j + 1] + diff - vanDiff;
+        let start2 = intervals2[j] - diff + centerDevi - vanDiff;
+        let end2 = intervals2[j + 1] + diff + centerDevi - vanDiff;
         let maxStart = Math.max(start1, start2);
         let minEnd = Math.min(end1, end2);
         if (maxStart < minEnd) {
@@ -1878,11 +1871,25 @@
 		let result = excludeRanges(vanArea, addedState);
 
 		if(selectedItem.type == 'air_conditioner') {
-			let intersections = getIntersectionIntervals(result, cutOffArea, selectedItem.xRadius - 7.001);
-			let canIndex = findFittingIntervalIndex(intersections, selectedItem.xRadius);
-			let xCenter = intersections[canIndex] + selectedItem.xRadius;
-			let positionX = -1 * xCenter * 0.0254;
-			return positionX;
+      if(fromTemplate) {
+        console.log("From Template");
+        let intersections = getIntersectionIntervals(result, cutOffArea, selectedItem.xRadius - 7.0, 5.2);
+        let canIndex = findFittingIntervalIndex(intersections, selectedItem.xRadius);
+        let xCenter = intersections[canIndex] + selectedItem.xRadius;
+        let positionX = -1 * xCenter * 0.0254;
+        return positionX;
+
+      } else {
+        let intersections = getIntersectionIntervals(result, cutOffArea, selectedItem.xRadius - 7.2);
+        console.log("intersections: ", intersections, result);
+
+        let canIndex = findFittingIntervalIndex(intersections, selectedItem.xRadius);
+        console.log("canIndex: ", canIndex);
+
+        let xCenter = intersections[canIndex] + selectedItem.xRadius;
+        let positionX = -1 * xCenter * 0.0254;
+        return positionX;
+      }
 		} else if(selectedItem.type == 'maxxair') {
 			let intersections = getIntersectionIntervals(result, cutOffArea, selectedItem.xRadius - 7);
 			let canIndex = findFittingIntervalIndex(intersections, selectedItem.xRadius);
@@ -1896,8 +1903,6 @@
 			return positionX;
 		}
 	}
-
-
   
   init();
 

@@ -825,6 +825,9 @@
   let bodyMaterial;
   let bodyMesh;
 
+  let fromTemplate = false;
+  let totalPrice = 0;
+
   let availableProducts = [
     {
       "htmlId": "",
@@ -928,7 +931,11 @@
       "price": 0,
       "quantity": 0
     },
-    {htmlId: '', type: 'air_conditioner_nodamic', handle: '', id: null, price: 0, quantity: 0, xRadius: 15.5, centerDevi: 5.2}
+    {htmlId: 'airconditioner', type: 'air_conditioner_nodamic', handle: '', id: null, price: 0, quantity: 0, xRadius: 15.5,
+      "title": "Rich Solar Mega 35 Watt 12 Volt Solar Panel",
+      "image": "https://cdn.shopify.com/s/files/1/0412/9898/5124/files/Rich-Solar-35W-12V-Solar-Panel_e5266152-4c97-4d03-8a8c-30e6446a354b.png?v=1717015802",
+      "url": "https://shop.explorist.life/shop/all-products/pre-order-rich-solar-35w-12v-solar-panel/"
+    }
   ]
   
 
@@ -1047,9 +1054,10 @@
 
   document.getElementById('select-template').addEventListener('click', function(event) {
     if (event.target.id.includes('temp')) {
+      fromTemplate = true;
       let tempOrder = ['solar_panel200', 'solar_panel200', 'maxxair', 'airconditioner', 'solar_panel50', 'solar_panel30'];
 
-      resetConfig();
+      resetConfig(true);
 
       function clickWithDelay(elements, delay) {
         elements.forEach((elementId, index) => {
@@ -1145,7 +1153,9 @@
     } 
   });
 
-  document.getElementById('imgDownloadBtn').addEventListener('click', function () {
+  document.getElementById('imgDownloadBtn').addEventListener('click', function (event) {
+    event.preventDefault()
+
     // Render the WebGL scene to the canvas
     renderer.render(scene, camera);
 
@@ -1172,8 +1182,6 @@
     Promise.all(imagePromises).then(() => {
       // Temporarily show the full build list
       const buildList = document.querySelector('#build-list');
-      buildList.style.maxHeight = '9000px';
-
       // Create a temporary container to hold the canvas and build list
       const tempContainer = document.createElement('div');
       tempContainer.style.position = 'absolute';
@@ -1184,9 +1192,38 @@
       // Clone the canvas and build list into the temporary container
       const canvasClone = webGLCanvas.cloneNode(true);
       const buildListClone = buildList.cloneNode(true);
+      const buildItemsClone = buildListClone.querySelectorAll(".build-item");
+      const dividers = buildListClone.querySelectorAll(".divider");
+      const removeProductBtns = buildListClone.querySelectorAll(".remove-product");
+      const itemName = buildListClone.querySelectorAll(".item-name");
+
+
+      buildListClone.style.cssText = "width: 1253px; display: flex; flex-wrap: wrap; padding: 24px 0";
+      buildItemsClone.forEach((item, index) => {
+        item.style.cssText = "margin-left: 8px; margin-right: 8px; width: calc(33.333333% - 16px); border: 1px solid #333; padding: 12px; border-radius: 8px;";
+      })
+      dividers.forEach((item, index) => {
+        item.style.display = "none";
+      })
+      removeProductBtns.forEach((item, index) => {
+        item.style.display = "none";
+      })
+      itemName.forEach((item, index) => {
+        item.style.lineHeight = "2";
+      })
 
       tempContainer.appendChild(canvasClone);
       tempContainer.appendChild(buildListClone);
+
+      // Iterate through the radio buttons and set the checked state
+      const radioButtons = buildList.querySelectorAll('.variant-handler');
+      radioButtons.forEach(radio => {
+        if (radio.hasAttribute('checked')) {
+          radio.checked = true;
+        } else {
+          radio.checked = false;
+        }
+      });
 
       return html2canvas(tempContainer, {
         useCORS: true, // Enable CORS for html2canvas
@@ -1213,6 +1250,12 @@
           // Convert the combined canvas to a data URL
           var combinedImageData = combinedCanvas.toDataURL('image/png');
 
+          // Create a link element and trigger a download
+          var link = document.createElement('a');
+          link.download = 'scene.png';
+          link.href = combinedImageData;
+          link.click();
+
           // Create a PDF document using jsPDF
           const { jsPDF } = window.jspdf;
           const pdf = new jsPDF({
@@ -1222,8 +1265,8 @@
           });
 
           // Add the combined image to the PDF
-          pdf.addImage(combinedImageData, 'PNG', 0, 0, combinedCanvas.width, combinedCanvas.height);
-
+          // pdf.addImage(combinedImageData, 'PNG', 16, 50, combinedCanvas.width, combinedCanvas.height);
+          pdf.addImage(combinedImageData, 'PNG', 12, 12, combinedCanvas.width - 24, combinedCanvas.height - 24);
           // Save the PDF
           pdf.save('scene.pdf');
         };
@@ -1335,7 +1378,7 @@
     return -1;
 	}
 
-	function getIntersectionIntervals(intervals1, intervals2, diff) {
+	function getIntersectionIntervals(intervals1, intervals2, diff, centerDevi = 0) {
     let intersections = [];
 
     for (let i = 0; i < intervals1.length; i += 2) {
@@ -1343,8 +1386,8 @@
       let end1 = intervals1[i + 1];
 
       for (let j = 0; j < intervals2.length; j += 2) {
-        let start2 = intervals2[j] - diff - vanDiff;
-            let end2 = intervals2[j + 1] + diff - vanDiff;
+        let start2 = intervals2[j] - diff + centerDevi - vanDiff;
+        let end2 = intervals2[j + 1] + diff + centerDevi - vanDiff;
         let maxStart = Math.max(start1, start2);
         let minEnd = Math.min(end1, end2);
         if (maxStart < minEnd) {
@@ -1359,11 +1402,25 @@
 		let result = excludeRanges(vanArea, addedState);
 
 		if(selectedItem.type == 'air_conditioner') {
-			let intersections = getIntersectionIntervals(result, cutOffArea, selectedItem.xRadius - 7.001);
-			let canIndex = findFittingIntervalIndex(intersections, selectedItem.xRadius);
-			let xCenter = intersections[canIndex] + selectedItem.xRadius;
-			let positionX = -1 * xCenter * 0.0254;
-			return positionX;
+			if(fromTemplate) {
+        console.log("From Template");
+        let intersections = getIntersectionIntervals(result, cutOffArea, selectedItem.xRadius - 7.0, 5.2);
+        let canIndex = findFittingIntervalIndex(intersections, selectedItem.xRadius);
+        let xCenter = intersections[canIndex] + selectedItem.xRadius;
+        let positionX = -1 * xCenter * 0.0254;
+        return positionX;
+
+      } else {
+        let intersections = getIntersectionIntervals(result, cutOffArea, selectedItem.xRadius - 7.2);
+        console.log("intersections: ", intersections, result);
+
+        let canIndex = findFittingIntervalIndex(intersections, selectedItem.xRadius);
+        console.log("canIndex: ", canIndex);
+
+        let xCenter = intersections[canIndex] + selectedItem.xRadius;
+        let positionX = -1 * xCenter * 0.0254;
+        return positionX;
+      }
 		} else if(selectedItem.type == 'maxxair') {
 			let intersections = getIntersectionIntervals(result, cutOffArea, selectedItem.xRadius - 7);
 			let canIndex = findFittingIntervalIndex(intersections, selectedItem.xRadius);
@@ -1397,7 +1454,7 @@
 			positionY = 2.35;
 			positionZ = 0;
 			if(selectedItem.type == 'solar30') {
-				let acItem = availableProducts.filter(product => product.type == 'air_conditioner')[0];
+				let acItem = availableProducts.filter(product => fromTemplate ? (product.type == 'air_conditioner_nodamic') : (product.type == 'air_conditioner'))[0];
 				if (selectedItem.quantity >= acItem.quantity) return false;
 
 				const newSolarPosition = solar35Area.findIndex((area) => !area.confState );
@@ -1474,7 +1531,8 @@
     window.open(`/checkouts/cn/${token}`, '_blank')
   }
 
-  function resetConfig() {
+  function resetConfig(temp) {
+    if(temp){fromTemplate = temp;}
     let models = scene.children.filter((group) => 
       group?.children[0]?.name == 'maxxair' || 
       group?.children[0]?.name == 'air_conditioner' || 
@@ -1581,11 +1639,18 @@
 
     switch (modelName) {
       case "air_conditioner":
-        addProduct = availableProducts[1];
-        flag ? addProduct.quantity += 1 : addProduct.quantity -= 1;
-        addProduct.model = model;
-        availableProducts[1] = addProduct;
-
+        if(fromTemplate) {
+          addProduct = availableProducts[10];
+          flag ? addProduct.quantity += 1 : addProduct.quantity -= 1;
+          addProduct.model = model;
+          availableProducts[10] = addProduct;
+        }
+        else {
+          addProduct = availableProducts[1];
+          flag ? addProduct.quantity += 1 : addProduct.quantity -= 1;
+          addProduct.model = model;
+          availableProducts[1] = addProduct;
+        }
         break;
       case "maxxair":
         addProduct = availableProducts[2];
