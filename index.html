@@ -802,14 +802,6 @@
 		import { GroundedSkybox } from 'https://cdn.jsdelivr.net/npm/three@0.163.0/examples/jsm/objects/GroundedSkybox.js';
 
 		
-		let vanPrice = 0;
-  let airConPrice = 0;
-  let maxxAirPrice = 0;
-  let solar200Price = 0;
-  let solar55Price = 0;
-  let solar30Price = 0;
-  let totalPrice = 0;
-
   let vanArea = [-16.535, 101.968];
   let addedState = [];
   let selectedIndexOfState = -1;
@@ -1188,9 +1180,12 @@
 				else return;
 			} else {
 				positionX = getAvailablePoint(selectedItem);
+
+        console.log("asdfasdfasdf:", positionX)
+
+        
         positionX = fromTemplate ? positionX - 5.2 : positionX;
 
-        console.log(fromTemplate)
 
 				if(!positionX) return;
 				updateModelState(1, selectedItem.type, positionX);
@@ -1643,6 +1638,7 @@
       if(solar55Area.length > 0 && flag == 2){
         let curArea = [...solar55Area];
         const indexOfModel = getPositionIndex(curArea, inchXPos, xRadius);
+
         if(indexOfModel >= 0) {
           const newArea = {
             position: inchXPos,
@@ -1709,13 +1705,35 @@
   }
 
   function updateModelState(flag, modelType, xPos) {
-    if(modelType == "ladder") return;
-
     let productInfo = availableProducts.filter((product) => product.type == modelType)[0];
     let xRadius = productInfo.xRadius;
     let inchXPos = -1 * xPos/0.0254
     let startValue = inchXPos - xRadius;
     let endValue = inchXPos + xRadius;
+
+    if(modelType == "ladder") return
+    else if(modelType == 'solar55'){
+      const selAreaIndex = solar55Area.findIndex((area) => area.position > (inchXPos - xRadius / 2) && area.position < (inchXPos + xRadius / 2));
+      let selectedArea = {...solar55Area[selAreaIndex]};
+      selectedArea.confState = false;
+      if(selAreaIndex >= 0) solar55Area[selAreaIndex] = selectedArea;
+      return;
+
+    } else if(modelType == 'solar30') {
+      const selAreaIndex = solar35Area.findIndex((area) => area.position > (inchXPos - xRadius / 2) && area.position < (inchXPos + xRadius / 2));
+      let selectedArea = {...solar35Area[selAreaIndex]};
+      selectedArea.confState = false;
+      if(selAreaIndex >= 0) solar35Area[selAreaIndex] = selectedArea;
+      return;
+    } else if(modelType == 'maxxair' && flag == 3) {
+      const selAreaIndex = solar55Area.findIndex((area) => area.position > (inchXPos - xRadius / 2) && area.position < (inchXPos + xRadius / 2));
+      if(selAreaIndex >= 0) solar55Area.splice(selAreaIndex, 1);
+    }
+    else if(modelType == 'air_conditioner' && flag == 3) {
+      const selAreaIndex = solar35Area.findIndex((area) => area.position > (inchXPos - xRadius / 2) && area.position < (inchXPos + xRadius / 2));
+      if(selAreaIndex >= 0) solar35Area.splice(selAreaIndex, 1);
+    }
+    console.log(modelType)
 
     switch(flag) {
       case 1: 
