@@ -814,7 +814,7 @@
   let addedState = [];
   let selectedIndexOfState = -1;
   let solar35Area = [];
-  let solar50Area = [];
+  let solar55Area = [];
 
   let canvas, camera, scene, renderer;
   let cameraType = "perspective";
@@ -851,11 +851,13 @@
 
   let selectedItem = '';
   let ladderPlane;
-  const cutOffArea = [3.19, 25.7, 32.09, 64.72, 71.11, 90.19];
+  const cutOffArea = [3.19, 25.7, 32.09, 64.72, 71.11, 85.19];
   const vanDiff = 3.2
 
   let bodyMaterial;
   let bodyMesh;
+
+  let fromTemplate = false;
 
   let availableProducts = [
     {htmlId: '', type: 'rack', handle: 'transithsld148-roof-rack', id: 43238854328539, price: 0, quantity: 1, xRadius: null},
@@ -868,6 +870,7 @@
     {htmlId: '', type: 'solar_cross', handle: 'ford-transit-high-speed-low-drag-roof-rack-cross-bars', id: 43279255503067, price: 0, quantity: 0},
     {htmlId: '', type: 'max_cross', handle: 'ford-transit-hsld-roof-rack-maxxfan-cross-bars', id: 44018083234011, price: 0, quantity: 0},
     {htmlId: 'ladder', type: 'ladder', handle: 'transit-side-mount-ladder-high-roof', id: 44020238385371, price: 0, quantity: 0},
+    {htmlId: '', type: 'air_conditioner_nodamic', handle: '', id: null, price: 0, quantity: 0, xRadius: 15.5, centerDevi: 5.2},
   ]
 
   const shadow = new THREE.TextureLoader().load('https://cdn.shopify.com/s/files/1/0412/9898/5124/files/ford_ao.png?v=1711858184');
@@ -913,7 +916,7 @@
 
           const selectedFeatureWidth = size.x;
           let checkCollision = true;
-          const xPos = Math.min(0.428 - selectedFeatureWidth / 2, Math.max(-2.2, coords.x));
+          const xPos = Math.min(0.428 - selectedFeatureWidth / 2, Math.max(-2.24, coords.x));
 
           if(selectedFeature.name != 'ladder' && selectedFeature.name != 'solar30' && selectedFeature.name != 'solar55'){
             checkCollision = checkIsAvailable(xPos, selectedFeature.name, 2);
@@ -921,24 +924,28 @@
 
           if(selectedFeature.name == "air_conditioner"){
             if(isValueInScale(coords.x * 1000 / 25.4 * -1, cutOffArea, 7.001, vanDiff)  >= 0 && checkCollision) {
-              updateSolarArea(xPos, selectedFeature.name, 1)
+              updateSolarArea(xPos, selectedFeature.name, 2)
               selectedFeature.parent.position.x = xPos;
               selectedFeature.parent.position.z = 0;
               updateModelState(2, selectedFeature.name, xPos)
             } 
           } else if(selectedFeature.name == 'maxxair'){
             if(isValueInScale(coords.x * 1000 / 25.4 * -1, cutOffArea, 7, vanDiff)  >= 0 && checkCollision){
-              updateSolarArea(xPos, selectedFeature.name, 1)
+              updateSolarArea(xPos, selectedFeature.name, 2)
               selectedFeature.parent.position.x = xPos;
               selectedFeature.parent.position.z = 0;
               updateModelState(2, selectedFeature.name, xPos)
             } 
           } else if(selectedFeature.name == 'solar30') {
-            selectedFeature.parent.position.x = -1 * solar35Area[0] * 0.0254;
+            const movedItemIndex = solar35Area.findIndex((area) => area.moved);
+            selectedFeature.parent.position.x = -1 * solar35Area[movedItemIndex].position * 0.0254;
             selectedFeature.parent.position.z = 0;
+            solar35Area[movedItemIndex].moved = false;
           } else if(selectedFeature.name == 'solar55') {
-            selectedFeature.parent.position.x = -1 * solar50Area[0] * 0.0254;
+            const movedItemIndex = solar55Area.findIndex((area) => area.moved);
+            selectedFeature.parent.position.x = -1 * solar55Area[movedItemIndex].position * 0.0254;
             selectedFeature.parent.position.z = 0;
+            solar55Area[movedItemIndex].moved = false;
           }else {
             if(checkCollision) {
               selectedFeature.parent.position.x = xPos;
@@ -979,12 +986,15 @@
     }
   })
 
-  document.getElementById('select-template').addEventListener('click', function(event) {
+  document.getElementById('select-template').addEventListener('click', async function(event) {
     if (event.target.id.includes('temp')) {
+
       let tempOrder = ['solar_panel200', 'solar_panel200', 'maxxair', 'airconditioner', 'solar_panel50', 'solar_panel30'];
 
       function clickWithDelay(elements, delay) {
         elements.forEach((elementId, index) => {
+      fromTemplate = true;
+
           setTimeout(() => {
             var elem = document.getElementById(elementId);
             if (elem) {
@@ -992,6 +1002,7 @@
             }
           }, index * delay);
         });
+        fromTemplate = false;
       }
 
       clickWithDelay(tempOrder, 500);
@@ -1132,86 +1143,7 @@
 
   // getPrices();
 
-  function excludeRanges(vanArea, addedState) {
-    let ranges = [];
-    for (let i = 0; i < addedState.length; i += 2) {
-        ranges.push([addedState[i], addedState[i + 1]]);
-    }
-    ranges.sort((a, b) => a[0] - b[0]);
-    let result = [];
-    let currentStart = vanArea[0];
-    let currentEnd = vanArea[1];
-
-    for (let range of ranges) {
-      let [rangeStart, rangeEnd] = range;
-      if (rangeStart > currentEnd) continue;
-      if (rangeStart > currentStart) {
-          result.push(currentStart, rangeStart);
-      }
-      currentStart = Math.max(currentStart, rangeEnd);
-    }
-
-    if (currentStart < currentEnd) {
-      result.push(currentStart, currentEnd);
-    }
-    return result;
-	}
-
-	function findFittingIntervalIndex(result, radius) {
-    let requiredLength = 2 * radius;
-    for (let i = 0; i < result.length; i += 2) {
-      let intervalStart = result[i];
-      let intervalEnd = result[i + 1];
-      if (intervalEnd - intervalStart >= requiredLength) {
-        return i;
-      }
-    }
-    return -1;
-	}
-
-	function getIntersectionIntervals(intervals1, intervals2, diff) {
-    let intersections = [];
-
-    for (let i = 0; i < intervals1.length; i += 2) {
-      let start1 = intervals1[i];
-      let end1 = intervals1[i + 1];
-
-      for (let j = 0; j < intervals2.length; j += 2) {
-        let start2 = intervals2[j] - diff - vanDiff;
-            let end2 = intervals2[j + 1] + diff - vanDiff;
-        let maxStart = Math.max(start1, start2);
-        let minEnd = Math.min(end1, end2);
-        if (maxStart < minEnd) {
-            intersections.push(maxStart, minEnd);
-        }
-      }
-    }
-    return intersections;
-	}
-
-	function getAvailablePoint(selectedItem) {
-		let result = excludeRanges(vanArea, addedState);
-
-		if(selectedItem.type == 'air_conditioner') {
-			let intersections = getIntersectionIntervals(result, cutOffArea, selectedItem.xRadius - 7.001);
-			let canIndex = findFittingIntervalIndex(intersections, selectedItem.xRadius);
-			let xCenter = intersections[canIndex] + selectedItem.xRadius;
-			let positionX = -1 * xCenter * 0.0254;
-			return positionX;
-		} else if(selectedItem.type == 'maxxair') {
-			let intersections = getIntersectionIntervals(result, cutOffArea, selectedItem.xRadius - 7);
-			let canIndex = findFittingIntervalIndex(intersections, selectedItem.xRadius);
-			let xCenter = intersections[canIndex] + selectedItem.xRadius;
-			let positionX = -1 * xCenter * 0.0254;
-			return positionX;
-		} else {
-			let canIndex = findFittingIntervalIndex(result, selectedItem.xRadius);
-			let xCenter = result[canIndex] + selectedItem.xRadius;
-			let positionX = -1 * xCenter * 0.0254;
-			return positionX;
-		}
-
-	}
+  
 
 	function handleClickProduct(event){
 		let positionX = 0;
@@ -1234,16 +1166,32 @@
 				let acItem = availableProducts.filter(product => product.type == 'air_conditioner')[0];
 				if (selectedItem.quantity >= acItem.quantity) return false;
 
-				if(solar35Area.length > 0) positionX = -1 * solar35Area[0] * 0.0254;
+        const newSolarPosition = solar35Area.findIndex((area) => !area.confState );
+				if(solar35Area.length > 0 && newSolarPosition >= 0) {
+          
+          positionX = -1 * solar35Area[newSolarPosition].position * 0.0254;
+          let curArea = [...solar35Area];
+          solar35Area[newSolarPosition].confState = true;
+        }
+
 				else return;
 			} else if(selectedItem.type == 'solar55') {
 				let fanItem = availableProducts.filter(product => product.type == 'maxxair')[0];
 				if (selectedItem.quantity >= fanItem.quantity) return false;
 
-				if(solar50Area.length > 0) positionX = -1 * solar50Area[0] * 0.0254;
+        const newSolarPosition = solar55Area.findIndex((area) => !area.confState );;
+				if(solar55Area.length > 0 && newSolarPosition >= 0){
+          positionX = -1 * solar55Area[newSolarPosition].position * 0.0254;
+          solar55Area[newSolarPosition].confState = true;
+        }
+
 				else return;
 			} else {
 				positionX = getAvailablePoint(selectedItem);
+        positionX = fromTemplate ? positionX - 5.2 : positionX;
+
+        console.log(fromTemplate)
+
 				if(!positionX) return;
 				updateModelState(1, selectedItem.type, positionX);
 			}
@@ -1327,7 +1275,7 @@
     addedState = [];
 		selectedIndexOfState = -1;
 		solar35Area = [];
-		solar50Area = [];
+		solar55Area = [];
 
     updateCartState()
     // updateBuildState(productList)
@@ -1610,7 +1558,7 @@
       scene.add(carModel);
 
       workPlane = new THREE.Mesh(
-        new THREE.BoxGeometry(3, 0.01, 1.55),
+        new THREE.BoxGeometry(3.2, 0.01, 1.55),
         new THREE.MeshLambertMaterial({ color: "green" })
       );
       workPlane.material.visible = false;
@@ -1628,7 +1576,7 @@
 
       targetForDragging = new THREE.Mesh(
         new THREE.BoxGeometry(100, 0.01, 100),
-        new THREE.MeshBasicMaterial()
+        new THREE.MeshBasicMaterial({color: 'green'})
       );
       targetForDragging.material.visible = false;
       raycaster = new THREE.Raycaster();
@@ -1671,18 +1619,57 @@
     let endValue = inchXPos + xRadius;
 
     if(modelName == "air_conditioner"){
-      if(solar35Area.length > 0 ){
-        solar35Area = [inchXPos];
+      if(solar35Area.length > 0 && flag == 2){
+        let curArea = [...solar35Area];
+        const indexOfModel = getPositionIndex(curArea, inchXPos, xRadius);
+        if(indexOfModel >= 0) {
+          const newArea = {
+            position: inchXPos,
+            confState: curArea[indexOfModel].confState,
+            moved: true
+          }
+          curArea[indexOfModel] = newArea;
+          solar35Area = curArea;
+        }
       } else {
-        solar35Area.push(inchXPos)
+        const newArea = {
+          position: inchXPos,
+          confState: false,
+          moved: false
+        }
+        solar35Area.push(newArea)
       }
     } else if(modelName == "maxxair"){
-      if(solar50Area.length > 0 ){
-        solar50Area = [inchXPos];
+      if(solar55Area.length > 0 && flag == 2){
+        let curArea = [...solar55Area];
+        const indexOfModel = getPositionIndex(curArea, inchXPos, xRadius);
+        if(indexOfModel >= 0) {
+          const newArea = {
+            position: inchXPos,
+            confState: curArea[indexOfModel].confState,
+            moved: true
+          }
+          curArea[indexOfModel] = newArea;
+          solar55Area = curArea;
+        }
       } else {
-        solar50Area.push(inchXPos)
+        const newArea = {
+          position: inchXPos,
+          confState: false,
+          moved: false
+        }
+        solar55Area.push(newArea)
       }
     }
+  }
+
+  function getPositionIndex(areaArr, pos, radius) {
+    const startPoint = pos - radius / 2;
+    const endPoint = pos + radius / 2;
+    for(let i=0; i< areaArr.length; i++) {
+      if(areaArr[i].position > startPoint && areaArr[i].position < endPoint) return i;
+    }
+    return -1;
   }
 
   function checkIsAvailable(xPos, modelName, flag) {
@@ -1812,6 +1799,88 @@
     document.getElementById("products-cost").innerHTML = totalPrice.toFixed(2);
   }
 
+  function excludeRanges(vanArea, addedState) {
+    let ranges = [];
+    for (let i = 0; i < addedState.length; i += 2) {
+        ranges.push([addedState[i], addedState[i + 1]]);
+    }
+    ranges.sort((a, b) => a[0] - b[0]);
+    let result = [];
+    let currentStart = vanArea[0];
+    let currentEnd = vanArea[1];
+
+    for (let range of ranges) {
+      let [rangeStart, rangeEnd] = range;
+      if (rangeStart > currentEnd) continue;
+      if (rangeStart > currentStart) {
+          result.push(currentStart, rangeStart);
+      }
+      currentStart = Math.max(currentStart, rangeEnd);
+    }
+
+    if (currentStart < currentEnd) {
+      result.push(currentStart, currentEnd);
+    }
+    return result;
+	}
+
+	function findFittingIntervalIndex(result, radius) {
+    let requiredLength = 2 * radius;
+    for (let i = 0; i < result.length; i += 2) {
+      let intervalStart = result[i];
+      let intervalEnd = result[i + 1];
+      if (intervalEnd - intervalStart >= requiredLength) {
+        return i;
+      }
+    }
+    return -1;
+	}
+
+	function getIntersectionIntervals(intervals1, intervals2, diff) {
+    let intersections = [];
+
+    for (let i = 0; i < intervals1.length; i += 2) {
+      let start1 = intervals1[i];
+      let end1 = intervals1[i + 1];
+
+      for (let j = 0; j < intervals2.length; j += 2) {
+        let start2 = intervals2[j] - diff - vanDiff;
+        let end2 = intervals2[j + 1] + diff - vanDiff;
+        let maxStart = Math.max(start1, start2);
+        let minEnd = Math.min(end1, end2);
+        if (maxStart < minEnd) {
+            intersections.push(maxStart, minEnd);
+        }
+      }
+    }
+    return intersections;
+	}
+
+	function getAvailablePoint(selectedItem) {
+		let result = excludeRanges(vanArea, addedState);
+
+		if(selectedItem.type == 'air_conditioner') {
+			let intersections = getIntersectionIntervals(result, cutOffArea, selectedItem.xRadius - 7.001);
+			let canIndex = findFittingIntervalIndex(intersections, selectedItem.xRadius);
+			let xCenter = intersections[canIndex] + selectedItem.xRadius;
+			let positionX = -1 * xCenter * 0.0254;
+			return positionX;
+		} else if(selectedItem.type == 'maxxair') {
+			let intersections = getIntersectionIntervals(result, cutOffArea, selectedItem.xRadius - 7);
+			let canIndex = findFittingIntervalIndex(intersections, selectedItem.xRadius);
+			let xCenter = intersections[canIndex] + selectedItem.xRadius;
+			let positionX = -1 * xCenter * 0.0254;
+			return positionX;
+		} else {
+			let canIndex = findFittingIntervalIndex(result, selectedItem.xRadius);
+			let xCenter = result[canIndex] + selectedItem.xRadius;
+			let positionX = -1 * xCenter * 0.0254;
+			return positionX;
+		}
+	}
+
+
+  
   init();
 
 	</script>
