@@ -1,3 +1,7 @@
+8020 cross https://cdn.shopify.com/3d/models/ad73620193e300ab/8020_cross.glb
+lshape cross: https://cdn.shopify.com/3d/models/687f5d6be278ebad/lshape_cross.glb
+
+
 {%- assign first_block = section.blocks | first -%}
 <style>
   #shopify-section-{{ section.id }} {

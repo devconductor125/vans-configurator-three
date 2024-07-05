@@ -1540,7 +1540,7 @@
       let overLappedWidth = 0;
       lcrossBars.map((crossbar) => {
         const crossXPos = crossbar?.position?.x;
-        const barStartPoint = crossXPos + 0.3435 + 0.02;
+        const barStartPoint = crossXPos + 0.3435;
         if(barStartPoint > endPoint) {
           overLapped = true;
           overLappedWidth = Math.abs(barStartPoint - endPoint);
@@ -1900,25 +1900,11 @@
   function updateCartState() {
     let totalItems = 0;
     availableProducts.map((product) => {
-
-      let productAmount = product.quantity; 
-
-      if(product?.type == 'solar_cross') {
-        if(productAmount <= 2) productAmount = 0;
-        else productAmount -= 2;
-      }
-
-      if(product?.type == 'ac_cross' || product?.type == 'max_cross'){
-        if(productAmount <= 1) productAmount = 0;
-        else productAmount -= 1;
-      }
-
-      totalItems += productAmount
-
+      totalItems += product.quantity
       if(product.htmlId != "") {
         let dragItem = document.getElementById(product.htmlId).childNodes[1];
-        if (productAmount > 0) {
-          dragItem.innerHTML = productAmount.toString();
+        if (product.quantity > 0) {
+          dragItem.innerHTML = product?.quantity.toString();
           dragItem.style.display = 'block';
         } else {
           dragItem.style.display = 'none';
@@ -2297,18 +2283,14 @@
     for(let i=0; i < products.length; i++) {
       const availableProduct = products[i];
 
+      console.log(availableProduct)
+
       let productAmount = availableProduct.quantity; 
 
       if(availableProduct?.type == 'solar_cross') {
         if(productAmount <= 2) continue;
         else productAmount -= 2;
       }
-
-      if(availableProduct?.type == 'ac_cross' || availableProduct?.type == 'max_cross') {
-        if(productAmount <= 1) continue;
-        else productAmount -= 1;
-      }
-
       if(productAmount > 0) {
 
         buildText += '<div class="build-item"><div class="item-overview">'
@@ -2366,19 +2348,8 @@
   function calculatePrice(products) {
     let totalPrice = 0;
     products.map((product) => {
-      let productAmount = product.quantity; 
-
-      if(product?.type == 'solar_cross') {
-        if(productAmount <= 2) productAmount = 0;
-        else productAmount -= 2;
-      }
-      if(product?.type == 'ac_cross' || product?.type == 'max_cross'){
-        if(productAmount <= 1) productAmount = 0;
-        else productAmount -= 1;
-      }
-
-      if(productAmount > 0 && product.availability){
-        totalPrice += productAmount * product.price;
+      if(product.quantity > 0 && product.availability){
+        totalPrice += product.quantity * product.price;
       }
     })
     document.getElementById("products-cost").innerHTML = totalPrice.toFixed(2);

@@ -108,34 +108,44 @@
 		}
 
 		#airconditioner {
-			background-image: url('https://cdn.shopify.com/s/files/1/0412/9898/5124/files/airconditioner.jpg?v=1711798448');
+			background-image: url('https://cdn.shopify.com/s/files/1/0412/9898/5124/files/airconditioner.jpg?v=1711798448&width=100');
 			display: block;
 		}
 
 		#maxxair {
-			background-image: url('https://cdn.shopify.com/s/files/1/0412/9898/5124/files/maxxair.jpg?v=1711798448');
+			background-image: url('https://cdn.shopify.com/s/files/1/0412/9898/5124/files/maxxair.jpg?v=1711798448&width=100');
 			display: block;
 		}
 
 		#solar_panel200 {
-			background-image: url('https://cdn.shopify.com/s/files/1/0412/9898/5124/files/200W.jpg?v=1711798448');
+			background-image: url('https://cdn.shopify.com/s/files/1/0412/9898/5124/files/200W.jpg?v=1711798448&width=100');
 			display: block;
 		}
 
 		#solar_panel50 {
-			background-image: url('https://cdn.shopify.com/s/files/1/0412/9898/5124/files/55W.jpg?v=1711798448');
+			background-image: url('https://cdn.shopify.com/s/files/1/0412/9898/5124/files/55W.jpg?v=1711798448&width=100');
 			display: block;
 		}
 
 		#solar_panel30 {
-			background-image: url('https://cdn.shopify.com/s/files/1/0412/9898/5124/files/30W.jpg?v=1711798448');
+			background-image: url('https://cdn.shopify.com/s/files/1/0412/9898/5124/files/30W.jpg?v=1711798448&width=100');
 			display: block;
 		}
 
     #ladder {
-			background-image: url('https://cdn.shopify.com/s/files/1/0412/9898/5124/files/ladder.jpg?v=1714006260');
+			background-image: url('https://cdn.shopify.com/s/files/1/0412/9898/5124/files/ladder.jpg?v=1714006260&width=100');
 			display: block;
 		}
+
+    #cross_bar {
+      background-image: url('https://cdn.shopify.com/s/files/1/0412/9898/5124/files/8020_cross.jpg?v=1717205308&width=100');
+      display: block;
+    }
+
+    #solar_cross_bar {
+      background-image: url('./images/solar_cross.jpg');
+      display: block;
+    }
 
 		button {
 			cursor: pointer;
@@ -656,10 +666,27 @@
 							<p>Ladder</p>
 						</div>
 					</div>
+          <div class="item-box">
+						<div class="item-img" id="solar_cross_bar" draggable="false">
+							<div class="carted-item">1</div>
+						</div>
+						<div class="item-name">
+							<p>Solar cross bar</p>
+						</div>
+					</div>
+          <div class="item-box">
+						<div class="item-img" id="cross_bar" draggable="false">
+							<div class="carted-item">1</div>
+						</div>
+						<div class="item-name">
+							<p>8020 cross bar</p>
+						</div>
+					</div>
 				</div>
 			</div>
 			<div class="action-btn-list">
 				<button class="mb-3 left-tooltip" id="imgDownloadBtn">
+          
 					<span class="tooltiptext">Download Image</span>
 					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
 						<g fill="none" stroke="#ffffff" stroke-linecap="round" stroke-width="1.5">
@@ -850,6 +877,7 @@
   let bodyMesh;
 
   let fromTemplate = false;
+  let collidableMeshList = [];
 
   let availableProducts = [
     {htmlId: '', type: 'rack', handle: 'transithsld148-roof-rack', id: 43238854328539, price: 0, quantity: 1, xRadius: null},
@@ -910,7 +938,7 @@
           let checkCollision = true;
           const xPos = Math.min(0.428 - selectedFeatureWidth / 2, Math.max(-2.24, coords.x));
 
-          if(selectedFeature.name != 'ladder' && selectedFeature.name != 'solar30' && selectedFeature.name != 'solar55'){
+          if(selectedFeature.name != 'ladder' && selectedFeature.name != 'solar30' && selectedFeature.name != 'solar55' && selectedFeature.name != 'cross_bar'){
             checkCollision = checkIsAvailable(xPos, selectedFeature.name, 2);
           }
 
@@ -919,7 +947,7 @@
               updateSolarArea(xPos, selectedFeature.name, 2)
               selectedFeature.parent.position.x = xPos;
               selectedFeature.parent.position.z = 0;
-              updateModelState(2, selectedFeature.name, xPos)
+              updateModelState(2, selectedFeature.name, xPos) 
             } 
           } else if(selectedFeature.name == 'maxxair'){
             if(isValueInScale(coords.x * 1000 / 25.4 * -1, cutOffArea, 7, vanDiff)  >= 0 && checkCollision){
@@ -938,7 +966,17 @@
             selectedFeature.parent.position.x = -1 * solar55Area[movedItemIndex].position * 0.0254;
             selectedFeature.parent.position.z = 0;
             solar55Area[movedItemIndex].moved = false;
-          }else {
+          } else if(selectedFeature.name == "cross_bar") {
+            const bbox1  = getModelBoundingBox(selectedFeature);
+            let xPos = Math.min(0.428 - selectedFeatureWidth / 2, Math.max(-2.57, coords.x));
+            const checkCollision = isCrossBarCollied(bbox1, collidableMeshList, xPos);
+            if(!checkCollision) {
+              selectedFeature.parent.position.x = xPos;
+              selectedFeature.parent.position.z = 0;
+              updateColliderList();
+            }
+          }
+          else {
             if(checkCollision) {
               selectedFeature.parent.position.x = xPos;
               selectedFeature.parent.position.z = 0;
@@ -1179,7 +1217,10 @@
 				else return;
 			} else {
 				positionX = getAvailablePoint(selectedItem);
+
+        // console.log(positionX)
 				if(!positionX) return;
+        updateCrossBars(positionX, selectedItem.type, selectedItem.xRadius);
 				updateModelState(1, selectedItem.type, positionX);
 			}
 		}
@@ -1510,7 +1551,7 @@
     scene.add(ambientLight);
 
     const hdrLoader = new RGBELoader();
-    hdrLoader.loadAsync( 'https://cdn.shopify.com/s/files/1/0412/9898/5124/files/mt1.hdr?v=1715607373' ).then(envMap=>{
+    hdrLoader.loadAsync( './images/mt1.hdr?v=1715607373' ).then(envMap=>{
       envMap.mapping = THREE.EquirectangularReflectionMapping;
       const params = {
         height: 15,
@@ -1523,7 +1564,7 @@
       scene.environment = envMap;
     });
 
-    loader.load('https://cdn.shopify.com/3d/models/ef2473f570af2015/van2.glb', function (gltf) {
+    loader.load('./models/van2.glb', function (gltf) {
       carModel = gltf.scene;
 
       bodyMesh = carModel.getObjectByName("van").getObjectByName("Mesh001_5");
@@ -1545,13 +1586,40 @@
 
       scene.add(carModel);
 
+
+      var models = [
+        {
+          path: './models/crossbar_set.glb',
+          xPos: -0.5
+        },
+        {
+          path: './models/crossbar_set.glb',
+          xPos: -1.215
+        },
+        {
+          path: './models/8020_cross.glb',
+          xPos: -2.52
+        }
+      ]
+
+      models.map((model) => {
+        loader.load(model.path, function (gltf) {
+          let crossBarModel = gltf.scene;
+          crossBarModel.position.y = 2.36
+          crossBarModel.position.x = model.xPos
+          let bbox1 = getModelBoundingBox(crossBarModel);
+          scene.add(crossBarModel);
+          collidableMeshList.push(bbox1); 
+        })
+      })
+
       workPlane = new THREE.Mesh(
         new THREE.BoxGeometry(3.2, 0.01, 1.55),
         new THREE.MeshLambertMaterial({ color: "green" })
       );
       workPlane.material.visible = false;
 
-      workPlane.position.set(-1.08, 2.37, 0);
+      workPlane.position.set(-1.08, 2.30, 0);
       scene.add(workPlane);
 
       ladderPlane = new THREE.Mesh(
@@ -1569,6 +1637,38 @@
       targetForDragging.material.visible = false;
       raycaster = new THREE.Raycaster();
     });
+
+    
+  }
+
+  function getModelBoundingBox(mesh) {
+    const box = new THREE.Box3().setFromObject(mesh);
+    return box;
+  }
+
+  function isCrossBarCollied(selectedFeatureBoundingBox, collidableMeshList, xPos) {
+    const filteredCollidableMeshList = collidableMeshList.filter(box =>!box.equals(selectedFeatureBoundingBox));
+    let collisionDetected = false;
+    for (let boundingBox of filteredCollidableMeshList) {
+      const centerItem = (boundingBox.min.x + boundingBox.max.x) /2;
+      if ( ((xPos - 0.02) < boundingBox.max.x && (xPos + 0.02) > boundingBox.min.x)  || Math.abs(xPos - centerItem) < 0.042) {
+        collisionDetected = true;
+        break;
+      }
+    }
+    return collisionDetected; 
+  }
+
+  function updateColliderList() {
+
+    console.log(scene.children)
+    let models = scene.children.filter((group) => 
+      group?.children[0]?.name == "cross_bar" || group?.children[0]?.name == "maxxair" || group?.children[0]?.name == "air_conditioner");
+
+    const boxes = models.map((model) => {
+      return getModelBoundingBox(model)
+    });
+    collidableMeshList = boxes;
   }
 
   function onWindowResize() {
@@ -1866,6 +1966,50 @@
     }
     return intersections;
 	}
+
+  function updateCrossBars(posX, type, radius) {
+    if(type == 'maxxair' || type == 'air_conditioner') {
+      const startPoint = posX * 1 + (radius * 2.54 / 100)
+      const endPoint = posX * 1 - (radius * 2.54 / 100)
+      const lcrossBars = scene.children.filter(group => group?.children[0]?.name == "lshape_cross");
+      let overLapped = false;
+      let overLappedWidth = 0;
+      lcrossBars.map((crossbar) => {
+        const crossXPos = crossbar?.position?.x;
+        const barStartPoint = crossXPos + 0.3435;
+        if(barStartPoint > endPoint) {
+          overLapped = true;
+          overLappedWidth = Math.abs(barStartPoint - endPoint);
+        }
+        if(overLapped) {
+          crossbar.position.x = crossXPos - overLappedWidth
+          if(crossXPos - overLappedWidth < -2.4) {
+            scene.remove(crossbar);
+          }
+        }
+      })
+
+      console.log(startPoint, endPoint)
+    } else if (type == 'solar200') {
+      console.log(posX, type, radius, scene.children)
+      const lcrossBars = scene.children.filter(group => group?.children[0]?.name == "lshape_cross");
+      let updatedBars = lcrossBars.map((crossbar) => {
+        const crossXPos = crossbar?.position?.x;
+        console.log(Math.abs(crossXPos - posX) < 0.687)
+        if(Math.abs(crossXPos - posX) < 0.687) {
+          scene.remove(crossbar);
+          return null
+        }
+        return crossbar;
+      }).filter(Boolean);
+      const solarPanels = scene.children.filter(group => group?.children[0]?.name == "solar200");
+      if(updatedBars.length > solarPanels.length + 1) {
+        scene.remove(updatedBars[0]);
+      }
+    } else {
+      console.log(posX, type, radius)
+    }
+  }
 
 	function getAvailablePoint(selectedItem) {
 		let result = excludeRanges(vanArea, addedState);
