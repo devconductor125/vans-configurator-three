@@ -100,7 +100,7 @@
 			margin-bottom: 12px;
 		}
 		#airconditioner {
-      background-image: url('https://cdn.shopify.com/s/files/1/0412/9898/5124/files/airconditioner.jpg?v=1711798448&width=100');
+      background-image: url('https://cdn.shopify.com/s/files/1/0412/9898/5124/files/airconditioner-1.jpg?v=1720191621&width=100');
       display: block;
     }
 
@@ -1114,7 +1114,7 @@
 
           const selectedFeatureWidth = size.x;
           let checkCollision = true;
-          const xPos = Math.min(0.428 - selectedFeatureWidth / 2, Math.max(-2.24, coords.x));
+          const xPos = Math.min(0.428 - selectedFeatureWidth / 2, Math.max(-2.115, coords.x));
 
           if(selectedFeature.name != 'ladder' && selectedFeature.name != 'solar30' && selectedFeature.name != 'solar55' && selectedFeature.name != 'cross_bar'){
             checkCollision = checkIsAvailable(xPos, selectedFeature.name, 2);
@@ -1908,11 +1908,6 @@
         else productAmount -= 2;
       }
 
-      if(product?.type == 'ac_cross' || product?.type == 'max_cross'){
-        if(productAmount <= 1) productAmount = 0;
-        else productAmount -= 1;
-      }
-
       totalItems += productAmount
 
       if(product.htmlId != "") {
@@ -2304,11 +2299,6 @@
         else productAmount -= 2;
       }
 
-      if(availableProduct?.type == 'ac_cross' || availableProduct?.type == 'max_cross') {
-        if(productAmount <= 1) continue;
-        else productAmount -= 1;
-      }
-
       if(productAmount > 0) {
 
         buildText += '<div class="build-item"><div class="item-overview">'
@@ -2371,10 +2361,6 @@
       if(product?.type == 'solar_cross') {
         if(productAmount <= 2) productAmount = 0;
         else productAmount -= 2;
-      }
-      if(product?.type == 'ac_cross' || product?.type == 'max_cross'){
-        if(productAmount <= 1) productAmount = 0;
-        else productAmount -= 1;
       }
 
       if(productAmount > 0 && product.availability){
