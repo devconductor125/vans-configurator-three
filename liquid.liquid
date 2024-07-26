@@ -1067,7 +1067,8 @@
       "title": "Rich Solar Mega 35 Watt 12 Volt Solar Panel",
       "image": "https://cdn.shopify.com/s/files/1/0412/9898/5124/files/Rich-Solar-35W-12V-Solar-Panel_e5266152-4c97-4d03-8a8c-30e6446a354b.png?v=1717015802",
       "url": "https://shop.explorist.life/shop/all-products/pre-order-rich-solar-35w-12v-solar-panel/"
-    }
+    },
+    {htmlId: 'cross_bar', type: '8020_crossbar', handle: '', id: null, price: 0, quantity: 0, xRadius: 2.3},
   ]
   
 
@@ -1144,9 +1145,9 @@
             selectedFeature.parent.position.x = -1 * solar55Area[movedItemIndex].position * 0.0254;
             selectedFeature.parent.position.z = 0;
             solar55Area[movedItemIndex].moved = false;
-          }else if(selectedFeature.name == "cross_bar") {
+          } else if(selectedFeature.name == "8020_crossbar") {
             const bbox1  = getModelBoundingBox(selectedFeature);
-            let xPos = Math.min(0.428 - selectedFeatureWidth / 2, Math.max(-2.57, coords.x));
+            let xPos = Math.min(0.428 - selectedFeatureWidth / 2, Math.max(-2.52, coords.x));
             const checkCollision = isCrossBarCollied(bbox1, collidableMeshList, xPos);
             if(!checkCollision) {
               selectedFeature.parent.position.x = xPos;
@@ -1653,7 +1654,10 @@
           solar55Area[newSolarPosition].confState = true;
         }
 				else return;
-			} else {
+			} else if(selectedItem.type == '8020_crossbar') {
+        positionX = -2.52
+        positionY = 2.36
+      } else {
 				positionX = getAvailablePoint(selectedItem);
 				if(!positionX) return;
         updateCrossBars(positionX, selectedItem.type, selectedItem.xRadius);
@@ -1663,7 +1667,7 @@
 
 		switch (event.target.id) {
       case "airconditioner":
-        loadItemDirectory = "https://cdn.shopify.com/3d/models/3c312cc59fdb9f81/airconditioner.glb";
+        loadItemDirectory = "https://cdn.shopify.com/3d/models/c07a89487a0dde30/airconditioner-d.glb";
         break;
       case "maxxair":
         loadItemDirectory = "https://cdn.shopify.com/3d/models/c3eeb44577bd8f6a/maxxair.glb";
@@ -1676,6 +1680,9 @@
         break;
       case "solar_panel30":
         loadItemDirectory = "https://cdn.shopify.com/3d/models/dfcf1aaf24802514/30W.glb";
+        break;
+      case "cross_bar":
+        loadItemDirectory = "https://cdn.shopify.com/3d/models/a8ab00b75d06ad38/8020_cross.glb";
         break;
       case "ladder":
         loadItemDirectory = "https://cdn.shopify.com/3d/models/e1c66ba4aca3d154/ladder.glb";
@@ -2050,7 +2057,7 @@
           xPos: -1.215
         },
         {
-          path: 'https://cdn.shopify.com/3d/models/b4ae14df68c89f15/8020_cross.glb',
+          path: 'https://cdn.shopify.com/3d/models/a8ab00b75d06ad38/8020_cross.glb',
           xPos: -2.52
         }
       ]
@@ -2102,7 +2109,7 @@
     let collisionDetected = false;
     for (let boundingBox of filteredCollidableMeshList) {
       const centerItem = (boundingBox.min.x + boundingBox.max.x) /2;
-      if ( ((xPos - 0.02) < boundingBox.max.x && (xPos + 0.02) > boundingBox.min.x)  || Math.abs(xPos - centerItem) < 0.042) {
+      if ( ((xPos - 0.06) < boundingBox.max.x && (xPos + 0.06) > boundingBox.min.x)  || Math.abs(xPos - centerItem) < 0.114) {
         collisionDetected = true;
         break;
       }
@@ -2111,10 +2118,8 @@
   }
 
   function updateColliderList() {
-
-    console.log(scene.children)
     let models = scene.children.filter((group) => 
-      group?.children[0]?.name == "cross_bar" || group?.children[0]?.name == "maxxair" || group?.children[0]?.name == "air_conditioner");
+      group?.children[0]?.name == "cross_bar" || group?.children[0]?.name == "maxxair" || group?.children[0]?.name == "air_conditioner" || group?.children[0]?.name == "solar200");
 
     const boxes = models.map((model) => {
       return getModelBoundingBox(model)
