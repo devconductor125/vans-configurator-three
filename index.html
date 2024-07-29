@@ -839,7 +839,6 @@
   let cameraType = "perspective";
   let canvasContainer = document.getElementById("container");
 
-  let grid;
   let controls;
 
   let selectedFeature;
@@ -851,8 +850,6 @@
   let raycaster;
   let workPlane;
 
-  let edges;
-  let line;
   let edgeLine = null;
   const lineMaterial = new THREE.LineBasicMaterial({ color: "#fff" });
 
@@ -881,10 +878,10 @@
 
   let availableProducts = [
     {htmlId: '', type: 'rack', handle: 'transithsld148-roof-rack', id: 43238854328539, price: 0, quantity: 1, xRadius: null},
-    {htmlId: 'airconditioner', type: 'air_conditioner', handle: 'dometic-rtx-2000', id: 43261478764763, price: 0, quantity: 0, xRadius: 16.56},
-    {htmlId: 'maxxair', type: 'maxxair', handle: 'maxxair-fan-deluxe', id: 40771325264036, price: 0, quantity: 0, xRadius: 12.75},
-    {htmlId: 'solar_panel200', type: 'solar200', handle: 'new-powa-200w-monocrystalline-solar-panel-12v', id: 42641211228379, price: 0, quantity: 0, xRadius: 13.5},
-    {htmlId: 'solar_panel50', type: 'solar55', handle: 'rich-solar-50w-solar-panel', id: 45081892683995, price: 0, quantity: 0, xRadius: 12.75},
+    {htmlId: 'airconditioner', type: 'air_conditioner', handle: 'dometic-rtx-2000', id: 43261478764763, price: 0, quantity: 0, xRadius: 13.18},
+    {htmlId: 'maxxair', type: 'maxxair', handle: 'maxxair-fan-deluxe', id: 40771325264036, price: 0, quantity: 0, xRadius: 12.4},
+    {htmlId: 'solar_panel200', type: 'solar200', handle: 'new-powa-200w-monocrystalline-solar-panel-12v', id: 42641211228379, price: 0, quantity: 0, xRadius: 12.7},
+    {htmlId: 'solar_panel50', type: 'solar55', handle: 'rich-solar-50w-solar-panel', id: 45081892683995, price: 0, quantity: 0, xRadius: 13.5},
     {htmlId: 'solar_panel30', type: 'solar30', handle: 'rich-solar-50w-solar-panel', id: 45081892683995, price: 0, quantity: 0, xRadius: 16.75},
     {htmlId: '', type: 'ac_cross', handle: 'ford-transit-hsld-roof-rack-maxxfan-cross-bars-1', id: 44018089623771, price: 0, quantity: 0},
     {htmlId: '', type: 'solar_cross', handle: 'ford-transit-high-speed-low-drag-roof-rack-cross-bars', id: 43279255503067, price: 0, quantity: 0},
@@ -1220,10 +1217,10 @@
         }
 
 				else return;
-			} else if(selectedItem.type == '8020_crossbar') {
-        positionX = -2.52
-        positionY = 2.36
-      } else {
+			} else {
+        if(selectedItem.type == '8020_crossbar') {
+          positionY = 2.36
+        } 
 				positionX = getAvailablePoint(selectedItem);
 
         // console.log(positionX)
@@ -1235,7 +1232,7 @@
 
 		switch (event.target.id) {
       case "airconditioner":
-        loadItemDirectory = "https://cdn.shopify.com/3d/models/c07a89487a0dde30/airconditioner-d.glb";
+        loadItemDirectory = "https://cdn.shopify.com/3d/models/3fc52045eaa806f8/airconditioner-d.glb";
         break;
       case "maxxair":
         loadItemDirectory = "https://cdn.shopify.com/3d/models/c3eeb44577bd8f6a/maxxair.glb";
@@ -1250,7 +1247,7 @@
         loadItemDirectory = "https://cdn.shopify.com/3d/models/dfcf1aaf24802514/30W.glb";
         break;
       case "cross_bar":
-        loadItemDirectory = "https://cdn.shopify.com/3d/models/b4ae14df68c89f15/8020_cross.glb";
+        loadItemDirectory = "https://cdn.shopify.com/3d/models/543cc594a487aecf/8020_cross.glb";
         break;
       case "ladder":
         loadItemDirectory = "https://cdn.shopify.com/3d/models/e1c66ba4aca3d154/ladder.glb";
@@ -1608,7 +1605,7 @@
           xPos: -1.215
         },
         {
-          path: './models/8020_cross.glb',
+          path: 'https://cdn.shopify.com/3d/models/543cc594a487aecf/8020_cross.glb',
           xPos: -2.52
         }
       ]
@@ -1672,7 +1669,7 @@
 
   function updateColliderList() {
     let models = scene.children.filter((group) => 
-      group?.children[0]?.name == "cross_bar" || group?.children[0]?.name == "maxxair" || group?.children[0]?.name == "air_conditioner" || group?.children[0]?.name == "solar200");
+      group?.children[0]?.name == "cross_bar" || group?.children[0]?.name == "maxxair" || group?.children[0]?.name == "air_conditioner" || group?.children[0]?.name == "solar200" || group?.children[0]?.name == "lshape_cross" || group?.children[0]?.name == "8020_crossbar");
 
     const boxes = models.map((model) => {
       return getModelBoundingBox(model)
@@ -2020,8 +2017,21 @@
     }
   }
 
+  function getAddedState() {
+    const itemsToBeCalc = ['maxxair', 'solar200', 'air_conditioner','8020_crossbar'];
+    const itemsToCalc = scene.children.filter(group => itemsToBeCalc.includes(group?.children[0]?.name));
+    const boxes = itemsToCalc.map((model) => {
+      return getModelBoundingBox(model)
+    });
+    const curState = createOrderedArray(boxes);
+    return curState;
+  }
+
 	function getAvailablePoint(selectedItem) {
-		let result = excludeRanges(vanArea, addedState);
+    const curState = getAddedState();
+		let result = excludeRanges(vanArea, curState);
+
+    console.log(curState)
 
 		if(selectedItem.type == 'air_conditioner') {
       if(fromTemplate) {
@@ -2056,6 +2066,32 @@
 			return positionX;
 		}
 	}
+
+  function createOrderedArray(boxesArr) {
+    const meterToInch = 39.3701;
+    const values = [];
+    boxesArr.forEach(box => {
+        values.push({ type: 'max', value: -box.min.x * meterToInch });
+        values.push({ type: 'min', value: -box.max.x * meterToInch });
+    });
+
+    values.sort((a, b) => a.value - b.value);
+
+    const result = [];
+    let minIndex = 0;
+    let maxIndex = 1;
+
+    values.forEach(item => {
+        if (item.type === 'min') {
+            result[minIndex] = item.value;
+            minIndex += 2;
+        } else {
+            result[maxIndex] = item.value;
+            maxIndex += 2;
+        }
+    });
+    return result;
+  }
   
   init();
 

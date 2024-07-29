@@ -979,7 +979,7 @@
       "id": 43261478764763,
       "price": 0,
       "quantity": 0,
-      "xRadius": 16.56
+      "xRadius": 13.18
     },
     {
       "htmlId": "maxxair",
@@ -989,7 +989,7 @@
       "id": 40771325264036,
       "price": 0,
       "quantity": 0,
-      "xRadius": 12.75
+      "xRadius": 12.4
     },
     {
       "htmlId": "solar_panel200",
@@ -999,7 +999,7 @@
       "id": 42641211228379,
       "price": 0,
       "quantity": 0,
-      "xRadius": 13.5
+      "xRadius": 12.7
     },
     {
       "htmlId": "solar_panel50",
@@ -1576,9 +1576,19 @@
     }
   }
 
+  function getAddedState() {
+    const itemsToBeCalc = ['maxxair', 'solar200', 'air_conditioner','8020_crossbar'];
+    const itemsToCalc = scene.children.filter(group => itemsToBeCalc.includes(group?.children[0]?.name));
+    const boxes = itemsToCalc.map((model) => {
+      return getModelBoundingBox(model)
+    });
+    const curState = createOrderedArray(boxes);
+    return curState;
+  }
 
 	function getAvailablePoint(selectedItem) {
-		let result = excludeRanges(vanArea, addedState);
+		const curState = getAddedState();
+		let result = excludeRanges(vanArea, curState);
 
 		if(selectedItem.type == 'air_conditioner') {
 			if(fromTemplate) {
@@ -1654,10 +1664,10 @@
           solar55Area[newSolarPosition].confState = true;
         }
 				else return;
-			} else if(selectedItem.type == '8020_crossbar') {
-        positionX = -2.52
-        positionY = 2.36
-      } else {
+			} else {
+        if(selectedItem.type == '8020_crossbar') {
+          positionY = 2.36
+        }
 				positionX = getAvailablePoint(selectedItem);
 				if(!positionX) return;
         updateCrossBars(positionX, selectedItem.type, selectedItem.xRadius);
@@ -1667,7 +1677,7 @@
 
 		switch (event.target.id) {
       case "airconditioner":
-        loadItemDirectory = "https://cdn.shopify.com/3d/models/c07a89487a0dde30/airconditioner-d.glb";
+        loadItemDirectory = "https://cdn.shopify.com/3d/models/3fc52045eaa806f8/airconditioner-d.glb";
         break;
       case "maxxair":
         loadItemDirectory = "https://cdn.shopify.com/3d/models/c3eeb44577bd8f6a/maxxair.glb";
@@ -1682,7 +1692,7 @@
         loadItemDirectory = "https://cdn.shopify.com/3d/models/dfcf1aaf24802514/30W.glb";
         break;
       case "cross_bar":
-        loadItemDirectory = "https://cdn.shopify.com/3d/models/a8ab00b75d06ad38/8020_cross.glb";
+        loadItemDirectory = "https://cdn.shopify.com/3d/models/543cc594a487aecf/8020_cross.glb";
         break;
       case "ladder":
         loadItemDirectory = "https://cdn.shopify.com/3d/models/e1c66ba4aca3d154/ladder.glb";
@@ -1711,6 +1721,32 @@
       .catch((error) => {
         console.error('An error occurred while loading the model:', error);
       });
+  }
+
+  function createOrderedArray(boxesArr) {
+    const meterToInch = 39.3701;
+    const values = [];
+    boxesArr.forEach(box => {
+        values.push({ type: 'max', value: -box.min.x * meterToInch });
+        values.push({ type: 'min', value: -box.max.x * meterToInch });
+    });
+
+    values.sort((a, b) => a.value - b.value);
+
+    const result = [];
+    let minIndex = 0;
+    let maxIndex = 1;
+
+    values.forEach(item => {
+        if (item.type === 'min') {
+            result[minIndex] = item.value;
+            minIndex += 2;
+        } else {
+            result[maxIndex] = item.value;
+            maxIndex += 2;
+        }
+    });
+    return result;
   }
 
   function gotoCheckout(token) {
@@ -2057,7 +2093,7 @@
           xPos: -1.215
         },
         {
-          path: 'https://cdn.shopify.com/3d/models/a8ab00b75d06ad38/8020_cross.glb',
+          path: 'https://cdn.shopify.com/3d/models/543cc594a487aecf/8020_cross.glb',
           xPos: -2.52
         }
       ]
@@ -2119,7 +2155,7 @@
 
   function updateColliderList() {
     let models = scene.children.filter((group) => 
-      group?.children[0]?.name == "cross_bar" || group?.children[0]?.name == "maxxair" || group?.children[0]?.name == "air_conditioner" || group?.children[0]?.name == "solar200");
+      group?.children[0]?.name == "cross_bar" || group?.children[0]?.name == "maxxair" || group?.children[0]?.name == "air_conditioner" || group?.children[0]?.name == "solar200" || group?.children[0]?.name == "lshape_cross" || group?.children[0]?.name == "8020_crossbar");
 
     const boxes = models.map((model) => {
       return getModelBoundingBox(model)
