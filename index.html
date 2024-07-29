@@ -889,7 +889,9 @@
     {htmlId: 'ladder', type: 'ladder', handle: 'transit-side-mount-ladder-high-roof', id: 44020238385371, price: 0, quantity: 0},
     {htmlId: '', type: 'air_conditioner_nodamic', handle: '', id: null, price: 0, quantity: 0, xRadius: 15.5, centerDevi: 5.2},
     {htmlId: 'cross_bar', type: '8020_crossbar', handle: '', id: null, price: 0, quantity: 0, xRadius: 2.3},
+    {htmlId: 'solar_cross_bar', type: 'lshape_cross', handle: '', id: null, price: 0, quantity: 0, xRadius: 14.03},
   ]
+  const meterToInch = 39.3701;
 
   const shadow = new THREE.TextureLoader().load('https://cdn.shopify.com/s/files/1/0412/9898/5124/files/ford_ao.png?v=1711858184');
 
@@ -936,10 +938,13 @@
           let checkCollision = true;
           const xPos = Math.min(0.428 - selectedFeatureWidth / 2, Math.max(-2.24, coords.x));
 
-          if(selectedFeature.name != 'ladder' && selectedFeature.name != 'solar30' && selectedFeature.name != 'solar55' && selectedFeature.name != 'cross_bar'){
+          if(selectedFeature.name != 'ladder' 
+            && selectedFeature.name != 'solar30' 
+            && selectedFeature.name != 'solar55' 
+            && selectedFeature.name != 'cross_bar'
+            && selectedFeature.name == "lshape_cross"
+          ){
             checkCollision = checkIsAvailable(xPos, selectedFeature.name, 2);
-
-            console.log(checkCollision)
           }
 
           if(selectedFeature.name == "air_conditioner"){
@@ -969,6 +974,15 @@
           } else if(selectedFeature.name == "8020_crossbar") {
             const bbox1  = getModelBoundingBox(selectedFeature);
             let xPos = Math.min(0.428 - selectedFeatureWidth / 2, Math.max(-2.52, coords.x));
+            const checkCollision = isCrossBarCollied(bbox1, collidableMeshList, xPos);
+            if(!checkCollision) {
+              selectedFeature.parent.position.x = xPos;
+              selectedFeature.parent.position.z = 0;
+              updateColliderList();
+            }
+          } else if(selectedFeature.name == "lshape_cross"){
+            const bbox1  = getModelBoundingBox(selectedFeature);
+            let xPos = Math.min(0.428 - selectedFeatureWidth / 2, Math.max(-2.21, coords.x));
             const checkCollision = isCrossBarCollied(bbox1, collidableMeshList, xPos);
             if(!checkCollision) {
               selectedFeature.parent.position.x = xPos;
@@ -1597,11 +1611,11 @@
 
       var models = [
         {
-          path: './models/crossbar_set.glb',
+          path: 'https://cdn.shopify.com/3d/models/3398a34e7f6918ab/lshape_cross.glb',
           xPos: -0.5
         },
         {
-          path: './models/crossbar_set.glb',
+          path: 'https://cdn.shopify.com/3d/models/3398a34e7f6918ab/lshape_cross.glb',
           xPos: -1.215
         },
         {
@@ -1655,11 +1669,14 @@
   }
 
   function isCrossBarCollied(selectedFeatureBoundingBox, collidableMeshList, xPos) {
+    const widthOfObject = Math.abs(selectedFeatureBoundingBox.max.x - selectedFeatureBoundingBox.min.x);
     const filteredCollidableMeshList = collidableMeshList.filter(box =>!box.equals(selectedFeatureBoundingBox));
     let collisionDetected = false;
+
+    console.log(xPos, widthOfObject)
     for (let boundingBox of filteredCollidableMeshList) {
       const centerItem = (boundingBox.min.x + boundingBox.max.x) /2;
-      if ( ((xPos - 0.06) < boundingBox.max.x && (xPos + 0.06) > boundingBox.min.x)  || Math.abs(xPos - centerItem) < 0.114) {
+      if ( ((xPos - widthOfObject/2) < boundingBox.max.x && (xPos + widthOfObject/2) > boundingBox.min.x)) {
         collisionDetected = true;
         break;
       }
@@ -1775,23 +1792,25 @@
     let endValue = inchXPos + xRadius;
     let startPointCheck, endPointCheck, centerPointCheck = -1;
 
+    const curState = getAddedState();
+
     if(startValue < vanArea[0] || endValue > vanArea[1]) return false;
     
     if(flag == 1) {
-      startPointCheck = isValueInScale(startValue, addedState, 0, 0);
-      endPointCheck = isValueInScale(endValue, addedState, 0, 0);
-      centerPointCheck = isValueInScale(inchXPos, addedState, 0, 0);
+      startPointCheck = isValueInScale(startValue, curState, 0, 0);
+      endPointCheck = isValueInScale(endValue, curState, 0, 0);
+      centerPointCheck = isValueInScale(inchXPos, curState, 0, 0);
     } else if(flag == 2) {
-      const currentState = [...addedState];
+      const currentState = [...curState];
       if(selectedIndexOfState >= 0)currentState.splice(selectedIndexOfState, 2);
       startPointCheck = isValueInScale(startValue, currentState, 0, 0);
       endPointCheck = isValueInScale(endValue, currentState, 0, 0);
       centerPointCheck = isValueInScale(inchXPos, currentState, 0, 0);
 
     } else {
-      let modelIndex = isValueInScale(inchXPos, addedState, 0, 0);
-      let startIndex = isValueInScale(inchXPos, addedState, xRadius/2, 0);
-      let endIndex = isValueInScale(inchXPos, addedState, xRadius/2, 0);
+      let modelIndex = isValueInScale(inchXPos, curState, 0, 0);
+      let startIndex = isValueInScale(inchXPos, curState, xRadius/2, 0);
+      let endIndex = isValueInScale(inchXPos, curState, xRadius/2, 0);
       if(modelIndex == startIndex && modelIndex == endIndex) {
         return modelIndex
       } else {
@@ -2068,7 +2087,6 @@
 	}
 
   function createOrderedArray(boxesArr) {
-    const meterToInch = 39.3701;
     const values = [];
     boxesArr.forEach(box => {
         values.push({ type: 'max', value: -box.min.x * meterToInch });
