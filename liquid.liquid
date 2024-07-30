@@ -996,7 +996,7 @@
       "htmlId": "solar_panel200",
       "type": "solar200",
       "availability": true,
-      "handle": "new-powa-200w-monocrystalline-solar-panel-12v",
+      "handle": "rich-solar-200w-12v-panel",
       "id": 42641211228379,
       "price": 0,
       "quantity": 0,
@@ -1119,24 +1119,28 @@
           let checkCollision = true;
           const xPos = Math.min(0.428 - selectedFeatureWidth / 2, Math.max(-2.115, coords.x));
 
-          if(selectedFeature.name != 'ladder' 
+          {% comment %} if(selectedFeature.name != 'ladder' 
             && selectedFeature.name != 'solar30' 
             && selectedFeature.name != 'solar55' 
             && selectedFeature.name != 'cross_bar'
             && selectedFeature.name == "lshape_cross"
           ){
             checkCollision = checkIsAvailable(xPos, selectedFeature.name, 2);
-          }
+          } {% endcomment %}
 
           if(selectedFeature.name == "air_conditioner"){
-            if(isValueInScale(coords.x * 1000 / 25.4 * -1, cutOffArea, 7.001, vanDiff)  >= 0 && checkCollision) {
+            const widthOfObject = Math.abs(bbox1.max.x - bbox1.min.x);
+            const xPos = Math.min(0.428 - selectedFeatureWidth / 2, Math.max(-2.58 + widthOfObject/2, coords.x));
+            if(isValueInScale(coords.x * 1000 / 25.4 * -1, cutOffArea, 7.001, vanDiff)  >= 0) {
               updateSolarArea(xPos, selectedFeature.name, 2)
               selectedFeature.parent.position.x = xPos;
               selectedFeature.parent.position.z = 0;
-              updateModelState(2, selectedFeature.name, xPos)
+              updateModelState(2, selectedFeature.name, xPos) 
             } 
           } else if(selectedFeature.name == 'maxxair'){
-            if(isValueInScale(coords.x * 1000 / 25.4 * -1, cutOffArea, 7, vanDiff)  >= 0 && checkCollision){
+            const widthOfObject = Math.abs(bbox1.max.x - bbox1.min.x);
+            const xPos = Math.min(0.428 - selectedFeatureWidth / 2, Math.max(-2.58 + widthOfObject/2, coords.x));
+            if(isValueInScale(coords.x * 1000 / 25.4 * -1, cutOffArea, 7, vanDiff)  >= 0){
               updateSolarArea(xPos, selectedFeature.name, 2)
               selectedFeature.parent.position.x = xPos;
               selectedFeature.parent.position.z = 0;
@@ -1154,7 +1158,8 @@
             solar55Area[movedItemIndex].moved = false;
           } else if(selectedFeature.name == "8020_crossbar") {
             const bbox1  = getModelBoundingBox(selectedFeature);
-            let xPos = Math.min(0.428 - selectedFeatureWidth / 2, Math.max(-2.52, coords.x));
+            const widthOfObject = Math.abs(bbox1.max.x - bbox1.min.x);
+            let xPos = Math.min(0.428 - selectedFeatureWidth / 2, Math.max(-2.58 + widthOfObject/2, coords.x));
             const checkCollision = isCrossBarCollied(bbox1, collidableMeshList, xPos);
             if(!checkCollision) {
               selectedFeature.parent.position.x = xPos;
@@ -1163,18 +1168,29 @@
             }
           } else if(selectedFeature.name == "lshape_cross"){
             const bbox1  = getModelBoundingBox(selectedFeature);
-            let xPos = Math.min(0.428 - selectedFeatureWidth / 2, Math.max(-2.21, coords.x));
+            const widthOfObject = Math.abs(bbox1.max.x - bbox1.min.x);
+            let xPos = Math.min(0.428 - selectedFeatureWidth / 2, Math.max(-2.58 + widthOfObject/2, coords.x));
             const checkCollision = isCrossBarCollied(bbox1, collidableMeshList, xPos);
             if(!checkCollision) {
               selectedFeature.parent.position.x = xPos;
               selectedFeature.parent.position.z = 0;
               updateColliderList();
             }
-          } else {
-            if(checkCollision) {
+          }
+          else {
+            // if(checkCollision) {
+            //   selectedFeature.parent.position.x = xPos;
+            //   selectedFeature.parent.position.z = 0;
+            //   updateModelState(2, selectedFeature.name, xPos)
+            // }
+            const bbox1 = getModelBoundingBox(selectedFeature);
+            const widthOfObject = Math.abs(bbox1.max.x - bbox1.min.x);
+            let xPos = Math.min(0.428 - selectedFeatureWidth / 2, Math.max(-2.58 + widthOfObject/2, coords.x));
+            const checkCollision = isCrossBarCollied(bbox1, collidableMeshList, xPos);
+            if(!checkCollision) {
               selectedFeature.parent.position.x = xPos;
               selectedFeature.parent.position.z = 0;
-              updateModelState(2, selectedFeature.name, xPos)
+              updateColliderList();
             }
           }
           render();
