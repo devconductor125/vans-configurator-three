@@ -1005,6 +1005,8 @@
             const widthOfObject = Math.abs(bbox1.max.x - bbox1.min.x);
             let xPos = Math.min(0.428 - selectedFeatureWidth / 2, Math.max(-2.58 + widthOfObject/2, coords.x));
             const checkCollision = isCrossBarCollied(bbox1, collidableMeshList, xPos);
+
+            console.log(checkCollision, collidableMeshList)
             if(!checkCollision) {
               selectedFeature.parent.position.x = xPos;
               selectedFeature.parent.position.z = 0;
@@ -2049,6 +2051,7 @@
     } else {
       console.log(posX, type, radius)
     }
+    updateColliderList();
   }
 
   function getAddedState() {

@@ -1129,6 +1129,7 @@
           } {% endcomment %}
 
           if(selectedFeature.name == "air_conditioner"){
+            const bbox1 = getModelBoundingBox(selectedFeature);
             const widthOfObject = Math.abs(bbox1.max.x - bbox1.min.x);
             const xPos = Math.min(0.428 - selectedFeatureWidth / 2, Math.max(-2.58 + widthOfObject/2, coords.x));
             if(isValueInScale(coords.x * 1000 / 25.4 * -1, cutOffArea, 7.001, vanDiff)  >= 0) {
@@ -1138,6 +1139,7 @@
               updateModelState(2, selectedFeature.name, xPos) 
             } 
           } else if(selectedFeature.name == 'maxxair'){
+            const bbox1 = getModelBoundingBox(selectedFeature);
             const widthOfObject = Math.abs(bbox1.max.x - bbox1.min.x);
             const xPos = Math.min(0.428 - selectedFeatureWidth / 2, Math.max(-2.58 + widthOfObject/2, coords.x));
             if(isValueInScale(coords.x * 1000 / 25.4 * -1, cutOffArea, 7, vanDiff)  >= 0){
@@ -1606,6 +1608,7 @@
     } else {
       console.log(posX, type, radius)
     }
+    updateColliderList();
   }
 
   function getAddedState() {
