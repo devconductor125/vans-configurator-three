@@ -879,10 +879,10 @@
   let availableProducts = [
     {htmlId: '', type: 'rack', handle: 'transithsld148-roof-rack', id: 43238854328539, price: 0, quantity: 1, xRadius: null},
     {htmlId: 'airconditioner', type: 'air_conditioner', handle: 'dometic-rtx-2000', id: 43261478764763, price: 0, quantity: 0, xRadius: 13.18},
-    {htmlId: 'maxxair', type: 'maxxair', handle: 'maxxair-fan-deluxe', id: 40771325264036, price: 0, quantity: 0, xRadius: 12.4},
-    {htmlId: 'solar_panel200', type: 'solar200', handle: 'new-powa-200w-monocrystalline-solar-panel-12v', id: 42641211228379, price: 0, quantity: 0, xRadius: 12.7},
+    {htmlId: 'maxxair', type: 'maxxair', handle: 'maxxair-fan-deluxe', id: 40771325264036, price: 0, quantity: 0, xRadius: 11.8},
+    {htmlId: 'solar_panel200', type: 'solar200', handle: 'new-powa-200w-monocrystalline-solar-panel-12v', id: 42641211228379, price: 0, quantity: 0, xRadius: 13.5},
     {htmlId: 'solar_panel50', type: 'solar55', handle: 'rich-solar-50w-solar-panel', id: 45081892683995, price: 0, quantity: 0, xRadius: 13.5},
-    {htmlId: 'solar_panel30', type: 'solar30', handle: 'rich-solar-50w-solar-panel', id: 45081892683995, price: 0, quantity: 0, xRadius: 16.75},
+    {htmlId: 'solar_panel30', type: 'solar30', handle: 'rich-solar-50w-solar-panel', id: 45081892683995, price: 0, quantity: 0, xRadius: 17.0},
     {htmlId: '', type: 'ac_cross', handle: 'ford-transit-hsld-roof-rack-maxxfan-cross-bars-1', id: 44018089623771, price: 0, quantity: 0},
     {htmlId: '', type: 'solar_cross', handle: 'ford-transit-high-speed-low-drag-roof-rack-cross-bars', id: 43279255503067, price: 0, quantity: 0},
     {htmlId: '', type: 'max_cross', handle: 'ford-transit-hsld-roof-rack-maxxfan-cross-bars', id: 44018083234011, price: 0, quantity: 0},
@@ -947,22 +947,29 @@
           // }
 
           if(selectedFeature.name == "air_conditioner"){
+            const bbox1  = getModelBoundingBox(selectedFeature);
             const widthOfObject = Math.abs(bbox1.max.x - bbox1.min.x);
             const xPos = Math.min(0.428 - selectedFeatureWidth / 2, Math.max(-2.58 + widthOfObject/2, coords.x));
-            if(isValueInScale(coords.x * 1000 / 25.4 * -1, cutOffArea, 7.001, vanDiff)  >= 0) {
+            const checkCollision = isCrossBarCollied(bbox1, collidableMeshList, xPos);
+
+            if(isValueInScale(coords.x * 1000 / 25.4 * -1, cutOffArea, 7.001, vanDiff)  >= 0 && !checkCollision) {
               updateSolarArea(xPos, selectedFeature.name, 2)
               selectedFeature.parent.position.x = xPos;
               selectedFeature.parent.position.z = 0;
               updateModelState(2, selectedFeature.name, xPos) 
+              updateColliderList();
             } 
           } else if(selectedFeature.name == 'maxxair'){
+            const bbox1  = getModelBoundingBox(selectedFeature);
             const widthOfObject = Math.abs(bbox1.max.x - bbox1.min.x);
             const xPos = Math.min(0.428 - selectedFeatureWidth / 2, Math.max(-2.58 + widthOfObject/2, coords.x));
-            if(isValueInScale(coords.x * 1000 / 25.4 * -1, cutOffArea, 7, vanDiff)  >= 0){
+            const checkCollision = isCrossBarCollied(bbox1, collidableMeshList, xPos);
+            if(isValueInScale(coords.x * 1000 / 25.4 * -1, cutOffArea, 7, vanDiff)  >= 0 && !checkCollision){
               updateSolarArea(xPos, selectedFeature.name, 2)
               selectedFeature.parent.position.x = xPos;
               selectedFeature.parent.position.z = 0;
               updateModelState(2, selectedFeature.name, xPos)
+              updateColliderList();
             } 
           } else if(selectedFeature.name == 'solar30') {
             const movedItemIndex = solar35Area.findIndex((area) => area.moved);
@@ -1001,12 +1008,12 @@
             //   selectedFeature.parent.position.z = 0;
             //   updateModelState(2, selectedFeature.name, xPos)
             // }
+
             const bbox1 = getModelBoundingBox(selectedFeature);
             const widthOfObject = Math.abs(bbox1.max.x - bbox1.min.x);
             let xPos = Math.min(0.428 - selectedFeatureWidth / 2, Math.max(-2.58 + widthOfObject/2, coords.x));
             const checkCollision = isCrossBarCollied(bbox1, collidableMeshList, xPos);
 
-            console.log(checkCollision, collidableMeshList)
             if(!checkCollision) {
               selectedFeature.parent.position.x = xPos;
               selectedFeature.parent.position.z = 0;
@@ -1076,6 +1083,8 @@
       updateModelState(3, selectedFeature.name, selectedFeature.parent.position.x)
       render();
       selectedFeature = null;
+
+      updateColliderList();
     }
   });
 
@@ -1227,15 +1236,50 @@
 				let acItem = availableProducts.filter(product => product.type == 'air_conditioner')[0];
 				if (selectedItem.quantity >= acItem.quantity) return false;
 
-        const newSolarPosition = solar35Area.findIndex((area) => !area.confState );
-				if(solar35Area.length > 0 && newSolarPosition >= 0) {
-          
-          positionX = -1 * solar35Area[newSolarPosition].position * 0.0254;
-          let curArea = [...solar35Area];
-          solar35Area[newSolarPosition].confState = true;
-        }
+        // const filteredCollidableMeshList = collidableMeshList.filter(box =>!box.equals(selectedFeatureBoundingBox));
 
-				else return;
+        let acModels = scene.children.filter((group) => 
+        group?.children[0]?.name == "air_conditioner");
+        
+        let solarModels = scene.children.filter((group) => 
+          group?.children[0]?.name == "solar30");
+
+        const acBoxes = acModels.map((model) => {
+          return getModelBoundingBox(model)
+        });
+
+        const solarBoxes = solarModels.map((model) => {
+          return getModelBoundingBox(model)
+        });
+
+        if(acBoxes.length != solarBoxes.length) {
+          // should calculate which position is not overlapped
+          // should confirm the space to be installed
+
+          if(solarBoxes.length == 0) {
+            positionX = acBoxes[0].min.x + Math.abs(acBoxes[0].min.x - acBoxes[0].max.x)/2
+          } else {
+            const filterACs = acBoxes.filter(acbox => {
+              solarBoxes.forEach(solarbox => {
+                if(acbox.min.x > solarbox.min.x && acbox.max.x < solarbox.max.x) {
+                  console.log(acbox)
+                } else {
+                  positionX = acbox.max.x - Math.abs(acbox.max.x - acbox.min.x)/2
+                }
+              })
+            })
+          }
+        } else {
+          return;
+        }
+        // const newSolarPosition = solar35Area.findIndex((area) => !area.confState );
+				// if(solar35Area.length > 0 && newSolarPosition >= 0) {
+          
+        //   positionX = -1 * solar35Area[newSolarPosition].position * 0.0254;
+        //   let curArea = [...solar35Area];
+        //   solar35Area[newSolarPosition].confState = true;
+        // }
+
 			} else if(selectedItem.type == 'solar55') {
 				let fanItem = availableProducts.filter(product => product.type == 'maxxair')[0];
 				if (selectedItem.quantity >= fanItem.quantity) return false;
@@ -1302,7 +1346,7 @@
 
 				updateSolarArea(positionX, selectedItem.type, 1)
 				calcPrice(selectedItem.type, true, model);
-        // updateColliderList();
+        updateColliderList();
 
       })
       .catch((error) => {
@@ -1349,6 +1393,7 @@
     updateCartState()
     // updateBuildState(productList)
     calculatePrice(productList)
+    updateColliderList();
   }
 
   function doMouseDown(x, y) {
@@ -1688,8 +1733,11 @@
 
   function isCrossBarCollied(selectedFeatureBoundingBox, collidableMeshList, xPos) {
     const widthOfObject = Math.abs(selectedFeatureBoundingBox.max.x - selectedFeatureBoundingBox.min.x);
-    const filteredCollidableMeshList = collidableMeshList.filter(box =>!box.equals(selectedFeatureBoundingBox));
+    // const filteredCollidableMeshList = collidableMeshList.filter(box =>!box.equals(selectedFeatureBoundingBox));
+    const filteredCollidableMeshList = collidableMeshList.filter(box => !(box.min.x.toFixed(3) == selectedFeatureBoundingBox.min.x.toFixed(3) && box.max.x.toFixed(3) == selectedFeatureBoundingBox.max.x.toFixed(3)));
     let collisionDetected = false;
+
+    console.log(filteredCollidableMeshList, selectedFeatureBoundingBox)
 
     for (let boundingBox of filteredCollidableMeshList) {
       const centerItem = (boundingBox.min.x + boundingBox.max.x) /2;
@@ -1703,7 +1751,7 @@
 
   function updateColliderList() {
     let models = scene.children.filter((group) => 
-      group?.children[0]?.name == "cross_bar" || group?.children[0]?.name == "maxxair" || group?.children[0]?.name == "air_conditioner" || group?.children[0]?.name == "solar200" || group?.children[0]?.name == "lshape_cross" || group?.children[0]?.name == "8020_crossbar");
+      group?.children[0]?.name == "cross_bar" || group?.children[0]?.name == "maxxair" || group?.children[0]?.name == "air_conditioner" || group?.children[0]?.name == "solar200" || group?.children[0]?.name == "lshape_cross" || group?.children[0]?.name == "8020_crossbar" || group?.children[0]?.name == "solar30");
 
     const boxes = models.map((model) => {
       return getModelBoundingBox(model)
@@ -2055,7 +2103,7 @@
   }
 
   function getAddedState() {
-    const itemsToBeCalc = ['maxxair', 'solar200', 'air_conditioner','8020_crossbar'];
+    const itemsToBeCalc = ['maxxair', 'solar200', 'air_conditioner','8020_crossbar', 'solar30'];
     const itemsToCalc = scene.children.filter(group => itemsToBeCalc.includes(group?.children[0]?.name));
     const boxes = itemsToCalc.map((model) => {
       return getModelBoundingBox(model)
@@ -2068,8 +2116,6 @@
     const curState = getAddedState();
 		let result = excludeRanges(vanArea, curState);
 
-    console.log(curState)
-
 		if(selectedItem.type == 'air_conditioner') {
       if(fromTemplate) {
         console.log("From Template");
@@ -2081,11 +2127,7 @@
 
       } else {
         let intersections = getIntersectionIntervals(result, cutOffArea, selectedItem.xRadius - 7.2);
-        console.log("intersections: ", intersections, result);
-
         let canIndex = findFittingIntervalIndex(intersections, selectedItem.xRadius);
-        console.log("canIndex: ", canIndex);
-
         let xCenter = intersections[canIndex] + selectedItem.xRadius;
         let positionX = -1 * xCenter * 0.0254;
         return positionX;
