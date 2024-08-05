@@ -1665,6 +1665,53 @@
 
 	}
 
+  function findNearestItems(boxesArr, xValue) {
+    let itemLessThanX = null;
+    let itemGreaterThanX = null;
+    let smallestDiffLessThanX = Infinity;
+    let smallestDiffGreaterThanX = Infinity;
+
+    boxesArr.forEach(box => {
+        const maxDiff = Math.abs(box.max.x - xValue);
+        const minDiff = Math.abs(box.min.x - xValue);
+
+        if (box.max.x < xValue && maxDiff < smallestDiffLessThanX) {
+            smallestDiffLessThanX = maxDiff;
+            itemLessThanX = box;
+        }
+
+        if (box.min.x > xValue && minDiff < smallestDiffGreaterThanX) {
+            smallestDiffGreaterThanX = minDiff;
+            itemGreaterThanX = box;
+        }
+    });
+
+    if (itemGreaterThanX && itemLessThanX) {
+        return [itemGreaterThanX, itemLessThanX];
+    } else if (itemGreaterThanX) {
+        return [itemGreaterThanX];
+    } else if (itemLessThanX) {
+        return [itemLessThanX];
+    } else {
+        // If no items satisfy the conditions, return the nearest single item
+        let nearestItem = null;
+        let smallestDifference = Infinity;
+
+        boxesArr.forEach(box => {
+            const minDifference = Math.abs(box.min.x - xValue);
+            const maxDifference = Math.abs(box.max.x - xValue);
+            const currentDifference = Math.min(minDifference, maxDifference);
+
+            if (currentDifference < smallestDifference) {
+                smallestDifference = currentDifference;
+                nearestItem = box;
+            }
+        });
+
+        return [nearestItem];
+    }
+  }
+
 	function handleClickProduct(event){
 		let positionX = 0;
 		let positionY = 2.35;
@@ -1701,11 +1748,32 @@
         });
 
         if(acBoxes.length != solarBoxes.length) {
-          // should calculate which position is not overlapped
-          // should confirm the space to be installed
-
           if(solarBoxes.length == 0) {
             positionX = acBoxes[0].min.x + Math.abs(acBoxes[0].min.x - acBoxes[0].max.x)/2
+            const solarModel = availableProducts.filter(product => product.type == "solar30");
+            const solarWidth = solarModel[0].xRadius * 2.54 / 100 * 2; // width of solar panel
+            const filteredList = collidableMeshList.filter(mesh => mesh.min.x.toFixed(4) != acBoxes[0].min.x.toFixed(4));
+            const nearestItems = findNearestItems(filteredList, positionX)
+
+            if(nearestItems.length && nearestItems.length == 1) {
+              if(nearestItems[0].min.x > positionX && Math.abs(-2.58 - nearestItems[0].min.x) > solarWidth){
+                console.log("1 case")
+                if(Math.abs(positionX - nearestItems[0].min.x) < solarWidth/2) {
+                  positionX = nearestItems[0].min.x - solarWidth/2;
+                }
+              } else if(nearestItems[0].max.x < positionX) {
+                if(Math.abs(positionX - nearestItems[0].max.x) < solarWidth/2) {
+                  positionX = nearestItems[0].max.x + solarWidth/2;
+                }
+              } else return
+            } else if(nearestItems.length == 2) {
+              if(nearestItems[0].min.x > positionX && nearestItems[1].max.x < positionX && Math.abs(nearestItems[0].min.x - nearestItems[1].max.x) > solarWidth) {
+                console.log("2 case");
+                if(Math.abs(positionX - nearestItems[0].min.x) < solarWidth/2 || Math.abs(positionX - nearestItems[1].max.x) < solarWidth/2) {
+                  positionX = nearestItems[0].min.x - solarWidth/2;
+                }
+              } else return;
+            } else return;
           } else {
             const filterACs = acBoxes.filter(acbox => {
               solarBoxes.forEach(solarbox => {
@@ -1713,6 +1781,30 @@
                   console.log(acbox)
                 } else {
                   positionX = acbox.max.x - Math.abs(acbox.max.x - acbox.min.x)/2
+
+                  // checking available to add
+                  const solarModel = availableProducts.filter(product => product.type == "solar30");
+                  const solarWidth = solarModel[0].xRadius * 2.54 / 100 * 2; // width of solar panel
+                  const filteredList = collidableMeshList.filter(mesh => mesh.min.x.toFixed(4) != acbox.min.x.toFixed(4));
+                  const nearestItems = findNearestItems(filteredList, positionX)
+
+                  console.log(filteredList, solarWidth, nearestItems)
+
+                  if(nearestItems.length && nearestItems.length == 1) {
+                    if(nearestItems[0].min.x > positionX && Math.abs(-2.58 - nearestItems[0].min.x) > solarWidth){
+                      console.log("1 case")
+                      if(Math.abs(positionX - nearestItems[0].min.x) < solarWidth/2) {
+                        positionX = nearestItems[0].min.x - solarWidth/2;
+                      }
+                    } else return
+                  } else if(nearestItems.length == 2) {
+                    if(nearestItems[0].min.x > positionX && nearestItems[1].max.x < positionX && Math.abs(nearestItems[0].min.x - nearestItems[1].max.x) > solarWidth) {
+                      console.log("2 case");
+                      if(Math.abs(positionX - nearestItems[0].min.x) < solarWidth/2 || Math.abs(positionX - nearestItems[1].max.x) < solarWidth/2) {
+                        positionX = nearestItems[0].min.x - solarWidth/2;
+                      }
+                    } else return;
+                  }
                 }
               })
             })
