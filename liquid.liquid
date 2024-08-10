@@ -614,6 +614,12 @@
         display: none;
       }
     }
+    .d-none {
+      display: none !important;
+    }
+    .d-block {
+      display: block !important;
+    }
 
 	</style>
 </head>
@@ -689,7 +695,7 @@
               </div>
             </div>
           </div>
-          <div class="swiper-slide">
+          <div class="swiper-slide" style="display: none">
             <div class="item-box">
               <div class="item-img" id="solar_cross_bar" draggable="false">
                 <div class="carted-item">1</div>
@@ -782,7 +788,6 @@
     <ul class="tabs">
       <li data-tab-target="#build-list" class="active tab">Build List</li>
       <li data-tab-target="#rack-tab" class="tab">Van</li>
-      <li data-tab-target="#select-template" class="tab">Template</li>
     </ul>
     <div class="tab-content">
       <div id="build-list" data-tab-content class="active">
@@ -803,11 +808,6 @@
         </div>
       </div>
 
-      <div id="select-template" data-tab-content>
-        <div class="selectable">
-          <img src="https://cdn.shopify.com/s/files/1/0412/9898/5124/files/temp-1.png?v=1716430453&width=240" width="240" height='' draggable="false" id="temp_1"/>
-        </div>
-      </div>
     </div>
     <div class="checkout-area">
       <div id="products-detail">
@@ -997,7 +997,7 @@
       "type": "solar200",
       "availability": true,
       "handle": "rich-solar-200w-12v-panel",
-      "id": 42641211228379,
+      "id": 42861430571227,
       "price": 0,
       "quantity": 0,
       "xRadius": 13.5
@@ -1023,7 +1023,7 @@
       "id": 45081892683995,
       "price": 0,
       "quantity": 0,
-      "xRadius": 17.0,
+      "xRadius": 16.6,
       "title": "Rich Solar Mega 35 Watt 12 Volt Solar Panel",
       "image": "https://cdn.shopify.com/s/files/1/0412/9898/5124/files/Rich-Solar-35W-12V-Solar-Panel_e5266152-4c97-4d03-8a8c-30e6446a354b.png?v=1717015802",
       "url": "https://shop.explorist.life/shop/all-products/pre-order-rich-solar-35w-12v-solar-panel/"
@@ -1064,7 +1064,7 @@
       "price": 0,
       "quantity": 0
     },
-    {htmlId: 'airconditioner', type: 'air_conditioner_nodamic', handle: '', id: null, price: 0, quantity: 0, xRadius: 15.5,
+    {htmlId: 'airconditioner-d', type: 'air_conditioner_nodamic', handle: '', id: null, price: 0, quantity: 0, xRadius: 15.5,
       "title": "Rich Solar Mega 35 Watt 12 Volt Solar Panel",
       "image": "https://cdn.shopify.com/s/files/1/0412/9898/5124/files/Rich-Solar-35W-12V-Solar-Panel_e5266152-4c97-4d03-8a8c-30e6446a354b.png?v=1717015802",
       "url": "https://shop.explorist.life/shop/all-products/pre-order-rich-solar-35w-12v-solar-panel/"
@@ -1119,17 +1119,17 @@
           let checkCollision = true;
           const xPos = Math.min(0.428 - selectedFeatureWidth / 2, Math.max(-2.115, coords.x));
 
-          {% comment %} if(selectedFeature.name != 'ladder' 
-            && selectedFeature.name != 'solar30' 
-            && selectedFeature.name != 'solar55' 
-            && selectedFeature.name != 'cross_bar'
-            && selectedFeature.name == "lshape_cross"
-          ){
-            checkCollision = checkIsAvailable(xPos, selectedFeature.name, 2);
-          } {% endcomment %}
-
           if(selectedFeature.name == "air_conditioner"){
             const bbox1 = getModelBoundingBox(selectedFeature);
+            let solarModels = scene.children.filter((group) => group?.children[0]?.name == "solar30");
+            const solarBoxes = solarModels.map((model) => {
+              return getModelBoundingBox(model)
+            });
+
+            if(solarBoxes.length > 0) {
+              const connectedSolar = solarBoxes.filter(solar => solar.max.x > bbox1.max.x && solar.min.x < bbox1.min.x)[0];
+              if(connectedSolar) return;
+            }
             const widthOfObject = Math.abs(bbox1.max.x - bbox1.min.x);
             const xPos = Math.min(0.428 - selectedFeatureWidth / 2, Math.max(-2.58 + widthOfObject/2, coords.x));
             const checkCollision = isCrossBarCollied(bbox1, collidableMeshList, xPos);
@@ -1142,6 +1142,15 @@
             } 
           } else if(selectedFeature.name == 'maxxair'){
             const bbox1 = getModelBoundingBox(selectedFeature);
+            let solarModels = scene.children.filter((group) => group?.children[0]?.name == "solar55");
+            const solarBoxes = solarModels.map((model) => {
+              return getModelBoundingBox(model)
+            });
+
+            if(solarBoxes.length > 0) {
+              const connectedSolar = solarBoxes.filter(solar => solar.max.x > bbox1.max.x && solar.min.x < bbox1.min.x)[0];
+              if(connectedSolar) return;
+            }
             const widthOfObject = Math.abs(bbox1.max.x - bbox1.min.x);
             const xPos = Math.min(0.428 - selectedFeatureWidth / 2, Math.max(-2.58 + widthOfObject/2, coords.x));
             const checkCollision = isCrossBarCollied(bbox1, collidableMeshList, xPos);
@@ -1153,15 +1162,43 @@
               updateColliderList();
             } 
           } else if(selectedFeature.name == 'solar30') {
-            const movedItemIndex = solar35Area.findIndex((area) => area.moved);
-            selectedFeature.parent.position.x = -1 * solar35Area[movedItemIndex].position * 0.0254;
-            selectedFeature.parent.position.z = 0;
-            solar35Area[movedItemIndex].moved = false;
+            const bbox1  = getModelBoundingBox(selectedFeature);
+            let acmodels = scene.children.filter((group) => group?.children[0]?.name == "air_conditioner");
+            const acboxes = acmodels.map((model) => {
+              return getModelBoundingBox(model)
+            });
+            const acBox = acboxes.filter(acbox => acbox.max.x < bbox1.max.x && acbox.min.x > bbox1.min.x)[0];
+            if(acBox) {
+              const centerOfBox = (acBox.min.x + acBox.max.x) /2;
+              const maxMovable = centerOfBox + 3.8 * 0.0254
+              const minMovable = centerOfBox - 3.8 * 0.0254
+              const widthOfObject = Math.abs(bbox1.max.x - bbox1.min.x);
+              let xPos = Math.min(0.428 - selectedFeatureWidth / 2, Math.max(-2.58 + widthOfObject/2, coords.x));
+              const checkCollision = isColliedNearBy(bbox1, acBox, collidableMeshList, xPos);
+              if(xPos <= maxMovable && xPos >= minMovable && !checkCollision) {
+                selectedFeature.parent.position.x = xPos
+                updateColliderList();
+              }
+            }
           } else if(selectedFeature.name == 'solar55') {
-            const movedItemIndex = solar55Area.findIndex((area) => area.moved);
-            selectedFeature.parent.position.x = -1 * solar55Area[movedItemIndex].position * 0.0254;
-            selectedFeature.parent.position.z = 0;
-            solar55Area[movedItemIndex].moved = false;
+            const bbox1  = getModelBoundingBox(selectedFeature);
+            let acmodels = scene.children.filter((group) => group?.children[0]?.name == "maxxair");
+            const fanBoxes = acmodels.map((model) => {
+              return getModelBoundingBox(model)
+            });
+            const fanBox = fanBoxes.filter(fanbox => fanbox.max.x < bbox1.max.x && fanbox.min.x > bbox1.min.x)[0];
+            if(fanBox) {
+              const centerOfBox = (fanBox.min.x + fanBox.max.x) /2;
+              const maxMovable = centerOfBox + 0.025
+              const minMovable = centerOfBox - 0.025
+              const widthOfObject = Math.abs(bbox1.max.x - bbox1.min.x);
+              let xPos = Math.min(0.428 - selectedFeatureWidth / 2, Math.max(-2.58 + widthOfObject/2, coords.x));
+              const checkCollision = isColliedNearBy(bbox1, fanBox, collidableMeshList, xPos);
+              if(xPos <= maxMovable && xPos >= minMovable && !checkCollision) {
+                selectedFeature.parent.position.x = xPos
+                updateColliderList();
+              }
+            }
           } else if(selectedFeature.name == "8020_crossbar") {
             const bbox1  = getModelBoundingBox(selectedFeature);
             const widthOfObject = Math.abs(bbox1.max.x - bbox1.min.x);
@@ -1231,28 +1268,6 @@
       bodyMesh.material = bodyMaterial
     }
   })
-
-  document.getElementById('select-template').addEventListener('click', function(event) {
-    if (event.target.id.includes('temp')) {
-      fromTemplate = true;
-      let tempOrder = ['solar_panel200', 'solar_panel200', 'maxxair', 'airconditioner', 'solar_panel50', 'solar_panel30'];
-
-      resetConfig(true);
-
-      function clickWithDelay(elements, delay) {
-        elements.forEach((elementId, index) => {
-          setTimeout(() => {
-            var elem = document.getElementById(elementId);
-            if (elem) {
-              elem.click();
-            }
-          }, index * delay);
-        });
-      }
-
-      clickWithDelay(tempOrder, 500);
-    }
-  });
 
   document.getElementById('deleteButton').addEventListener('click', function () {
     if (selectedFeature) {
@@ -1617,7 +1632,7 @@
   }
 
   function getAddedState() {
-    const itemsToBeCalc = ['maxxair', 'solar200', 'air_conditioner','8020_crossbar', 'solar30'];
+    const itemsToBeCalc = ['maxxair', 'solar200', 'air_conditioner','8020_crossbar', 'solar30', 'solar55'];
     const itemsToCalc = scene.children.filter(group => itemsToBeCalc.includes(group?.children[0]?.name));
     const boxes = itemsToCalc.map((model) => {
       return getModelBoundingBox(model)
@@ -1651,7 +1666,7 @@
         return positionX;
       }
 		} else if(selectedItem.type == 'maxxair') {
-			let intersections = getIntersectionIntervals(result, cutOffArea, selectedItem.xRadius - 7);
+			let intersections = getIntersectionIntervals(result, cutOffArea, selectedItem.xRadius - 7, 3.225);
 			let canIndex = findFittingIntervalIndex(intersections, selectedItem.xRadius);
 			let xCenter = intersections[canIndex] + selectedItem.xRadius;
 			let positionX = -1 * xCenter * 0.0254;
@@ -1813,13 +1828,85 @@
 			} else if(selectedItem.type == 'solar55') {
 				let fanItem = availableProducts.filter(product => product.type == 'maxxair')[0];
 				if (selectedItem.quantity >= fanItem.quantity) return false;
+        let acModels = scene.children.filter((group) => 
+        group?.children[0]?.name == "maxxair");
+        
+        let solarModels = scene.children.filter((group) => 
+          group?.children[0]?.name == "solar55");
 
-				const newSolarPosition = solar55Area.findIndex((area) => !area.confState );;
-				if(solar55Area.length > 0 && newSolarPosition >= 0){
-          positionX = -1 * solar55Area[newSolarPosition].position * 0.0254;
-          solar55Area[newSolarPosition].confState = true;
+        const fanBoxes = acModels.map((model) => {
+          return getModelBoundingBox(model)
+        });
+
+        const solarBoxes = solarModels.map((model) => {
+          return getModelBoundingBox(model)
+        });
+
+        if(fanBoxes.length != solarBoxes.length) {
+          if(solarBoxes.length == 0) {
+            positionX = fanBoxes[0].min.x + Math.abs(fanBoxes[0].min.x - fanBoxes[0].max.x)/2
+            const solarModel = availableProducts.filter(product => product.type == "solar55");
+            const solarWidth = solarModel[0].xRadius * 2.54 / 100 * 2; // width of solar panel
+            const filteredList = collidableMeshList.filter(mesh => mesh.min.x.toFixed(4) != fanBoxes[0].min.x.toFixed(4));
+            const nearestItems = findNearestItems(filteredList, positionX)
+
+            if(nearestItems.length && nearestItems.length == 1) {
+              if(nearestItems[0].min.x > positionX && Math.abs(-2.58 - nearestItems[0].min.x) > solarWidth){
+                console.log("1 case")
+                if(Math.abs(positionX - nearestItems[0].min.x) < solarWidth/2) {
+                  positionX = nearestItems[0].min.x - solarWidth/2;
+                }
+              } else if(nearestItems[0].max.x < positionX) {
+                if(Math.abs(positionX - nearestItems[0].max.x) < solarWidth/2) {
+                  positionX = nearestItems[0].max.x + solarWidth/2;
+                }
+              } else return
+            } else if(nearestItems.length == 2) {
+              if(nearestItems[0].min.x > positionX && nearestItems[1].max.x < positionX && Math.abs(nearestItems[0].min.x - nearestItems[1].max.x) > solarWidth) {
+                console.log("2 case");
+                if(Math.abs(positionX - nearestItems[0].min.x) < solarWidth/2 || Math.abs(positionX - nearestItems[1].max.x) < solarWidth/2) {
+                  positionX = nearestItems[0].min.x - solarWidth/2;
+                }
+              } else return;
+            } else return;
+          } else {
+            const filterACs = fanBoxes.filter(acbox => {
+              solarBoxes.forEach(solarbox => {
+                if(acbox.min.x > solarbox.min.x && acbox.max.x < solarbox.max.x) {
+                  console.log(acbox)
+                } else {
+                  positionX = acbox.max.x - Math.abs(acbox.max.x - acbox.min.x)/2
+
+                  // checking available to add
+                  const solarModel = availableProducts.filter(product => product.type == "solar55");
+                  const solarWidth = solarModel[0].xRadius * 2.54 / 100 * 2; // width of solar panel
+                  const filteredList = collidableMeshList.filter(mesh => mesh.min.x.toFixed(4) != acbox.min.x.toFixed(4));
+                  const nearestItems = findNearestItems(filteredList, positionX)
+
+                  console.log(filteredList, solarWidth, nearestItems)
+
+                  if(nearestItems.length && nearestItems.length == 1) {
+                    if(nearestItems[0].min.x > positionX && Math.abs(-2.58 - nearestItems[0].min.x) > solarWidth){
+                      console.log("1 case")
+                      if(Math.abs(positionX - nearestItems[0].min.x) < solarWidth/2) {
+                        positionX = nearestItems[0].min.x - solarWidth/2;
+                      }
+                    } else return
+                  } else if(nearestItems.length == 2) {
+                    if(nearestItems[0].min.x > positionX && nearestItems[1].max.x < positionX && Math.abs(nearestItems[0].min.x - nearestItems[1].max.x) > solarWidth) {
+                      console.log("2 case");
+                      if(Math.abs(positionX - nearestItems[0].min.x) < solarWidth/2 || Math.abs(positionX - nearestItems[1].max.x) < solarWidth/2) {
+                        positionX = nearestItems[0].min.x - solarWidth/2;
+                      }
+                    } else return;
+                  }
+                }
+              })
+            })
+          }
+        } else {
+          return;
         }
-				else return;
 			} else {
         if(selectedItem.type == '8020_crossbar') {
           positionY = 2.36
@@ -2111,12 +2198,17 @@
       totalItems += productAmount
 
       if(product.htmlId != "") {
-        let dragItem = document.getElementById(product.htmlId).childNodes[1];
-        if (productAmount > 0) {
-          dragItem.innerHTML = productAmount.toString();
-          dragItem.style.display = 'block';
-        } else {
-          dragItem.style.display = 'none';
+        console.log(product.htmlId, product.quantity)
+        if(document.getElementById(product.htmlId)) {
+          let dragItem = document.getElementById(product.htmlId).childNodes[1];
+          if (product.quantity > 0) {
+            dragItem.innerHTML = product?.quantity.toString();
+            dragItem.classList.remove("d-none");
+            dragItem.classList.add("d-block");
+          } else {
+            dragItem.classList.remove("d-block");
+            dragItem.classList.add("d-none");
+          }
         }
       }
     });
@@ -2313,9 +2405,24 @@
     return collisionDetected; 
   }
 
+  function isColliedNearBy(selectedFeatureBoundingBox, box2, collidableMeshList, xPos) {
+    const widthOfObject = Math.abs(selectedFeatureBoundingBox.max.x - selectedFeatureBoundingBox.min.x);
+    const filteredCollidableMeshList = collidableMeshList.filter(box => !(box.min.x.toFixed(3) == selectedFeatureBoundingBox.min.x.toFixed(3) && box.max.x.toFixed(3) == selectedFeatureBoundingBox.max.x.toFixed(3)) && !(box.min.x.toFixed(3) == box2.min.x.toFixed(3) && box.max.x.toFixed(3) == box2.max.x.toFixed(3)));
+    let collisionDetected = false;
+
+    for (let boundingBox of filteredCollidableMeshList) {
+      const centerItem = (boundingBox.min.x + boundingBox.max.x) /2;
+      if ( ((xPos - widthOfObject/2) < boundingBox.max.x && (xPos + widthOfObject/2) > boundingBox.min.x)) {
+        collisionDetected = true;
+        break;
+      }
+    }
+    return collisionDetected; 
+  }
+
   function updateColliderList() {
     let models = scene.children.filter((group) => 
-      group?.children[0]?.name == "cross_bar" || group?.children[0]?.name == "maxxair" || group?.children[0]?.name == "air_conditioner" || group?.children[0]?.name == "solar200" || group?.children[0]?.name == "lshape_cross" || group?.children[0]?.name == "8020_crossbar" || group?.children[0]?.name == "solar30");
+      group?.children[0]?.name == "cross_bar" || group?.children[0]?.name == "maxxair" || group?.children[0]?.name == "air_conditioner" || group?.children[0]?.name == "solar200" || group?.children[0]?.name == "lshape_cross" || group?.children[0]?.name == "8020_crossbar" || group?.children[0]?.name == "solar30" || group?.children[0]?.name == "solar55");
 
     const boxes = models.map((model) => {
       return getModelBoundingBox(model)
@@ -2518,6 +2625,7 @@
         } else {
           buildText += '<div class="not-sell">This item is not available for sale from Unaka Gear Co. Please contact support for any questions</div>'
         }
+        buildText += '<div style="display: flex; justify-content: end">Qty. '+ productAmount +'</div>'
         buildText += '</div><div class="divider"></div></div>'
       }
     }
