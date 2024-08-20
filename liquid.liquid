@@ -109,9 +109,19 @@
       display: block;
     }
 
+    #solar_panel250 {
+      background-image: url('https://cdn.shopify.com/s/files/1/0412/9898/5124/files/100W.jpg?v=1724041152&width=100');
+			display: block;
+    }
+
     #solar_panel200 {
       background-image: url('https://cdn.shopify.com/s/files/1/0412/9898/5124/files/200W.jpg?v=1711798448&width=100');
       display: block;
+    }
+
+    #solar_panel100 {
+      background-image: url('https://cdn.shopify.com/s/files/1/0412/9898/5124/files/100W.jpg?v=1724041152&width=100');
+			display: block;
     }
 
     #solar_panel50 {
@@ -660,11 +670,31 @@
           </div>
           <div class="swiper-slide">
             <div class="item-box">
+              <div class="item-img" id="solar_panel250" draggable="false">
+                <div class="carted-item">1</div>
+              </div>
+              <div class="item-name">
+                <p>Solar Panel<br />(250W)</p>
+              </div>
+            </div>
+          </div>
+          <div class="swiper-slide">
+            <div class="item-box">
               <div class="item-img" id="solar_panel200" draggable="false">
                 <div class="carted-item">1</div>
               </div>
               <div class="item-name">
                 <p>Solar Panel<br />(200W)</p>
+              </div>
+            </div>
+          </div>
+          <div class="swiper-slide">
+            <div class="item-box">
+              <div class="item-img" id="solar_panel100" draggable="false">
+                <div class="carted-item">1</div>
+              </div>
+              <div class="item-name">
+                <p>Solar Panel<br />(100W)</p>
               </div>
             </div>
           </div>
@@ -1085,7 +1115,9 @@
     {htmlId: 'cross_bar', type: '8020_crossbar', handle: '', id: null, price: 0, quantity: 0, xRadius: 2.3},
     {htmlId: 'solar_cross_bar', type: 'lshape_cross', handle: '', id: null, price: 0, quantity: 0, xRadius: 14.03},
     {htmlId: 'awning', type: 'awning', handle: 'fiamma-45s', id: 45715079299291, price: 0, xRadius: 59.05, availability: true, quantity: 0},
-    {htmlId: '', type: 'awning_bracket', handle: 'fiamma-f45s-awning-8020-or-unistrut-mounting-brackets', id: 45072199287003, availability: true, price: 0, quantity: 0}
+    {htmlId: '', type: 'awning_bracket', handle: 'fiamma-f45s-awning-8020-or-unistrut-mounting-brackets', id: 45072199287003, availability: true, price: 0, quantity: 0},
+    {htmlId: 'solar_panel100', type: 'solar100', handle: 'rich-solar-100w-12v-panel-slim', id: 44186576060635, price: 0, quantity: 0, xRadius: 6.9, availability: true},
+    {htmlId: 'solar_panel250', type: 'solar250', handle: 'rich-solar-100w-12v-panel-slim', id: 44186576060635, price: 0, quantity: 0, xRadius: 14.95},
   ]
   
 
@@ -1636,7 +1668,7 @@
         }
         return crossbar;
       }).filter(Boolean);
-      const solarPanels = scene.children.filter(group => group?.children[0]?.name == "solar200");
+      const solarPanels = scene.children.filter(group => group?.children[0]?.name == "solar200" || group?.children[0]?.name == "solar100");
       if(updatedBars.length > solarPanels.length + 1) {
         scene.remove(updatedBars[0]);
       }
@@ -1646,7 +1678,7 @@
   }
 
   function getAddedState() {
-    const itemsToBeCalc = ['maxxair', 'solar200', 'air_conditioner','8020_crossbar', 'solar30', 'solar55'];
+    const itemsToBeCalc = ['maxxair', 'solar200', 'solar100', 'air_conditioner','8020_crossbar', 'solar30', 'solar55'];
     const itemsToCalc = scene.children.filter(group => itemsToBeCalc.includes(group?.children[0]?.name));
     const boxes = itemsToCalc.map((model) => {
       return getModelBoundingBox(model)
@@ -1949,6 +1981,9 @@
       case "solar_panel200":
         loadItemDirectory = "https://cdn.shopify.com/3d/models/41179ec7afded29e/200W.glb";
         break;
+      case "solar_panel100":
+        loadItemDirectory = "https://cdn.shopify.com/3d/models/1d5da2011f6c3f84/100W.glb";
+        break;
       case "solar_panel50":
         loadItemDirectory = "https://cdn.shopify.com/3d/models/cfce53c8523cbc41/55W.glb";
         break;
@@ -2025,6 +2060,7 @@
       group?.children[0]?.name == 'maxxair' || 
       group?.children[0]?.name == 'air_conditioner' || 
       group?.children[0]?.name == 'solar200' || 
+      group?.children[0]?.name == 'solar100' || 
       group?.children[0]?.name == 'solar55' || 
       group?.children[0]?.name == 'solar30'|| 
       group?.children[0]?.name == 'ladder' );
@@ -2160,6 +2196,11 @@
         }
         availableProducts[7] = addProduct;
 
+        break;
+      case "solar100":
+        addProduct = availableProducts[15];
+        flag ? addProduct.quantity += 1 : addProduct.quantity -= 1;
+        availableProducts[15] = addProduct;
         break;
       case "solar55":
         addProduct = availableProducts[4];
@@ -2447,8 +2488,8 @@
   }
 
   function updateColliderList() {
-    let models = scene.children.filter((group) => 
-      group?.children[0]?.name == "cross_bar" || group?.children[0]?.name == "maxxair" || group?.children[0]?.name == "air_conditioner" || group?.children[0]?.name == "solar200" || group?.children[0]?.name == "lshape_cross" || group?.children[0]?.name == "8020_crossbar" || group?.children[0]?.name == "solar30" || group?.children[0]?.name == "solar55");
+    const collidableModels = ["cross_bar", "maxxair", "air_conditioner", "solar200", "solar100", "lshape_cross", "8020_crossbar", "solar30", "solar55"];
+    let models = scene.children.filter((group) => collidableModels.includes(group?.children[0]?.name));
 
     const boxes = models.map((model) => {
       return getModelBoundingBox(model)
