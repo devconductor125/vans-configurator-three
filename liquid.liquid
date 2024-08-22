@@ -110,7 +110,7 @@
     }
 
     #solar_panel250 {
-      background-image: url('https://cdn.shopify.com/s/files/1/0412/9898/5124/files/100W.jpg?v=1724041152&width=100');
+      background-image: url('https://cdn.shopify.com/s/files/1/0412/9898/5124/files/250W.jpg?v=1724133040&width=100');
 			display: block;
     }
 
@@ -1039,8 +1039,8 @@
       "htmlId": "solar_panel200",
       "type": "solar200",
       "availability": true,
-      "handle": "rich-solar-200w-12v-panel",
-      "id": 42861430571227,
+      "handle": "rich-solar-solar-panel",
+      "id": 45977350734043,
       "price": 0,
       "quantity": 0,
       "xRadius": 13.5
@@ -1116,8 +1116,8 @@
     {htmlId: 'solar_cross_bar', type: 'lshape_cross', handle: '', id: null, price: 0, quantity: 0, xRadius: 14.03},
     {htmlId: 'awning', type: 'awning', handle: 'fiamma-45s', id: 45715079299291, price: 0, xRadius: 59.05, availability: true, quantity: 0},
     {htmlId: '', type: 'awning_bracket', handle: 'fiamma-f45s-awning-8020-or-unistrut-mounting-brackets', id: 45072199287003, availability: true, price: 0, quantity: 0},
-    {htmlId: 'solar_panel100', type: 'solar100', handle: 'rich-solar-100w-12v-panel-slim', id: 44186576060635, price: 0, quantity: 0, xRadius: 6.9, availability: true},
-    {htmlId: 'solar_panel250', type: 'solar250', handle: 'rich-solar-100w-12v-panel-slim', id: 44186576060635, price: 0, quantity: 0, xRadius: 14.95},
+    {htmlId: 'solar_panel100', type: 'solar100', handle: 'rich-solar-solar-panel', id: 45977350668507, price: 0, quantity: 0, xRadius: 6.9, availability: true},
+    {htmlId: 'solar_panel250', type: 'solar250', handle: 'rich-solar-solar-panel', id: 45977350799579, price: 0, quantity: 0, xRadius: 14.95, "availability": true,},
   ]
   
 
@@ -1668,7 +1668,7 @@
         }
         return crossbar;
       }).filter(Boolean);
-      const solarPanels = scene.children.filter(group => group?.children[0]?.name == "solar200" || group?.children[0]?.name == "solar100");
+      const solarPanels = scene.children.filter(group => group?.children[0]?.name == "solar200" || group?.children[0]?.name == "solar100" || group?.children[0]?.name == "solar250");
       if(updatedBars.length > solarPanels.length + 1) {
         scene.remove(updatedBars[0]);
       }
@@ -1678,7 +1678,7 @@
   }
 
   function getAddedState() {
-    const itemsToBeCalc = ['maxxair', 'solar200', 'solar100', 'air_conditioner','8020_crossbar', 'solar30', 'solar55'];
+    const itemsToBeCalc = ['maxxair', 'solar200', 'solar250', 'solar100', 'air_conditioner','8020_crossbar', 'solar30', 'solar55'];
     const itemsToCalc = scene.children.filter(group => itemsToBeCalc.includes(group?.children[0]?.name));
     const boxes = itemsToCalc.map((model) => {
       return getModelBoundingBox(model)
@@ -1978,6 +1978,9 @@
       case "maxxair":
         loadItemDirectory = "https://cdn.shopify.com/3d/models/c3eeb44577bd8f6a/maxxair.glb";
         break;
+      case "solar_panel250":
+        loadItemDirectory = "https://cdn.shopify.com/3d/models/5b0bf30f3bc0bc5b/250W.glb";
+        break;
       case "solar_panel200":
         loadItemDirectory = "https://cdn.shopify.com/3d/models/41179ec7afded29e/200W.glb";
         break;
@@ -2059,6 +2062,7 @@
     let models = scene.children.filter((group) => 
       group?.children[0]?.name == 'maxxair' || 
       group?.children[0]?.name == 'air_conditioner' || 
+      group?.children[0]?.name == 'solar250' || 
       group?.children[0]?.name == 'solar200' || 
       group?.children[0]?.name == 'solar100' || 
       group?.children[0]?.name == 'solar55' || 
@@ -2201,6 +2205,11 @@
         addProduct = availableProducts[15];
         flag ? addProduct.quantity += 1 : addProduct.quantity -= 1;
         availableProducts[15] = addProduct;
+        break;
+      case "solar250":
+        addProduct = availableProducts[16];
+        flag ? addProduct.quantity += 1 : addProduct.quantity -= 1;
+        availableProducts[16] = addProduct;
         break;
       case "solar55":
         addProduct = availableProducts[4];
@@ -2488,7 +2497,7 @@
   }
 
   function updateColliderList() {
-    const collidableModels = ["cross_bar", "maxxair", "air_conditioner", "solar200", "solar100", "lshape_cross", "8020_crossbar", "solar30", "solar55"];
+    const collidableModels = ["cross_bar", "maxxair", "air_conditioner", "solar200", "solar250", "solar100", "lshape_cross", "8020_crossbar", "solar30", "solar55"];
     let models = scene.children.filter((group) => collidableModels.includes(group?.children[0]?.name));
 
     const boxes = models.map((model) => {
