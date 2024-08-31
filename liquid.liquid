@@ -150,6 +150,10 @@
       background-image: url('https://cdn.shopify.com/s/files/1/0412/9898/5124/files/awning.jpg?v=1723579211');
       display: block;
     }
+    #awning_350 {
+      background-image: url('https://cdn.shopify.com/s/files/1/0412/9898/5124/files/awning.jpg?v=1723579211');
+      display: block;
+    }
 		button {
 			cursor: pointer;
 			display: flex;
@@ -758,6 +762,16 @@
               </div>
             </div>
           </div>
+          <div class="swiper-slide">
+            <div class="item-box">
+              <div class="item-img" id="awning_350" draggable="false">
+                <div class="carted-item">1</div>
+              </div>
+              <div class="item-name">
+                <p>F45-350 Awning</p>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
       <div class="swiper-button-next"></div>
@@ -1009,8 +1023,8 @@
       "htmlId": "",
       "type": "rack",
       "availability": true,
-      "handle": "transithsld148-roof-rack",
-      "id": 43238854328539,
+      "handle": "ford-transit-roof-rack",
+      "id": 45730334671067,
       "price": 0,
       "quantity": 1,
       "xRadius": null
@@ -1118,6 +1132,7 @@
     {htmlId: '', type: 'awning_bracket', handle: 'fiamma-f45s-awning-8020-or-unistrut-mounting-brackets', id: 45072199287003, availability: true, price: 0, quantity: 0},
     {htmlId: 'solar_panel100', type: 'solar100', handle: 'rich-solar-solar-panel', id: 45977350668507, price: 0, quantity: 0, xRadius: 6.9, availability: true},
     {htmlId: 'solar_panel250', type: 'solar250', handle: 'rich-solar-solar-panel', id: 45977350799579, price: 0, quantity: 0, xRadius: 14.95, "availability": true,},
+    {htmlId: 'awning_350', type: 'awning_350', handle: 'fiamma-45s', id: 45715079364827, price: 0, availability: true, xRadius: 68.89, quantity: 0},
   ]
   
 
@@ -1166,7 +1181,7 @@
           let checkCollision = true;
           const xPos = Math.min(0.428 - selectedFeatureWidth / 2, Math.max(-2.115, coords.x));
 
-          if(selectedFeature.name == "awning"){
+          if(selectedFeature.name == "awning" || selectedFeature.name == "awning_350"){
             const bbox1  = getModelBoundingBox(selectedFeature);
             const widthOfObject = Math.abs(bbox1.max.x - bbox1.min.x);
             const xPos = Math.min(0.778 - selectedFeatureWidth / 2, Math.max(-2.93 + widthOfObject/2, coords.x));
@@ -1787,7 +1802,10 @@
 			positionX = -0.6;
 			positionY = 1.1717;
 			positionZ = -0.97864;
-		} else if(selectedItem.type == 'awning') {
+		} else if(selectedItem.type == 'awning' || selectedItem.type == 'awning_350') {
+      const awningModels = scene.children.filter((group) => group?.children[0]?.name == "awning" || group?.children[0]?.name == "awning_350");
+      if(awningModels.length >= 1) return;
+
 			if(selectedItem.quantity > 0 ) return false;
 			positionX = -1.07;
 			positionY = 2.35;
@@ -2002,6 +2020,9 @@
       case "awning":
         loadItemDirectory = "https://cdn.shopify.com/3d/models/85085b43be1cd9cf/awning.glb";
         break;
+      case "awning_350":
+        loadItemDirectory = "https://cdn.shopify.com/3d/models/431a3b45d712597f/awning_350.glb";
+        break;
     }
 
     const loadModel = (url) => {
@@ -2120,6 +2141,7 @@
     if (objectHit.parent &&
       objectHit.parent.name != "" &&
       objectHit.parent.name != "van" &&
+      objectHit.parent.name?.includes('roof_rack') != true &&
       objectHit != workPlane &&
       objectHit != shodowMesh) {
       scene.add(targetForDragging);
@@ -2251,6 +2273,20 @@
         addProduct = availableProducts[13];
         flag ? addProduct.quantity += 1 : addProduct.quantity -= 1;
         availableProducts[13] = addProduct;
+
+        addProduct = availableProducts[14];
+        if(addProduct.quantity > 0 && !flag){
+          addProduct.quantity -= 1;
+        } else if(flag) {
+          addProduct.quantity += 1;
+        }
+        availableProducts[14] = addProduct;
+
+        break;
+      case "awning_350":
+        addProduct = availableProducts[17];
+        flag ? addProduct.quantity += 1 : addProduct.quantity -= 1;
+        availableProducts[17] = addProduct;
 
         addProduct = availableProducts[14];
         if(addProduct.quantity > 0 && !flag){
@@ -2396,10 +2432,10 @@
       scene.environment = envMap;
     });
 
-    loader.load('https://cdn.shopify.com/3d/models/ef2473f570af2015/van2.glb', function (gltf) {
+    loader.load('https://cdn.shopify.com/3d/models/11ab0e3e276f4fa7/van3.glb', function (gltf) {
       carModel = gltf.scene;
 
-      bodyMesh = carModel.getObjectByName("van").getObjectByName("Mesh001_5");
+      bodyMesh = carModel.getObjectByName("van").getObjectByName("van_1");
       const bodyMaterial = new THREE.MeshPhysicalMaterial( {
         color: 0xffffff, metalness: 1.0, roughness: 0.9, clearcoat: 1.0, clearcoatRoughness: 0.1
       } );
@@ -2415,23 +2451,28 @@
       shodowMesh.rotation.z = Math.PI / 2;
       shodowMesh.renderOrder = 2;
       carModel.add(shodowMesh);
-
       scene.add(carModel);
 
-      var models = [
-        {
-          path: 'https://cdn.shopify.com/3d/models/543cc594a487aecf/8020_cross.glb',
-          xPos: -2.52
-        }
-      ]
+      loader.load('https://cdn.shopify.com/3d/models/bc8d1e88f7780c06/rack_origin.glb',  function (gltf) {
+        let rackModel = gltf.scene;
+        rackModel.position.y = 2.3222
+        rackModel.position.x = -0.755
+        scene.add(rackModel);
 
-      models.map((model) => {
-        loader.load(model.path, function (gltf) {
-          let crossBarModel = gltf.scene;
-          crossBarModel.position.y = 2.36
-          crossBarModel.position.x = model.xPos
-          let bbox1 = getModelBoundingBox(crossBarModel);
-          scene.add(crossBarModel);
+        let models = [
+          {
+            path: 'https://cdn.shopify.com/3d/models/543cc594a487aecf/8020_cross.glb',
+            xPos: -2.52
+          }
+        ]
+        models.map((model) => {
+          loader.load(model.path, function (gltf) {
+            let crossBarModel = gltf.scene;
+            crossBarModel.position.y = 2.36
+            crossBarModel.position.x = model.xPos
+            let bbox1 = getModelBoundingBox(crossBarModel);
+            scene.add(crossBarModel);
+          })
         })
       })
 
@@ -2720,6 +2761,29 @@
         }
         else return product;
       });
+
+      if(targetVariant[0] == "rack" ) {
+        let rackModel = scene.children.filter((group) => group?.children[0]?.name?.includes("roof_rack"));
+        rackModel.map(model => {
+          scene.remove(model);
+        })
+        if(targetVariant[1] == "45730334703835") {
+          loader.load('https://cdn.shopify.com/3d/models/4df021fd93d74fd4/rack-extended.glb',  function (gltf) {
+            let rackModel = gltf.scene;
+            rackModel.position.y = 2.3222
+            rackModel.position.x = -0.755
+            scene.add(rackModel);
+          })
+          
+        } else {
+          loader.load('https://cdn.shopify.com/3d/models/bc8d1e88f7780c06/rack_origin.glb',  function (gltf) {
+            let rackModel = gltf.scene;
+            rackModel.position.y = 2.3222
+            rackModel.position.x = -0.755
+            scene.add(rackModel);
+          })
+        }
+      }
       calculatePrice(availableProducts)
     } else if(event.target.type === 'submit') {
       const targetType = event.target.id?.split('___')[0];

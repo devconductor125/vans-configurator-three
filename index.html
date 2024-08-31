@@ -157,6 +157,11 @@
       display: block;
     }
 
+    #awning_350 {
+      background-image: url('https://cdn.shopify.com/s/files/1/0412/9898/5124/files/awning.jpg?v=1723579211');
+      display: block;
+    }
+
     #solar_cross_bar {
       background-image: url('./images/solar_cross.jpg');
       display: block;
@@ -728,6 +733,14 @@
 							<p>F45-300 Awning</p>
 						</div>
 					</div>
+          <div class="item-box">
+						<div class="item-img" id="awning_350" draggable="false">
+							<div class="carted-item">1</div>
+						</div>
+						<div class="item-name">
+							<p>F45-350 Awning</p>
+						</div>
+					</div>
 				</div>
 			</div>
 			<div class="action-btn-list">
@@ -940,6 +953,7 @@
     {htmlId: '', type: 'awning_bracket', handle: 'fiamma-f45s-awning-8020-or-unistrut-mounting-brackets', id: 45072199287003, availability: true, price: 0, quantity: 0},
     {htmlId: 'solar_panel100', type: 'solar100', handle: 'rich-solar-100w-12v-panel-slim', id: 44186576060635, price: 0, quantity: 0, xRadius: 6.9},
     {htmlId: 'solar_panel250', type: 'solar250', handle: 'rich-solar-100w-12v-panel-slim', id: 44186576060635, price: 0, quantity: 0, xRadius: 14.95},
+    {htmlId: 'awning_350', type: 'awning_350', handle: 'fiamma-45s', id: 45715079364827, price: 0, xRadius: 68.89},
   ]
   const meterToInch = 39.3701;
 
@@ -996,7 +1010,7 @@
           //   checkCollision = checkIsAvailable(xPos, selectedFeature.name, 2);
           // }
           
-          if(selectedFeature.name == "awning"){
+          if(selectedFeature.name == "awning" || selectedFeature.name == "awning_350"){
             const bbox1  = getModelBoundingBox(selectedFeature);
             const widthOfObject = Math.abs(bbox1.max.x - bbox1.min.x);
             const xPos = Math.min(0.778 - selectedFeatureWidth / 2, Math.max(-2.93 + widthOfObject/2, coords.x));
@@ -1211,6 +1225,24 @@
   });
 
   document.getElementById('addCartBtn').addEventListener('click', async function() {
+    
+
+    console.log(scene);
+
+    let rackModel = scene.children.filter((group) => group?.children[0]?.name?.includes("roof_rack"));
+
+    rackModel.map(model => {
+      scene.remove(model);
+    })
+
+    loader.load('./models/rack-extended.glb',  function (gltf) {
+        let rackModel = gltf.scene;
+        rackModel.position.y = 2.3222
+        rackModel.position.x = -0.755
+        scene.add(rackModel);
+    })
+
+    console.log(rackModel)
     let cartItems = []
     availableProducts.map((product) => {
       if(product.price > 0 && product.quantity > 0) {
@@ -1397,7 +1429,10 @@
 			positionX = -0.6;
 			positionY = 1.1717;
 			positionZ = -0.97864;
-		} else if(selectedItem.type == 'awning') {
+		} else if(selectedItem.type == 'awning' || selectedItem.type == 'awning_350') {
+      const awningModels = scene.children.filter((group) => group?.children[0]?.name == "awning" || group?.children[0]?.name == "awning_350");
+      if(awningModels.length >= 1) return;
+
 			if(selectedItem.quantity > 0 ) return false;
 			positionX = -1.07;
 			positionY = 2.35;
@@ -1655,6 +1690,9 @@
       case "awning":
         loadItemDirectory = "https://cdn.shopify.com/3d/models/85085b43be1cd9cf/awning.glb";
         break;
+      case "awning_350":
+        loadItemDirectory = "https://cdn.shopify.com/3d/models/431a3b45d712597f/awning_350.glb";
+        break;
     }
 
     console.log(loadItemDirectory)
@@ -1751,6 +1789,7 @@
     if (objectHit.parent &&
       objectHit.parent.name != "" &&
       objectHit.parent.name != "van" &&
+      objectHit.parent.name?.includes('roof_rack') != true &&
       objectHit != workPlane &&
       objectHit != shodowMesh) {
       scene.add(targetForDragging);
@@ -2004,10 +2043,9 @@
       scene.environment = envMap;
     });
 
-    loader.load('./models/van2.glb', function (gltf) {
+    loader.load('./models/van3.glb', function (gltf) {
       carModel = gltf.scene;
-
-      bodyMesh = carModel.getObjectByName("van").getObjectByName("Mesh001_5");
+      bodyMesh = carModel.getObjectByName("van").getObjectByName("van_1");
       const bodyMaterial = new THREE.MeshPhysicalMaterial( {
         color: 0xffffff, metalness: 1.0, roughness: 0.9, clearcoat: 1.0, clearcoatRoughness: 0.1
       } );
@@ -2026,32 +2064,40 @@
 
       scene.add(carModel);
 
-
-      var models = [
-        // {
-        //   path: 'https://cdn.shopify.com/3d/models/3398a34e7f6918ab/lshape_cross.glb',
-        //   xPos: -0.5
-        // },
-        // {
-        //   path: 'https://cdn.shopify.com/3d/models/3398a34e7f6918ab/lshape_cross.glb',
-        //   xPos: -1.215
-        // },
-        {
-          path: 'https://cdn.shopify.com/3d/models/543cc594a487aecf/8020_cross.glb',
-          xPos: -2.52
-        }
-      ]
-
-      models.map((model) => {
-        loader.load(model.path, function (gltf) {
-          let crossBarModel = gltf.scene;
-          crossBarModel.position.y = 2.36
-          crossBarModel.position.x = model.xPos
-          let bbox1 = getModelBoundingBox(crossBarModel);
-          scene.add(crossBarModel);
-          // collidableMeshList.push(bbox1); 
+      loader.load('./models/rack_origin.glb',  function (gltf) {
+        let rackModel = gltf.scene;
+        rackModel.position.y = 2.3222
+        rackModel.position.x = -0.755
+        scene.add(rackModel);
+        
+        var models = [
+          // {
+          //   path: 'https://cdn.shopify.com/3d/models/3398a34e7f6918ab/lshape_cross.glb',
+          //   xPos: -0.5
+          // },
+          // {
+          //   path: 'https://cdn.shopify.com/3d/models/3398a34e7f6918ab/lshape_cross.glb',
+          //   xPos: -1.215
+          // },
+          {
+            path: 'https://cdn.shopify.com/3d/models/543cc594a487aecf/8020_cross.glb',
+            xPos: -2.52
+          }
+        ]
+        models.map((model) => {
+          loader.load(model.path, function (gltf) {
+            let crossBarModel = gltf.scene;
+            crossBarModel.position.y = 2.36
+            crossBarModel.position.x = model.xPos
+            let bbox1 = getModelBoundingBox(crossBarModel);
+            scene.add(crossBarModel);
+            // collidableMeshList.push(bbox1); 
+          })
         })
       })
+
+
+      
 
       workPlane = new THREE.Mesh(
         new THREE.BoxGeometry(3.2, 0.01, 1.55),
@@ -2077,7 +2123,6 @@
       targetForDragging.material.visible = false;
       raycaster = new THREE.Raycaster();
     });
-
     
   }
 
