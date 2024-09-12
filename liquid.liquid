@@ -147,13 +147,18 @@
       display: block;
     }
     #awning {
-      background-image: url('https://cdn.shopify.com/s/files/1/0412/9898/5124/files/awning.jpg?v=1723579211');
+      background-image: url('https://cdn.shopify.com/s/files/1/0412/9898/5124/files/awning.jpg?v=1723579211&width=100');
       display: block;
     }
     #awning_350 {
-      background-image: url('https://cdn.shopify.com/s/files/1/0412/9898/5124/files/awning.jpg?v=1723579211');
+      background-image: url('https://cdn.shopify.com/s/files/1/0412/9898/5124/files/awning.jpg?v=1723579211&width=100');
       display: block;
     }
+    #light_bar {
+      background-image: url('https://cdn.shopify.com/s/files/1/0412/9898/5124/files/light_bar.jpg?v=1725399706&width=100');
+      display: block;
+    }
+
 		button {
 			cursor: pointer;
 			display: flex;
@@ -429,6 +434,10 @@
 			justify-content: space-between;
       margin: 4px 0;
 		}
+    .item-variants .variant .selected-variant{
+			color: rgb(230, 75, 56);
+      font-weight: bold;
+		}
 		.item-variants .variant div {
 			display: flex;
 			align-items: center;
@@ -638,15 +647,81 @@
       display: block !important;
     }
 
+    #van_modal_area {
+      height: 100vh;
+      z-index: 1000;
+      width: 100vw;
+      display: flex;
+      position: absolute;
+      align-items: center;
+      justify-content: center;
+      background-color: #3a3a3a6b;
+    }
+
+    .van_modal_content {
+      min-width: 400px;
+      border-radius: 8px;
+      padding: 24px 24px;
+      background-color: white;
+      max-width: 560px;
+    }
+    .van_modal_content label {
+      font-size: 20px;
+      margin: 10px 0px;
+      font-weight: bold;
+    }
+    #van_modal_select {
+      width: 100%;
+      height: 40px;
+      margin: 20px 0px;
+      border: 1px solid #333;
+      border-radius: 6px;
+    }
+    .van_select_trigger {
+      display: flex;
+      justify-content: end;
+    }
+    .van_select_trigger button{
+      justify-content: center;
+			font-family: "Josefin Sans", sans-serif;
+			border-radius: 8px;
+			border: 0;
+			letter-spacing: 1px;
+			color: #fff;
+			background: #246eea;
+			padding: 10px 16px;
+			white-space: nowrap;
+			font-size: 12px;
+			line-height: 1;
+			text-transform: uppercase;
+			transition: all 0.15s ease;
+			text-decoration: none;
+			display: flex;
+			align-items: center;
+    }
+
 	</style>
 </head>
+<div id="van_modal_area">
+  <div class="van_modal_content">
+    <label>Select Van</label>
+    <select id="van_modal_select">
+      <option> Premium / Ford Transit 148 High Roof</option>
+    </select>
+    <div class="van_select_trigger"> 
+      <button id='van_select_trigger'>
+        Select
+      </button>
+    </div>
+  </div>
+</div>
 <div class="threejs-container">
   <a class="unaka-logo" href="/">
     <img src="https://cdn.shopify.com/s/files/1/0412/9898/5124/files/Unaka_Brand_v2-03.png?v=1706796409&width=95" draggable="false" width="95" height="95"/>
   </a>
 	<div id="configurator-container">
     <div class="van-detail">
-      <h2 id="rack_title">Ford Transit Roof Rack - HSLD - 148 High Roof</h2>
+      <h2 id="rack_title">Ford Transit Roof Rack - Premium - 148 High Roof</h2>
     </div>
 		<div id="container"></div>
     <div class="items-container">
@@ -772,6 +847,16 @@
               </div>
             </div>
           </div>
+          <div class="swiper-slide">
+            <div class="item-box">
+              <div class="item-img" id="light_bar" draggable="false">
+                <div class="carted-item">1</div>
+              </div>
+              <div class="item-name">
+                <p>Light Bar</p>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
       <div class="swiper-button-next"></div>
@@ -809,31 +894,6 @@
           </g>
         </svg>
       </button>
-      
-      <button id="camChangeBtn" class="left-tooltip">
-        <span class="tooltiptext">Change Camera</span>
-				<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 72 72">
-					<circle cx="22.258" cy="26.11" r="3" fill="#ffffff" />
-					<circle cx="46.153" cy="26.11" r="3" fill="#ffffff" />
-					<path fill="none"
-						d="M46.153 16.11c-5.514 0-10 4.486-10 10s4.486 10 10 10s10-4.485 10-10s-4.485-10-10-10m0 13c-1.654 0-3-1.346-3-3s1.346-3 3-3s3 1.346 3 3s-1.345 3-3 3m-23.895-13c-5.514 0-10 4.486-10 10s4.486 10 10 10s10-4.485 10-10c0-5.514-4.486-10-10-10m0 13c-1.655 0-3-1.346-3-3s1.345-3 3-3s3 1.346 3 3s-1.346 3-3 3m-1.829 15.127l6.998.815c.376-.147 2.842-.37 2.842-.37s2.814 1.782 3.188 4.571c.375 2.79-4.643 3.815-4.869 3.815c-2.515 0-3.628-4.56-3.632-4.603l-4.527-.695l.57 2.249c.285 1.13.424 2.292.413 3.458l-.016 1.613c0 .447 1.387 1.808 1.865 1.808h24.826V40.031H20.43z" />
-					<path fill="#fff" d="m51.727 42.827l-.005.003l.164-.057z" />
-					<path fill="#fff"
-						d="m61.183 54.97l-.238-13.608s-9.289 1.498-9.246 1.482c.008-.003.015-.01.023-.014l-3.445.983v9.22l3.629 1.034l-.142-.043c-.018-.005 9.418.946 9.418.946" />
-					<path fill="#ffffff"
-						d="M24.218 48.465c.113.02 2.597 3.539 2.675 3.603c.064.054 3.39 1.027 3.602 1c.21-.029 2.295-2.027 2.353-2.135c.019-.034 1.175-1.76.83-3.2c-.243-1.01-2.005-1.881-2.07-1.93c-.158-.121-3.69-.735-3.7-.737c0 0-15.537-2.56-15.65-2.638l-4.365-3.515l-1.332 8.05l4.745-.735c.111-.017 12.912 2.236 12.912 2.236" />
-					<g fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
-						<path d="M21.396 40.03h26.692v16.868H23.26c-1.03 0-1.865-.81-1.865-1.808v-3.124" />
-						<path
-							d="m7.915 39.39l-1.152 7.573l5.017-.779l13.594 2.492a4.105 4.105 0 1 0 2.359-3.435l-15.268-2.799z" />
-						<circle cx="46.154" cy="26.11" r="10" />
-						<circle cx="46.154" cy="26.11" r="3" />
-						<circle cx="22.258" cy="26.11" r="10" />
-						<circle cx="22.258" cy="26.11" r="3" />
-						<path d="m52.053 53.068l8.892 2.113v-13.82l-8.892 2.412" />
-					</g>
-				</svg>
-			</button>
 		</div>
 	</div>
   <div id="side-section">
@@ -966,7 +1026,7 @@
     },
   });
 
-  let vanArea = [-16.535, 101.968];
+  let vanArea = [-16.535, 101.968]; // by inch
   let addedState = [];
   let selectedIndexOfState = -1;
   let solar35Area = [];
@@ -1007,8 +1067,8 @@
 
   let selectedItem = '';
   let ladderPlane;
-  const cutOffArea = [3.19, 25.7, 32.09, 64.72, 71.11, 85.19];
-  const vanDiff = 3.2
+  let cutOffArea = [3.19, 25.7, 32.09, 64.72, 71.11, 85.19];
+  let vanDiff = 3.2
 
   let bodyMaterial;
   let bodyMesh;
@@ -1027,6 +1087,12 @@
       "id": 45730334671067,
       "price": 0,
       "quantity": 1,
+      availableVariants: [
+        45730334671067,
+        45730334703835,
+        45730334802139,
+        45730334834907
+      ],
       "xRadius": null
     },
     {
@@ -1126,13 +1192,14 @@
       "image": "https://cdn.shopify.com/s/files/1/0412/9898/5124/files/Rich-Solar-35W-12V-Solar-Panel_e5266152-4c97-4d03-8a8c-30e6446a354b.png?v=1717015802",
       "url": "https://shop.explorist.life/shop/all-products/pre-order-rich-solar-35w-12v-solar-panel/"
     },
-    {htmlId: 'cross_bar', type: '8020_crossbar', handle: '', id: null, price: 0, quantity: 0, xRadius: 2.3},
+    {htmlId: 'cross_bar', type: '8020_crossbar', handle: 'unaka-roof-rack-cross-bars', id: 45808912728283, price: 0, quantity: 0, xRadius: 2.3, availability: true,},
     {htmlId: 'solar_cross_bar', type: 'lshape_cross', handle: '', id: null, price: 0, quantity: 0, xRadius: 14.03},
     {htmlId: 'awning', type: 'awning', handle: 'fiamma-45s', id: 45715079299291, price: 0, xRadius: 59.05, availability: true, quantity: 0},
     {htmlId: '', type: 'awning_bracket', handle: 'fiamma-f45s-awning-8020-or-unistrut-mounting-brackets', id: 45072199287003, availability: true, price: 0, quantity: 0},
     {htmlId: 'solar_panel100', type: 'solar100', handle: 'rich-solar-solar-panel', id: 45977350668507, price: 0, quantity: 0, xRadius: 6.9, availability: true},
     {htmlId: 'solar_panel250', type: 'solar250', handle: 'rich-solar-solar-panel', id: 45977350799579, price: 0, quantity: 0, xRadius: 14.95, "availability": true,},
     {htmlId: 'awning_350', type: 'awning_350', handle: 'fiamma-45s', id: 45715079364827, price: 0, availability: true, xRadius: 68.89, quantity: 0},
+    {htmlId: 'light_bar', type: 'light_bar', handle: 'tyri-v48-black-17200-elumen-48-hyperion-series-light-bar', id: 45998626996443, price: 0, availability: true, xRadius: 0, quantity: 0},
   ]
   
 
@@ -1156,7 +1223,7 @@
 
   canvasContainer.addEventListener('mousemove', (event) => {
     if (selectedFeature) {
-      if (selectedFeature.parent.name !== "van" && selectedFeature.name !== "ladder") {
+      if (selectedFeature.parent.name !== "van" && selectedFeature.name !== "ladder" && !selectedFeature.name.includes("light_bar")  && !selectedFeature.name.includes('roof_rack')) {
         if (isDragging) {
           offsetTopCanvas = canvasContainer.getBoundingClientRect().top;
           let a = 2 * (event.clientX / ((window.innerWidth < 1024 ? window.innerWidth: window.innerWidth - 300))) - 1;
@@ -1198,7 +1265,7 @@
               if(connectedSolar) return;
             }
             const widthOfObject = Math.abs(bbox1.max.x - bbox1.min.x);
-            const xPos = Math.min(0.428 - selectedFeatureWidth / 2, Math.max(-2.58 + widthOfObject/2, coords.x));
+            const xPos = Math.min(0.428 - selectedFeatureWidth / 2, Math.max((- vanArea[1] * 0.0254) + widthOfObject/2, coords.x));
             collidableMeshList = updateColliderList();
             const checkCollision = isCrossBarCollied(bbox1, collidableMeshList, xPos);
             if(isValueInScale(coords.x * 1000 / 25.4 * -1, cutOffArea, 7.001, vanDiff)  >= 0 && !checkCollision) {
@@ -1219,7 +1286,7 @@
               if(connectedSolar) return;
             }
             const widthOfObject = Math.abs(bbox1.max.x - bbox1.min.x);
-            const xPos = Math.min(0.428 - selectedFeatureWidth / 2, Math.max(-2.58 + widthOfObject/2, coords.x));
+            const xPos = Math.min(0.428 - selectedFeatureWidth / 2, Math.max((- vanArea[1] * 0.0254) + widthOfObject/2, coords.x));
             collidableMeshList = updateColliderList();
             const checkCollision = isCrossBarCollied(bbox1, collidableMeshList, xPos);
             if(isValueInScale(coords.x * 1000 / 25.4 * -1, cutOffArea, 7, vanDiff) >= 0 && !checkCollision){
@@ -1240,7 +1307,7 @@
               const maxMovable = centerOfBox + 3.8 * 0.0254
               const minMovable = centerOfBox - 3.8 * 0.0254
               const widthOfObject = Math.abs(bbox1.max.x - bbox1.min.x);
-              let xPos = Math.min(0.428 - selectedFeatureWidth / 2, Math.max(-2.58 + widthOfObject/2, coords.x));
+              let xPos = Math.min(0.428 - selectedFeatureWidth / 2, Math.max((- vanArea[1] * 0.0254) + widthOfObject/2, coords.x));
               collidableMeshList = updateColliderList();
               const checkCollision = isColliedNearBy(bbox1, acBox, collidableMeshList, xPos);
               if(xPos <= maxMovable && xPos >= minMovable && !checkCollision) {
@@ -1259,7 +1326,7 @@
               const maxMovable = centerOfBox + 0.025
               const minMovable = centerOfBox - 0.025
               const widthOfObject = Math.abs(bbox1.max.x - bbox1.min.x);
-              let xPos = Math.min(0.428 - selectedFeatureWidth / 2, Math.max(-2.58 + widthOfObject/2, coords.x));
+              let xPos = Math.min(0.428 - selectedFeatureWidth / 2, Math.max((- vanArea[1] * 0.0254) + widthOfObject/2, coords.x));
               collidableMeshList = updateColliderList();
               const checkCollision = isColliedNearBy(bbox1, fanBox, collidableMeshList, xPos);
               if(xPos <= maxMovable && xPos >= minMovable && !checkCollision) {
@@ -1269,7 +1336,7 @@
           } else if(selectedFeature.name == "8020_crossbar") {
             const bbox1  = getModelBoundingBox(selectedFeature);
             const widthOfObject = Math.abs(bbox1.max.x - bbox1.min.x);
-            let xPos = Math.min(0.428 - selectedFeatureWidth / 2, Math.max(-2.58 + widthOfObject/2, coords.x));
+            let xPos = Math.min(0.428 - selectedFeatureWidth / 2, Math.max((- vanArea[1] * 0.0254) + widthOfObject/2, coords.x));
             collidableMeshList = updateColliderList();
             const checkCollision = isCrossBarCollied(bbox1, collidableMeshList, xPos);
             if(!checkCollision) {
@@ -1279,7 +1346,7 @@
           } else if(selectedFeature.name == "lshape_cross"){
             const bbox1  = getModelBoundingBox(selectedFeature);
             const widthOfObject = Math.abs(bbox1.max.x - bbox1.min.x);
-            let xPos = Math.min(0.428 - selectedFeatureWidth / 2, Math.max(-2.58 + widthOfObject/2, coords.x));
+            let xPos = Math.min(0.428 - selectedFeatureWidth / 2, Math.max((- vanArea[1] * 0.0254) + widthOfObject/2, coords.x));
             collidableMeshList = updateColliderList();
             const checkCollision = isCrossBarCollied(bbox1, collidableMeshList, xPos);
             if(!checkCollision) {
@@ -1295,7 +1362,7 @@
             // }
             const bbox1 = getModelBoundingBox(selectedFeature);
             const widthOfObject = Math.abs(bbox1.max.x - bbox1.min.x);
-            let xPos = Math.min(0.428 - selectedFeatureWidth / 2, Math.max(-2.58 + widthOfObject/2, coords.x));
+            let xPos = Math.min(0.428 - selectedFeatureWidth / 2, Math.max((- vanArea[1] * 0.0254) + widthOfObject/2, coords.x));
             collidableMeshList = updateColliderList();
             const checkCollision = isCrossBarCollied(bbox1, collidableMeshList, xPos);
             if(!checkCollision) {
@@ -1528,22 +1595,8 @@
     });
   });
 
-
-  document.getElementById('camChangeBtn').addEventListener('click', function () {
-    const cameraPosition = camera.position;
-    const widthValue = window.innerWidth < 1024 ? window.innerWidth : (window.innerWidth - 300)
-
-    if (cameraType === "perspective") {
-      camera = new THREE.OrthographicCamera(-widthValue / 340, widthValue / 340, window.innerHeight / 340, -window.innerHeight / 340, 1, 10000);
-      cameraType = "orthographic"
-    }
-    else {
-      camera = new THREE.PerspectiveCamera(40, widthValue / window.innerHeight, 1, 10000);
-      cameraType = "perspective"
-    }
-    camera.position.set(cameraPosition.x, cameraPosition.y, cameraPosition.z);
-    setCameraView();
-    setViewCube()
+  document.getElementById('van_select_trigger').addEventListener('click', function () {
+    selectVan();
   });
 
   document.getElementById('resetButton').addEventListener('click', resetConfig);
@@ -1569,6 +1622,20 @@
         const priceProducts = availableProducts.map((product, index) => {
           let productPrice = 0;
           const productData = data[index];
+
+          if(product.type == "rack") {
+            const rackVariants = productData?.variants ?? [];
+            if(rackVariants && rackVariants.length > 0) {
+              let vanSelectTxt = ""
+
+              rackVariants.forEach((variant) => {
+                if(product?.availableVariants?.includes(variant.id)) {
+                  vanSelectTxt += "<option value='"+variant.id+"'>"+variant.name.split("-")[1]+"</option>"
+                }
+              })
+              document.getElementById("van_modal_select").innerHTML = vanSelectTxt
+            }
+          }
 
           if (productData.id === product.id) {
             productPrice = productData.price / 100;
@@ -1810,6 +1877,14 @@
 			positionX = -1.07;
 			positionY = 2.35;
 			positionZ = 0.84;
+		} else if(selectedItem.type == 'light_bar') {
+      const rackModel = scene.children.filter((group) => group?.children[0]?.name == "roof_rack_ext");
+			if(selectedItem.quantity > 0 ) return false;
+      if(rackModel.length >= 1){
+        positionX = 0.45149;
+        positionY =  2.387;
+        positionZ = 0;
+      } else return false;
 		} else{
 			positionY = 2.35;
 			positionZ = 0;
@@ -1841,7 +1916,7 @@
             const nearestItems = findNearestItems(filteredList, positionX)
 
             if(nearestItems.length && nearestItems.length == 1) {
-              if(nearestItems[0].min.x > positionX && Math.abs(-2.58 - nearestItems[0].min.x) > solarWidth){
+              if(nearestItems[0].min.x > positionX && Math.abs((- vanArea[1] * 0.0254) - nearestItems[0].min.x) > solarWidth){
                 if(Math.abs(positionX - nearestItems[0].min.x) < solarWidth/2) {
                   positionX = nearestItems[0].min.x - solarWidth/2;
                 }
@@ -1875,7 +1950,7 @@
                   const nearestItems = findNearestItems(filteredList, positionX)
 
                   if(nearestItems.length && nearestItems.length == 1) {
-                    if(nearestItems[0].min.x > positionX && Math.abs(-2.58 - nearestItems[0].min.x) > solarWidth){
+                    if(nearestItems[0].min.x > positionX && Math.abs((- vanArea[1] * 0.0254) - nearestItems[0].min.x) > solarWidth){
                       if(Math.abs(positionX - nearestItems[0].min.x) < solarWidth/2) {
                         positionX = nearestItems[0].min.x - solarWidth/2;
                       }
@@ -1921,7 +1996,7 @@
             const nearestItems = findNearestItems(filteredList, positionX)
 
             if(nearestItems.length && nearestItems.length == 1) {
-              if(nearestItems[0].min.x > positionX && Math.abs(-2.58 - nearestItems[0].min.x) > solarWidth){
+              if(nearestItems[0].min.x > positionX && Math.abs((- vanArea[1] * 0.0254) - nearestItems[0].min.x) > solarWidth){
                 if(Math.abs(positionX - nearestItems[0].min.x) < solarWidth/2) {
                   positionX = nearestItems[0].min.x - solarWidth/2;
                 }
@@ -1957,7 +2032,7 @@
                   const nearestItems = findNearestItems(filteredList, positionX)
 
                   if(nearestItems.length && nearestItems.length == 1) {
-                    if(nearestItems[0].min.x > positionX && Math.abs(-2.58 - nearestItems[0].min.x) > solarWidth){
+                    if(nearestItems[0].min.x > positionX && Math.abs((- vanArea[1] * 0.0254) - nearestItems[0].min.x) > solarWidth){
                       if(Math.abs(positionX - nearestItems[0].min.x) < solarWidth/2) {
                         positionX = nearestItems[0].min.x - solarWidth/2;
                       }
@@ -2022,6 +2097,9 @@
         break;
       case "awning_350":
         loadItemDirectory = "https://cdn.shopify.com/3d/models/431a3b45d712597f/awning_350.glb";
+        break;
+      case "light_bar":
+        loadItemDirectory = "https://cdn.shopify.com/3d/models/226d699f32ba22a3/light_bar.glb";
         break;
     }
 
@@ -2138,10 +2216,11 @@
     }
     let item = intersects[0];
     let objectHit = item.object;
+
     if (objectHit.parent &&
       objectHit.parent.name != "" &&
       objectHit.parent.name != "van" &&
-      objectHit.parent.name?.includes('roof_rack') != true &&
+      objectHit.name?.includes('roof_rack') != true &&
       objectHit != workPlane &&
       objectHit != shodowMesh) {
       scene.add(targetForDragging);
@@ -2186,6 +2265,8 @@
 
   function calcPrice(modelName, flag, model) {
     let addProduct = {}
+
+    console.log("calc price: ", modelName)
 
     switch (modelName) {
       case "air_conditioner":
@@ -2295,12 +2376,23 @@
           addProduct.quantity += 1;
         }
         availableProducts[14] = addProduct;
-
         break;
+
+      case "light_bar":
+        addProduct = availableProducts[18];
+        flag ? addProduct.quantity += 1 : addProduct.quantity -= 1;
+        availableProducts[18] = addProduct;
+        break;
+
+      case "8020_crossbar":
+        addProduct = availableProducts[11];
+        flag ? addProduct.quantity += 1 : addProduct.quantity -= 1;
+        availableProducts[11] = addProduct;
+        break;
+
       default:
         break;
     }
-
     updateCartState();
     calculatePrice(availableProducts)
     updateBuildState(availableProducts);
@@ -2309,18 +2401,13 @@
   function updateCartState() {
     let totalItems = 0;
     availableProducts.map((product) => {
-
       let productAmount = product.quantity; 
-
       if(product?.type == 'solar_cross') {
         if(productAmount <= 2) productAmount = 0;
         else productAmount -= 2;
       }
-
       totalItems += productAmount
-
       if(product.htmlId != "") {
-        console.log(product.htmlId, product.quantity)
         if(document.getElementById(product.htmlId)) {
           let dragItem = document.getElementById(product.htmlId).childNodes[1];
           if (product.quantity > 0) {
@@ -2432,74 +2519,7 @@
       scene.environment = envMap;
     });
 
-    loader.load('https://cdn.shopify.com/3d/models/11ab0e3e276f4fa7/van3.glb', function (gltf) {
-      carModel = gltf.scene;
-
-      bodyMesh = carModel.getObjectByName("van").getObjectByName("van_1");
-      const bodyMaterial = new THREE.MeshPhysicalMaterial( {
-        color: 0xffffff, metalness: 1.0, roughness: 0.9, clearcoat: 1.0, clearcoatRoughness: 0.1
-      } );
-      bodyMesh.material = bodyMaterial
-
-      shodowMesh = new THREE.Mesh(
-        new THREE.PlaneGeometry(2.8, 6.5),
-        new THREE.MeshBasicMaterial({
-          map: shadow, blending: THREE.MultiplyBlending, toneMapped: false, transparent: true
-        })
-      );
-      shodowMesh.rotation.x = - Math.PI / 2;
-      shodowMesh.rotation.z = Math.PI / 2;
-      shodowMesh.renderOrder = 2;
-      carModel.add(shodowMesh);
-      scene.add(carModel);
-
-      loader.load('https://cdn.shopify.com/3d/models/bc8d1e88f7780c06/rack_origin.glb',  function (gltf) {
-        let rackModel = gltf.scene;
-        rackModel.position.y = 2.3222
-        rackModel.position.x = -0.755
-        scene.add(rackModel);
-
-        let models = [
-          {
-            path: 'https://cdn.shopify.com/3d/models/543cc594a487aecf/8020_cross.glb',
-            xPos: -2.52
-          }
-        ]
-        models.map((model) => {
-          loader.load(model.path, function (gltf) {
-            let crossBarModel = gltf.scene;
-            crossBarModel.position.y = 2.36
-            crossBarModel.position.x = model.xPos
-            let bbox1 = getModelBoundingBox(crossBarModel);
-            scene.add(crossBarModel);
-          })
-        })
-      })
-
-      workPlane = new THREE.Mesh(
-        new THREE.BoxGeometry(3, 0.01, 1.55),
-        new THREE.MeshLambertMaterial({ color: "green" })
-      );
-      workPlane.material.visible = false;
-
-      workPlane.position.set(-1.08, 2.37, 0);
-      scene.add(workPlane);
-
-      ladderPlane = new THREE.Mesh(
-        new THREE.BoxGeometry(3, 2, 0.01),
-        new THREE.MeshLambertMaterial({color: 'green'})
-      )
-      ladderPlane.material.visible = false;
-      ladderPlane.position.set(-1.08, 1.3, -0.85); 
-      scene.add(ladderPlane);
-
-      targetForDragging = new THREE.Mesh(
-        new THREE.BoxGeometry(100, 0.01, 100),
-        new THREE.MeshBasicMaterial()
-      );
-      targetForDragging.material.visible = false;
-      raycaster = new THREE.Raycaster();
-    });
+    
   }
 
   function getModelBoundingBox(mesh) {
@@ -2721,6 +2741,7 @@
 
       let productAmount = availableProduct.quantity; 
 
+
       if(availableProduct?.type == 'solar_cross') {
         if(productAmount <= 2) continue;
         else productAmount -= 2;
@@ -2730,20 +2751,25 @@
 
         buildText += '<div class="build-item"><div class="item-overview">'
         buildText += '<div class="product-info"><img src="'+ availableProduct?.image +'&width=50" width="50" height="50"/>'
-        buildText += '<a class="item-name" href="'+availableProduct?.url + (availableProduct?.id ? ("?variant="+ availableProduct?.id ) : "" ) + '" target="_blank">'+ availableProduct?.title +'</a></div><button class="remove-product" id="'+ (availableProduct?.type + "___") +'">&#10799;</div><div class="item-variants">'
+        buildText += '<a class="item-name" href="'+availableProduct?.url + (availableProduct?.id ? ("?variant="+ availableProduct?.id ) : "" ) + '" target="_blank">'+ availableProduct?.title +'</a></div><button class="remove-product" id="'+ (availableProduct?.type + "___") +'">&#10799;</div>'
         if(availableProduct.availability){
-          availableProduct?.variants?.map((variant, index) => {
-            buildText += '<div class="variant"><div>'
-            buildText += '<input type="radio" class="variant-handler" id="'+ (availableProduct?.type+"___"+variant?.id) +'" name="'+ availableProduct?.type +'" ' + (Number(variant?.id) == Number(availableProduct?.id) ? 'checked' : '') + '/><label for="'+ (availableProduct?.type+"___"+variant?.id) +'">'+ (variant.public_title ? variant.public_title : variant.name) +'</label>'
-            buildText += '</div><div>'
-            buildText += '$<span class="price">'+ variant.price / 100 +'</span>'
-            buildText += '</div></div>'
-          })
+          if(availableProduct?.type != "rack") {
+            buildText += '<div class="item-variants">'
+            availableProduct?.variants?.map((variant, index) => {
+              buildText += '<div class="variant"><div>'
+              {% comment %} buildText += '<input type="radio" class="variant-handler" id="'+ (availableProduct?.type+"___"+variant?.id) +'" name="'+ availableProduct?.type +'" ' + (Number(variant?.id) == Number(availableProduct?.id) ? 'checked' : '') + '/><label for="'+ (availableProduct?.type+"___"+variant?.id) +'">'+ (variant.public_title ? variant.public_title : variant.name) +'</label>' {% endcomment %}
+              buildText += '<label for="'+ (availableProduct?.type+"___"+variant?.id) +'" class="' + (Number(variant?.id) == Number(availableProduct?.id) ? 'selected-variant' : '') + '">'+ (variant.public_title ? variant.public_title : variant.name) +'</label>'
+              buildText += '</div><div>'
+              buildText += '$<span class="price">'+ variant.price / 100 +'</span>'
+              buildText += '</div></div>'
+            })
+            buildText += '</div>'
+          }
         } else {
           buildText += '<div class="not-sell">This item is not available for sale from Unaka Gear Co. Please contact support for any questions</div>'
         }
         buildText += '<div style="display: flex; justify-content: end">Qty. '+ productAmount +'</div>'
-        buildText += '</div><div class="divider"></div></div>'
+        buildText += '<div class="divider"></div></div>'
       }
     }
     buildListDom.innerHTML = buildText;
@@ -2761,29 +2787,6 @@
         }
         else return product;
       });
-
-      if(targetVariant[0] == "rack" ) {
-        let rackModel = scene.children.filter((group) => group?.children[0]?.name?.includes("roof_rack"));
-        rackModel.map(model => {
-          scene.remove(model);
-        })
-        if(targetVariant[1] == "45730334703835") {
-          loader.load('https://cdn.shopify.com/3d/models/4df021fd93d74fd4/rack-extended.glb',  function (gltf) {
-            let rackModel = gltf.scene;
-            rackModel.position.y = 2.3222
-            rackModel.position.x = -0.755
-            scene.add(rackModel);
-          })
-          
-        } else {
-          loader.load('https://cdn.shopify.com/3d/models/bc8d1e88f7780c06/rack_origin.glb',  function (gltf) {
-            let rackModel = gltf.scene;
-            rackModel.position.y = 2.3222
-            rackModel.position.x = -0.755
-            scene.add(rackModel);
-          })
-        }
-      }
       calculatePrice(availableProducts)
     } else if(event.target.type === 'submit') {
       const targetType = event.target.id?.split('___')[0];
@@ -2828,6 +2831,154 @@
       if(areaArr[i].position > startPoint && areaArr[i].position < endPoint) return i;
     }
     return -1;
+  }
+
+  function initVan(vanModelLink, shadowLink, rackModel, crossbarXPos, workPlaneValues, ladderPlaneValues){
+    loader.load(vanModelLink, function (gltf) {
+      carModel = gltf.scene;
+
+      bodyMesh = carModel.getObjectByName("van").getObjectByName("van_1");
+      const bodyMaterial = new THREE.MeshPhysicalMaterial( {
+        color: 0xffffff, metalness: 1.0, roughness: 0.9, clearcoat: 1.0, clearcoatRoughness: 0.1
+      } );
+      bodyMesh.material = bodyMaterial
+
+      const shadow = new THREE.TextureLoader().load(shadowLink);
+      shodowMesh = new THREE.Mesh(
+        new THREE.PlaneGeometry(2.8, 6.5),
+        new THREE.MeshBasicMaterial({
+          map: shadow, blending: THREE.MultiplyBlending, toneMapped: false, transparent: true
+        })
+      );
+      shodowMesh.rotation.x = - Math.PI / 2;
+      shodowMesh.rotation.z = Math.PI / 2;
+      shodowMesh.renderOrder = 2;
+      carModel.add(shodowMesh);
+      scene.add(carModel);
+
+      loader.load(rackModel,  function (gltf) {
+        let rackModel = gltf.scene;
+        rackModel.position.y = 2.3222
+        rackModel.position.x = -0.755
+        scene.add(rackModel);
+
+        let models = [
+          {
+            path: 'https://cdn.shopify.com/3d/models/543cc594a487aecf/8020_cross.glb',
+            xPos: crossbarXPos
+          }
+        ]
+        models.map((model) => {
+          loader.load(model.path, function (gltf) {
+            let crossBarModel = gltf.scene;
+            crossBarModel.position.y = 2.36
+            crossBarModel.position.x = model.xPos
+            let bbox1 = getModelBoundingBox(crossBarModel);
+            scene.add(crossBarModel);
+          })
+        })
+      })
+
+      workPlane = new THREE.Mesh(
+        new THREE.BoxGeometry(...workPlaneValues),
+        new THREE.MeshLambertMaterial({ color: "green" })
+      );
+      workPlane.material.visible = false;
+
+      workPlane.position.set(-1.08, 2.37, 0);
+      scene.add(workPlane);
+
+      ladderPlane = new THREE.Mesh(
+        new THREE.BoxGeometry(...ladderPlaneValues),
+        new THREE.MeshLambertMaterial({color: 'green'})
+      )
+      ladderPlane.material.visible = false;
+      ladderPlane.position.set(-1.08, 1.3, -0.85); 
+      scene.add(ladderPlane);
+
+      targetForDragging = new THREE.Mesh(
+        new THREE.BoxGeometry(100, 0.01, 100),
+        new THREE.MeshBasicMaterial()
+      );
+      targetForDragging.material.visible = false;
+      raycaster = new THREE.Raycaster();
+    });
+  }
+
+  function selectVan() {
+    const selectedVan = document.getElementById("van_modal_select").value
+    availableProducts = availableProducts.map((product) => {
+      if(product.type == "rack") {
+        const selectedProduct = product.variants.find((variant) => variant.id == selectedVan);
+        let newProduct = {...product, id: selectedProduct.id, price: selectedProduct.price / 100};
+        return newProduct;
+      }
+      else return product;
+    });
+
+    {% comment %} let rackModels = scene.children.filter((group) => group?.children[0]?.name?.includes("roof_rack"));
+
+    const vanModel = scene.children.filter((group) => group.children[0]?.name == "van")[0];
+    scene.remove(vanModel) {% endcomment %}
+
+    let vanModelLink, shadowLink, rackModel, crossbarXpos, workPlaneValues, ladderPlaneValues;
+    switch (selectedVan) {
+      case "45730334703835":
+        vanModelLink = "https://cdn.shopify.com/3d/models/11ab0e3e276f4fa7/van3.glb";
+        shadowLink = "https://cdn.shopify.com/s/files/1/0412/9898/5124/files/ford_ao.png?v=1711858184";
+        rackModel = 'https://cdn.shopify.com/3d/models/4df021fd93d74fd4/rack-extended.glb'
+        crossbarXpos = -2.52
+        workPlaneValues = [3, 0.01, 1.55];
+        ladderPlaneValues = [3, 2, 0.01];
+        vanArea = [-16.535, 101.968]
+        cutOffArea = [3.19, 25.7, 32.09, 64.72, 71.11, 85.19];
+        vanDiff = 3.2
+        initVan(vanModelLink, shadowLink, rackModel, crossbarXpos, workPlaneValues, ladderPlaneValues)
+        break;
+
+      case "45730334671067":
+        vanModelLink = "https://cdn.shopify.com/3d/models/11ab0e3e276f4fa7/van3.glb";
+        shadowLink = "https://cdn.shopify.com/s/files/1/0412/9898/5124/files/ford_ao.png?v=1711858184";
+        rackModel = 'https://cdn.shopify.com/3d/models/bc8d1e88f7780c06/rack_origin.glb'
+        crossbarXpos = -2.52
+        workPlaneValues = [3, 0.01, 1.55];
+        ladderPlaneValues = [3, 2, 0.01];
+        vanArea = [-16.535, 101.968]
+        cutOffArea = [3.19, 25.7, 32.09, 64.72, 71.11, 85.19];
+        vanDiff = 3.2
+        initVan(vanModelLink, shadowLink, rackModel, crossbarXpos, workPlaneValues, ladderPlaneValues);
+        break;
+
+      case "45730334802139":
+        vanModelLink = "https://cdn.shopify.com/3d/models/f1feb21f361e67a7/van-ext.glb";
+        shadowLink = "https://cdn.shopify.com/s/files/1/0412/9898/5124/files/ford_ao.png?v=1711858184";
+        rackModel = 'https://cdn.shopify.com/3d/models/8858a79a0b36c2f1/transit148-ext-rack.glb'
+        crossbarXpos = -3.24
+        workPlaneValues = [3, 0.01, 1.55];
+        ladderPlaneValues = [3, 2, 0.01];
+        vanArea = [-16.535, 129.527]
+        cutOffArea = [3.2, 25.7, 32.09, 64.72, 71.11, 85.19, 91.58, 101.33, 107.72, 124.72];
+        vanDiff = 3.2
+        initVan(vanModelLink, shadowLink, rackModel, crossbarXpos, workPlaneValues, ladderPlaneValues);
+        break;
+
+      case "45730334834907":
+        vanModelLink = "https://cdn.shopify.com/3d/models/f1feb21f361e67a7/van-ext.glb";
+        shadowLink = "https://cdn.shopify.com/s/files/1/0412/9898/5124/files/ford_ao.png?v=1711858184";
+        rackModel = 'https://cdn.shopify.com/3d/models/278cf2f4a6faa586/transit148-ext-rack-lightbar.glb'
+        crossbarXpos = -3.24
+        workPlaneValues = [3, 0.01, 1.55];
+        ladderPlaneValues = [3, 2, 0.01];
+        vanArea = [-16.535, 129.527]
+        cutOffArea = [3.2, 25.7, 32.09, 64.72, 71.11, 85.19, 91.58, 101.33, 107.72, 124.72];
+        vanDiff = 3.2
+        initVan(vanModelLink, shadowLink, rackModel, crossbarXpos, workPlaneValues, ladderPlaneValues);
+        break;
+    }
+
+    calculatePrice(availableProducts)
+
+    document.getElementById("van_modal_area").style.display = 'none'
   }
 
   init();
