@@ -1884,7 +1884,13 @@
       scene.add(targetForDragging);
       targetForDragging.position.set(0, item.point.y, 0);
 
+
+
       if (objectHit != selectedFeature) {
+
+        console.log(objectHit)
+
+
         selectedFeature = objectHit;
         addEdgeLines(selectedFeature);
         delelteBtn.style.display = "flex";
@@ -2154,7 +2160,7 @@
 
       scene.add(carModel);
 
-      loader.load('./models/transit148-ext-rack.glb',  function (gltf) {
+      loader.load('./models/transit148-ext-rack-lightbar.glb',  function (gltf) {
         let rackModel = gltf.scene;
         rackModel.position.y = 2.3222
         rackModel.position.x = -0.755
@@ -2186,12 +2192,12 @@
         })
       })
 
-      // loader.load('./models/light_bar.glb',  function (gltf) {
-      //   let lightbar = gltf.scene;
-      //   lightbar.position.y = 2.387
-      //   lightbar.position.x = 0.45149
-      //   scene.add(lightbar);
-      // })
+      loader.load('./models/light_bar.glb',  function (gltf) {
+        let lightbar = gltf.scene;
+        lightbar.position.y = 2.387
+        lightbar.position.x = 0.45149
+        scene.add(lightbar);
+      })
 
 
       

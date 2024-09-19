@@ -231,6 +231,7 @@
 			font-size: 24px;
 			text-shadow: 0px 0px 4px #fff;
 			color: black;
+      white-space: nowrap;
 		}
 		.tooltip .tooltiptext {
 			visibility: hidden;
@@ -721,7 +722,7 @@
   </a>
 	<div id="configurator-container">
     <div class="van-detail">
-      <h2 id="rack_title">Ford Transit Roof Rack - Premium - 148 High Roof</h2>
+      <h2 id="rack_title">Ford Transit Roof Rack - HSLD - 148 High Roof</h2>
     </div>
 		<div id="container"></div>
     <div class="items-container">
@@ -783,7 +784,7 @@
                 <div class="carted-item">1</div>
               </div>
               <div class="item-name">
-                <p>Solar Panel<br />(55W)</p>
+                <p>Solar Panel<br />(50W)</p>
               </div>
             </div>
           </div>
@@ -1128,15 +1129,12 @@
     {
       "htmlId": "solar_panel50",
       "type": "solar55",
-      "availability": false,
-      "handle": "",
-      "id": 45081892683995,
+      "availability": true,
+      "handle": "rich-solar-solar-panel",
+      "id": 45977350602971,
       "price": 0,
       "quantity": 0,
       "xRadius": 12.75,
-      "title": "Rich Solar Mega 55 Watt 12 Volt Solar Panel",
-      "image": "https://cdn.shopify.com/s/files/1/0412/9898/5124/files/Rich-Solar-55W-12V-Solar-Panel_7619b189-0847-457f-b220-26773a5ab5cb.png?v=1717015803",
-      "url": "https://shop.explorist.life/shop/all-products/pre-order-rich-solar-55w-12v-solar-panel"
     },
     {
       "htmlId": "solar_panel30",
@@ -2911,6 +2909,8 @@
       if(product.type == "rack") {
         const selectedProduct = product.variants.find((variant) => variant.id == selectedVan);
         let newProduct = {...product, id: selectedProduct.id, price: selectedProduct.price / 100};
+        console.log(selectedProduct)
+        document.getElementById("rack_title").innerHTML = selectedProduct?.title;
         return newProduct;
       }
       else return product;
