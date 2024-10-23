@@ -34,16 +34,20 @@
 			display: flex;
 		}
 
-		#configurator-container {
+		/* #configurator-container {
 			width: calc(100vw - 300px);
-		}
+		} */
 
 		#side-section {
 			width: 300px;
-			border-left: 1px solid rgb(159, 159, 159);
-			height: 100%;
+			/* border-left: 1px solid rgb(159, 159, 159); */
+			height: calc(100vh - 30px);
 			z-index: 1;
+      position: absolute;
 			background-color: #d3d3d3;
+      top: 15px;
+      right: 15px;
+      border-radius: 15px;
 		}
 
 		.d-flex {
@@ -225,11 +229,16 @@
 
 		.action-btn-list {
 			position: absolute;
-			bottom: 125px;
-			right: 16px;
+			/* bottom: 125px; */
+      transform: translateY(-50%);
+      top: 50%;
+			left: 16px;
       display: flex;
       flex-direction: column;
       align-items: center;
+      padding: 16px 8px;
+      border-radius: 35px;
+      background-color: #E64B38;
 		}
 
 		.action-btn-list button {
@@ -238,9 +247,9 @@
 			display: flex;
 			align-items: center;
 			justify-content: center;
-			background: #333;
 			border-radius: 22px;
 			border: none;
+      background: none;
 		}
 
 		.text-center {
@@ -422,6 +431,8 @@
 			width: 300px;
 			border-top: 1px solid #333;
 			background-color: #e4e4e4;
+      border-bottom-left-radius: 15px;
+      border-bottom-right-radius: 15px;
 		}
 
 		.checkout-area button {
@@ -529,8 +540,8 @@
 
 		}
 		.color-item {
-			width: 29px;
-			height: 29px;
+			width: 24px;
+			height: 24px;
 			border-radius: 20px;
 			border: 2px solid #fff;
 			margin: 3px;
@@ -574,7 +585,7 @@
 			}
 			.action-btn-list {
 				/* bottom: 160px; */
-				right: 8px;
+				left: 8px;
 			}
 			.unaka-logo img{
 				width: 60px;
@@ -592,6 +603,7 @@
 				background-color: white;
 				border-top-left-radius: 10px;
 				border-bottom-left-radius: 10px;
+        
 			}
 			#side-collapse div {
 				padding: 14px 8px;
@@ -675,6 +687,29 @@
 			text-decoration: none;
 			display: flex;
 			align-items: center;
+    }
+    .sidebar-header {
+      background-color: #F9AD18;
+      border-top-left-radius: 15px;
+      border-top-right-radius: 15px;
+      text-align: center;
+      font-size: 24px;
+      padding: 16px;
+      font-weight: 700;
+    }
+    .sidebar-vancolor {
+      padding: 10px;
+    }
+    .sidebar-vancolor .vancolor-title {
+      font-size: 18px;
+      padding-left: 5px;
+      font-weight: 700;
+    }
+    .buildlist-title {
+      font-size: 18px;
+      padding-left: 5px;
+      font-weight: 700;
+      padding-left: 14px;
     }
 	</style>
 </head>
@@ -835,7 +870,7 @@
 				<button class="mb-3 left-tooltip" id="imgDownloadBtn">
           
 					<span class="tooltiptext">Download Image</span>
-					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+					<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
 						<g fill="none" stroke="#ffffff" stroke-linecap="round" stroke-width="1.5">
 							<path stroke-linejoin="round"
 								d="M21.25 13V8.5a5 5 0 0 0-5-5h-8.5a5 5 0 0 0-5 5v7a5 5 0 0 0 5 5h6.26" />
@@ -846,10 +881,10 @@
 						</g>
 					</svg>
 				</button>
-				
+
 				<button id="camChangeBtn" class="left-tooltip">
 					<span class="tooltiptext">Change Camera</span>
-					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 72 72">
+					<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 72 72">
 						<circle cx="22.258" cy="26.11" r="3" fill="#ffffff" />
 						<circle cx="46.153" cy="26.11" r="3" fill="#ffffff" />
 						<path fill="none"
@@ -879,12 +914,33 @@
 					<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 256 256"><path fill="currentColor" d="M210.84 205.13a12 12 0 0 1-16 5.71l-152-72a12 12 0 0 1 0-21.68l152-72a12 12 0 1 1 10.27 21.69L76 128l129.1 61.15a12 12 0 0 1 5.74 15.98"/></svg>
 				</div>
 			</div>
-			<ul class="tabs">
+
+      <div class="sidebar-header">
+        Product Options
+      </div>
+
+      <div class="sidebar-vancolor">
+        <div class="vancolor-title">Van color</div>
+        <div class="select-colors" id="color-selectable">
+          <div class="color-item color-selected" style="background-color: rgb(255, 255, 255);"></div>
+          <div class="color-item" style="background-color: rgb(205, 36, 0);"></div>
+          <div class="color-item" style="background-color: rgb(0, 0, 0);"></div>
+          <div class="color-item" style="background-color: rgb(173, 175, 184);"></div>
+          <div class="color-item" style="background-color: rgb(146, 17, 18);"></div>
+          <div class="color-item" style="background-color: rgb(72, 115, 163);"></div>
+          <div class="color-item" style="background-color: rgb(59, 82, 67);"></div>
+          <div class="color-item" style="background-color: rgb(146, 173, 62);"></div>
+        </div>
+      </div>
+      <div class="buildlist-title">Build list</div>
+      <div id="build-list"></div>
+
+
+			<!-- <ul class="tabs">
 				<li data-tab-target="#build-list" class="active tab">Build List</li>
 				<li data-tab-target="#rack-tab" class="tab">Van</li>
-				<!-- <li data-tab-target="#select-template" class="tab">Template</li> -->
-			</ul>
-			<div class="tab-content">
+			</ul> -->
+			<!-- <div class="tab-content">
 				<div id="build-list" data-tab-content class="active">
 				</div>
 				<div id="rack-tab" data-tab-content>
@@ -901,14 +957,14 @@
 						<div class="color-item" style="background-color: rgb(59, 82, 67);"></div>
 						<div class="color-item" style="background-color: rgb(146, 173, 62);"></div>
 					</div>
-				</div>
+				</div> -->
 	
 				<!-- <div id="select-template" data-tab-content>
 					<div class="selectable">
 						<img src="https://cdn.shopify.com/s/files/1/0412/9898/5124/files/temp-1.png?v=1716430453&width=240" width="240" height='' draggable="false" id="temp_1"/>
 					</div>
 				</div> -->
-			</div>
+			<!-- </div> -->
 			<div class="checkout-area">
 				<div id="products-detail">
 					<div><span id="products-num">0</span> Items</div>
@@ -1068,7 +1124,8 @@
       if (selectedFeature.parent.name !== "van" && selectedFeature.name !== "ladder") {
         if (isDragging) {
           offsetTopCanvas = canvasContainer.getBoundingClientRect().top;
-          let a = 2 * (event.clientX / ((window.innerWidth < 1024 ? window.innerWidth: window.innerWidth - 300))) - 1;
+          let a = 2 * (event.clientX / ((window.innerWidth < 1024 ? window.innerWidth: window.innerWidth))) - 1;
+          // let a = 2 * (event.clientX / ((window.innerWidth < 1024 ? window.innerWidth: window.innerWidth - 300))) - 1;
           let b = 1 - 2 * (event.clientY - offsetTopCanvas) / (window.innerHeight);
           raycaster.setFromCamera(new THREE.Vector2(a, b), camera);
           intersects = raycaster.intersectObject(targetForDragging);
@@ -1393,7 +1450,8 @@
 
   document.getElementById('camChangeBtn').addEventListener('click', function () {
     const cameraPosition = camera.position;
-    const widthValue = window.innerWidth < 1024 ? window.innerWidth : (window.innerWidth - 300)
+    const widthValue = window.innerWidth
+    // const widthValue = window.innerWidth < 1024 ? window.innerWidth : (window.innerWidth - 300)
 
     if (cameraType === "perspective") {
       camera = new THREE.OrthographicCamera(-widthValue / 340, widthValue / 340, window.innerHeight / 340, -window.innerHeight / 340, 1, 10000);
@@ -1865,7 +1923,8 @@
     scene.remove(targetForDragging);
     delelteBtn.style.display = "none";
 
-    let a = 2 * x /( (window.innerWidth < 1024 ? window.innerWidth: window.innerWidth - 300)) - 1;
+    let a = 2 * x /( (window.innerWidth < 1024 ? window.innerWidth: window.innerWidth)) - 1;
+    // let a = 2 * x /( (window.innerWidth < 1024 ? window.innerWidth: window.innerWidth - 300)) - 1;
     let b = 1 - 2 * y / window.innerHeight;
     raycaster.setFromCamera(new THREE.Vector2(a, b), camera);
     intersects = raycaster.intersectObjects(scene.children);
@@ -2088,16 +2147,21 @@
     const container = document.getElementById('container');
     renderer = new THREE.WebGLRenderer({ antialias: true });
     renderer.setPixelRatio(window.devicePixelRatio);
-    renderer.setSize(((window.innerWidth < 1024 ? window.innerWidth : window.innerWidth - 300)), window.innerHeight);
+    renderer.setSize(((window.innerWidth < 1024 ? window.innerWidth : window.innerWidth)), window.innerHeight);
+    // renderer.setSize(((window.innerWidth < 1024 ? window.innerWidth : window.innerWidth - 300)), window.innerHeight);
+
     renderer.setAnimationLoop(render);
     renderer.toneMappingExposure = 0.85;
     renderer.autoClear = false;
     container.appendChild(renderer.domElement);
     window.addEventListener('resize', onWindowResize);
 
-    camera = new THREE.PerspectiveCamera(40, ((window.innerWidth < 1024 ? window.innerWidth : window.innerWidth - 300)) / window.innerHeight, 1, 10000);
+    camera = new THREE.PerspectiveCamera(40, ((window.innerWidth < 1024 ? window.innerWidth : window.innerWidth)) / window.innerHeight, 1, 10000);
+    // camera = new THREE.PerspectiveCamera(40, ((window.innerWidth < 1024 ? window.innerWidth : window.innerWidth - 300)) / window.innerHeight, 1, 10000);
     camera.position.set(-1, 6, -6);
-    camera.aspect = ((window.innerWidth < 1024 ? window.innerWidth : window.innerWidth - 300)) / (window.innerHeight);
+    camera.aspect = ((window.innerWidth < 1024 ? window.innerWidth : window.innerWidth)) / (window.innerHeight);
+    // camera.aspect = ((window.innerWidth < 1024 ? window.innerWidth : window.innerWidth - 300)) / (window.innerHeight);
+
     camera.updateProjectionMatrix();
     setCameraView();
 
@@ -2140,7 +2204,6 @@
 
     loader.load('./models/van-ext.glb', function (gltf) {
       carModel = gltf.scene;
-      console.log(carModel.getObjectByName("van"))
       bodyMesh = carModel.getObjectByName("van").getObjectByName("van_1");
       const bodyMaterial = new THREE.MeshPhysicalMaterial( {
         color: 0xffffff, metalness: 1.0, roughness: 0.9, clearcoat: 1.0, clearcoatRoughness: 0.1
@@ -2278,17 +2341,21 @@
   }
 
   function onWindowResize() {
-    if(window.innerWidth < 1024) {
-      camera.aspect = window.innerWidth / window.innerHeight;
+    camera.aspect = window.innerWidth / window.innerHeight;
       camera.updateProjectionMatrix();
       renderer.setSize(window.innerWidth, window.innerHeight);
       helper.visible = false;
-    } else {
-      camera.aspect = (window.innerWidth - 300) / window.innerHeight;
-      camera.updateProjectionMatrix();
-      renderer.setSize((window.innerWidth - 300), window.innerHeight);
-      helper.visible = true;
-    }
+    // if(window.innerWidth < 1024) {
+    //   camera.aspect = window.innerWidth / window.innerHeight;
+    //   camera.updateProjectionMatrix();
+    //   renderer.setSize(window.innerWidth, window.innerHeight);
+    //   helper.visible = false;
+    // } else {
+    //   camera.aspect = (window.innerWidth - 300) / window.innerHeight;
+    //   camera.updateProjectionMatrix();
+    //   renderer.setSize((window.innerWidth - 300), window.innerHeight);
+    //   helper.visible = true;
+    // }
   }
 
   function render() {

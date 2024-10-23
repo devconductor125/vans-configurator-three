@@ -38,10 +38,13 @@
 		}
 		#side-section {
 			width: 300px;
-			border-left: 1px solid rgb(159, 159, 159);
-			height: 100%;
+			height: calc(100vh - 30px);
 			z-index: 1;
-			background-color: #d3d3d3;
+      position: absolute;
+			background-color: white;
+      top: 15px;
+      right: 15px;
+      border-radius: 15px;
 		}
 		.d-flex {
 			display: flex;
@@ -64,7 +67,14 @@
 			position: relative;
       margin-bottom: 10px;
       margin-top: 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
 		}
+    .item-box .item-name {
+      margin-top: 5px;
+      font-weight: 700;
+    }
 		.item-box .carted-item {
 			position: absolute;
 			top: -5px;
@@ -178,11 +188,15 @@
     }
 		.action-btn-list {
 			position: absolute;
-			bottom: 125px;
-			right: 16px;
+      transform: translateY(-50%);
+      top: 50%;
+			left: 48px;
       display: flex;
       flex-direction: column;
       align-items: center;
+      padding: 16px 8px;
+      border-radius: 35px;
+      background-color: #E64B38;
 		}
 		.action-btn-list button {
 			width: 40px;
@@ -193,6 +207,8 @@
 			background: #333;
 			border-radius: 22px;
 			border: none;
+      background: none;
+      margin: 8px 0px
 		}
 		.text-center {
 			text-align: center;
@@ -231,15 +247,16 @@
     }
 		.van-detail {
 			position: absolute;
-			top: 50px;
+			top: 40px;
 			left: 50%;
 			transform: translateX(-50%);
 		}
 		#rack_title {
-			font-size: 24px;
+			font-size: 28px;
 			text-shadow: 0px 0px 4px #fff;
 			color: black;
-      white-space: nowrap;
+      text-align: center;
+      line-height: 34px;
 		}
 		.tooltip .tooltiptext {
 			visibility: hidden;
@@ -351,16 +368,18 @@
 			bottom: 0;
 			width: 300px;
 			border-top: 1px solid #333;
+      border-bottom-left-radius: 15px;
+      border-bottom-right-radius: 15px;
 		}
 		.checkout-area button {
 			justify-content: center;
 			font-family: "Josefin Sans", sans-serif;
-			border-radius: 8px;
+			border-radius: 30px;
 			border: 0;
 			letter-spacing: 1px;
 			color: #fff;
-			background: #246eea;
-			padding: 12px;
+			background: #E64B38;
+			padding: 9px;
 			white-space: nowrap;
 			font-size: 16px;
 			line-height: 1;
@@ -371,11 +390,13 @@
 			align-items: center;
 			margin: 0 auto;
 			width: 90%;
+      font-weight: 700;
+      margin-top: 6px;
 		}
 		.checkout-area button:hover {
 			-webkit-transform: translateY(-1px);
       transform: translateY(-1px);
-			background: #4984ea;
+			background: #FE371F;
 		}
 		#products-detail {
 			display: flex;
@@ -478,10 +499,10 @@
 		}
 		.color-item {
       display: block !important;
-			width: 29px;
-			height: 29px;
+			width: 24px;
+			height: 24px;
 			border-radius: 20px;
-			border: 2px solid #fff;
+			border: 2px solid #c94747;
 			margin: 3px;
 			cursor: pointer;
 			opacity: 0.7;
@@ -709,6 +730,53 @@
 			align-items: center;
     }
 
+    .sidebar-header {
+      background-color: #F9AD18;
+      border-top-left-radius: 15px;
+      border-top-right-radius: 15px;
+      text-align: center;
+      font-size: 24px;
+      padding: 16px;
+      font-weight: 700;
+    }
+    .sidebar-vancolor {
+      padding: 10px;
+    }
+    .sidebar-vancolor .vancolor-title {
+      font-size: 18px;
+      padding-left: 5px;
+      font-weight: 700;
+    }
+    #build-list {
+      padding: 14px;
+      overflow-y: auto;
+      height: calc(100vh - 285px);
+
+    }
+    #build-list::-webkit-scrollbar-track
+    {
+      border-radius: 10px;
+      background-color: #a6a6a6;
+    }
+
+    #build-list::-webkit-scrollbar
+    {
+      width: 12px;
+      background-color: white;
+    }
+
+    #build-list::-webkit-scrollbar-thumb
+    {
+      border-radius: 10px;
+      background-color: #F9AD18;
+    }
+    .buildlist-title {
+      font-size: 18px;
+      padding-left: 5px;
+      font-weight: 700;
+      padding-left: 14px;
+    }
+
 	</style>
 </head>
 <div id="van_modal_area">
@@ -742,7 +810,7 @@
                 <div class="carted-item">1</div>
               </div>
               <div class="item-name">
-                <p>Air Conditioner</p>
+                <p>Dometic RTX</p>
               </div>
             </div>
           </div>
@@ -752,7 +820,7 @@
                 <div class="carted-item">1</div>
               </div>
               <div class="item-name">
-                <p>Air Conditioner </p>
+                <p>Dometic Penguin II</p>
               </div>
             </div>
           </div>
@@ -762,7 +830,7 @@
                 <div class="carted-item">1</div>
               </div>
               <div class="item-name">
-                <p>Maxxair</p>
+                <p>Maxxair Deluxe</p>
               </div>
             </div>
           </div>
@@ -772,7 +840,7 @@
                 <div class="carted-item">1</div>
               </div>
               <div class="item-name">
-                <p>Solar Panel<br />(250W)</p>
+                <p>Rich Solar Panel 250w</p>
               </div>
             </div>
           </div>
@@ -782,7 +850,7 @@
                 <div class="carted-item">1</div>
               </div>
               <div class="item-name">
-                <p>Solar Panel<br />(200W)</p>
+                <p>Rich Solar Panel 200w</p>
               </div>
             </div>
           </div>
@@ -792,7 +860,7 @@
                 <div class="carted-item">1</div>
               </div>
               <div class="item-name">
-                <p>Solar Panel<br />(100W)</p>
+                <p>Rich Solar Panel 100w</p>
               </div>
             </div>
           </div>
@@ -802,7 +870,7 @@
                 <div class="carted-item">1</div>
               </div>
               <div class="item-name">
-                <p>Solar Panel<br />(50W)</p>
+                <p>Rich Solar Panel 50w</p>
               </div>
             </div>
           </div>
@@ -812,7 +880,7 @@
                 <div class="carted-item">1</div>
               </div>
               <div class="item-name">
-                <p>Solar Panel<br />(30W)</p>
+                <p>Rich Solar Panel 30w</p>
               </div>
             </div>
           </div>
@@ -822,7 +890,7 @@
                 <div class="carted-item">1</div>
               </div>
               <div class="item-name">
-                <p>Ladder</p>
+                <p>Side Mount Ladder</p>
               </div>
             </div>
           </div>
@@ -872,7 +940,7 @@
                 <div class="carted-item">1</div>
               </div>
               <div class="item-name">
-                <p>Light Bar</p>
+                <p>Tyri Light Bar</p>
               </div>
             </div>
           </div>
@@ -882,7 +950,7 @@
                 <div class="carted-item">1</div>
               </div>
               <div class="item-name">
-                <p>Light Bar</p>
+                <p>Diode Dynamics Light Bar</p>
               </div>
             </div>
           </div>
@@ -894,7 +962,7 @@
 		<div class="action-btn-list">
       <button class="mb-3 left-tooltip" id="deleteButton" disabled>
         <span class="tooltiptext">Delete Items</span>
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 1024 1024">
+        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 1024 1024">
           <path fill="#fff"
             d="M160 256H96a32 32 0 0 1 0-64h256V95.936a32 32 0 0 1 32-32h256a32 32 0 0 1 32 32V192h256a32 32 0 1 1 0 64h-64v672a32 32 0 0 1-32 32H192a32 32 0 0 1-32-32zm448-64v-64H416v64zM224 896h576V256H224zm192-128a32 32 0 0 1-32-32V416a32 32 0 0 1 64 0v320a32 32 0 0 1-32 32m192 0a32 32 0 0 1-32-32V416a32 32 0 0 1 64 0v320a32 32 0 0 1-32 32" />
         </svg>
@@ -902,7 +970,7 @@
 
       <button class="mb-3 left-tooltip" id="resetButton" disabled>
         <span class="tooltiptext">Reset Items</span>
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 21 21">
+        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 21 21">
           <g fill="none" fill-rule="evenodd" stroke="#fff" stroke-linecap="round" stroke-linejoin="round">
             <path d="M6.5 3.5c-2.414 1.377-4 4.022-4 7a8 8 0 1 0 8-8" />
             <path d="M6.5 7.5v-4h-4" />
@@ -912,7 +980,7 @@
 
       <button class="mb-3 left-tooltip" id="imgDownloadBtn">
         <span class="tooltiptext">Download Image</span>
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24">
           <g fill="none" stroke="#ffffff" stroke-linecap="round" stroke-width="1.5">
             <path stroke-linejoin="round"
               d="M21.25 13V8.5a5 5 0 0 0-5-5h-8.5a5 5 0 0 0-5 5v7a5 5 0 0 0 5 5h6.26" />
@@ -931,7 +999,36 @@
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 256 256"><path fill="currentColor" d="M210.84 205.13a12 12 0 0 1-16 5.71l-152-72a12 12 0 0 1 0-21.68l152-72a12 12 0 1 1 10.27 21.69L76 128l129.1 61.15a12 12 0 0 1 5.74 15.98"/></svg>
       </div>
     </div>
-    <ul class="tabs">
+    <div class="sidebar-header">
+      Product Options
+    </div>
+    <div class="sidebar-vancolor">
+      <div class="vancolor-title">VAN COLOR</div>
+      <div class="select-colors" id="color-selectable">
+        <div class="color-item color-selected" style="background-color: rgb(255, 255, 255);"></div>
+        <div class="color-item" style="background-color: rgb(205, 36, 0);"></div>
+        <div class="color-item" style="background-color: rgb(0, 0, 0);"></div>
+        <div class="color-item" style="background-color: rgb(173, 175, 184);"></div>
+        <div class="color-item" style="background-color: rgb(146, 17, 18);"></div>
+        <div class="color-item" style="background-color: rgb(72, 115, 163);"></div>
+        <div class="color-item" style="background-color: rgb(59, 82, 67);"></div>
+        <div class="color-item" style="background-color: rgb(146, 173, 62);"></div>
+      </div>
+    </div>
+    <div class="buildlist-title">BUILD LIST</div>
+    <div id="build-list"></div>
+    <div class="checkout-area">
+      <div id="products-detail">
+        <div><span id="products-num">0</span> Items</div>
+        <div>$<span id="products-cost">0</span></div>
+      </div>
+      <button id="addCartBtn">
+        Checkout
+        &nbsp;
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 50 50"><path fill="#fff" d="M25 42c-9.4 0-17-7.6-17-17S15.6 8 25 8s17 7.6 17 17s-7.6 17-17 17m0-32c-8.3 0-15 6.7-15 15s6.7 15 15 15s15-6.7 15-15s-6.7-15-15-15"/><path fill="#fff" d="m24.7 34.7l-1.4-1.4l8.3-8.3l-8.3-8.3l1.4-1.4l9.7 9.7z"/><path fill="#fff" d="M16 24h17v2H16z"/></svg>
+      </button>
+    </div>
+    {% comment %} <ul class="tabs">
       <li data-tab-target="#build-list" class="active tab">Build List</li>
       <li data-tab-target="#rack-tab" class="tab">Van</li>
     </ul>
@@ -965,7 +1062,7 @@
         &nbsp;
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 50 50"><path fill="#fff" d="M25 42c-9.4 0-17-7.6-17-17S15.6 8 25 8s17 7.6 17 17s-7.6 17-17 17m0-32c-8.3 0-15 6.7-15 15s6.7 15 15 15s15-6.7 15-15s-6.7-15-15-15"/><path fill="#fff" d="m24.7 34.7l-1.4-1.4l8.3-8.3l-8.3-8.3l1.4-1.4l9.7 9.7z"/><path fill="#fff" d="M16 24h17v2H16z"/></svg>
       </button>
-    </div>
+    </div> {% endcomment %}
   </div>
 </div>
 
@@ -1205,7 +1302,7 @@
         && !selectedFeature.name.includes('roof_rack')) {
         if (isDragging) {
           offsetTopCanvas = canvasContainer.getBoundingClientRect().top;
-          let a = 2 * (event.clientX / ((window.innerWidth < 1024 ? window.innerWidth: window.innerWidth - 300))) - 1;
+          let a = 2 * (event.clientX / window.innerWidth) - 1;
           let b = 1 - 2 * (event.clientY - offsetTopCanvas) / (window.innerHeight);
           raycaster.setFromCamera(new THREE.Vector2(a, b), camera);
           intersects = raycaster.intersectObject(targetForDragging);
@@ -1766,7 +1863,7 @@
   }
 
   function getAddedState() {
-    const itemsToBeCalc = ['maxxair', 'solar200', 'solar250', 'solar100', 'air_conditioner','8020_crossbar', 'solar30', 'solar55'];
+    const itemsToBeCalc = ['maxxair', 'solar200', 'solar250', 'solar100', 'air_conditioner','8020_crossbar', 'solar30', 'solar55', 'air_conditioner_p'];
     const itemsToCalc = scene.children.filter(group => itemsToBeCalc.includes(group?.children[0]?.name));
     const boxes = itemsToCalc.map((model) => {
       return getModelBoundingBox(model)
@@ -2175,6 +2272,7 @@
     let models = scene.children.filter((group) => 
       group?.children[0]?.name == 'maxxair' || 
       group?.children[0]?.name == 'air_conditioner' || 
+      group?.children[0]?.name == 'air_conditioner_p' || 
       group?.children[0]?.name == 'solar250' || 
       group?.children[0]?.name == 'solar200' || 
       group?.children[0]?.name == 'solar100' || 
@@ -2221,7 +2319,7 @@
     scene.remove(targetForDragging);
     delelteBtn.disabled = true;
 
-    let a = 2 * x / ((window.innerWidth < 1024 ? window.innerWidth : window.innerWidth - 300)) - 1;
+    let a = 2 * x / window.innerWidth - 1;
     let b = 1 - 2 * y / window.innerHeight;
     raycaster.setFromCamera(new THREE.Vector2(a, b), camera);
     intersects = raycaster.intersectObjects(scene.children);
@@ -2496,15 +2594,16 @@
     renderer = new THREE.WebGLRenderer({ antialias: true });
     renderer.setPixelRatio(window.devicePixelRatio);
     renderer.setSize(((window.innerWidth < 1024 ? window.innerWidth : window.innerWidth - 300)), window.innerHeight);
+      renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setAnimationLoop(render);
     renderer.toneMappingExposure = 0.85;
     renderer.autoClear = false;
     container.appendChild(renderer.domElement);
     window.addEventListener('resize', onWindowResize);
 
-    camera = new THREE.PerspectiveCamera(40, ((window.innerWidth < 1024 ? window.innerWidth : window.innerWidth - 300)) / window.innerHeight, 1, 10000);
+    camera = new THREE.PerspectiveCamera(40, window.innerWidth / window.innerHeight, 1, 10000);
     camera.position.set(-1, 6, -6);
-    camera.aspect = ((window.innerWidth < 1024 ? window.innerWidth : window.innerWidth - 300)) / (window.innerHeight);
+    camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
     setCameraView();
 
@@ -2594,17 +2693,10 @@
   }
 
   function onWindowResize() {
-    if(window.innerWidth < 1024) {
-      camera.aspect = window.innerWidth / window.innerHeight;
-      camera.updateProjectionMatrix();
-      renderer.setSize(window.innerWidth, window.innerHeight);
-      helper.visible = false;
-    } else {
-      camera.aspect = (window.innerWidth - 300) / window.innerHeight;
-      camera.updateProjectionMatrix();
-      renderer.setSize((window.innerWidth - 300), window.innerHeight);
-      helper.visible = true;
-    }
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    helper.visible = false;
   }
 
   function render() {
