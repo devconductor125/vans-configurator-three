@@ -304,7 +304,7 @@
     	margin-left: 10px;
 			position: absolute;
 			z-index: 1;
-      right: 100%;
+      left: 100%;
 			margin-right: 8px;
 			transform: translateY(-30%);
 		}
@@ -318,11 +318,11 @@
 			height: 0;
 			border-top: 8px solid transparent;
 			border-bottom: 8px solid transparent;
-			border-right: 8px solid rgba(17, 9, 46, 1);
+			border-left: 8px solid rgba(17, 9, 46, 1);
 			position: absolute;
 			top: 50%;
 			transform: rotate(180deg) translateY(50%);
-			right: -6px;
+			left: -6px;
 		}
     [data-tab-content] {
 			display: none;
@@ -991,6 +991,11 @@
           </g>
         </svg>
       </button>
+
+      <button class="mb-3 left-tooltip" id="selectVanBtn">
+        <span class="tooltiptext">Select Van</span>
+        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 256 256"><path fill="#ffffff" d="m254.07 106.79l-45.54-53.06A16 16 0 0 0 196.26 48H32a16 16 0 0 0-16 16v112a16 16 0 0 0 16 16h17a32 32 0 0 0 62 0h50a32 32 0 0 0 62 0h17a16 16 0 0 0 16-16v-64a8 8 0 0 0-1.93-5.21M230.59 104H176V64h20.26ZM104 104V64h56v40ZM88 64v40H32V64Zm-8 136a16 16 0 1 1 16-16a16 16 0 0 1-16 16m112 0a16 16 0 1 1 16-16a16 16 0 0 1-16 16m31-24a32 32 0 0 0-62 0h-50a32 32 0 0 0-62 0H32v-56h208v56Z"/></svg>
+      </button>
 		</div>
 	</div>
   <div id="side-section">
@@ -1568,6 +1573,10 @@
       });
     } 
   });
+
+  document.getElementById("selectVanBtn").addEventListener("click", function(event) {
+    window.location.reload();
+  })
 
   document.getElementById('imgDownloadBtn').addEventListener('click', function (event) {
     renderer.render(scene, camera);
