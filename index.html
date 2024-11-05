@@ -1380,9 +1380,9 @@
       scene.remove(model);
     })
 
-    loader.load('./models/rack-extended.glb',  function (gltf) {
+    loader.load('./models/rack_origin.glb',  function (gltf) {
         let rackModel = gltf.scene;
-        rackModel.position.y = 2.3222
+        rackModel.position.y = 2.73
         rackModel.position.x = -0.755
         scene.add(rackModel);
     })
@@ -1562,7 +1562,7 @@
 
 	function handleClickProduct(event){
 		let positionX = 0;
-		let positionY = 2.35;
+	let positionY = 2.76;
 		let positionZ = 0;
 		model = null;
 		vanItem = event.target;
@@ -1581,10 +1581,10 @@
 
 			if(selectedItem.quantity > 0 ) return false;
 			positionX = -1.07;
-			positionY = 2.35;
+			positionY = 2.76;
 			positionZ = 0.84;
 		} else{
-			positionY = 2.35;
+			positionY = 2.76;
 			positionZ = 0;
 
 			if(selectedItem.type == 'solar30') {
@@ -2202,7 +2202,7 @@
       scene.environment = envMap;
     });
 
-    loader.load('./models/van-ext.glb', function (gltf) {
+    loader.load('./models/van-tr148.glb', function (gltf) {
       carModel = gltf.scene;
       bodyMesh = carModel.getObjectByName("van").getObjectByName("van_1");
       const bodyMaterial = new THREE.MeshPhysicalMaterial( {
@@ -2223,10 +2223,10 @@
 
       scene.add(carModel);
 
-      loader.load('./models/transit148-ext-rack-lightbar.glb',  function (gltf) {
+      loader.load('./models/rack_origin.glb',  function (gltf) {
         let rackModel = gltf.scene;
-        rackModel.position.y = 2.3222
-        rackModel.position.x = -0.755
+        rackModel.position.y = 2.74
+        rackModel.position.x = -0.9
         scene.add(rackModel);
         
         var models = [

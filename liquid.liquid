@@ -1209,6 +1209,13 @@
   let collidableMeshList = [];
   const meterToInch = 39.3701;
 
+  let vanRoofHeight = 2.36;
+  let lightbarXPos = 0;
+
+  let ladderLink = "";
+  let ladderPos  = []
+  let movingOffset = 0.265;
+
   let availableProducts = [
     {
       "htmlId": "",
@@ -1327,7 +1334,8 @@
 
           const selectedFeatureWidth = size.x;
           let checkCollision = true;
-          const xPos = Math.min(0.428 - selectedFeatureWidth / 2, Math.max(-2.115, coords.x));
+          
+          const xPos = Math.min(movingOffset - selectedFeatureWidth / 2, Math.max(-2.115, coords.x));
 
           if(selectedFeature.name == "awning" || selectedFeature.name == "awning_350"){
             const bbox1  = getModelBoundingBox(selectedFeature);
@@ -1346,7 +1354,7 @@
               if(connectedSolar) return;
             }
             const widthOfObject = Math.abs(bbox1.max.x - bbox1.min.x);
-            const xPos = Math.min(0.428 - selectedFeatureWidth / 2, Math.max((- vanArea[1] * 0.0254) + widthOfObject/2, coords.x));
+            const xPos = Math.min(movingOffset - selectedFeatureWidth / 2, Math.max((- vanArea[1] * 0.0254) + widthOfObject/2, coords.x));
             collidableMeshList = updateColliderList();
             const checkCollision = isCrossBarCollied(bbox1, collidableMeshList, xPos);
             if(isValueInScale(coords.x * 1000 / 25.4 * -1, cutOffArea, 7.001, vanDiff)  >= 0 && !checkCollision) {
@@ -1358,7 +1366,7 @@
           } else if(selectedFeature.name == "air_conditioner_p"){
             const bbox1 = getModelBoundingBox(selectedFeature);
             const widthOfObject = Math.abs(bbox1.max.x - bbox1.min.x);
-            const xPos = Math.min(0.428 - selectedFeatureWidth / 2, Math.max((- vanArea[1] * 0.0254) + widthOfObject/2, coords.x));
+            const xPos = Math.min(movingOffset - selectedFeatureWidth / 2, Math.max((- vanArea[1] * 0.0254) + widthOfObject/2, coords.x));
             collidableMeshList = updateColliderList();
             const checkCollision = isCrossBarCollied(bbox1, collidableMeshList, xPos);
             if(isValueInScale(coords.x * 1000 / 25.4 * -1, cutOffArea, 7.001, vanDiff)  >= 0 && !checkCollision) {
@@ -1378,7 +1386,7 @@
               if(connectedSolar) return;
             }
             const widthOfObject = Math.abs(bbox1.max.x - bbox1.min.x);
-            const xPos = Math.min(0.428 - selectedFeatureWidth / 2, Math.max((- vanArea[1] * 0.0254) + widthOfObject/2, coords.x));
+            const xPos = Math.min(movingOffset - selectedFeatureWidth / 2, Math.max((- vanArea[1] * 0.0254) + widthOfObject/2, coords.x));
             collidableMeshList = updateColliderList();
             const checkCollision = isCrossBarCollied(bbox1, collidableMeshList, xPos);
             if(isValueInScale(coords.x * 1000 / 25.4 * -1, cutOffArea, 7, vanDiff) >= 0 && !checkCollision){
@@ -1399,7 +1407,7 @@
               const maxMovable = centerOfBox + 3.8 * 0.0254
               const minMovable = centerOfBox - 3.8 * 0.0254
               const widthOfObject = Math.abs(bbox1.max.x - bbox1.min.x);
-              let xPos = Math.min(0.428 - selectedFeatureWidth / 2, Math.max((- vanArea[1] * 0.0254) + widthOfObject/2, coords.x));
+              let xPos = Math.min(movingOffset - selectedFeatureWidth / 2, Math.max((- vanArea[1] * 0.0254) + widthOfObject/2, coords.x));
               collidableMeshList = updateColliderList();
               const checkCollision = isColliedNearBy(bbox1, acBox, collidableMeshList, xPos);
               if(xPos <= maxMovable && xPos >= minMovable && !checkCollision) {
@@ -1418,7 +1426,7 @@
               const maxMovable = centerOfBox + 0.025
               const minMovable = centerOfBox - 0.025
               const widthOfObject = Math.abs(bbox1.max.x - bbox1.min.x);
-              let xPos = Math.min(0.428 - selectedFeatureWidth / 2, Math.max((- vanArea[1] * 0.0254) + widthOfObject/2, coords.x));
+              let xPos = Math.min(movingOffset - selectedFeatureWidth / 2, Math.max((- vanArea[1] * 0.0254) + widthOfObject/2, coords.x));
               collidableMeshList = updateColliderList();
               const checkCollision = isColliedNearBy(bbox1, fanBox, collidableMeshList, xPos);
               if(xPos <= maxMovable && xPos >= minMovable && !checkCollision) {
@@ -1428,7 +1436,7 @@
           } else if(selectedFeature.name == "8020_crossbar") {
             const bbox1  = getModelBoundingBox(selectedFeature);
             const widthOfObject = Math.abs(bbox1.max.x - bbox1.min.x);
-            let xPos = Math.min(0.428 - selectedFeatureWidth / 2, Math.max((- vanArea[1] * 0.0254) + widthOfObject/2, coords.x));
+            let xPos = Math.min(movingOffset - selectedFeatureWidth / 2, Math.max((- vanArea[1] * 0.0254) + widthOfObject/2, coords.x));
             collidableMeshList = updateColliderList();
             const checkCollision = isCrossBarCollied(bbox1, collidableMeshList, xPos);
             if(!checkCollision) {
@@ -1438,7 +1446,7 @@
           } else if(selectedFeature.name == "lshape_cross"){
             const bbox1  = getModelBoundingBox(selectedFeature);
             const widthOfObject = Math.abs(bbox1.max.x - bbox1.min.x);
-            let xPos = Math.min(0.428 - selectedFeatureWidth / 2, Math.max((- vanArea[1] * 0.0254) + widthOfObject/2, coords.x));
+            let xPos = Math.min(movingOffset - selectedFeatureWidth / 2, Math.max((- vanArea[1] * 0.0254) + widthOfObject/2, coords.x));
             collidableMeshList = updateColliderList();
             const checkCollision = isCrossBarCollied(bbox1, collidableMeshList, xPos);
             if(!checkCollision) {
@@ -1454,7 +1462,7 @@
             // }
             const bbox1 = getModelBoundingBox(selectedFeature);
             const widthOfObject = Math.abs(bbox1.max.x - bbox1.min.x);
-            let xPos = Math.min(0.428 - selectedFeatureWidth / 2, Math.max((- vanArea[1] * 0.0254) + widthOfObject/2, coords.x));
+            let xPos = Math.min(movingOffset - selectedFeatureWidth / 2, Math.max((- vanArea[1] * 0.0254) + widthOfObject/2, coords.x));
             collidableMeshList = updateColliderList();
             const checkCollision = isCrossBarCollied(bbox1, collidableMeshList, xPos);
             if(!checkCollision) {
@@ -1969,7 +1977,7 @@
 
 	function handleClickProduct(event){
 		let positionX = 0;
-		let positionY = 2.35;
+		let positionY = vanRoofHeight;
 		let positionZ = 0;
 		model = null;
 		vanItem = event.target;
@@ -1978,16 +1986,16 @@
 
 		if(selectedItem.type == 'ladder') {
 			if(selectedItem.quantity > 0 ) return false;
-			positionX = -0.6;
-			positionY = 1.1717;
-			positionZ = -0.97864;
+			positionX = ladderPos[0];
+			positionY = ladderPos[1];
+			positionZ = ladderPos[2];
 		} else if(selectedItem.type == 'awning' || selectedItem.type == 'awning_350') {
       const awningModels = scene.children.filter((group) => group?.children[0]?.name == "awning" || group?.children[0]?.name == "awning_350");
       if(awningModels.length >= 1) return;
 
 			if(selectedItem.quantity > 0 ) return false;
 			positionX = -1.07;
-			positionY = 2.35;
+			positionY = vanRoofHeight;
 			positionZ = 0.84;
 		} else if(selectedItem.type == 'light_bar' || selectedItem.type == 'light_bar_copy') {
       const rackModel = scene.children.filter((group) => group?.children[0]?.name == "roof_rack_ext");
@@ -1995,12 +2003,12 @@
       if(lightbarModels.length >= 1) return false;
 			if(selectedItem.quantity > 0 ) return false;
       if(rackModel.length >= 1){
-        positionX = 0.45149;
-        positionY =  2.387;
+        positionX = lightbarXPos;
+        positionY = vanRoofHeight + 0.04;
         positionZ = 0;
       } else return false;
 		} else{
-			positionY = 2.35;
+			positionY = vanRoofHeight;
 			positionZ = 0;
 			if(selectedItem.type == 'solar30') {
 				let acItem = availableProducts.filter(product => fromTemplate ? (product.type == 'air_conditioner_nodamic') : (product.type == 'air_conditioner'))[0];
@@ -2169,7 +2177,7 @@
         }
 			} else {
         if(selectedItem.type == '8020_crossbar') {
-          positionY = 2.36
+          positionY = vanRoofHeight + 0.01
         }
 				positionX = getAvailablePoint(selectedItem);
 				if(!positionX) return;
@@ -2207,7 +2215,7 @@
         loadItemDirectory = "https://cdn.shopify.com/3d/models/543cc594a487aecf/8020_cross.glb";
         break;
       case "ladder":
-        loadItemDirectory = "https://cdn.shopify.com/3d/models/e1c66ba4aca3d154/ladder.glb";
+        loadItemDirectory = ladderLink;
         break;
       case "awning":
         loadItemDirectory = "https://cdn.shopify.com/3d/models/85085b43be1cd9cf/awning.glb";
@@ -2960,7 +2968,7 @@
     return -1;
   }
 
-  function initVan(vanModelLink, shadowLink, rackModel, crossbarXPos, workPlaneValues, ladderPlaneValues){
+  function initVan(vanModelLink, shadowLink, rackModel, crossbarXPos, workPlaneValues, ladderPlaneValues, rackYPos, rackXPos){
     loader.load(vanModelLink, function (gltf) {
       carModel = gltf.scene;
 
@@ -2985,9 +2993,11 @@
 
       loader.load(rackModel,  function (gltf) {
         let rackModel = gltf.scene;
-        rackModel.position.y = 2.3222
-        rackModel.position.x = -0.755
+        rackModel.position.y = rackYPos
+        rackModel.position.x = rackXPos
         scene.add(rackModel);
+
+        vanRoofHeight = rackYPos + 0.03
 
         let models = [
           {
@@ -2998,7 +3008,7 @@
         models.map((model) => {
           loader.load(model.path, function (gltf) {
             let crossBarModel = gltf.scene;
-            crossBarModel.position.y = 2.36
+            crossBarModel.position.y = rackYPos + 0.04
             crossBarModel.position.x = model.xPos
             let bbox1 = getModelBoundingBox(crossBarModel);
             scene.add(crossBarModel);
@@ -3012,7 +3022,7 @@
       );
       workPlane.material.visible = false;
 
-      workPlane.position.set(-1.08, 2.37, 0);
+      workPlane.position.set(-1.08, vanRoofHeight, 0);
       scene.add(workPlane);
 
       ladderPlane = new THREE.Mesh(
@@ -3047,58 +3057,80 @@
       else return product;
     });
 
-    let vanModelLink, shadowLink, rackModel, crossbarXpos, workPlaneValues, ladderPlaneValues;
+    let vanModelLink, shadowLink, rackModel, crossbarXpos, workPlaneValues, ladderPlaneValues, rackYPos, rackXPos;
     switch (selectedVan) {
       case "45730334703835":
-        vanModelLink = "https://cdn.shopify.com/3d/models/11ab0e3e276f4fa7/van3.glb";
+        vanModelLink = "https://cdn.shopify.com/3d/models/713d5b23692645f2/van-tr148.glb";
         shadowLink = "https://cdn.shopify.com/s/files/1/0412/9898/5124/files/ford_ao.png?v=1711858184";
         rackModel = 'https://cdn.shopify.com/3d/models/4df021fd93d74fd4/rack-extended.glb'
-        crossbarXpos = -2.52
+        ladderLink = 'https://cdn.shopify.com/3d/models/5098230f535f0020/ladder-tr148.glb';
+        ladderPos = [-1, 1.435, -1.012]
+        crossbarXpos = -2.67
+        rackYPos = 2.74
+        rackXPos = -0.9
         workPlaneValues = [3, 0.01, 1.55];
         ladderPlaneValues = [3, 2, 0.01];
-        vanArea = [-16.535, 101.968]
+        vanArea = [-10.535, 107.968]
         cutOffArea = [3.19, 25.7, 32.09, 64.72, 71.11, 85.19];
-        vanDiff = 3.2
-        initVan(vanModelLink, shadowLink, rackModel, crossbarXpos, workPlaneValues, ladderPlaneValues)
+        vanDiff = -1.4
+        lightbarXPos = 0.3149
+        movingOffset = 0.265;
+        initVan(vanModelLink, shadowLink, rackModel, crossbarXpos, workPlaneValues, ladderPlaneValues, rackYPos, rackXPos)
         break;
 
       case "45730334671067":
-        vanModelLink = "https://cdn.shopify.com/3d/models/11ab0e3e276f4fa7/van3.glb";
+        vanModelLink = "https://cdn.shopify.com/3d/models/713d5b23692645f2/van-tr148.glb";
         shadowLink = "https://cdn.shopify.com/s/files/1/0412/9898/5124/files/ford_ao.png?v=1711858184";
         rackModel = 'https://cdn.shopify.com/3d/models/bc8d1e88f7780c06/rack_origin.glb'
-        crossbarXpos = -2.52
+        ladderLink = 'https://cdn.shopify.com/3d/models/5098230f535f0020/ladder-tr148.glb';
+        ladderPos = [-1.02, 1.4, -1.012]
+        crossbarXpos = -2.67
+        rackYPos = 2.74
+        rackXPos = -0.9
         workPlaneValues = [3, 0.01, 1.55];
         ladderPlaneValues = [3, 2, 0.01];
-        vanArea = [-16.535, 101.968]
+        vanArea = [-10.535, 107.968]
         cutOffArea = [3.19, 25.7, 32.09, 64.72, 71.11, 85.19];
-        vanDiff = 3.2
-        initVan(vanModelLink, shadowLink, rackModel, crossbarXpos, workPlaneValues, ladderPlaneValues);
+        vanDiff = -1.4
+        lightbarXPos = 0.3149
+        movingOffset = 0.265;
+        initVan(vanModelLink, shadowLink, rackModel, crossbarXpos, workPlaneValues, ladderPlaneValues, rackYPos, rackXPos);
         break;
 
       case "45730334802139":
-        vanModelLink = "https://cdn.shopify.com/3d/models/f1feb21f361e67a7/van-ext.glb";
+        vanModelLink = "https://cdn.shopify.com/3d/models/f93eb4eb2fe0a35e/van-tr148-ext.glb";
         shadowLink = "https://cdn.shopify.com/s/files/1/0412/9898/5124/files/ford_ao.png?v=1711858184";
         rackModel = 'https://cdn.shopify.com/3d/models/8858a79a0b36c2f1/transit148-ext-rack.glb'
-        crossbarXpos = -3.24
+        ladderLink = 'https://cdn.shopify.com/3d/models/00ba5b320dc83fe8/ladder-tr148-ext.glb';
+        ladderPos = [-0.9, 1.316, -1.012]
+        crossbarXpos = -3.29
         workPlaneValues = [3, 0.01, 1.55];
         ladderPlaneValues = [3, 2, 0.01];
-        vanArea = [-16.535, 129.527]
+        vanArea = [-14.535, 129.527]
         cutOffArea = [3.2, 25.7, 32.09, 64.72, 71.11, 85.19, 91.58, 101.33, 107.72, 124.72];
-        vanDiff = 3.2
-        initVan(vanModelLink, shadowLink, rackModel, crossbarXpos, workPlaneValues, ladderPlaneValues);
+        vanDiff = -1.6
+        rackYPos = 2.59
+        rackXPos = -0.8
+        movingOffset = 0.365;
+        initVan(vanModelLink, shadowLink, rackModel, crossbarXpos, workPlaneValues, ladderPlaneValues, rackYPos, rackXPos);
         break;
 
       case "45730334834907":
-        vanModelLink = "https://cdn.shopify.com/3d/models/f1feb21f361e67a7/van-ext.glb";
+        vanModelLink = "https://cdn.shopify.com/3d/models/f93eb4eb2fe0a35e/van-tr148-ext.glb";
         shadowLink = "https://cdn.shopify.com/s/files/1/0412/9898/5124/files/ford_ao.png?v=1711858184";
         rackModel = 'https://cdn.shopify.com/3d/models/278cf2f4a6faa586/transit148-ext-rack-lightbar.glb'
-        crossbarXpos = -3.24
+        ladderLink = 'https://cdn.shopify.com/3d/models/00ba5b320dc83fe8/ladder-tr148-ext.glb';
+        ladderPos = [-0.9, 1.316, -1.012]
+        crossbarXpos = -3.29
         workPlaneValues = [3, 0.01, 1.55];
         ladderPlaneValues = [3, 2, 0.01];
-        vanArea = [-16.535, 129.527]
+        vanArea = [-14.535, 129.527]
         cutOffArea = [3.2, 25.7, 32.09, 64.72, 71.11, 85.19, 91.58, 101.33, 107.72, 124.72];
-        vanDiff = 3.2
-        initVan(vanModelLink, shadowLink, rackModel, crossbarXpos, workPlaneValues, ladderPlaneValues);
+        vanDiff = -1.6
+        rackYPos = 2.59
+        rackXPos = -0.8
+        movingOffset = 0.365;
+        initVan(vanModelLink, shadowLink, rackModel, crossbarXpos, workPlaneValues, ladderPlaneValues, rackYPos, rackXPos);
         break;
       
       case "45730446835931":
@@ -3111,7 +3143,9 @@
         vanArea = [-16.535, 129.527]
         cutOffArea = [3.2, 25.7, 32.09, 64.72, 71.11, 85.19, 91.58, 101.33, 107.72, 124.72];
         vanDiff = 3.2
-        initVan(vanModelLink, shadowLink, rackModel, crossbarXpos, workPlaneValues, ladderPlaneValues);
+        rackYPos = 2.36
+        rackXPos = -0.85
+        initVan(vanModelLink, shadowLink, rackModel, crossbarXpos, workPlaneValues, ladderPlaneValues, rackYPos, rackXPos);
         break;
       
       case "45910413181147":
@@ -3124,7 +3158,9 @@
         vanArea = [-16.535, 129.527]
         cutOffArea = [3.2, 25.7, 32.09, 64.72, 71.11, 85.19, 91.58, 101.33, 107.72, 124.72];
         vanDiff = 3.2
-        initVan(vanModelLink, shadowLink, rackModel, crossbarXpos, workPlaneValues, ladderPlaneValues);
+        rackYPos = 2.36
+        rackXPos = -0.85
+        initVan(vanModelLink, shadowLink, rackModel, crossbarXpos, workPlaneValues, ladderPlaneValues, rackYPos, rackXPos);
         break;
     }
     updateBuildState(availableProducts);
