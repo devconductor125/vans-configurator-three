@@ -1,119 +1,118 @@
 <head>
-	<meta charset="utf-8">
-	<title>Van Configurator</title>
-	<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+  <meta charset="utf-8">
+  <title>Van Configurator</title>
+  <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
-	<style>
-    #shopify-chat {
-      display: none;
+  <style>
+      #shopify-chat {
+        display: none;
+      }
+      .footer-group {
+        display: none !important;
+      }
+    .threejs-container {
+    	position: fixed;
+        z-index: 100;
+        top: 0px;
+        left: 0px;
+    	background: linear-gradient(180deg, #fff 60%, #e4e4e4) !important;
+    	margin: 0;
+    	color: #333;
+    	font-family: Monospace;
+    	font-size: 13px;
+    	line-height: 24px;
+    	overscroll-behavior: none;
+    	-webkit-user-select: none;
+    	-moz-user-select: none;
+    	-ms-user-select: none;
+    	user-select: none;
+    	overflow: hidden;
+        width: 100vw;
+        margin: 0 auto;
+        margin-bottom: 50px;
+        height: 100vh;
+    	display: flex;
     }
-    .footer-group {
-      display: none !important;
+    #configurator-container {
+    	width: calc(100vw - 300px);
     }
-		.threejs-container {
-			position: fixed;
-      z-index: 100;
-      top: 0px;
-      left: 0px;
-			background: linear-gradient(180deg, #fff 60%, #e4e4e4) !important;
-			margin: 0;
-			color: #333;
-			font-family: Monospace;
-			font-size: 13px;
-			line-height: 24px; 
-			overscroll-behavior: none;
-			-webkit-user-select: none;
-			-moz-user-select: none;
-			-ms-user-select: none;
-			user-select: none;
-			overflow: hidden;
-      width: 100vw;
-      margin: 0 auto;
-      margin-bottom: 50px;
-      height: 100vh;
-			display: flex;
-		}
-		#configurator-container {
-			width: calc(100vw - 300px);
-		}
-		#side-section {
-			width: 300px;
-			height: calc(100vh - 30px);
-			z-index: 1;
-      position: absolute;
-			background-color: white;
-      top: 15px;
-      right: 15px;
-      border-radius: 15px;
-		}
-		.d-flex {
-			display: flex;
-		}
-		.items-container {
-			position: absolute;
-			bottom: 16px;
-			left: 50%;
-			transform: translateX(-50%);
-      max-width: 800px;
-		}
-		.item-box {
-			margin-left: 8px;
-			margin-right: 8px;
-			border-radius: 15px;
-			text-align: center;
-			cursor: grab;
-			opacity: 0.8;
-			transition: opacity .15s ease-in-out, transform .08s linear;
-			position: relative;
-      margin-bottom: 10px;
-      margin-top: 10px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-		}
-    .item-box .item-name {
-      margin-top: 5px;
-      font-weight: 700;
+    #side-section {
+    	width: 300px;
+    	height: calc(100vh - 30px);
+    	z-index: 1;
+        position: absolute;
+    	background-color: white;
+        top: 15px;
+        right: 15px;
+        border-radius: 15px;
     }
-		.item-box .carted-item {
-			position: absolute;
-			top: -5px;
-			right: -5px;
-			background-color: red;
-			border-radius: 50%;
-			align-items: center;
-			justify-content: center;
-			width: 25px;
-			height: 25px;
-			color: white;
-      display: none;
-		}
-		.item-box:active {
-			cursor: grabbing;
-			cursor: -moz-grabbing;
-			cursor: -webkit-grabbing;
-		}
-		.item-box:hover {
-			opacity: 1;
-			transform: scale(1.04);
-		}
-		.item-img {
-			width: 100px;
-			height: 100px;
-			border-radius: 15px;
-			background-size: cover;
-			box-shadow: 0.6px 0.6px 1.9px rgba(0, 0, 0, .035), 5px 5px 15px rgba(0, 0, 0, .07);
-		}
-		p {
-			font-size: 11px;
-			line-height: 1.5;
-			margin-bottom: 12px;
-		}
-		#airconditioner {
+    .d-flex {
+    	display: flex;
+    }
+    .items-container {
+    	position: absolute;
+    	bottom: 16px;
+    	left: 50%;
+    	transform: translateX(-50%);
+        max-width: 800px;
+    }
+    .item-box {
+    	margin-left: 8px;
+    	margin-right: 8px;
+    	border-radius: 15px;
+    	text-align: center;
+    	cursor: grab;
+    	opacity: 0.8;
+    	transition: opacity .15s ease-in-out, transform .08s linear;
+    	position: relative;
+        margin-bottom: 10px;
+        margin-top: 10px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+      .item-box .item-name {
+        margin-top: 5px;
+        font-weight: 700;
+      }
+    .item-box .carted-item {
+    	position: absolute;
+    	top: -5px;
+    	right: -5px;
+    	background-color: red;
+    	border-radius: 50%;
+    	align-items: center;
+    	justify-content: center;
+    	width: 25px;
+    	height: 25px;
+    	color: white;
+        display: none;
+    }
+    .item-box:active {
+    	cursor: grabbing;
+    	cursor: -moz-grabbing;
+    	cursor: -webkit-grabbing;
+    }
+    .item-box:hover {
+    	opacity: 1;
+    	transform: scale(1.04);
+    }
+    .item-img {
+    	width: 100px;
+    	height: 100px;
+    	border-radius: 15px;
+    	background-size: cover;
+    	box-shadow: 0.6px 0.6px 1.9px rgba(0, 0, 0, .035), 5px 5px 15px rgba(0, 0, 0, .07);
+    }
+    p {
+    	font-size: 11px;
+    	line-height: 1.5;
+    	margin-bottom: 12px;
+    }
+    #airconditioner {
       background-image: url('https://cdn.shopify.com/s/files/1/0412/9898/5124/files/airconditioner-1.jpg?v=1720191621&width=100');
       display: block;
     }
-
     #maxxair {
       background-image: url('https://cdn.shopify.com/s/files/1/0412/9898/5124/files/maxxair.jpg?v=1711798448&width=100');
       display: block;
@@ -121,11 +120,11 @@
 
     #solar_panel250 {
       background-image: url('https://cdn.shopify.com/s/files/1/0412/9898/5124/files/250W.jpg?v=1724133040&width=100');
-			display: block;
+    display: block;
     }
     #solar_panel220 {
       background-image: url('https://cdn.shopify.com/s/files/1/0412/9898/5124/files/250W.jpg?v=1724133040&width=100');
-			display: block;
+    display: block;
     }
 
     #solar_panel200 {
@@ -135,7 +134,7 @@
 
     #solar_panel100 {
       background-image: url('https://cdn.shopify.com/s/files/1/0412/9898/5124/files/100W.jpg?v=1724041152&width=100');
-			display: block;
+    display: block;
     }
 
     #solar_panel50 {
@@ -149,6 +148,10 @@
     }
 
     #ladder {
+      background-image: url('https://cdn.shopify.com/s/files/1/0412/9898/5124/files/ladder.jpg?v=1714006260&width=100');
+      display: block;
+    }
+    #sp_ladder {
       background-image: url('https://cdn.shopify.com/s/files/1/0412/9898/5124/files/ladder.jpg?v=1714006260&width=100');
       display: block;
     }
@@ -168,6 +171,14 @@
       background-image: url('https://cdn.shopify.com/s/files/1/0412/9898/5124/files/awning.jpg?v=1723579211&width=100');
       display: block;
     }
+    #awning_400 {
+      background-image: url('https://cdn.shopify.com/s/files/1/0412/9898/5124/files/awning.jpg?v=1723579211&width=100');
+      display: block;
+    }
+    #awning_450 {
+      background-image: url('https://cdn.shopify.com/s/files/1/0412/9898/5124/files/awning.jpg?v=1723579211&width=100');
+      display: block;
+    }
     #light_bar {
       background-image: url('https://cdn.shopify.com/s/files/1/0412/9898/5124/files/light_bar.jpg?v=1725399706&width=100');
       display: block;
@@ -181,630 +192,719 @@
       display: block;
     }
 
-		button {
-			cursor: pointer;
-			display: flex;
-			justify-content: center;
-		}
-    button[disabled] {
-      opacity: 0.5;
-      cursor: not-allowed;
+    #airconditioner-v1 {
+      background-image: url('https://cdn.shopify.com/s/files/1/0412/9898/5124/files/ac-velit1.jpg?v=1738722003&width=100');
+      display: block;
     }
-		.action-btn-list {
-			position: absolute;
-      transform: translateY(-50%);
-      top: 50%;
-			left: 48px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 16px 8px;
-      border-radius: 35px;
-      background-color: #E64B38;
-		}
-		.action-btn-list button {
-			width: 40px;
-			height: 40px;
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			background: #333;
-			border-radius: 22px;
-			border: none;
-      background: none;
-      margin: 8px 0px
-		}
-		.text-center {
-			text-align: center;
-		}
-		.mb-3 {
-			margin-bottom: 8px;
-		}
-		.text-title1 {
-			color: #333;
-			opacity: 0;
-			animation: textAnimation 2s linear 3s infinite alternate;
-		}
-		.text-body1 {
-			color: #333;
-			font-size: 20px;
-		}
-		.items-container>div:first-child {
-			position: relative;
-			text-align: center;
-		}
-		@keyframes textAnimation {
-			0% {
-				opacity: 0;
-			}
+    #airconditioner-v2 {
+      background-image: url('https://cdn.shopify.com/s/files/1/0412/9898/5124/files/ac-velit2.jpg?v=1738722060&width=100');
+      display: block;
+    }
+    #airconditioner-x2 {
+      background-image: url('https://cdn.shopify.com/s/files/1/0412/9898/5124/files/airconditioner-x2.jpg?v=1740996273&width=100');
+      display: block;
+    }
+    #airconditioner-x3 {
+      background-image: url('https://cdn.shopify.com/s/files/1/0412/9898/5124/files/airconditioner-x3.jpg?v=1740996273&width=100');
+      display: block;
+    }
+    #new_solar250,  #new_solar220, #new_solar200, #new_solar100{
+      background-image: url('https://cdn.shopify.com/s/files/1/0412/9898/5124/files/newpowa-100W.jpg?v=1744304137&width=100');
+      display: block;
+    }
+    #mk20-maxxair {
+      background-image: url('https://cdn.shopify.com/s/files/1/0412/9898/5124/files/mk20-maxxair.jpg?v=1746457329&width=100');
+      display: block;
+    }
+    #mk20-l2 {
+      background-image: url('https://cdn.shopify.com/s/files/1/0412/9898/5124/files/mk20-l2.jpg?v=1746456445&width=100');
+      display: block;
+    }
+    #mk20-w3 {
+      background-image: url('https://cdn.shopify.com/s/files/1/0412/9898/5124/files/mk20-w3.jpg?v=1746457659&width=100');
+      display: block;
+    }
+    #mk22-w3 {
+      background-image: url('https://cdn.shopify.com/s/files/1/0412/9898/5124/files/mk22-w3.jpg?v=1746550450&width=100');
+      display: block;
+    }
+    #mk23-ac {
+      background-image: url('https://cdn.shopify.com/s/files/1/0412/9898/5124/files/mk23-ac.jpg?v=1746550324&width=100');
+      display: block;
+    }
 
-			100% {
-				opacity: 0.7;
-			}
-		}
-    #configurator-container {
-      position: relative;
-      border-radius: 20px;
+    button {
+    	cursor: pointer;
+    	display: flex;
+    	justify-content: center;
     }
-    .item-container .announce-bar {
-      margin-bottom: 20px !important;
+      button[disabled] {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+    .action-btn-list {
+    	position: absolute;
+        transform: translateY(-50%);
+        top: 50%;
+    	left: 48px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 16px 8px;
+        border-radius: 35px;
+        background-color: #E64B38;
     }
-		.van-detail {
-			position: absolute;
-			top: 40px;
-			left: 50%;
-			transform: translateX(-50%);
-		}
-		#rack_title {
-			font-size: 28px;
-			text-shadow: 0px 0px 4px #fff;
-			color: black;
-      text-align: center;
-      line-height: 34px;
-		}
-		.tooltip .tooltiptext {
-			visibility: hidden;
-			width: 120px;
-			background-color: rgba(17, 12, 46, 1);
-			color: #fff;
-			text-align: center;
-			border-radius: 6px;
-			padding: 5px 0;
-			top: 35%;
-    	margin-left: 10px;
-			position: absolute;
-			z-index: 1;
-			transform: translateY(-23%);
-      left: 100%;
-		}
-		.tooltip:hover .tooltiptext {
-			visibility: visible;
-		}
-		.tooltip .tooltiptext:before {
-			content: "";
-			display: block;
-			width: 0;
-			height: 0;
-			border-top: 9px solid transparent;
-			border-bottom: 9px solid transparent;
-			border-left: 9px solid rgba(17,9, 46, 1);
-			position: absolute;
-			left: -9px;
-			top: 50%;
-			transform: rotate(180deg) translateY(50%);
-		}
-    .left-tooltip {
-			position: relative;
-		}
-		.left-tooltip .tooltiptext {
-			visibility: hidden;
-			width: 120px;
-			background-color: rgba(17, 12, 46, 1);
-			color: #fff;
-			text-align: center;
-			border-radius: 6px;
-			padding: 5px 0;
-			top: 35%;
-    	margin-left: 10px;
-			position: absolute;
-			z-index: 1;
-      left: 100%;
-			margin-right: 8px;
-			transform: translateY(-30%);
-		}
-		.left-tooltip:hover .tooltiptext {
-			visibility: visible;
-		}
-		.left-tooltip .tooltiptext:after {
-			content: "";
-			display: block;
-			width: 0;
-			height: 0;
-			border-top: 8px solid transparent;
-			border-bottom: 8px solid transparent;
-			border-left: 8px solid rgba(17, 9, 46, 1);
-			position: absolute;
-			top: 50%;
-			transform: rotate(180deg) translateY(50%);
-			left: -6px;
-		}
-    [data-tab-content] {
-			display: none;
-		}
-		.active[data-tab-content] {
-			display: block;
-		}
-		.tabs {
-			display: flex;
-			justify-content: space-around;
-			list-style-type: none;
-			margin: 0;
-			padding: 0;
-			border-bottom: 1px solid black;
-			position: absolute;
-			width: 300px;
-			height: 50px;
-		}
-		.tab {
-			cursor: pointer;
-			padding: 10px;
-			width: 100%;
-			text-align: center;
-      border-right: 1px solid #676767;
-		}
-		.tab.active {
-			background-color: #676767;
-			color: white;
-		}
-		.tab:hover {
-			background-color: #AAA;
-		}
-		.tab-content {
-			height: calc(100vh - 150px);
-			overflow-y: auto;
-			margin-top: 50px;
-			margin-bottom: 100px;
-			padding: 10px 10px;
-		}
-		.checkout-area {
-			position: absolute;
-			height: 100px;
-			bottom: 0;
-			width: 300px;
-			border-top: 1px solid #333;
-      border-bottom-left-radius: 15px;
-      border-bottom-right-radius: 15px;
-		}
-		.checkout-area button {
-			justify-content: center;
-			font-family: "Josefin Sans", sans-serif;
-			border-radius: 30px;
-			border: 0;
-			letter-spacing: 1px;
-			color: #fff;
-			background: #E64B38;
-			padding: 9px;
-			white-space: nowrap;
-			font-size: 16px;
-			line-height: 1;
-			text-transform: uppercase;
-			transition: all 0.15s ease;
-			text-decoration: none;
-			display: flex;
-			align-items: center;
-			margin: 0 auto;
-			width: 90%;
-      font-weight: 700;
-      margin-top: 6px;
-		}
-		.checkout-area button:hover {
-			-webkit-transform: translateY(-1px);
-      transform: translateY(-1px);
-			background: #FE371F;
-		}
-		#products-detail {
-			display: flex;
-			justify-content: space-between;
-			margin: 0 auto;
-			width: 90%;
-			margin-top: 10px;
-			margin-bottom: 4px;
-			font-size: 16px;
-			font-weight: bold;
-		}
-    .unaka-logo {
-			position: absolute;
-			top: 20px;
-			left: 30px;
-      z-index: 10;
-		}
-    .build-item {
-			margin-top: 12px;
-      border-bottom: 2px solid rgb(134, 134, 134);
-      padding-bottom: 10px;
-		}
-		.build-item .item-overview {
-			display: flex;
-			align-items: center;
-      justify-content: space-between;
-		}
-    .item-overview .product-info {
-      display: flex;
-      align-items: center;
+    .action-btn-list button {
+    	width: 40px;
+    	height: 40px;
+    	display: flex;
+    	align-items: center;
+    	justify-content: center;
+    	background: #333;
+    	border-radius: 22px;
+    	border: none;
+        background: none;
+        margin: 8px 0px
     }
-		.item-overview .item-name {
-			font-size: 12px;
-			display: -webkit-box;
-			-webkit-line-clamp: 2;
-			-webkit-box-orient: vertical;
-			overflow: hidden;
-			text-overflow: ellipsis;
-			word-break: break-all;
-      font-weight: bold;
-      color: black;
-      margin-left: 6px;
-      text-decoration: underline;
-      line-height: 16px;
-		}
-    .item-overview .remove-product {
-      margin-left: 8px;
-      border-radius: 4px;
-      font-size: 22px;
+    .text-center {
+    	text-align: center;
     }
-		.item-overview img {
-			border: 1px solid rgb(134, 133, 133);
+    .mb-3 {
+    	margin-bottom: 8px;
+    }
+    .text-title1 {
+    	color: #333;
+    	opacity: 0;
+    	animation: textAnimation 2s linear 3s infinite alternate;
+    }
+    .text-body1 {
+    	color: #333;
+    	font-size: 20px;
+    }
+    .items-container>div:first-child {
+    	position: relative;
+    	text-align: center;
+    }
+    @keyframes textAnimation {
+    	0% {
+    		opacity: 0;
+    	}
+
+    	100% {
+    		opacity: 0.7;
+    	}
+    }
+      #configurator-container {
+        position: relative;
+        border-radius: 20px;
+      }
+      .item-container .announce-bar {
+        margin-bottom: 20px !important;
+      }
+    .van-detail {
+    	position: absolute;
+    	top: 40px;
+    	left: 50%;
+    	transform: translateX(-50%);
+    }
+    #rack_title {
+    	font-size: 28px;
+    	text-shadow: 0px 0px 4px #fff;
+    	color: black;
+        text-align: center;
+        line-height: 34px;
+    }
+    .tooltip .tooltiptext {
+    	visibility: hidden;
+    	width: 120px;
+    	background-color: rgba(17, 12, 46, 1);
+    	color: #fff;
+    	text-align: center;
     	border-radius: 6px;
-			margin-right: 6px;
-		}
-		.build-item .item-variants {
-			margin-top: 6px;
-			display: flex;
-			flex-direction: column;
-			margin-left: 12px;
-		}
-		.item-variants .variant {
-			display: flex;
-			align-items: center;
-			justify-content: space-between;
-      margin: 4px 0;
-		}
-    .item-variants .variant .selected-variant{
-			color: rgb(230, 75, 56);
-      font-weight: bold;
-		}
-		.item-variants .variant div {
-			display: flex;
-			align-items: center;
-		}
-		.item-variants .variant input{
-			margin: 0;
-			margin-right: 4px;
-		}
-    .item-variants .variant .price{
-			font-weight: bold;
-		}
-    .item-variants .variant label{
-			letter-spacing: -0.3px;
-      font-size: 11px;
-      line-height: 18px;
-		}
-		.build-item .divider {
-			border: 1px solid rgb(159, 159, 159);
-		}
-    #viewHelper {
-      display: flex;
+    	padding: 5px 0;
+    	top: 35%;
+      	margin-left: 10px;
+    	position: absolute;
+    	z-index: 1;
+    	transform: translateY(-23%);
+        left: 100%;
     }
-    #side-collapse {
-			display: none;
-		}
-    .select-colors {
-			display: flex;
-			flex-wrap: wrap;
-		}
-		.color-item {
-      display: block !important;
-			width: 24px;
-			height: 24px;
-			border-radius: 20px;
-			border: 2px solid #c94747;
-			margin: 3px;
-			cursor: pointer;
-			opacity: 0.7;
-		}
-		.color-item.color-selected {
-			opacity: 1;
-		}
-
-    @media only screen and (max-width: 1250px) {
-      .items-container {
-        max-width: 576px;
+    .tooltip:hover .tooltiptext {
+    	visibility: visible;
+    }
+    .tooltip .tooltiptext:before {
+    	content: "";
+    	display: block;
+    	width: 0;
+    	height: 0;
+    	border-top: 9px solid transparent;
+    	border-bottom: 9px solid transparent;
+    	border-left: 9px solid rgba(17,9, 46, 1);
+    	position: absolute;
+    	left: -9px;
+    	top: 50%;
+    	transform: rotate(180deg) translateY(50%);
+    }
+      .left-tooltip {
+    	position: relative;
+    }
+    .left-tooltip .tooltiptext {
+    	visibility: hidden;
+    	width: 120px;
+    	background-color: rgba(17, 12, 46, 1);
+    	color: #fff;
+    	text-align: center;
+    	border-radius: 6px;
+    	padding: 5px 0;
+    	top: 35%;
+      	margin-left: 10px;
+    	position: absolute;
+    	z-index: 1;
+        left: 100%;
+    	margin-right: 8px;
+    	transform: translateY(-30%);
+    }
+    .left-tooltip:hover .tooltiptext {
+    	visibility: visible;
+    }
+    .left-tooltip .tooltiptext:after {
+    	content: "";
+    	display: block;
+    	width: 0;
+    	height: 0;
+    	border-top: 8px solid transparent;
+    	border-bottom: 8px solid transparent;
+    	border-left: 8px solid rgba(17, 9, 46, 1);
+    	position: absolute;
+    	top: 50%;
+    	transform: rotate(180deg) translateY(50%);
+    	left: -6px;
+    }
+      [data-tab-content] {
+    	display: none;
+    }
+    .active[data-tab-content] {
+    	display: block;
+    }
+    .tabs {
+    	display: flex;
+    	justify-content: space-around;
+    	list-style-type: none;
+    	margin: 0;
+    	padding: 0;
+    	border-bottom: 1px solid black;
+    	position: absolute;
+    	width: 300px;
+    	height: 50px;
+    }
+    .tab {
+    	cursor: pointer;
+    	padding: 10px;
+    	width: 100%;
+    	text-align: center;
+        border-right: 1px solid #676767;
+    }
+    .tab.active {
+    	background-color: #676767;
+    	color: white;
+    }
+    .tab:hover {
+    	background-color: #AAA;
+    }
+    .tab-content {
+    	height: calc(100vh - 150px);
+    	overflow-y: auto;
+    	margin-top: 50px;
+    	margin-bottom: 100px;
+    	padding: 10px 10px;
+    }
+    .checkout-area {
+    	position: absolute;
+    	height: 100px;
+    	bottom: 0;
+    	width: 300px;
+    	border-top: 1px solid #333;
+        border-bottom-left-radius: 15px;
+        border-bottom-right-radius: 15px;
+    }
+    .checkout-area button {
+    	justify-content: center;
+    	font-family: "Josefin Sans", sans-serif;
+    	border-radius: 30px;
+    	border: 0;
+    	letter-spacing: 1px;
+    	color: #fff;
+    	background: #E64B38;
+    	padding: 9px;
+    	white-space: nowrap;
+    	font-size: 16px;
+    	line-height: 1;
+    	text-transform: uppercase;
+    	transition: all 0.15s ease;
+    	text-decoration: none;
+    	display: flex;
+    	align-items: center;
+    	margin: 0 auto;
+    	width: 90%;
+        font-weight: 700;
+        margin-top: 6px;
+    }
+    .checkout-area button:hover {
+    	-webkit-transform: translateY(-1px);
+        transform: translateY(-1px);
+    	background: #FE371F;
+    }
+    #products-detail {
+    	display: flex;
+    	justify-content: space-between;
+    	margin: 0 auto;
+    	width: 90%;
+    	margin-top: 10px;
+    	margin-bottom: 4px;
+    	font-size: 16px;
+    	font-weight: bold;
+    }
+      .unaka-logo {
+    	position: absolute;
+    	top: 20px;
+    	left: 30px;
+        z-index: 10;
+    }
+      .build-item {
+    	margin-top: 12px;
+        border-bottom: 2px solid rgb(134, 134, 134);
+        padding-bottom: 10px;
+    }
+    .build-item .item-overview {
+    	display: flex;
+    	align-items: center;
+        justify-content: space-between;
+    }
+      .item-overview .product-info {
+        display: flex;
+        align-items: center;
       }
+    .item-overview .item-name {
+    	font-size: 12px;
+    	display: -webkit-box;
+    	-webkit-line-clamp: 2;
+    	-webkit-box-orient: vertical;
+    	overflow: hidden;
+    	text-overflow: ellipsis;
+    	word-break: break-all;
+        font-weight: bold;
+        color: black;
+        margin-left: 6px;
+        text-decoration: underline;
+        line-height: 16px;
+    }
+      .item-overview .remove-product {
+        margin-left: 8px;
+        border-radius: 4px;
+        font-size: 22px;
+      }
+    .item-overview img {
+    	border: 1px solid rgb(134, 133, 133);
+      	border-radius: 6px;
+    	margin-right: 6px;
+    }
+    .build-item .item-variants {
+    	margin-top: 6px;
+    	display: flex;
+    	flex-direction: column;
+    	margin-left: 12px;
+    }
+    .item-variants .variant {
+    	display: flex;
+    	align-items: center;
+    	justify-content: space-between;
+        margin: 4px 0;
+    }
+      .item-variants .variant .selected-variant{
+    	color: rgb(230, 75, 56);
+        font-weight: bold;
+    }
+    .item-variants .variant div {
+    	display: flex;
+    	align-items: center;
+    }
+    .item-variants .variant input{
+    	margin: 0;
+    	margin-right: 4px;
+    }
+      .item-variants .variant .price{
+    	font-weight: bold;
+    }
+      .item-variants .variant label{
+    	letter-spacing: -0.3px;
+        font-size: 11px;
+        line-height: 18px;
+    }
+    .build-item .divider {
+    	border: 1px solid rgb(159, 159, 159);
+    }
+      #viewHelper {
+        display: flex;
+      }
+      #side-collapse {
+    	display: none;
+    }
+      .select-colors {
+    	display: flex;
+    	flex-wrap: wrap;
+    }
+    .color-item {
+        display: block !important;
+    	width: 24px;
+    	height: 24px;
+    	border-radius: 20px;
+    	border: 2px solid #c94747;
+    	margin: 3px;
+    	cursor: pointer;
+    	opacity: 0.7;
+    }
+    .color-item.color-selected {
+    	opacity: 1;
     }
 
-    
-		@media only screen and (max-width: 1350px) {
-			.item-img {
-				width: 80px;
-				height: 80px;
-			}
-		}
-		@media only screen and (max-width: 1024px) {
-			{% comment %} .item-img {
-				width: 70px;
-				height: 70px;
-				margin-bottom: 10px;
-			}
-			.item-name {
-				display: none;
-			} {% endcomment %}
-			#configurator-container {
-				width: 100vw;
-			}
-			#side-section {
-				position: absolute;
-				right: -300px;
-				transition: right .4s;
-				transition-timing-function: linear;
-			}
-			.van-detail {
-				display: none;
-			}
-			.text-title1 {
-				display: none;
-			}
-			.action-btn-list {
-				/* bottom: 160px; */
-				right: 8px;
-			}
-			.unaka-logo img{
-				width: 60px;
-			}
-			#viewHelper {
-				display: none;
-			}
-			#side-collapse {
-				display: block;
-				position: absolute;
-				top: 30vh;
-				left: -36px;
-    		border: none;
-				width: 36px;
-				background-color: white;
-				border-top-left-radius: 10px;
-				border-bottom-left-radius: 10px;
-			}
-			#side-collapse div {
-				padding: 14px 8px;
-				transition: all .2s;
-				z-index: 10;
-			}
-			#side-collapse div svg{
-				transform: scaleY(2);
-			}
-			#side-collapse div.collapsed {
-				text-align: left;
-			}
-			#side-collapse div.expanded {
-				transform: rotate(180deg);
-				text-align: right;
-			}
-		}
-
-    #select-template {
-			padding-top: 10px;
-		}
-		#select-template .selectable {
-			display: flex;
-			justify-content: center;
-			margin-top: 20px;
-			cursor: pointer;
-		}
-    .not-sell {
-      color: red;
-      font-size: 12px;
-      line-height: 16px;
-    }
-    .loox-float-toggler-container .closeBtn{
-      background-color: white;
-      position: absolute;
-      top: 9px;
-      right: 40px;
-      z-index: 1;
-      /* color: white; */
-      /* padding: 5px; */
-      width: 18px;
-      height: 18px;
-      display: flex;
-      justify-content: center;
-      /* align-items: center; */
-      /* font-size: 14px; */
-      border-radius: 10px;
-      cursor: pointer;
-    }
-
-    .loox-float-toggler-container {
-      display: none !important;
-    }
-
-    .swiper {
-      width: 100%;
-      height: 100%;
-      padding: 8px 0;
-    }
-
-    .swiper-slide {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-
-    .swiper-button-next,
-    .swiper-button-prev {
-      top: 0;
-      width: 40px;
-      height: 100%;
-      color: #37393a;
-      display: flex !important;
-    }
-
-    .swiper-button-prev {
-      left: -32px;
-    }
-
-    .swiper-button-next {
-      right: -32px;
-    }
-
-    @media only screen and (max-width: 700px) {
-      .items-container {
-        max-width: 100%;
+      @media only screen and (max-width: 1250px) {
+        .items-container {
+          max-width: 576px;
+        }
       }
 
-      .item-img {
-        width: 70px;
-        height: 70px;
+
+    @media only screen and (max-width: 1350px) {
+    	.item-img {
+    		width: 80px;
+    		height: 80px;
+    	}
+    }
+    @media only screen and (max-width: 1024px) {
+    	{% comment %} .item-img {
+    		width: 70px;
+    		height: 70px;
+    		margin-bottom: 10px;
+    	}
+    	.item-name {
+    		display: none;
+    	} {% endcomment %}
+    	#configurator-container {
+    		width: 100vw;
+    	}
+    	#side-section {
+    		position: absolute;
+    		right: -300px;
+    		transition: right .4s;
+    		transition-timing-function: linear;
+    	}
+    	.van-detail {
+    		display: none;
+    	}
+    	.text-title1 {
+    		display: none;
+    	}
+    	.action-btn-list {
+    		/* bottom: 160px; */
+    		right: 8px;
+    	}
+    	.unaka-logo img{
+    		width: 60px;
+    	}
+    	#viewHelper {
+    		display: none;
+    	}
+    	#side-collapse {
+    		display: block;
+    		position: absolute;
+    		top: 30vh;
+    		left: -36px;
+      		border: none;
+    		width: 36px;
+    		background-color: white;
+    		border-top-left-radius: 10px;
+    		border-bottom-left-radius: 10px;
+    	}
+    	#side-collapse div {
+    		padding: 14px 8px;
+    		transition: all .2s;
+    		z-index: 10;
+    	}
+    	#side-collapse div svg{
+    		transform: scaleY(2);
+    	}
+    	#side-collapse div.collapsed {
+    		text-align: left;
+    	}
+    	#side-collapse div.expanded {
+    		transform: rotate(180deg);
+    		text-align: right;
+    	}
+    }
+
+      #select-template {
+    	padding-top: 10px;
+    }
+    #select-template .selectable {
+    	display: flex;
+    	justify-content: center;
+    	margin-top: 20px;
+    	cursor: pointer;
+    }
+      .not-sell {
+        color: red;
+        font-size: 12px;
+        line-height: 16px;
+      }
+      .loox-float-toggler-container .closeBtn{
+        background-color: white;
+        position: absolute;
+        top: 9px;
+        right: 40px;
+        z-index: 1;
+        /* color: white; */
+        /* padding: 5px; */
+        width: 18px;
+        height: 18px;
+        display: flex;
+        justify-content: center;
+        /* align-items: center; */
+        /* font-size: 14px; */
+        border-radius: 10px;
+        cursor: pointer;
       }
 
-      .item-name {
-        display: none;
+      .loox-float-toggler-container {
+        display: none !important;
+      }
+
+      .swiper {
+        width: 100%;
+        height: 100%;
+        padding: 8px 0;
+      }
+
+      .swiper-slide {
+        display: flex;
+        justify-content: center;
+        align-items: center;
       }
 
       .swiper-button-next,
       .swiper-button-prev {
-        display: none;
+        top: 0;
+        width: 40px;
+        height: 100%;
+        color: #37393a;
+        display: flex !important;
       }
-    }
-    .d-none {
-      display: none !important;
-    }
-    .d-block {
-      display: block !important;
-    }
 
-    #van_modal_area {
-      height: 100vh;
-      z-index: 1000;
-      width: 100vw;
-      display: flex;
-      position: absolute;
-      align-items: center;
-      justify-content: center;
-      background-color: #3a3a3a6b;
-    }
+      .swiper-button-prev {
+        left: -32px;
+      }
 
-    .van_modal_content {
-      min-width: 400px;
-      border-radius: 8px;
-      padding: 24px 24px;
-      background-color: white;
-      max-width: 560px;
-    }
-    .van_modal_content label {
-      font-size: 20px;
-      margin: 10px 0px;
-      font-weight: bold;
-    }
-    #van_modal_select {
-      width: 100%;
-      height: 40px;
-      margin: 20px 0px;
-      border: 1px solid #333;
-      border-radius: 6px;
-    }
-    .van_select_trigger {
-      display: flex;
-      justify-content: end;
-    }
-    .van_select_trigger button{
-      justify-content: center;
-			font-family: "Josefin Sans", sans-serif;
-			border-radius: 8px;
-			border: 0;
-			letter-spacing: 1px;
-			color: #fff;
-			background: #246eea;
-			padding: 10px 16px;
-			white-space: nowrap;
-			font-size: 12px;
-			line-height: 1;
-			text-transform: uppercase;
-			transition: all 0.15s ease;
-			text-decoration: none;
-			display: flex;
-			align-items: center;
-    }
+      .swiper-button-next {
+        right: -32px;
+      }
 
-    .sidebar-header {
-      background-color: #F9AD18;
-      border-top-left-radius: 15px;
-      border-top-right-radius: 15px;
-      text-align: center;
-      font-size: 24px;
-      padding: 16px;
-      font-weight: 700;
-    }
-    .sidebar-vancolor {
-      padding: 10px;
-    }
-    .sidebar-vancolor .vancolor-title {
-      font-size: 18px;
-      padding-left: 5px;
-      font-weight: 700;
-    }
-    #build-list {
-      padding: 14px;
-      overflow-y: auto;
-      height: calc(100vh - 285px);
+      @media only screen and (max-width: 700px) {
+        .items-container {
+          max-width: 100%;
+        }
 
-    }
-    #build-list::-webkit-scrollbar-track
-    {
-      border-radius: 10px;
-      background-color: #a6a6a6;
-    }
+        .item-img {
+          width: 70px;
+          height: 70px;
+        }
 
-    #build-list::-webkit-scrollbar
-    {
-      width: 12px;
-      background-color: white;
-    }
+        .item-name {
+          display: none;
+        }
 
-    #build-list::-webkit-scrollbar-thumb
-    {
-      border-radius: 10px;
-      background-color: #F9AD18;
-    }
-    .buildlist-title {
-      font-size: 18px;
-      padding-left: 5px;
-      font-weight: 700;
-      padding-left: 14px;
-    }
+        .swiper-button-next,
+        .swiper-button-prev {
+          display: none;
+        }
+      }
+      .d-none {
+        display: none !important;
+      }
+      .d-block {
+        display: block !important;
+      }
 
-	</style>
+      #van_modal_area {
+        height: 100vh;
+        z-index: 1000;
+        width: 100vw;
+        display: flex;
+        position: absolute;
+        align-items: center;
+        justify-content: center;
+        background-color: #3a3a3a6b;
+      }
+
+      .van_modal_content {
+        min-width: 400px;
+        border-radius: 8px;
+        padding: 24px 24px;
+        background-color: white;
+        max-width: 560px;
+      }
+      .van_modal_content p {
+        font-size: 20px;
+        margin: 10px 0px;
+        font-weight: bold;
+      }
+      #van_modal_select {
+        width: 100%;
+        height: 40px;
+        margin: 20px 0px;
+        border: 1px solid #333;
+        border-radius: 6px;
+      }
+      .selectables {
+        width: 100%;
+        padding: 10px;
+      }
+      .van-selectable {
+        width: 100%;
+        height: 40px;
+        margin: 10px 0px;
+        border: 1px solid #333;
+        border-radius: 6px;
+      }
+      .van_select_trigger {
+        margin-top: 20px;
+        display: flex;
+        justify-content: end;
+      }
+      .van_select_trigger button{
+        margin-left: 10px;
+        justify-content: center;
+        font-family: "Josefin Sans", sans-serif;
+        border-radius: 8px;
+        border: 0;
+        letter-spacing: 1px;
+        color: #fff;
+        background: #246eea;
+        padding: 10px 16px;
+        white-space: nowrap;
+        font-size: 12px;
+        line-height: 1;
+        text-transform: uppercase;
+        transition: all 0.15s ease;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+      }
+      .van_select_trigger #van_reset_trigger {
+        background: #343a40;
+      }
+      .sidebar-header {
+        background-color: #F9AD18;
+        border-top-left-radius: 15px;
+        border-top-right-radius: 15px;
+        text-align: center;
+        font-size: 24px;
+        padding: 16px;
+        font-weight: 700;
+      }
+      .sidebar-vancolor {
+        padding: 10px;
+      }
+      .sidebar-vancolor .vancolor-title {
+        font-size: 18px;
+        padding-left: 5px;
+        font-weight: 700;
+      }
+      #build-list {
+        padding: 14px;
+        overflow-y: auto;
+        height: calc(100vh - 285px);
+
+      }
+      #build-list::-webkit-scrollbar-track
+      {
+        border-radius: 10px;
+        background-color: #a6a6a6;
+      }
+
+      #build-list::-webkit-scrollbar
+      {
+        width: 12px;
+        background-color: white;
+      }
+
+      #build-list::-webkit-scrollbar-thumb
+      {
+        border-radius: 10px;
+        background-color: #F9AD18;
+      }
+      .buildlist-title {
+        font-size: 18px;
+        padding-left: 5px;
+        font-weight: 700;
+        padding-left: 14px;
+      }
+
+      .mouse-navigation {
+        position: absolute;
+    	top: 120px;
+    	left: 20px;
+        z-index: 1000;
+      }
+  </style>
 </head>
 <div id="van_modal_area">
   <div class="van_modal_content">
-    <label>Select Van</label>
-    <select id="van_modal_select">
-      <option> Premium / Ford Transit 148 High Roof</option>
-    </select>
-    <div class="van_select_trigger"> 
-      <button id='van_select_trigger'>
-        Select
-      </button>
+    <p>Select Van</p>
+      {% comment %} <select id="van_modal_select">
+        <option> Premium / Ford Transit 148 High Roof</option>
+      </select> {% endcomment %}
+
+    <div class="selectables">
+      <select id="vanType" class="van-selectable">
+        <option value="">Select Van</option>
+      </select>
+  
+      <select id="vanSize" class="van-selectable" disabled>
+        <option value="">Select Size</option>
+      </select>
+  
+      <select id="vanVariant" class="van-selectable" disabled>
+        <option value="">Select Roof Rack</option>
+      </select>
+  
+      <div class="van_select_trigger">
+        <button id="van_reset_trigger">Reset</button>
+        <button id="van_select_trigger">Select</button>
+      </div>
     </div>
   </div>
 </div>
 <div class="threejs-container">
   <a class="unaka-logo" href="/">
-    <img src="https://cdn.shopify.com/s/files/1/0412/9898/5124/files/Unaka_Brand_v2-03.png?v=1706796409&width=95" draggable="false" width="95" height="95"/>
+    <img
+      src="https://cdn.shopify.com/s/files/1/0412/9898/5124/files/Unaka_Brand_v2-03.png?v=1706796409&width=95"
+      draggable="false"
+      width="95"
+      height="95"
+    >
   </a>
-	<div id="configurator-container">
+  <div class="mouse-navigation">
+    <img
+      src="https://cdn.shopify.com/s/files/1/0412/9898/5124/files/mouse_navigation.png?v=1737385825&width=120"
+      draggable="false"
+      width="120"
+      height="120"
+    >
+  </div>
+  <div id="configurator-container">
     <div class="van-detail">
-      <h2 id="rack_title">Ford Transit Roof Rack - HSLD - 148 High Roof</h2>
+      <h2 id="rack_title">Ford Transit Roof Rack - Premium - 148 High Roof</h2>
     </div>
-		<div id="container"></div>
+    <div id="container"></div>
     <div class="items-container">
       <div class="swiper">
         <div class="swiper-wrapper drag-items" id="selectableProducts">
@@ -818,7 +918,7 @@
               </div>
             </div>
           </div>
-          <div class="swiper-slide">
+          {% comment %} <div class="swiper-slide">
             <div class="item-box">
               <div class="item-img" id="airconditioner-p" draggable="false">
                 <div class="carted-item">1</div>
@@ -827,7 +927,29 @@
                 <p>Dometic Penguin II</p>
               </div>
             </div>
+          </div> {% endcomment %}
+
+          <div class="swiper-slide">
+            <div class="item-box">
+              <div class="item-img" id="airconditioner-x2" draggable="false">
+                <div class="carted-item">1</div>
+              </div>
+              <div class="item-name">
+                <p>Nomadic Innovations AC X2</p>
+              </div>
+            </div>
           </div>
+          <div class="swiper-slide">
+            <div class="item-box">
+              <div class="item-img" id="airconditioner-x3" draggable="false">
+                <div class="carted-item">1</div>
+              </div>
+              <div class="item-name">
+                <p>Nomadic Innovations AC X3</p>
+              </div>
+            </div>
+          </div>
+
           <div class="swiper-slide">
             <div class="item-box">
               <div class="item-img" id="maxxair" draggable="false">
@@ -958,12 +1080,23 @@
               </div>
             </div>
           </div>
+          <div class="swiper-slide">
+            <div class="item-box">
+              <div class="item-img left-tooltip" id="light_bar_test" draggable="false">
+                <span class="tooltiptext">asdasdasda</span>
+                <div class="carted-item">1</div>
+              </div>
+              <div class="item-name">
+                <p>Test Tool tip</p>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
       <div class="swiper-button-next"></div>
       <div class="swiper-button-prev"></div>
     </div>
-		<div class="action-btn-list">
+    <div class="action-btn-list">
       <button class="mb-3 left-tooltip" id="deleteButton" disabled>
         <span class="tooltiptext">Delete Items</span>
         <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 1024 1024">
@@ -998,19 +1131,21 @@
 
       <button class="mb-3 left-tooltip" id="selectVanBtn">
         <span class="tooltiptext">Select Van</span>
-        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 256 256"><path fill="#ffffff" d="m254.07 106.79l-45.54-53.06A16 16 0 0 0 196.26 48H32a16 16 0 0 0-16 16v112a16 16 0 0 0 16 16h17a32 32 0 0 0 62 0h50a32 32 0 0 0 62 0h17a16 16 0 0 0 16-16v-64a8 8 0 0 0-1.93-5.21M230.59 104H176V64h20.26ZM104 104V64h56v40ZM88 64v40H32V64Zm-8 136a16 16 0 1 1 16-16a16 16 0 0 1-16 16m112 0a16 16 0 1 1 16-16a16 16 0 0 1-16 16m31-24a32 32 0 0 0-62 0h-50a32 32 0 0 0-62 0H32v-56h208v56Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 256 256">
+          <path fill="#ffffff" d="m254.07 106.79l-45.54-53.06A16 16 0 0 0 196.26 48H32a16 16 0 0 0-16 16v112a16 16 0 0 0 16 16h17a32 32 0 0 0 62 0h50a32 32 0 0 0 62 0h17a16 16 0 0 0 16-16v-64a8 8 0 0 0-1.93-5.21M230.59 104H176V64h20.26ZM104 104V64h56v40ZM88 64v40H32V64Zm-8 136a16 16 0 1 1 16-16a16 16 0 0 1-16 16m112 0a16 16 0 1 1 16-16a16 16 0 0 1-16 16m31-24a32 32 0 0 0-62 0h-50a32 32 0 0 0-62 0H32v-56h208v56Z"/>
+        </svg>
       </button>
-		</div>
-	</div>
+    </div>
+  </div>
   <div id="side-section">
-    <div id="side-collapse" >
+    <div id="side-collapse">
       <div class="collapsed">
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 256 256"><path fill="currentColor" d="M210.84 205.13a12 12 0 0 1-16 5.71l-152-72a12 12 0 0 1 0-21.68l152-72a12 12 0 1 1 10.27 21.69L76 128l129.1 61.15a12 12 0 0 1 5.74 15.98"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 256 256">
+          <path fill="currentColor" d="M210.84 205.13a12 12 0 0 1-16 5.71l-152-72a12 12 0 0 1 0-21.68l152-72a12 12 0 1 1 10.27 21.69L76 128l129.1 61.15a12 12 0 0 1 5.74 15.98"/>
+        </svg>
       </div>
     </div>
-    <div class="sidebar-header">
-      Product Options
-    </div>
+    <div class="sidebar-header">Product Options</div>
     <div class="sidebar-vancolor">
       <div class="vancolor-title">VAN COLOR</div>
       <div class="select-colors" id="color-selectable">
@@ -1032,52 +1167,51 @@
         <div>$<span id="products-cost">0</span></div>
       </div>
       <button id="addCartBtn">
-        Checkout
-        &nbsp;
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 50 50"><path fill="#fff" d="M25 42c-9.4 0-17-7.6-17-17S15.6 8 25 8s17 7.6 17 17s-7.6 17-17 17m0-32c-8.3 0-15 6.7-15 15s6.7 15 15 15s15-6.7 15-15s-6.7-15-15-15"/><path fill="#fff" d="m24.7 34.7l-1.4-1.4l8.3-8.3l-8.3-8.3l1.4-1.4l9.7 9.7z"/><path fill="#fff" d="M16 24h17v2H16z"/></svg>
+        Checkout &nbsp;
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 50 50">
+          <path fill="#fff" d="M25 42c-9.4 0-17-7.6-17-17S15.6 8 25 8s17 7.6 17 17s-7.6 17-17 17m0-32c-8.3 0-15 6.7-15 15s6.7 15 15 15s15-6.7 15-15s-6.7-15-15-15"/><path fill="#fff" d="m24.7 34.7l-1.4-1.4l8.3-8.3l-8.3-8.3l1.4-1.4l9.7 9.7z"/><path fill="#fff" d="M16 24h17v2H16z"/>
+        </svg>
       </button>
     </div>
-    {% comment %} <ul class="tabs">
-      <li data-tab-target="#build-list" class="active tab">Build List</li>
-      <li data-tab-target="#rack-tab" class="tab">Van</li>
-    </ul>
-    <div class="tab-content">
-      <div id="build-list" data-tab-content class="active">
-      </div>
-      <div id="rack-tab" data-tab-content>
-        <div>Select van color</div>
-        <div class="select-colors" id="color-selectable">
-          <div class="color-item color-selected" style="background-color: rgb(255, 255, 255);"></div>
-          <div class="color-item" style="background-color: rgb(205, 36, 0);"></div>
-          <div class="color-item" style="background-color: rgb(0, 0, 0);"></div>
-          <div class="color-item" style="background-color: rgb(173, 175, 184);"></div>
-          <div class="color-item" style="background-color: rgb(141 140 144);"></div>
-          <div class="color-item" style="background-color: rgb(185, 168, 133);"></div>
-          <div class="color-item" style="background-color: rgb(146, 17, 18);"></div>
-          <div class="color-item" style="background-color: rgb(72, 115, 163);"></div>
-          <div class="color-item" style="background-color: rgb(59, 82, 67);"></div>
-          <div class="color-item" style="background-color: rgb(146, 173, 62);"></div>
+    {% comment %}
+      <ul class="tabs">
+        <li data-tab-target="#build-list" class="active tab">Build List</li>
+        <li data-tab-target="#rack-tab" class="tab">Van</li>
+      </ul>
+      <div class="tab-content">
+        <div id="build-list" data-tab-content class="active">
         </div>
-      </div>
+        <div id="rack-tab" data-tab-content>
+          <div>Select van color</div>
+          <div class="select-colors" id="color-selectable">
+            <div class="color-item color-selected" style="background-color: rgb(255, 255, 255);"></div>
+            <div class="color-item" style="background-color: rgb(205, 36, 0);"></div>
+            <div class="color-item" style="background-color: rgb(0, 0, 0);"></div>
+            <div class="color-item" style="background-color: rgb(173, 175, 184);"></div>
+            <div class="color-item" style="background-color: rgb(141 140 144);"></div>
+            <div class="color-item" style="background-color: rgb(185, 168, 133);"></div>
+            <div class="color-item" style="background-color: rgb(146, 17, 18);"></div>
+            <div class="color-item" style="background-color: rgb(72, 115, 163);"></div>
+            <div class="color-item" style="background-color: rgb(59, 82, 67);"></div>
+            <div class="color-item" style="background-color: rgb(146, 173, 62);"></div>
+          </div>
+        </div>
 
-    </div>
-    <div class="checkout-area">
-      <div id="products-detail">
-        <div><span id="products-num">0</span> Items</div>
-        <div>$<span id="products-cost">0</span></div>
       </div>
-      <button id="addCartBtn">
-        Checkout
-        &nbsp;
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 50 50"><path fill="#fff" d="M25 42c-9.4 0-17-7.6-17-17S15.6 8 25 8s17 7.6 17 17s-7.6 17-17 17m0-32c-8.3 0-15 6.7-15 15s6.7 15 15 15s15-6.7 15-15s-6.7-15-15-15"/><path fill="#fff" d="m24.7 34.7l-1.4-1.4l8.3-8.3l-8.3-8.3l1.4-1.4l9.7 9.7z"/><path fill="#fff" d="M16 24h17v2H16z"/></svg>
-      </button>
-    </div> {% endcomment %}
+      <div class="checkout-area">
+        <div id="products-detail">
+          <div><span id="products-num">0</span> Items</div>
+          <div>$<span id="products-cost">0</span></div>
+        </div>
+        <button id="addCartBtn">
+          Checkout
+          &nbsp;
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 50 50"><path fill="#fff" d="M25 42c-9.4 0-17-7.6-17-17S15.6 8 25 8s17 7.6 17 17s-7.6 17-17 17m0-32c-8.3 0-15 6.7-15 15s6.7 15 15 15s15-6.7 15-15s-6.7-15-15-15"/><path fill="#fff" d="m24.7 34.7l-1.4-1.4l8.3-8.3l-8.3-8.3l1.4-1.4l9.7 9.7z"/><path fill="#fff" d="M16 24h17v2H16z"/></svg>
+        </button>
+      </div>
+    {% endcomment %}
   </div>
 </div>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" async></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" async></script>
-
 <script type="importmap" async>
   {
     "imports": {
@@ -1086,42 +1220,156 @@
   }
 </script>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" async></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" async></script>
+
 <script>
-  const tabs = document.querySelectorAll('[data-tab-target]')
-  const tabContents = document.querySelectorAll('[data-tab-content]')
+  const tabs = document.querySelectorAll('[data-tab-target]');
+  const tabContents = document.querySelectorAll('[data-tab-content]');
 
-  tabs.forEach(tab => {
+  tabs.forEach((tab) => {
     tab.addEventListener('click', () => {
-      const target = document.querySelector(tab.dataset.tabTarget)
-      tabContents.forEach(tabContent => {
-        tabContent.classList.remove('active')
-      })
-      tabs.forEach(tab => {
-        tab.classList.remove('active')
-      })
-      tab.classList.add('active')
-      target.classList.add('active')
-    })
-  })
-
-  document.getElementById("side-collapse").addEventListener('click', function () {
-    let iconElement = this.firstChild.nextSibling
-    if(iconElement.classList.contains('expanded')){ 
-      iconElement.classList.remove("expanded");
-      iconElement.classList.add("collapsed");
-      document.getElementById('side-section').style.right = '-300px'
-    } else if(iconElement.classList.contains('collapsed')) {
-      iconElement.classList.remove("collapsed");
-      iconElement.classList.add("expanded");
-      document.getElementById('side-section').style.right = '0px'
-    }
+      const target = document.querySelector(tab.dataset.tabTarget);
+      tabContents.forEach((tabContent) => {
+        tabContent.classList.remove('active');
+      });
+      tabs.forEach((tab) => {
+        tab.classList.remove('active');
+      });
+      tab.classList.add('active');
+      target.classList.add('active');
+    });
   });
 
+  document.getElementById('side-collapse').addEventListener('click', function () {
+    let iconElement = this.firstChild.nextSibling;
+    if (iconElement.classList.contains('expanded')) {
+      iconElement.classList.remove('expanded');
+      iconElement.classList.add('collapsed');
+      document.getElementById('side-section').style.right = '-300px';
+    } else if (iconElement.classList.contains('collapsed')) {
+      iconElement.classList.remove('collapsed');
+      iconElement.classList.add('expanded');
+      document.getElementById('side-section').style.right = '0px';
+    }
+  });
 </script>
 
 <script async src="https://unpkg.com/es-module-shims@1.3.0/dist/es-module-shims.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js" async></script>
-<script type="module">
+<script>
+  const vanSelections = [
+    {
+      type: 'Ford Transit High Roof',
+      variants: [
+        {
+          type: '148',
+          variants: [
+            { type: 'Premium', id: '45730334671067' },
+            { type: 'Premium + Light Bar', id: '45730334703835' },
+          ],
+        },
+        {
+          type: '148 Extended',
+          variants: [
+            { type: 'Premium', id: '45730334802139' },
+            { type: 'Premium + Light Bar', id: '45730334834907' },
+          ],
+        },
+      ],
+    },
+    {
+      type: 'Mercedes Sprinter High Roof',
+      variants: [
+        {
+          type: '144',
+          variants: [
+            { type: 'Premium', id: '45730446835931' },
+            { type: 'Premium + Light Bar', id: '45910413181147' },
+          ],
+        },
+        {
+          type: '170',
+          variants: [
+            { type: 'Premium', id: '45730446901467' },
+            { type: 'Premium + Light Bar', id: '45910413213915' },
+          ],
+        },
+        {
+          type: '170 Extended',
+          variants: [
+            { type: 'Premium', id: '45730446967003' },
+            { type: 'Premium + Light Bar', id: '45910413246683' },
+          ],
+        },
+      ],
+    },
+  ];
+
+  const vanTypeSelect = document.getElementById('vanType');
+  const vanSizeSelect = document.getElementById('vanSize');
+  const vanVariantSelect = document.getElementById('vanVariant');
+  const resetButton = document.getElementById('van_reset_trigger');
+  const selectButton = document.getElementById("van_select_trigger");
+
+  // Populate van type dropdown
+  vanSelections.forEach((van) => {
+    const option = document.createElement('option');
+    option.value = van.type;
+    option.textContent = van.type;
+    vanTypeSelect.appendChild(option);
+  });
+
+  // Handle van type selection
+  vanTypeSelect.addEventListener('change', function () {
+    const selectedVan = vanSelections.find((van) => van.type === this.value);
+    vanSizeSelect.innerHTML = '<option value="">Select Size</option>';
+    vanVariantSelect.innerHTML = '<option value="">Select Roof Rack</option>';
+    vanVariantSelect.disabled = true;
+
+    if (selectedVan) {
+      selectedVan.variants.forEach((size) => {
+        const option = document.createElement('option');
+        option.value = size.type;
+        option.textContent = size.type;
+        vanSizeSelect.appendChild(option);
+      });
+      vanSizeSelect.disabled = false;
+    } else {
+      vanSizeSelect.disabled = true;
+    }
+  });
+
+  // Handle size selection
+  vanSizeSelect.addEventListener('change', function () {
+    const selectedVan = vanSelections.find((van) => van.type === vanTypeSelect.value);
+    const selectedSize = selectedVan.variants.find((size) => size.type === this.value);
+    vanVariantSelect.innerHTML = '<option value="">Select Roof Rack</option>';
+
+    if (selectedSize) {
+      selectedSize.variants.forEach((variant) => {
+        const option = document.createElement('option');
+        option.value = variant.id;
+        option.textContent = `${variant.type}`;
+        vanVariantSelect.appendChild(option);
+      });
+      vanVariantSelect.disabled = false;
+    } else {
+      vanVariantSelect.disabled = true;
+    }
+  });
+
+  resetButton.addEventListener('click', function() {
+    vanTypeSelect.value = "";
+    vanSizeSelect.innerHTML = '<option value="">Select Size</option>';
+    vanSizeSelect.disabled = true;
+    vanVariantSelect.innerHTML = '<option value="">Select Roof Rack</option>';
+    vanVariantSelect.disabled = true;
+  });
+</script>
+<script
+  type="module"
+>
   import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.163.0/build/three.module.js';
   import { OrbitControls } from 'https://cdn.jsdelivr.net/npm/three@0.163.0/examples/jsm/controls/OrbitControls.js';
   import { GLTFLoader } from 'https://cdn.jsdelivr.net/npm/three@0.163.0/examples/jsm/loaders/GLTFLoader.js';
@@ -1129,14 +1377,6 @@
   import { ViewHelper } from 'https://cdn.jsdelivr.net/npm/three@0.163.0/examples/jsm/helpers/ViewHelper.js';
   import { RGBELoader } from 'https://cdn.jsdelivr.net/npm/three@0.163.0/examples/jsm/loaders/RGBELoader.js';
   import { GroundedSkybox } from 'https://cdn.jsdelivr.net/npm/three@0.163.0/examples/jsm/objects/GroundedSkybox.js';
-
-  var swiper = new Swiper('.swiper', {
-    slidesPerView: 6,
-    navigation: {
-      nextEl: '.swiper-button-next',
-      prevEl: '.swiper-button-prev',
-    },
-  });
 
   var swiper = new Swiper(".swiper", {
     slidesPerView: 4,
@@ -1222,76 +1462,176 @@
   let crossbarWidth = 0
   let owningPosZ = 0.84
 
-  let typeOfVan = "fordtransit"
+  let typeOfVan = "fordtransit"; 
+  let awningArea = [0.778, -2.93]
 
   let availableProducts = [
     {
-      "htmlId": "",
-      "type": "rack",
-      "availability": true,
-      "handle": "ford-transit-roof-rack",
-      "id": 45730334671067,
-      "price": 0,
-      "quantity": 1,
-      availableVariants: [
-        45730334671067,
-        45730334703835,
-        45730334802139,
-        45730334834907,
-        45730446835931,
-        45910413181147
-      ],
-      "xRadius": null,
-      "handles": [
-        "ford-transit-roof-rack",
-        "mercedes-sprinter-roof-rack"
+      "htmlId": "", "type": "rack", "availability": true, "handle": "ford-transit-roof-rack", "id": 45730334671067,
+      "price": 0, "quantity": 1, "xRadius": null, "handles": ["ford-transit-roof-rack", "mercedes-sprinter-roof-rack"],
+      "availableVariants": [
+        45730334671067, 45730334703835, 45730334802139, 45730334834907,
+        45730446835931, 45910413181147, 45730446901467, 45910413213915,
+        45730446967003, 45910413246683
       ]
     },
     {
-      "htmlId": "airconditioner", "type": "air_conditioner", "availability": true, "handle": "dometic-rtx-2000", "id": 43261478764763, "price": 0, "quantity": 0, "xRadius": 13.18
+      "htmlId": "airconditioner", "type": "air_conditioner", "availability": true,
+      "handle": "dometic-rtx-2000-12v-9600028490", "id": 43261478863067, "price": 0, "quantity": 0, "xRadius": 13.18
     },
     {
-      "htmlId": "maxxair", "type": "maxxair", "availability": true, "handle": "maxxair-fan-deluxe", "id": 40771325264036, "price": 0, "quantity": 0, "xRadius": 11.8
+      "htmlId": "maxxair", "type": "maxxair", "availability": true,
+      "handle": "maxxair-maxxfan-deluxe-roof-vent", "id": 40771325198500, "price": 0, "quantity": 0, "xRadius": 11.8
     },
     {
-      "htmlId": "solar_panel200", "type": "solar200", "availability": true, "handle": "rich-solar-solar-panel", "id": 45977350734043, "price": 0, "quantity": 0, "xRadius": 13.5
+      "htmlId": "solar_panel200", "type": "solar200", "availability": true,
+      "handle": "rich-solar-solar-panels", "id": 45977350734043, "price": 0, "quantity": 0, "xRadius": 13.5
     },
     {
-      "htmlId": "solar_panel50", "type": "solar55", "availability": true, "handle": "rich-solar-solar-panel", "id": 45977350602971, "price": 0, "quantity": 0, "xRadius": 12.75,
+      "htmlId": "solar_panel50", "type": "solar55", "availability": true,
+      "handle": "rich-solar-solar-panels", "id": 45977350602971, "price": 0, "quantity": 0, "xRadius": 12.75
     },
     {
-      "htmlId": "solar_panel30", "type": "solar30", "availability": false, "handle": "", "id": 45081892683995, "price": 0, "quantity": 0, "xRadius": 16.6, "title": "Rich Solar Mega 35 Watt 12 Volt Solar Panel", "image": "https://cdn.shopify.com/s/files/1/0412/9898/5124/files/Rich-Solar-35W-12V-Solar-Panel_e5266152-4c97-4d03-8a8c-30e6446a354b.png?v=1717015802", "url": "https://shop.explorist.life/shop/all-products/pre-order-rich-solar-35w-12v-solar-panel/"
-    },
-    {
-      "htmlId": "", "type": "ac_cross", "availability": true, "handle": "unaka-roof-rack-cross-bars", "id": 45808915775707, "price": 0, "quantity": 0
-    },
-    {
-      "htmlId": "", "type": "solar_cross", "availability": true, "handle": "unaka-roof-rack-cross-bars", "id": 45808915808475, "price": 0, "quantity": 0
-    },
-    {
-      "htmlId": "", "type": "max_cross", "availability": true, "handle": "unaka-roof-rack-cross-bars", "id": 45808915775707, "price": 0, "quantity": 0
-    },
-    {
-      "htmlId": "ladder", "type": "ladder", "availability": true, "handle": "transit-side-mount-ladder-high-roof", "id": 44020238385371, "price": 0, "quantity": 0
-    },
-    {htmlId: 'airconditioner-d', type: 'air_conditioner_nodamic', handle: '', id: null, price: 0, quantity: 0, xRadius: 15.5,
+      "htmlId": "solar_panel30", "type": "solar30", "availability": false,
+      "handle": "", "id": 45081892683995, "price": 0, "quantity": 0, "xRadius": 16.6,
       "title": "Rich Solar Mega 35 Watt 12 Volt Solar Panel",
       "image": "https://cdn.shopify.com/s/files/1/0412/9898/5124/files/Rich-Solar-35W-12V-Solar-Panel_e5266152-4c97-4d03-8a8c-30e6446a354b.png?v=1717015802",
       "url": "https://shop.explorist.life/shop/all-products/pre-order-rich-solar-35w-12v-solar-panel/"
     },
-    {htmlId: 'cross_bar', type: '8020_crossbar', handle: 'unaka-roof-rack-cross-bars', id: 45808912728283, price: 0, quantity: 0, xRadius: 2.3, availability: true,},
-    {htmlId: 'solar_cross_bar', type: 'lshape_cross', handle: '', id: null, price: 0, quantity: 0, xRadius: 14.03},
-    {htmlId: 'awning', type: 'awning', handle: 'fiamma-45s', id: 45715079299291, price: 0, xRadius: 59.05, availability: true, quantity: 0},
-    {htmlId: '', type: 'awning_bracket', handle: 'fiamma-f45s-awning-8020-or-unistrut-mounting-brackets', id: 45072199287003, availability: true, price: 0, quantity: 0},
-    {htmlId: 'solar_panel100', type: 'solar100', handle: 'rich-solar-solar-panel', id: 45977350668507, price: 0, quantity: 0, xRadius: 6.9, availability: true},
-    {htmlId: 'solar_panel250', type: 'solar250', handle: 'rich-solar-solar-panel', id: 45977350799579, price: 0, quantity: 0, xRadius: 14.95, "availability": true},
-    {htmlId: 'awning_350', type: 'awning_350', handle: 'fiamma-45s', id: 45715079364827, price: 0, availability: true, xRadius: 68.89, quantity: 0},
-    {htmlId: 'light_bar', type: 'light_bar', handle: 'tyri-v48-black-17200-elumen-48-hyperion-series-light-bar', id: 45998626996443, price: 0, availability: true, xRadius: 0, quantity: 0},
-    {htmlId: 'light_bar_copy', type: 'light_bar_copy', handle: 'tyri-v48-black-17200-elumen-48-hyperion-series-light-bar-copy', id: 45999161639131, price: 0, availability: true, xRadius: 0, quantity: 0},
     {
-      "htmlId": "airconditioner-p", "type": "air_conditioner_p", "availability": true, "handle": "dometic-penguin-ii-hi-cap-air-conditioner", "id": 44874797252827, "price": 0, "quantity": 0, "xRadius": 20.3
+      "htmlId": "", "type": "ac_cross", "availability": true,
+      "handle": "unaka-8020-cross-bars", "id": 45808915775707, "price": 0, "quantity": 0
     },
-    {htmlId: 'solar_panel220', type: 'solar220', handle: 'rich-solar-solar-panel', id: 46107025113307, price: 0, quantity: 0, xRadius: 15, "availability": true},
+    {
+      "htmlId": "", "type": "solar_cross", "availability": true,
+      "handle": "unaka-8020-cross-bars", "id": 45808915808475, "price": 0, "quantity": 0
+    },
+    {
+      "htmlId": "", "type": "max_cross", "availability": true,
+      "handle": "unaka-8020-cross-bars", "id": 45808915775707, "price": 0, "quantity": 0
+    },
+    {
+      "htmlId": "ladder", "type": "ladder", "availability": true,
+      "handle": "transit-trail-side-ladder", "id": 45599161483483, "price": 0, "quantity": 0
+    },
+    {
+      "htmlId": "airconditioner-d", "type": "air_conditioner_nodamic", "handle": "", "id": null,
+      "price": 0, "quantity": 0, "xRadius": 15.5,
+      "title": "Rich Solar Mega 35 Watt 12 Volt Solar Panel",
+      "image": "https://cdn.shopify.com/s/files/1/0412/9898/5124/files/Rich-Solar-35W-12V-Solar-Panel_e5266152-4c97-4d03-8a8c-30e6446a354b.png?v=1717015802",
+      "url": "https://shop.explorist.life/shop/all-products/pre-order-rich-solar-35w-12v-solar-panel/"
+    },
+    {
+      "htmlId": "cross_bar", "type": "8020_crossbar", "handle": "unaka-8020-cross-bars", "id": 45808912728283,
+      "price": 0, "quantity": 0, "xRadius": 2.3, "availability": true
+    },
+    {
+      "htmlId": "solar_cross_bar", "type": "lshape_cross", "handle": "", "id": null,
+      "price": 0, "quantity": 0, "xRadius": 14.03
+    },
+    {
+      "htmlId": "awning", "type": "awning", "handle": "fiamma-f45s-awnings", "id": 45715079299291,
+      "price": 0, "xRadius": 59.05, "availability": true, "quantity": 0
+    },
+    {
+      "htmlId": "", "type": "awning_bracket", "handle": "fiamma-f45s-awning-brackets",
+      "id": 45072199287003, "availability": true, "price": 0, "quantity": 0
+    },
+    {
+      "htmlId": "solar_panel100", "type": "solar100", "handle": "rich-solar-solar-panels", "id": 45977350668507,
+      "price": 0, "quantity": 0, "xRadius": 7.9, "availability": true
+    },
+    {
+      "htmlId": "solar_panel250", "type": "solar250", "handle": "rich-solar-solar-panels", "id": 45977350799579,
+      "price": 0, "quantity": 0, "xRadius": 14.95, "availability": true
+    },
+    {
+      "htmlId": "awning_350", "type": "awning_350", "handle": "fiamma-f45s-awnings", "id": 45715079364827,
+      "price": 0, "availability": true, "xRadius": 68.89, "quantity": 0
+    },
+    {
+      "htmlId": "light_bar", "type": "light_bar", "handle": "tyri-v48-black-17200-elumen-48-hyperion-series-light-bar",
+      "id": 45998626996443, "price": 0, "availability": true, "xRadius": 0, "quantity": 0
+    },
+    {
+      "htmlId": "light_bar_copy", "type": "light_bar_copy", "handle": "diode-dynamics-ss5-crosslink-8-pod-led-light-bar",
+      "id": 45999161639131, "price": 0, "availability": true, "xRadius": 0, "quantity": 0
+    },
+    {
+      "htmlId": "airconditioner-p", "type": "air_conditioner_p", "availability": true,
+      "handle": "dometic-penguin-ii-13-5k-btu-air-conditioner-2", "id": 44447735972059,
+      "price": 0, "quantity": 0, "xRadius": 20.3
+    },
+    {
+      "htmlId": "solar_panel220", "type": "solar220", "handle": "rich-solar-solar-panels", "id": 46107025113307,
+      "price": 0, "quantity": 0, "xRadius": 15, "availability": true
+    },
+    {
+      "htmlId": "airconditioner-v1", "type": "air_conditioner_v1", "availability": true,
+      "handle": "velit-2000r-12v-24v-48v-rooftop-air-conditioner", "id": 46446941176027,
+      "price": 0, "quantity": 0, "xRadius": 15.75
+    },
+    {
+      "htmlId": "airconditioner-v2", "type": "air_conditioner_v2", "availability": true,
+      "handle": "velit-2000r-mini-12v-48v-rooftop-air-conditioner", "id": 46447124676827,
+      "price": 0, "quantity": 0, "xRadius": 13.25
+    },
+    {
+      "htmlId": "airconditioner-x2", "type": "air_conditioner_x2", "handle": "", "id": null,
+      "price": 0, "quantity": 0, "xRadius": 14.03
+    },
+    {
+      "htmlId": "airconditioner-x3", "type": "air_conditioner_x3", "handle": "", "id": null,
+      "price": 0, "quantity": 0, "xRadius": 15.78
+    },
+    {
+      "htmlId": "sp_ladder", "type": "sp_ladder", "availability": true,
+      "handle": "mercedes-sprinter-side-mount-ladder", "id": 46623721652443, "price": 0, "quantity": 0
+    },
+    {
+      "htmlId": "awning_400", "type": "awning_400", "handle": "fiamma-f45s-awnings", "id": 46476563480795,
+      "price": 0, "availability": true, "xRadius": 68.89, "quantity": 0
+    },
+    {
+      "htmlId": "awning_450", "type": "awning_450", "handle": "fiamma-f45s-awnings", "id": 45715079495899,
+      "price": 0, "availability": true, "xRadius": 68.89, "quantity": 0
+    },
+    {
+      "htmlId": "new_solar250", "type": "new_solar250", "availability": true,
+      "handle": "newpowa-solar-panel-new", "id": 46644912128219, "price": 0, "quantity": 0, "xRadius": 17.9
+    },
+    {
+      "htmlId": "new_solar220", "type": "new_solar220", "availability": true,
+      "handle": "newpowa-solar-panel-new", "id": 46644912095451, "price": 0, "quantity": 0, "xRadius": 15.6
+    },
+    {
+      "htmlId": "new_solar200", "type": "new_solar200", "availability": true,
+      "handle": "newpowa-solar-panel-new", "id": 46644912029915, "price": 0, "quantity": 0, "xRadius": 14.4
+    },
+    {
+      "htmlId": "new_solar100", "type": "new_solar100", "availability": true,
+      "handle": "newpowa-solar-panel-new", "id": 46644911964379, "price": 0, "quantity": 0, "xRadius": 11
+    },
+    {
+      "htmlId": "mk20-w3", "type": "mk20-w3", "availability": true,
+      "handle": "van-roof-deck-panels", "id": 45804602917083, "price": 0, "quantity": 0, "xRadius": 14.1
+    },
+    {
+      "htmlId": "mk20-l2", "type": "mk20-l2", "availability": true,
+      "handle": "van-roof-deck-panels", "id": 45804602917083, "price": 0, "quantity": 0, "xRadius": 10.2
+    },
+    {
+      "htmlId": "mk20-maxxair", "type": "mk20-maxxair", "availability": true,
+      "handle": "van-roof-deck-panels", "id": 45804602917083, "price": 0, "quantity": 0, "xRadius": 14.1
+    },
+    {
+      "htmlId": "mk22-w3", "type": "mk22-w3", "availability": true,
+      "handle": "van-roof-deck-panels", "id": 45804602884315, "price": 0, "quantity": 0, "xRadius": 18
+    },
+    {
+      "htmlId": "mk23-ac", "type": "mk23-ac", "availability": true,
+      "handle": "van-roof-deck-panels", "id": 45804602949851, "price": 0, "quantity": 0, "xRadius": 18.13
+    },
   ]
   
 
@@ -1315,11 +1655,15 @@
 
   let selectableProducts = [
     {name: "Dometic RTX", id: "airconditioner", model: "https://cdn.shopify.com/3d/models/3fc52045eaa806f8/airconditioner-d.glb"},
-    {name: "Dometic Penguin II", id: "airconditioner-p", model: "https://cdn.shopify.com/3d/models/c599289fb8ed77b8/airconditioner-10.glb"},
-    {name: "Maxxair Deluxe", id: "maxxair", model: "https://cdn.shopify.com/3d/models/c3eeb44577bd8f6a/maxxair.glb"},
+    {% comment %} {name: "Dometic Penguin II", id: "airconditioner-p", model: "https://cdn.shopify.com/3d/models/c599289fb8ed77b8/airconditioner-10.glb"}, {% endcomment %}
+    {name: "VELIT 2000R", id: "airconditioner-v1", model: "https://cdn.shopify.com/3d/models/c55e579406be72d1/airconditioner-v1.glb"},
+    {name: "VELIT 2000R MINI", id: "airconditioner-v2", model: "https://cdn.shopify.com/3d/models/575a822893d82486/airconditioner-v2.glb"},
+    {name: "Nomadic Innovations AC X2", id: "airconditioner-x2", model: "https://cdn.shopify.com/3d/models/8f9f98cdd33f3a4f/airconditioner-x2.glb"},
+    {name: "Nomadic Innovations AC X3", id: "airconditioner-x3", model: "https://cdn.shopify.com/3d/models/fa056a2235adba37/airconditioner-x3.glb"},
+    {name: "Maxxair Deluxe", id: "maxxair", model: "https://cdn.shopify.com/3d/models/9f3e8c568b76b1f4/maxxair-2.glb"},
     {name: "Rich Solar Panel 250w", id: "solar_panel250", model: "https://cdn.shopify.com/3d/models/5b0bf30f3bc0bc5b/250W.glb"},
     {name: "Rich Solar Panel 200w", id: "solar_panel200", model: "https://cdn.shopify.com/3d/models/41179ec7afded29e/200W.glb"},
-    {name: "Rich Solar Panel 100w", id: "solar_panel100", model: "https://cdn.shopify.com/3d/models/1d5da2011f6c3f84/100W.glb"},
+    {name: "Rich Solar Panel 100w", id: "solar_panel100", model: "https://cdn.shopify.com/3d/models/bba013cfe5d76ce7/100W-1.glb"},
     {name: "Rich Solar Panel 50w", id: "solar_panel50", model: "https://cdn.shopify.com/3d/models/cfce53c8523cbc41/55W.glb"},
     {name: "Rich Solar Panel 30w", id: "solar_panel30", model: "https://cdn.shopify.com/3d/models/dfcf1aaf24802514/30W.glb"},
     {name: "Side Mount Ladder", id: "ladder", model: ""},
@@ -1335,6 +1679,7 @@
       if (
         selectedFeature.parent.name !== "van" 
         && selectedFeature.name !== "ladder" 
+        && selectedFeature.name !== "sp_ladder" 
         && !selectedFeature.name.includes("light_bar")  
         && !selectedFeature.name.includes("light_bar_copy")  
         && !selectedFeature.name.includes('roof_rack')) {
@@ -1363,10 +1708,10 @@
           
           const xPos = Math.min(movingOffset - selectedFeatureWidth / 2, Math.max(-2.115, coords.x));
 
-          if(selectedFeature.name == "awning" || selectedFeature.name == "awning_350"){
+          if(selectedFeature.name == "awning" || selectedFeature.name == "awning_350" || selectedFeature.name == "awning_400" || selectedFeature.name == "awning_450"){
             const bbox1  = getModelBoundingBox(selectedFeature);
             const widthOfObject = Math.abs(bbox1.max.x - bbox1.min.x);
-            const xPos = Math.min(0.778 - selectedFeatureWidth / 2, Math.max(-2.93 + widthOfObject/2, coords.x));
+            const xPos = Math.min(awningArea[0] - selectedFeatureWidth / 2, Math.max(awningArea[1] + widthOfObject/2, coords.x));
             selectedFeature.parent.position.x = xPos;
           } else if(selectedFeature.name == "air_conditioner"){
             const bbox1 = getModelBoundingBox(selectedFeature);
@@ -1382,7 +1727,7 @@
             const widthOfObject = Math.abs(bbox1.max.x - bbox1.min.x);
             const xPos = Math.min(movingOffset - selectedFeatureWidth / 2, Math.max((- vanArea[1] * 0.0254) + widthOfObject/2, coords.x));
             collidableMeshList = updateColliderList();
-            const checkCollision = isCrossBarCollied(bbox1, collidableMeshList, xPos);
+            const checkCollision = isCrossBarCollied(bbox1, collidableMeshList, xPos, selectedFeature.name);
             if(isValueInScale(coords.x * 1000 / 25.4 * -1, cutOffArea, 7.001, vanDiff)  >= 0 && !checkCollision) {
               updateSolarArea(xPos, selectedFeature.name, 2)
               selectedFeature.parent.position.x = xPos;
@@ -1394,8 +1739,30 @@
             const widthOfObject = Math.abs(bbox1.max.x - bbox1.min.x);
             const xPos = Math.min(movingOffset - selectedFeatureWidth / 2, Math.max((- vanArea[1] * 0.0254) + widthOfObject/2, coords.x));
             collidableMeshList = updateColliderList();
-            const checkCollision = isCrossBarCollied(bbox1, collidableMeshList, xPos);
+            const checkCollision = isCrossBarCollied(bbox1, collidableMeshList, xPos, selectedFeature.name);
             if(isValueInScale(coords.x * 1000 / 25.4 * -1, cutOffArea, 7.001, vanDiff)  >= 0 && !checkCollision) {
+              selectedFeature.parent.position.x = xPos;
+              selectedFeature.parent.position.z = 0;
+              updateModelState(2, selectedFeature.name, xPos) 
+            } 
+          } else if(selectedFeature.name == "air_conditioner_v1" || selectedFeature.name == "air_conditioner_v2"){
+            const bbox1 = getModelBoundingBox(selectedFeature);
+            const widthOfObject = Math.abs(bbox1.max.x - bbox1.min.x);
+            const xPos = Math.min(movingOffset - selectedFeatureWidth / 2, Math.max((- vanArea[1] * 0.0254) + widthOfObject/2, coords.x));
+            collidableMeshList = updateColliderList();
+            const checkCollision = isCrossBarCollied(bbox1, collidableMeshList, xPos, selectedFeature.name);
+            if(isValueInScale(coords.x * 1000 / 25.4 * -1, cutOffArea, 7.001, vanDiff - 4.85)  >= 0 && !checkCollision) {
+              selectedFeature.parent.position.x = xPos;
+              selectedFeature.parent.position.z = 0;
+              updateModelState(2, selectedFeature.name, xPos) 
+            } 
+          } else if(selectedFeature.name == "air_conditioner_x2" || selectedFeature.name == "air_conditioner_x3"){
+            const bbox1 = getModelBoundingBox(selectedFeature);
+            const widthOfObject = Math.abs(bbox1.max.x - bbox1.min.x);
+            const xPos = Math.min(movingOffset - selectedFeatureWidth / 2, Math.max((- vanArea[1] * 0.0254) + widthOfObject/2, coords.x));
+            collidableMeshList = updateColliderList();
+            const checkCollision = isCrossBarCollied(bbox1, collidableMeshList, xPos, selectedFeature.name);
+            if(isValueInScale(coords.x * 1000 / 25.4 * -1, cutOffArea, 7.001, vanDiff - 4.85)  >= 0 && !checkCollision) {
               selectedFeature.parent.position.x = xPos;
               selectedFeature.parent.position.z = 0;
               updateModelState(2, selectedFeature.name, xPos) 
@@ -1414,7 +1781,7 @@
             const widthOfObject = Math.abs(bbox1.max.x - bbox1.min.x);
             const xPos = Math.min(movingOffset - selectedFeatureWidth / 2, Math.max((- vanArea[1] * 0.0254) + widthOfObject/2, coords.x));
             collidableMeshList = updateColliderList();
-            const checkCollision = isCrossBarCollied(bbox1, collidableMeshList, xPos);
+            const checkCollision = isCrossBarCollied(bbox1, collidableMeshList, xPos, selectedFeature.name);
             if(isValueInScale(coords.x * 1000 / 25.4 * -1, cutOffArea, 7, vanDiff) >= 0 && !checkCollision){
               updateSolarArea(xPos, selectedFeature.name, 2)
               selectedFeature.parent.position.x = xPos;
@@ -1464,7 +1831,7 @@
             const widthOfObject = Math.abs(bbox1.max.x - bbox1.min.x);
             let xPos = Math.min(movingOffset - selectedFeatureWidth / 2, Math.max((- vanArea[1] * 0.0254) + widthOfObject/2, coords.x));
             collidableMeshList = updateColliderList();
-            const checkCollision = isCrossBarCollied(bbox1, collidableMeshList, xPos);
+            const checkCollision = isCrossBarCollied(bbox1, collidableMeshList, xPos, selectedFeature.name);
             if(!checkCollision) {
               selectedFeature.parent.position.x = xPos;
               selectedFeature.parent.position.z = 0;
@@ -1474,7 +1841,7 @@
             const widthOfObject = Math.abs(bbox1.max.x - bbox1.min.x);
             let xPos = Math.min(movingOffset - selectedFeatureWidth / 2, Math.max((- vanArea[1] * 0.0254) + widthOfObject/2, coords.x));
             collidableMeshList = updateColliderList();
-            const checkCollision = isCrossBarCollied(bbox1, collidableMeshList, xPos);
+            const checkCollision = isCrossBarCollied(bbox1, collidableMeshList, xPos, selectedFeature.name);
             if(!checkCollision) {
               selectedFeature.parent.position.x = xPos;
               selectedFeature.parent.position.z = 0;
@@ -1490,7 +1857,7 @@
             const widthOfObject = Math.abs(bbox1.max.x - bbox1.min.x);
             let xPos = Math.min(movingOffset - selectedFeatureWidth / 2, Math.max((- vanArea[1] * 0.0254) + widthOfObject/2, coords.x));
             collidableMeshList = updateColliderList();
-            const checkCollision = isCrossBarCollied(bbox1, collidableMeshList, xPos);
+            const checkCollision = isCrossBarCollied(bbox1, collidableMeshList, xPos, selectedFeature.name);
             if(!checkCollision) {
               selectedFeature.parent.position.x = xPos;
               selectedFeature.parent.position.z = 0;
@@ -1560,10 +1927,18 @@
     let cartItems = []
     availableProducts.map((product) => {
       if(product.price > 0 && product.quantity > 0) {
-        cartItems.push({
-          'id': product.id,
-          'quantity': product.quantity
-        })
+        if(product.type == "solar_cross") {
+          if(product.quantity > 2)
+          cartItems.push({
+            'id': product.id,
+            'quantity': (product.quantity - 2)
+          })
+        } else {
+          cartItems.push({
+            'id': product.id,
+            'quantity': product.quantity
+          })
+        }
       }
     });
 
@@ -1725,9 +2100,11 @@
     });
   });
 
-  document.getElementById('van_select_trigger').addEventListener('click', function () {
-    selectVan();
-  });
+  let vanSelected = false
+  const selectButton = document.getElementById('van_select_trigger');
+  if (selectButton) {
+    selectButton.addEventListener('click', selectVan);
+  }
 
   document.getElementById('resetButton').addEventListener('click', resetConfig);
 
@@ -1765,7 +2142,7 @@
           let productPrice = 0;
           const productData = data[index];
 
-          if(product.type == "rack") {
+          {% comment %} if(product.type == "rack") {
             let vanSelectTxt = ""
             const racks = productData?.products ?? [];
             if(racks && racks.length > 0) {
@@ -1777,11 +2154,11 @@
                       vanSelectTxt += "<option value='"+variant.id+"'>"+variant.name.split("-")[1]+"</option>"
                     }
                   })
-                  document.getElementById("van_modal_select").innerHTML = vanSelectTxt
+                  {% comment %} document.getElementById("van_modal_select").innerHTML = vanSelectTxt {% endcomment %}
                 }
               })
             }
-          }
+          } {% endcomment %}
 
           if (productData.id === product.id) {
             productPrice = productData.price / 100;
@@ -1804,7 +2181,7 @@
       })
       .catch(error => console.error('Error fetching product data:', error));
   }
-
+  
   getPrices();
 
   function excludeRanges(vanArea, addedState) {
@@ -1865,7 +2242,7 @@
 	}
 
   function updateCrossBars(posX, type, radius) {
-    if(type == 'maxxair' || type == 'air_conditioner') {
+    if(type == 'maxxair' || type == 'air_conditioner' || type == "air_conditioner_v1" || type == "air_conditioner_v2" || type == "air_conditioner_x2" || type == "air_conditioner_x3") {
       const startPoint = posX * 1 + (radius * 2.54 / 100)
       const endPoint = posX * 1 - (radius * 2.54 / 100)
       const lcrossBars = scene.children.filter(group => group?.children[0]?.name == "lshape_cross");
@@ -1906,7 +2283,7 @@
   }
 
   function getAddedState() {
-    const itemsToBeCalc = ['maxxair', 'solar200', 'solar250', 'solar100', 'air_conditioner','8020_crossbar', 'solar30', 'solar55', 'air_conditioner_p', 'solar220'];
+    const itemsToBeCalc = ['maxxair', 'solar200', 'solar250', 'solar100', 'air_conditioner','8020_crossbar', 'solar30', 'solar55', 'air_conditioner_p', 'solar220', 'air_conditioner_v1', 'air_conditioner_v2', 'air_conditioner_x2', 'air_conditioner_x3', "new_solar250", "new_solar220", "new_solar200", "new_solar100", "mk20-w3", "mk20-l2", "mk20-maxxair", "mk22-w3", "mk23-ac"];
     const itemsToCalc = scene.children.filter(group => itemsToBeCalc.includes(group?.children[0]?.name));
     const boxes = itemsToCalc.map((model) => {
       return getModelBoundingBox(model)
@@ -1919,7 +2296,7 @@
 		const curState = getAddedState();
 		let result = excludeRanges(vanArea, curState);
 
-		if(selectedItem.type == 'air_conditioner') {
+		if(selectedItem.type == 'air_conditioner' || selectedItem.type == 'air_conditioner_v1' || selectedItem.type == 'air_conditioner_v2' || selectedItem.type == 'air_conditioner_x2' || selectedItem.type == 'air_conditioner_x3') {
 			if(fromTemplate) {
         console.log("From Template");
         let intersections = getIntersectionIntervals(result, cutOffArea, selectedItem.xRadius - 7.0, 5.2);
@@ -2009,14 +2386,18 @@
 		vanItem = event.target;
 		let selectedItem = availableProducts.filter(product => product.htmlId == event.target.id)[0];
 		if(!selectedItem) return;
-
-		if(selectedItem.type == 'ladder') {
+		if(selectedItem.type == 'ladder' || selectedItem.type == 'sp_ladder') {
 			if(selectedItem.quantity > 0 ) return false;
 			positionX = ladderPos[0];
 			positionY = ladderPos[1];
 			positionZ = ladderPos[2];
-		} else if(selectedItem.type == 'awning' || selectedItem.type == 'awning_350') {
-      const awningModels = scene.children.filter((group) => group?.children[0]?.name == "awning" || group?.children[0]?.name == "awning_350");
+		} else if(
+      selectedItem.type == 'awning' || 
+      selectedItem.type == "awning_350" || 
+      selectedItem.type == "awning_400" || 
+      selectedItem.type == "awning_450"
+    ) {
+      const awningModels = scene.children.filter((group) => group?.children[0]?.name == "awning" || group?.children[0]?.name == "awning_350" || group?.children[0]?.name == "awning_400" || group?.children[0]?.name == "awning_450");
       if(awningModels.length >= 1) return;
 
 			if(selectedItem.quantity > 0 ) return false;
@@ -2036,15 +2417,16 @@
 		} else{
 			positionY = vanRoofHeight;
 			positionZ = 0;
-			if(selectedItem.type == 'solar30') {
-				let acItem = availableProducts.filter(product => fromTemplate ? (product.type == 'air_conditioner_nodamic') : (product.type == 'air_conditioner'))[0];
+
+			if(selectedItem.type == 'solar30' || selectedItem.type == 'mk23-ac') {
+				let acItem = availableProducts.filter(product => product.type == 'air_conditioner' || product.type == 'air_conditioner_v1' || product.type == 'air_conditioner_v2' || product.type == 'air_conditioner_x2' || product.type == 'air_conditioner_x3')[0];
+        console.log({acItem})
 				if (selectedItem.quantity >= acItem.quantity) return false;
 
-				let acModels = scene.children.filter((group) => 
-        group?.children[0]?.name == "air_conditioner");
+				let acModels = scene.children.filter((group) => group?.children[0]?.name == "air_conditioner" || group?.children[0]?.name == "air_conditioner_v1" || group?.children[0]?.name == 'air_conditioner_v2' || group?.children[0]?.name == 'air_conditioner_x2' || group?.children[0]?.name == 'air_conditioner_x3');
+        console.log({acModels})
         
-        let solarModels = scene.children.filter((group) => 
-          group?.children[0]?.name == "solar30");
+        let solarModels = scene.children.filter((group) => group?.children[0]?.name == "solar30" || group?.children[0]?.name == "mk23-ac");
 
         const acBoxes = acModels.map((model) => {
           return getModelBoundingBox(model)
@@ -2057,7 +2439,7 @@
         if(acBoxes.length != solarBoxes.length) {
           if(solarBoxes.length == 0) {
             positionX = acBoxes[0].min.x + Math.abs(acBoxes[0].min.x - acBoxes[0].max.x)/2
-            const solarModel = availableProducts.filter(product => product.type == "solar30");
+            const solarModel = availableProducts.filter(product => product.type == "solar30" || product.type == "mk23-ac");
             const solarWidth = solarModel[0].xRadius * 2.54 / 100 * 2; // width of solar panel
             collidableMeshList = updateColliderList();
             const filteredList = collidableMeshList.filter(mesh => mesh.min.x.toFixed(4) != acBoxes[0].min.x.toFixed(4));
@@ -2091,7 +2473,7 @@
                   positionX = acbox.max.x - Math.abs(acbox.max.x - acbox.min.x)/2
 
                   // checking available to add
-                  const solarModel = availableProducts.filter(product => product.type == "solar30");
+                  const solarModel = availableProducts.filter(product => product.type == "solar30" || product.type == "mk23-ac");
                   const solarWidth = solarModel[0].xRadius * 2.54 / 100 * 2; // width of solar panel
                   collidableMeshList = updateColliderList();
                   const filteredList = collidableMeshList.filter(mesh => mesh.min.x.toFixed(4) != acbox.min.x.toFixed(4));
@@ -2117,14 +2499,11 @@
             })
           }
         } else return;
-			} else if(selectedItem.type == 'solar55') {
+			} else if(selectedItem.type == 'solar55' || selectedItem.type == 'mk20-maxxair') {
 				let fanItem = availableProducts.filter(product => product.type == 'maxxair')[0];
 				if (selectedItem.quantity >= fanItem.quantity) return false;
-        let acModels = scene.children.filter((group) => 
-        group?.children[0]?.name == "maxxair");
-        
-        let solarModels = scene.children.filter((group) => 
-          group?.children[0]?.name == "solar55");
+        let acModels = scene.children.filter((group) =>  group?.children[0]?.name == "maxxair");
+        let solarModels = scene.children.filter((group) => group?.children[0]?.name == "solar55" || group?.children[0]?.name == "mk20-maxxair");
 
         const fanBoxes = acModels.map((model) => {
           return getModelBoundingBox(model)
@@ -2137,7 +2516,7 @@
         if(fanBoxes.length != solarBoxes.length) {
           if(solarBoxes.length == 0) {
             positionX = fanBoxes[0].min.x + Math.abs(fanBoxes[0].min.x - fanBoxes[0].max.x)/2
-            const solarModel = availableProducts.filter(product => product.type == "solar55");
+            const solarModel = availableProducts.filter(product => product.type == "solar55" || product.type == "mk20-maxxair");
             const solarWidth = solarModel[0].xRadius * 2.54 / 100 * 2; // width of solar panel
             collidableMeshList = updateColliderList();
             const filteredList = collidableMeshList.filter(mesh => mesh.min.x.toFixed(4) != fanBoxes[0].min.x.toFixed(4));
@@ -2173,7 +2552,7 @@
                   positionX = acbox.max.x - Math.abs(acbox.max.x - acbox.min.x)/2
 
                   // checking available to add
-                  const solarModel = availableProducts.filter(product => product.type == "solar55");
+                  const solarModel = availableProducts.filter(product => product.type == "solar55" || product.type == "mk20-maxxair");
                   const solarWidth = solarModel[0].xRadius * 2.54 / 100 * 2; // width of solar panel
                   collidableMeshList = updateColliderList();
                   const filteredList = collidableMeshList.filter(mesh => mesh.min.x.toFixed(4) != acbox.min.x.toFixed(4));
@@ -2222,7 +2601,7 @@
         loadItemDirectory = "https://cdn.shopify.com/3d/models/c599289fb8ed77b8/airconditioner-10.glb";
         break;
       case "maxxair":
-        loadItemDirectory = "https://cdn.shopify.com/3d/models/c3eeb44577bd8f6a/maxxair.glb";
+        loadItemDirectory = "https://cdn.shopify.com/3d/models/9f3e8c568b76b1f4/maxxair-2.glb";
         break;
       case "solar_panel250":
         loadItemDirectory = "https://cdn.shopify.com/3d/models/5b0bf30f3bc0bc5b/250W.glb";
@@ -2231,7 +2610,7 @@
         loadItemDirectory = "https://cdn.shopify.com/3d/models/41179ec7afded29e/200W.glb";
         break;
       case "solar_panel100":
-        loadItemDirectory = "https://cdn.shopify.com/3d/models/1d5da2011f6c3f84/100W.glb";
+        loadItemDirectory = "https://cdn.shopify.com/3d/models/bba013cfe5d76ce7/100W-1.glb";
         break;
       case "solar_panel50":
         loadItemDirectory = "https://cdn.shopify.com/3d/models/cfce53c8523cbc41/55W.glb";
@@ -2266,6 +2645,8 @@
         }, undefined, reject);
       });
     };
+
+    console.log(loadItemDirectory)
 
     loadModel(loadItemDirectory)
       .then((modelItem) => {
@@ -2318,38 +2699,57 @@
       group?.children[0]?.name == 'maxxair' || 
       group?.children[0]?.name == 'air_conditioner' || 
       group?.children[0]?.name == 'air_conditioner_p' || 
+      group?.children[0]?.name == 'air_conditioner_v1' || 
+      group?.children[0]?.name == 'air_conditioner_v2' || 
+      group?.children[0]?.name == 'air_conditioner_x2' || 
+      group?.children[0]?.name == 'air_conditioner_x3' || 
       group?.children[0]?.name == 'solar250' || 
       group?.children[0]?.name == 'solar220' || 
       group?.children[0]?.name == 'solar200' || 
       group?.children[0]?.name == 'solar100' || 
       group?.children[0]?.name == 'solar55' || 
       group?.children[0]?.name == 'solar30'|| 
+      group?.children[0]?.name == 'new_solar250' || 
+      group?.children[0]?.name == 'new_solar220' || 
+      group?.children[0]?.name == 'new_solar200' || 
+      group?.children[0]?.name == 'new_solar100' || 
       group?.children[0]?.name == 'cross_bar' || 
       group?.children[0]?.name == '8020_crossbar' || 
       group?.children[0]?.name == 'awning' || 
       group?.children[0]?.name == 'awning_350' || 
+      group?.children[0]?.name == 'awning_400' || 
+      group?.children[0]?.name == 'awning_450' || 
       group?.children[0]?.name == 'light_bar' || 
       group?.children[0]?.name == 'light_bar_copy' || 
+      group?.children[0]?.name == 'mk20-w3' || 
+      group?.children[0]?.name == 'mk20-l2' || 
+      group?.children[0]?.name == 'mk20-maxxair' || 
+      group?.children[0]?.name == 'mk22-w3' || 
+      group?.children[0]?.name == 'mk23-ac' || 
       group?.children[0]?.name == 'ladder' );
 
+    if(models?.length == 0) return;
     for(let x in models) {
       scene.remove(models[x])
     }
 
     let productList = [...availableProducts]
+    console.log(productList)
 
     productList = productList.map(product => {
       let newProduct = {...product};
-
-      if(newProduct.type == 'rack') newProduct.quantity = 1;
+      if(newProduct.type == 'rack') {
+        console.log("This is roof rack") 
+        console.log(product)
+      }
       else newProduct.quantity = 0;
-
-      handleDisableResetBtn()
-
       return newProduct
     });
 
+    console.log(productList)
     availableProducts = productList;
+
+    handleDisableResetBtn()
 
     addedState = [];
 		selectedIndexOfState = -1;
@@ -2367,15 +2767,15 @@
       removeEdgeLines(selectedFeature);
       selectedFeature = null;
       selectedIndexOfState = -1;
+      delelteBtn.disabled = true;
     }
     scene.remove(targetForDragging);
-    delelteBtn.disabled = true;
 
     let a = 2 * x / window.innerWidth - 1;
     let b = 1 - 2 * y / window.innerHeight;
-    raycaster.setFromCamera(new THREE.Vector2(a, b), camera);
-    intersects = raycaster.intersectObjects(scene.children);
-    if (intersects.length == 0) {
+    raycaster?.setFromCamera(new THREE.Vector2(a, b), camera);
+    intersects = raycaster?.intersectObjects(scene.children);
+    if (!intersects || intersects.length == 0) {
       return false;
     }
     let item = intersects[0];
@@ -2472,11 +2872,31 @@
         addProduct = availableProducts[15];
         flag ? addProduct.quantity += 1 : addProduct.quantity -= 1;
         availableProducts[15] = addProduct;
+
+        if(typeOfVan == "fordtransit"){
+          addProduct = availableProducts[7];
+          if(addProduct.quantity > 0 && !flag){
+            addProduct.quantity -= 1;
+          } else if(flag) {
+            addProduct.quantity += 1;
+          }
+          availableProducts[7] = addProduct;
+        }
         break;
       case "solar250":
         addProduct = availableProducts[16];
         flag ? addProduct.quantity += 1 : addProduct.quantity -= 1;
         availableProducts[16] = addProduct;
+
+        if(typeOfVan == "fordtransit"){
+          addProduct = availableProducts[7];
+          if(addProduct.quantity > 0 && !flag){
+            addProduct.quantity -= 1;
+          } else if(flag) {
+            addProduct.quantity += 1;
+          }
+          availableProducts[7] = addProduct;
+        }
         break;
       case "solar55":
         addProduct = availableProducts[4];
@@ -2565,17 +2985,119 @@
         flag ? addProduct.quantity += 1 : addProduct.quantity -= 1;
         availableProducts[20] = addProduct;
         break;
+      
+      case "air_conditioner_v1":
+        addProduct = availableProducts[22];
+        flag ? addProduct.quantity += 1 : addProduct.quantity -= 1;
+        availableProducts[22] = addProduct;
+        break;
+      case "air_conditioner_v2":
+        addProduct = availableProducts[23];
+        flag ? addProduct.quantity += 1 : addProduct.quantity -= 1;
+        availableProducts[23] = addProduct;
+        break;
+      case "air_conditioner_x2":
+        addProduct = availableProducts[24];
+        flag ? addProduct.quantity += 1 : addProduct.quantity -= 1;
+        availableProducts[24] = addProduct;
+        break;
+      case "air_conditioner_x3":
+        addProduct = availableProducts[25];
+        flag ? addProduct.quantity += 1 : addProduct.quantity -= 1;
+        availableProducts[25] = addProduct;
+        break;
       case "solar220":
         addProduct = availableProducts[21];
         flag ? addProduct.quantity += 1 : addProduct.quantity -= 1;
         availableProducts[21] = addProduct;
         break;
+      case "sp_ladder":
+        addProduct = availableProducts[26];
+        flag ? addProduct.quantity += 1 : addProduct.quantity -= 1;
+        availableProducts[26] = addProduct;
+        break;
+      case "awning_400":
+        addProduct = availableProducts[27];
+        flag ? addProduct.quantity += 1 : addProduct.quantity -= 1;
+        availableProducts[27] = addProduct;
 
+        addProduct = availableProducts[14];
+        if(addProduct.quantity > 0 && !flag){
+          addProduct.quantity -= 1;
+        } else if(flag) {
+          addProduct.quantity += 1;
+        }
+        availableProducts[14] = addProduct;
+        break;
+      case "awning_450":
+        addProduct = availableProducts[28];
+        flag ? addProduct.quantity += 1 : addProduct.quantity -= 1;
+        availableProducts[28] = addProduct;
+
+        addProduct = availableProducts[14];
+        if(addProduct.quantity > 0 && !flag){
+          addProduct.quantity -= 1;
+        } else if(flag) {
+          addProduct.quantity += 1;
+        }
+        availableProducts[14] = addProduct;
+        break;
+
+      case "new_solar250":
+        addProduct = availableProducts[29];
+        flag ? addProduct.quantity += 1 : addProduct.quantity -= 1;
+        availableProducts[29] = addProduct;
+        break;
+      case "new_solar220":
+        addProduct = availableProducts[30];
+        flag ? addProduct.quantity += 1 : addProduct.quantity -= 1;
+        availableProducts[30] = addProduct;
+        break;
+      case "new_solar200":
+        addProduct = availableProducts[31];
+        flag ? addProduct.quantity += 1 : addProduct.quantity -= 1;
+        availableProducts[31] = addProduct;
+        break;
+      case "new_solar100":
+        addProduct = availableProducts[32];
+        flag ? addProduct.quantity += 1 : addProduct.quantity -= 1;
+        availableProducts[32] = addProduct;
+        break;
+
+      case "mk20-w3":
+        addProduct = availableProducts[33];
+        flag ? addProduct.quantity += 1 : addProduct.quantity -= 1;
+        availableProducts[33] = addProduct;
+        break;
+
+      case "mk20-l2":
+        addProduct = availableProducts[34];
+        flag ? addProduct.quantity += 1 : addProduct.quantity -= 1;
+        availableProducts[34] = addProduct;
+        break;
+
+      case "mk20-maxxair":
+        addProduct = availableProducts[35];
+        flag ? addProduct.quantity += 1 : addProduct.quantity -= 1;
+        availableProducts[35] = addProduct;
+        break;
+
+      case "mk22-w3":
+        addProduct = availableProducts[36];
+        flag ? addProduct.quantity += 1 : addProduct.quantity -= 1;
+        availableProducts[36] = addProduct;
+        break;
+
+      case "mk23-ac":
+        addProduct = availableProducts[37];
+        flag ? addProduct.quantity += 1 : addProduct.quantity -= 1;
+        availableProducts[37] = addProduct;
+        break;
       default:
         break;
     }
-    calculatePrice(availableProducts)
     updateBuildState(availableProducts);
+    calculatePrice(availableProducts)
     updateCartState();
   }
 
@@ -2650,6 +3172,8 @@
     const container = document.getElementById('container');
     renderer = new THREE.WebGLRenderer({ antialias: true });
     renderer.setPixelRatio(window.devicePixelRatio);
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     renderer.setSize(((window.innerWidth < 1024 ? window.innerWidth : window.innerWidth - 300)), window.innerHeight);
       renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setAnimationLoop(render);
@@ -2669,7 +3193,10 @@
     setViewCube();
 
     const directionalLight1 = new THREE.DirectionalLight(0xffffff, 2.5);
-    directionalLight1.position.set(1, 1, 0);
+    directionalLight1.position.set(0, 3, 0);
+    directionalLight1.castShadow = true;
+    directionalLight1.shadow.mapSize.width = 300;  // Increase resolution
+    directionalLight1.shadow.mapSize.height = 300;
     scene.add(directionalLight1);
 
     const directionalLight2 = new THREE.DirectionalLight(0xffffff, 2.5);
@@ -2709,42 +3236,104 @@
     return box;
   }
 
-  function isCrossBarCollied(selectedFeatureBoundingBox, collidableMeshList, xPos) {
+  function isCrossBarCollied(selectedFeatureBoundingBox, collidableMeshList, xPos, selectedBoxName) {
     const widthOfObject = Math.abs(selectedFeatureBoundingBox.max.x - selectedFeatureBoundingBox.min.x);
+
     const filteredCollidableMeshList = collidableMeshList.filter(box => !(box.min.x.toFixed(3) == selectedFeatureBoundingBox.min.x.toFixed(3) && box.max.x.toFixed(3) == selectedFeatureBoundingBox.max.x.toFixed(3)));
     let collisionDetected = false;
 
-    const crossbarDiff = typeOfVan == "sprinter" ? 0.04 : 0;
 
     for (let boundingBox of filteredCollidableMeshList) {
       const centerItem = (boundingBox.min.x + boundingBox.max.x) /2;
 
       if(typeOfVan == "sprinter") {
+        let crossbarDiff = 0;
+        if(selectedBoxName == "solar100" || selectedBoxName == "solar220" || selectedBoxName == "new_solar250" || selectedBoxName == "new_solar220" || selectedBoxName == "new_solar200" || selectedBoxName == "new_solar100" || selectedBoxName == "mk20-l2" || selectedBoxName == "mk20-w3" || selectedBoxName == "mk22-w3" ){
+          crossbarDiff = typeOfVan == "sprinter" ? 0.04 : 0;
+          {% comment %} console.log("Max: ", (xPos - widthOfObject/2) - boundingBox.max.x); {% endcomment %}
+          {% comment %} console.log("Min: ",  (xPos + widthOfObject/2) - boundingBox.min.x); {% endcomment %}
 
-        console.log("Max: ", (xPos - widthOfObject/2) - boundingBox.max.x);
-        console.log("Min: ",  (xPos + widthOfObject/2) - boundingBox.min.x);
-        if(((xPos + widthOfObject/2) - boundingBox.min.x > 0.038 && (xPos + widthOfObject/2) - boundingBox.min.x < 0.042) ||
-        ((xPos - widthOfObject/2) - boundingBox.max.x < -0.038 && (xPos - widthOfObject/2) - boundingBox.max.x > -0.042)) {
-          console.log("Fix")
-          collisionDetected = false;
-          break;
-        }
-        if ( 
-          (xPos - widthOfObject/2) < boundingBox.max.x && 
-          (xPos + widthOfObject/2) > boundingBox.min.x && 
-          (xPos + widthOfObject/2) - boundingBox.min.x != crossbarDiff &&
-          (xPos - widthOfObject/2) - boundingBox.max.x != -1 * crossbarDiff
-        ) {
-          collisionDetected = true;
-          break;
+          const collidableModels = ["solar100", "solar220", "new_solar250", "new_solar220", "new_solar200", "new_solar100", "mk20-l2", "mk20-w3", "mk22-w3"];
+          const models = scene.children.filter((group) => collidableModels.includes(group?.children[0]?.name));
+          const boundingBoxes = models.map((model) => {
+            return getModelBoundingBox(model)
+          });
+
+          if(((xPos + widthOfObject/2) - boundingBox.min.x > 0.038 && (xPos + widthOfObject/2) - boundingBox.min.x < 0.042) ||
+          ((xPos - widthOfObject/2) - boundingBox.max.x < -0.038 && (xPos - widthOfObject/2) - boundingBox.max.x > -0.042)) {
+            const nearestBox = boundingBoxes.find(box => box.max.x == boundingBox.max.x && box.min.x == boundingBox.min.x)
+            if(nearestBox && nearestBox.isBox3) collisionDetected = false;
+            else collisionDetected = true
+            break;
+          }
+          if ( 
+            (xPos - widthOfObject/2) < boundingBox.max.x && 
+            (xPos + widthOfObject/2) > boundingBox.min.x && 
+            (xPos + widthOfObject/2) - boundingBox.min.x != crossbarDiff &&
+            (xPos - widthOfObject/2) - boundingBox.max.x != -1 * crossbarDiff
+          ) {
+            collisionDetected = true;
+            break;
+          }
+
+        } else {
+          if ( ((xPos - widthOfObject/2) < boundingBox.max.x && (xPos + widthOfObject/2) > boundingBox.min.x)) {
+            collisionDetected = true;
+            break;
+          }
         }
       } else {
-        if ( ((xPos - widthOfObject/2) < boundingBox.max.x && (xPos + widthOfObject/2) > boundingBox.min.x)) {
-          collisionDetected = true;
-          break;
+
+        const models = scene.children.filter((group) => group?.children[0]?.name == "8020_crossbar" || group?.children[0]?.name == "maxxair");
+        const boundingBoxes = models.map((model) => {
+          return getModelBoundingBox(model)
+        });
+        const nearestBox = boundingBoxes.find(box => box.max.x == boundingBox.max.x && box.min.x == boundingBox.min.x)
+        if(nearestBox) {
+          if((xPos - widthOfObject/2) < boundingBox.max.x - 0.11 && (xPos + widthOfObject/2) > boundingBox.min.x + 0.11) {
+            collisionDetected = true;
+            break;
+          }
+        } else if (
+          selectedBoxName == "mk20-l2" || 
+          selectedBoxName == "mk20-w3" || 
+          selectedBoxName == "mk22-w3" ||
+          selectedBoxName == "mk20-maxxair" ||
+          selectedBoxName == "mk23-ac"
+        ){
+          const crossbarDiff = 0.11;
+          const collidableModels = ["mk20-l2", "mk20-w3", "mk22-w3", "8020_crossbar", "mk20-maxxair", "mk23-ac"];
+          const models = scene.children.filter((group) => collidableModels.includes(group?.children[0]?.name));
+          const boundingBoxes = models.map((model) => {
+            return getModelBoundingBox(model)
+          });
+
+          if(((xPos + widthOfObject/2) - boundingBox.min.x > 0.108 && (xPos + widthOfObject/2) - boundingBox.min.x < 0.112) ||
+          ((xPos - widthOfObject/2) - boundingBox.max.x < -0.108 && (xPos - widthOfObject/2) - boundingBox.max.x > -0.112)) {
+            const nearestBox = boundingBoxes.find(box => box.max.x == boundingBox.max.x && box.min.x == boundingBox.min.x)
+            if(nearestBox && nearestBox.isBox3) collisionDetected = false;
+            else collisionDetected = true
+            break;
+          }
+          if ( 
+            (xPos - widthOfObject/2) < boundingBox.max.x && 
+            (xPos + widthOfObject/2) > boundingBox.min.x && 
+            (xPos + widthOfObject/2) - boundingBox.min.x != crossbarDiff &&
+            (xPos - widthOfObject/2) - boundingBox.max.x != -1 * crossbarDiff
+          ) {
+            collisionDetected = true;
+            break;
+          }
+
+        } else {
+          if( ((xPos - widthOfObject/2) < boundingBox.max.x && (xPos + widthOfObject/2) > boundingBox.min.x)) {
+            collisionDetected = true;
+            break;
+          }
         }
       }
     }
+
     return collisionDetected; 
   }
 
@@ -2764,7 +3353,7 @@
   }
 
   function updateColliderList() {
-    const collidableModels = ["cross_bar", "maxxair", "air_conditioner", "solar200", "solar250", "solar100", "lshape_cross", "8020_crossbar", "solar30", "solar55", "air_conditioner_p", "solar220"];
+    const collidableModels = ["cross_bar", "maxxair", "air_conditioner", "solar200", "solar250", "solar100", "lshape_cross", "8020_crossbar", "solar30", "solar55", "air_conditioner_p", "air_conditioner_v1", "air_conditioner_v2", "solar220", "air_conditioner_x2", "air_conditioner_x3", "new_solar250", "new_solar220", "new_solar200", "new_solar100", "mk20-w3", "mk20-l2", "mk20-maxxair", "mk22-w3", "mk23-ac"];
     let models = scene.children.filter((group) => collidableModels.includes(group?.children[0]?.name));
 
     const boxes = models.map((model) => {
@@ -2891,7 +3480,7 @@
     let startValue = inchXPos - xRadius;
     let endValue = inchXPos + xRadius;
 
-    if(modelType == "ladder") return
+    if(modelType == "ladder" || modelType == "sp_ladder") return
     else if(modelType == 'solar55'){
       const selAreaIndex = solar55Area.findIndex((area) => area.position > (inchXPos - xRadius / 2) && area.position < (inchXPos + xRadius / 2));
       let selectedArea = {...solar55Area[selAreaIndex]};
@@ -2932,22 +3521,26 @@
     }
   }
 
+  const removeDuplicates = (arr, key) => {
+    const seen = new Map();
+    return arr.filter(item => {
+      const identifier = key ? item[key] : JSON.stringify(item);
+      return seen.has(identifier) ? false : seen.set(identifier, true);
+    });
+  };
+
   function updateBuildState(products) {
     const buildListDom = document.getElementById('build-list');
     let buildText = ''
-    for(let i=0; i < products.length; i++) {
-      const availableProduct = products[i];
-
+    const totalProduct = mergeDeckPanelProducts(products)
+    for(let i=0; i < totalProduct.length; i++) {
+      const availableProduct = totalProduct[i];
       let productAmount = availableProduct.quantity; 
-
-
       if(availableProduct?.type == 'solar_cross') {
         if(productAmount <= 2) continue;
         else productAmount -= 2;
       }
-
       if(productAmount > 0) {
-
         buildText += '<div class="build-item"><div class="item-overview">'
         buildText += '<div class="product-info"><img src="'+ availableProduct?.image +'&width=50" width="50" height="50"/>'
         buildText += '<a class="item-name" href="'+availableProduct?.url + (availableProduct?.id ? ("?variant="+ availableProduct?.id ) : "" ) + '" target="_blank">'+ availableProduct?.title +'</a></div><button class="remove-product" id="'+ (availableProduct?.type + "___") +'">&#10799;</div>'
@@ -3006,9 +3599,44 @@
     }
   }
 
+  function mergeDeckPanelProducts(productsList) {
+    let deckPanelProducts = {
+      "45804602917083": {
+        count: 0
+      },
+      "45804602884315": {
+        count: 0
+      },
+      "45804602949851": {
+        count: 0
+      },
+    }
+    const deckPanelIds = [45804602917083, 45804602884315, 45804602949851]  
+    for(let x=0; x < productsList.length; x++) {
+      const productItem = productsList[x];
+      if(deckPanelIds.includes(productItem.id)) {
+        if(productItem.type == "mk20-w3" || productItem.type == "mk22-w3") {
+          deckPanelProducts[productItem.id]["count"] += productItem.quantity * 3
+        } else if(productItem.type == "mk20-l2" || productItem.type == "mk20-maxxair" || productItem.type == "mk23-ac") {
+          deckPanelProducts[productItem.id]["count"] += productItem.quantity * 2
+        }
+      }
+    }
+    let nonDeckProducts = productsList.filter(product => !deckPanelIds.includes(product.id))
+    let deckProducts = removeDuplicates(productsList.filter(product => deckPanelIds.includes(product.id)), 'id')
+    let deckItemsList = deckProducts.map((item) => {
+      let deckItem = {...item};
+      deckItem.quantity = deckPanelProducts[deckItem.id]["count"]
+      return deckItem
+    })
+    const totalProduct = [...nonDeckProducts, ...deckItemsList]
+    return totalProduct
+  }
+
   function calculatePrice(products) {
     let totalPrice = 0;
-    products.map((product) => {
+    const totalProduct = mergeDeckPanelProducts(products)
+    totalProduct.map((product) => {
       let productAmount = product.quantity; 
 
       if(product?.type == 'solar_cross') {
@@ -3032,10 +3660,15 @@
     return -1;
   }
 
-  function initVan(vanModelLink, shadowLink, rackModel, crossbarXPos, workPlaneValues, ladderPlaneValues, rackYPos, rackXPos, crossbarLink){
+  async function initVan(vanModelLink, shadowLink, rackModel, crossbarXPos, workPlaneValues, ladderPlaneValues, rackYPos, rackXPos, crossbarLink){
+
+    console.log("Initialize van")
 
     {% comment %} selectableProducts selectableProducts {% endcomment %}
+
     let selectableProductsText = ""
+
+    console.log(selectableProducts)
     for (const productItem of selectableProducts) {
       selectableProductsText += '<div class="swiper-slide"><div class="item-box"><div class="item-img" id="' + productItem.id + '" draggable="false"><div class="carted-item">1</div></div><div class="item-name"><p>'+ productItem.name +'</p></div></div></div>';
     }
@@ -3047,26 +3680,20 @@
       productElements[i].addEventListener('click', event => { handleClickProduct(event); handleEnableResetBtn(); }, false);
     }
 
-    loader.load(vanModelLink, function (gltf) {
+    await loader.load(vanModelLink, function (gltf) {
       carModel = gltf.scene;
+      carModel.traverse(function (node) {
+        if (node.isMesh) {
+          node.castShadow = true;
+          node.receiveShadow = true;
+        }
+      });
 
       bodyMesh = carModel.getObjectByName("van").getObjectByName("van_1");
       const bodyMaterial = new THREE.MeshPhysicalMaterial( {
         color: 0xffffff, metalness: 1.0, roughness: 0.9, clearcoat: 1.0, clearcoatRoughness: 0.1
       } );
       bodyMesh.material = bodyMaterial
-
-      const shadow = new THREE.TextureLoader().load(shadowLink);
-      shodowMesh = new THREE.Mesh(
-        new THREE.PlaneGeometry(2.8, 6.5),
-        new THREE.MeshBasicMaterial({
-          map: shadow, blending: THREE.MultiplyBlending, toneMapped: false, transparent: true
-        })
-      );
-      shodowMesh.rotation.x = - Math.PI / 2;
-      shodowMesh.rotation.z = Math.PI / 2;
-      shodowMesh.renderOrder = 2;
-      carModel.add(shodowMesh);
       scene.add(carModel);
 
       loader.load(rackModel,  function (gltf) {
@@ -3117,17 +3744,32 @@
       );
       targetForDragging.material.visible = false;
       raycaster = new THREE.Raycaster();
+
+      const groundGeometry = new THREE.PlaneGeometry(500, 500);
+      const groundMaterial = new THREE.ShadowMaterial({ opacity: 0.5 });
+      const ground = new THREE.Mesh(groundGeometry, groundMaterial);
+      ground.rotation.x = -Math.PI / 2;
+      ground.position.y = 0
+      ground.receiveShadow = true;
+      scene.add(ground);
     });
   }
 
   function selectVan() {
-    const selectedVan = document.getElementById("van_modal_select").value
+    if(vanSelected) return 
+    vanSelected = true;
+    {% comment %} const selectedVan = document.getElementById("van_modal_select").value {% endcomment %}
+    const selectedVan = document.getElementById("vanVariant").value;
+    document.getElementById("vanVariant").value = ""
+    if(!selectedVan > 0) return;
+
     availableProducts = availableProducts.map((product) => {
       if(product.type == "rack") {
+        console.log(product.products)
         const selectedRack = product.products.find((rack) => rack.variants.find(variant => variant.id == selectedVan));
         const selectedProduct = selectedRack.variants.find((variant) => variant.id == selectedVan);
         
-        let newProduct = {...selectedRack, id: selectedProduct.id, price: selectedProduct.price / 100, image: selectedProduct?.featured_image.src, quantity: 1, availability: true};
+        let newProduct = {...selectedRack, type: product.type, id: selectedProduct.id, price: selectedProduct.price / 100, image: selectedProduct?.featured_image.src, quantity: 1, availability: true};
         console.log(newProduct)
         document.getElementById("rack_title").innerHTML = selectedProduct?.title;
         return newProduct;
@@ -3140,11 +3782,12 @@
     switch (selectedVan) {
       case "45730334703835":
         vanModelLink = "https://cdn.shopify.com/3d/models/713d5b23692645f2/van-tr148.glb";
-        shadowLink = "https://cdn.shopify.com/s/files/1/0412/9898/5124/files/ford_ao.png?v=1711858184";
-        rackModel = 'https://cdn.shopify.com/3d/models/4df021fd93d74fd4/rack-extended.glb'
+        shadowLink = "https://cdn.shopify.com/s/files/1/0412/9898/5124/files/transit-148.png?v=1733113860";
+        shadowLink = "https://cdn.shopify.com/s/files/1/0412/9898/5124/files/transit-148.png?v=1733113860";
+        rackModel = 'https://cdn.shopify.com/3d/models/0c3af9215b3f3bef/new_tr-148_lightbar.glb'
         crossbarModel = 'https://cdn.shopify.com/3d/models/543cc594a487aecf/8020_cross.glb';
         ladderPos = [-1, 1.435, -1.012]
-        crossbarXpos = -2.67
+        crossbarXpos = -2.68
         rackYPos = 2.74
         rackXPos = -0.9
         workPlaneValues = [3, 0.01, 1.55];
@@ -3156,32 +3799,45 @@
         movingOffset = 0.265;
         owningPosZ = 0.84
         typeOfVan = "fordtransit"
+        awningArea = [0.778, -2.93]
         selectableProducts = [
           {name: "Dometic RTX", id: "airconditioner", model: "https://cdn.shopify.com/3d/models/3fc52045eaa806f8/airconditioner-d.glb"},
-          {name: "Dometic Penguin II", id: "airconditioner-p", model: "https://cdn.shopify.com/3d/models/c599289fb8ed77b8/airconditioner-10.glb"},
-          {name: "Maxxair Deluxe", id: "maxxair", model: "https://cdn.shopify.com/3d/models/c3eeb44577bd8f6a/maxxair.glb"},
+          {% comment %} {name: "Dometic Penguin II", id: "airconditioner-p", model: "https://cdn.shopify.com/3d/models/c599289fb8ed77b8/airconditioner-10.glb"}, {% endcomment %}
+          {name: "VELIT 2000R", id: "airconditioner-v1", model: "https://cdn.shopify.com/3d/models/c55e579406be72d1/airconditioner-v1.glb"},
+          {name: "VELIT 2000R MINI", id: "airconditioner-v2", model: "https://cdn.shopify.com/3d/models/575a822893d82486/airconditioner-v2.glb"},
+          {name: "Nomadic Innovations AC X2", id: "airconditioner-x2", model: "https://cdn.shopify.com/3d/models/8f9f98cdd33f3a4f/airconditioner-x2.glb"},
+          {name: "Nomadic Innovations AC X3", id: "airconditioner-x3", model: "https://cdn.shopify.com/3d/models/fa056a2235adba37/airconditioner-x3.glb"},
+          {name: "Maxxair Deluxe", id: "maxxair", model: "https://cdn.shopify.com/3d/models/9f3e8c568b76b1f4/maxxair-2.glb"},
           {name: "Rich Solar Panel 250w", id: "solar_panel250", model: "https://cdn.shopify.com/3d/models/5b0bf30f3bc0bc5b/250W.glb"},
           {name: "Rich Solar Panel 200w", id: "solar_panel200", model: "https://cdn.shopify.com/3d/models/41179ec7afded29e/200W.glb"},
-          {name: "Rich Solar Panel 100w", id: "solar_panel100", model: "https://cdn.shopify.com/3d/models/1d5da2011f6c3f84/100W.glb"},
+          {name: "Rich Solar Panel 100w", id: "solar_panel100", model: "https://cdn.shopify.com/3d/models/bba013cfe5d76ce7/100W-1.glb"},
           {name: "Rich Solar Panel 50w", id: "solar_panel50", model: "https://cdn.shopify.com/3d/models/cfce53c8523cbc41/55W.glb"},
           {name: "Rich Solar Panel 30w", id: "solar_panel30", model: "https://cdn.shopify.com/3d/models/dfcf1aaf24802514/30W.glb"},
+          {name: "NewPowa Solar Panel 250w", id: "new_solar250", model: "https://cdn.shopify.com/3d/models/c428d2a3aaa669d2/250W_newpowa.glb"},
+          {name: "NewPowa Solar Panel 220w", id: "new_solar220", model: "https://cdn.shopify.com/3d/models/d0869d71e3574000/220W_newpowa.glb"},
+          {name: "NewPowa Solar Panel 200w", id: "new_solar200", model: "https://cdn.shopify.com/3d/models/7745111021b38644/200W_newpowa.glb"},
+          {name: "NewPowa Solar Panel 100w", id: "new_solar100", model: "https://cdn.shopify.com/3d/models/5d5e861aa0b3b30a/100W_newpowa.glb"},
           {name: "Side Mount Ladder", id: "ladder", model: "https://cdn.shopify.com/3d/models/5098230f535f0020/ladder-tr148.glb"},
           {name: "8020 cross bar", id: "cross_bar", model: "https://cdn.shopify.com/3d/models/543cc594a487aecf/8020_cross.glb"},
           {name: "F45-300 Awning", id: "awning", model: "https://cdn.shopify.com/3d/models/85085b43be1cd9cf/awning.glb"},
           {name: "F45-350 Awning", id: "awning_350", model: "https://cdn.shopify.com/3d/models/431a3b45d712597f/awning_350.glb"},
           {name: "Tyri Light Bar", id: "light_bar", model: "https://cdn.shopify.com/3d/models/446727d744111fcc/light_bar.glb"},
-          {name: "Diode Dynamics Light Bar", id: "light_bar_copy", model: "https://cdn.shopify.com/3d/models/7de4edf3ac049e1e/light_bar_1.glb"}
+          {name: "Deck Panels(Medium) - 2 length wise", id: "mk20-l2", model: "https://cdn.shopify.com/3d/models/c283b63c9eaef7bd/mk20-l2.glb"},
+          {name: "Deck Panels(Medium) - 3 width wise", id: "mk20-w3", model: "https://cdn.shopify.com/3d/models/30941932346f43a7/mk20-w3.glb"},
+          {name: "Deck Panels(Medium) - fit maxxfan", id: "mk20-maxxair", model: "https://cdn.shopify.com/3d/models/e5827b72fd891d4e/mk20-w2-maxxair.glb"},
+          {name: "Deck Panels(Large) - 3 width wise", id: "mk22-w3", model: "https://cdn.shopify.com/3d/models/6bbc46eee67042ad/mk22-w3.glb"},
+          {name: "Deck Panels(Small) - fit AC unit", id: "mk23-ac", model: "https://cdn.shopify.com/3d/models/ba54ea390ddcff2c/mk23-ac.glb"},
         ]
         initVan(vanModelLink, shadowLink, rackModel, crossbarXpos, workPlaneValues, ladderPlaneValues, rackYPos, rackXPos, crossbarModel)
         break;
 
       case "45730334671067":
         vanModelLink = "https://cdn.shopify.com/3d/models/713d5b23692645f2/van-tr148.glb";
-        shadowLink = "https://cdn.shopify.com/s/files/1/0412/9898/5124/files/ford_ao.png?v=1711858184";
-        rackModel = 'https://cdn.shopify.com/3d/models/bc8d1e88f7780c06/rack_origin.glb'
+        shadowLink = "https://cdn.shopify.com/s/files/1/0412/9898/5124/files/transit-148.png?v=1733113860";
+        rackModel = 'https://cdn.shopify.com/3d/models/090519801c768619/new_tr-148_premium.glb'
         crossbarModel = 'https://cdn.shopify.com/3d/models/543cc594a487aecf/8020_cross.glb';
         ladderPos = [-1.02, 1.4, -1.012]
-        crossbarXpos = -2.67
+        crossbarXpos = -2.68
         rackYPos = 2.74
         rackXPos = -0.9
         workPlaneValues = [3, 0.01, 1.55];
@@ -3193,29 +3849,43 @@
         movingOffset = 0.265;
         owningPosZ = 0.84
         typeOfVan = "fordtransit"
+        awningArea = [0.778, -2.93]
         selectableProducts = [
           {name: "Dometic RTX", id: "airconditioner", model: "https://cdn.shopify.com/3d/models/3fc52045eaa806f8/airconditioner-d.glb"},
-          {name: "Dometic Penguin II", id: "airconditioner-p", model: "https://cdn.shopify.com/3d/models/c599289fb8ed77b8/airconditioner-10.glb"},
-          {name: "Maxxair Deluxe", id: "maxxair", model: "https://cdn.shopify.com/3d/models/c3eeb44577bd8f6a/maxxair.glb"},
+          {% comment %} {name: "Dometic Penguin II", id: "airconditioner-p", model: "https://cdn.shopify.com/3d/models/c599289fb8ed77b8/airconditioner-10.glb"}, {% endcomment %}
+          {name: "VELIT 2000R", id: "airconditioner-v1", model: "https://cdn.shopify.com/3d/models/c55e579406be72d1/airconditioner-v1.glb"},
+          {name: "VELIT 2000R MINI", id: "airconditioner-v2", model: "https://cdn.shopify.com/3d/models/575a822893d82486/airconditioner-v2.glb"},
+          {name: "Nomadic Innovations AC X2", id: "airconditioner-x2", model: "https://cdn.shopify.com/3d/models/8f9f98cdd33f3a4f/airconditioner-x2.glb"},
+          {name: "Nomadic Innovations AC X3", id: "airconditioner-x3", model: "https://cdn.shopify.com/3d/models/fa056a2235adba37/airconditioner-x3.glb"},
+          {name: "Maxxair Deluxe", id: "maxxair", model: "https://cdn.shopify.com/3d/models/9f3e8c568b76b1f4/maxxair-2.glb"},
           {name: "Rich Solar Panel 250w", id: "solar_panel250", model: "https://cdn.shopify.com/3d/models/5b0bf30f3bc0bc5b/250W.glb"},
           {name: "Rich Solar Panel 200w", id: "solar_panel200", model: "https://cdn.shopify.com/3d/models/41179ec7afded29e/200W.glb"},
-          {name: "Rich Solar Panel 100w", id: "solar_panel100", model: "https://cdn.shopify.com/3d/models/1d5da2011f6c3f84/100W.glb"},
+          {name: "Rich Solar Panel 100w", id: "solar_panel100", model: "https://cdn.shopify.com/3d/models/bba013cfe5d76ce7/100W-1.glb"},
           {name: "Rich Solar Panel 50w", id: "solar_panel50", model: "https://cdn.shopify.com/3d/models/cfce53c8523cbc41/55W.glb"},
           {name: "Rich Solar Panel 30w", id: "solar_panel30", model: "https://cdn.shopify.com/3d/models/dfcf1aaf24802514/30W.glb"},
+          {name: "NewPowa Solar Panel 250w", id: "new_solar250", model: "https://cdn.shopify.com/3d/models/c428d2a3aaa669d2/250W_newpowa.glb"},
+          {name: "NewPowa Solar Panel 220w", id: "new_solar220", model: "https://cdn.shopify.com/3d/models/d0869d71e3574000/220W_newpowa.glb"},
+          {name: "NewPowa Solar Panel 200w", id: "new_solar200", model: "https://cdn.shopify.com/3d/models/7745111021b38644/200W_newpowa.glb"},
+          {name: "NewPowa Solar Panel 100w", id: "new_solar100", model: "https://cdn.shopify.com/3d/models/5d5e861aa0b3b30a/100W_newpowa.glb"},
           {name: "Side Mount Ladder", id: "ladder", model: "https://cdn.shopify.com/3d/models/5098230f535f0020/ladder-tr148.glb"},
           {name: "8020 cross bar", id: "cross_bar", model: "https://cdn.shopify.com/3d/models/543cc594a487aecf/8020_cross.glb"},
           {name: "F45-300 Awning", id: "awning", model: "https://cdn.shopify.com/3d/models/85085b43be1cd9cf/awning.glb"},
           {name: "F45-350 Awning", id: "awning_350", model: "https://cdn.shopify.com/3d/models/431a3b45d712597f/awning_350.glb"},
           {name: "Tyri Light Bar", id: "light_bar", model: "https://cdn.shopify.com/3d/models/446727d744111fcc/light_bar.glb"},
-          {name: "Diode Dynamics Light Bar", id: "light_bar_copy", model: "https://cdn.shopify.com/3d/models/7de4edf3ac049e1e/light_bar_1.glb"}
+          {name: "Diode Dynamics Light Bar", id: "light_bar_copy", model: "https://cdn.shopify.com/3d/models/7de4edf3ac049e1e/light_bar_1.glb"},
+          {name: "Deck Panels(Medium) - 2 length wise", id: "mk20-l2", model: "https://cdn.shopify.com/3d/models/c283b63c9eaef7bd/mk20-l2.glb"},
+          {name: "Deck Panels(Medium) - 3 width wise", id: "mk20-w3", model: "https://cdn.shopify.com/3d/models/30941932346f43a7/mk20-w3.glb"},
+          {name: "Deck Panels(Medium) - fit maxxfan", id: "mk20-maxxair", model: "https://cdn.shopify.com/3d/models/e5827b72fd891d4e/mk20-w2-maxxair.glb"},
+          {name: "Deck Panels(Large) - 3 width wise", id: "mk22-w3", model: "https://cdn.shopify.com/3d/models/6bbc46eee67042ad/mk22-w3.glb"},
+          {name: "Deck Panels(Small) - fit AC unit", id: "mk23-ac", model: "https://cdn.shopify.com/3d/models/ba54ea390ddcff2c/mk23-ac.glb"},
         ]
         initVan(vanModelLink, shadowLink, rackModel, crossbarXpos, workPlaneValues, ladderPlaneValues, rackYPos, rackXPos, crossbarModel);
         break;
 
       case "45730334802139":
         vanModelLink = "https://cdn.shopify.com/3d/models/f93eb4eb2fe0a35e/van-tr148-ext.glb";
-        shadowLink = "https://cdn.shopify.com/s/files/1/0412/9898/5124/files/ford_ao.png?v=1711858184";
-        rackModel = 'https://cdn.shopify.com/3d/models/8858a79a0b36c2f1/transit148-ext-rack.glb'
+        shadowLink = "https://cdn.shopify.com/s/files/1/0412/9898/5124/files/transit-ext.png?v=1733115711";
+        rackModel = 'https://cdn.shopify.com/3d/models/333f1d019a87f907/new_transit148-ext-rack.glb'
         crossbarModel = 'https://cdn.shopify.com/3d/models/543cc594a487aecf/8020_cross.glb';
         ladderPos = [-0.9, 1.316, -1.012]
         crossbarXpos = -3.29
@@ -3229,29 +3899,43 @@
         movingOffset = 0.365;
         owningPosZ = 0.84
         typeOfVan = "fordtransit"
+        awningArea = [0.98, -3.39]
         selectableProducts = [
           {name: "Dometic RTX", id: "airconditioner", model: "https://cdn.shopify.com/3d/models/3fc52045eaa806f8/airconditioner-d.glb"},
-          {name: "Dometic Penguin II", id: "airconditioner-p", model: "https://cdn.shopify.com/3d/models/c599289fb8ed77b8/airconditioner-10.glb"},
-          {name: "Maxxair Deluxe", id: "maxxair", model: "https://cdn.shopify.com/3d/models/c3eeb44577bd8f6a/maxxair.glb"},
+          {% comment %} {name: "Dometic Penguin II", id: "airconditioner-p", model: "https://cdn.shopify.com/3d/models/c599289fb8ed77b8/airconditioner-10.glb"}, {% endcomment %}
+          {name: "VELIT 2000R", id: "airconditioner-v1", model: "https://cdn.shopify.com/3d/models/c55e579406be72d1/airconditioner-v1.glb"},
+          {name: "VELIT 2000R MINI", id: "airconditioner-v2", model: "https://cdn.shopify.com/3d/models/575a822893d82486/airconditioner-v2.glb"},
+          {name: "Nomadic Innovations AC X2", id: "airconditioner-x2", model: "https://cdn.shopify.com/3d/models/8f9f98cdd33f3a4f/airconditioner-x2.glb"},
+          {name: "Nomadic Innovations AC X3", id: "airconditioner-x3", model: "https://cdn.shopify.com/3d/models/fa056a2235adba37/airconditioner-x3.glb"},
+          {name: "Maxxair Deluxe", id: "maxxair", model: "https://cdn.shopify.com/3d/models/9f3e8c568b76b1f4/maxxair-2.glb"},
           {name: "Rich Solar Panel 250w", id: "solar_panel250", model: "https://cdn.shopify.com/3d/models/5b0bf30f3bc0bc5b/250W.glb"},
           {name: "Rich Solar Panel 200w", id: "solar_panel200", model: "https://cdn.shopify.com/3d/models/41179ec7afded29e/200W.glb"},
-          {name: "Rich Solar Panel 100w", id: "solar_panel100", model: "https://cdn.shopify.com/3d/models/1d5da2011f6c3f84/100W.glb"},
+          {name: "Rich Solar Panel 100w", id: "solar_panel100", model: "https://cdn.shopify.com/3d/models/bba013cfe5d76ce7/100W-1.glb"},
           {name: "Rich Solar Panel 50w", id: "solar_panel50", model: "https://cdn.shopify.com/3d/models/cfce53c8523cbc41/55W.glb"},
           {name: "Rich Solar Panel 30w", id: "solar_panel30", model: "https://cdn.shopify.com/3d/models/dfcf1aaf24802514/30W.glb"},
+          {name: "NewPowa Solar Panel 250w", id: "new_solar250", model: "https://cdn.shopify.com/3d/models/c428d2a3aaa669d2/250W_newpowa.glb"},
+          {name: "NewPowa Solar Panel 220w", id: "new_solar220", model: "https://cdn.shopify.com/3d/models/d0869d71e3574000/220W_newpowa.glb"},
+          {name: "NewPowa Solar Panel 200w", id: "new_solar200", model: "https://cdn.shopify.com/3d/models/7745111021b38644/200W_newpowa.glb"},
+          {name: "NewPowa Solar Panel 100w", id: "new_solar100", model: "https://cdn.shopify.com/3d/models/5d5e861aa0b3b30a/100W_newpowa.glb"},
           {name: "Side Mount Ladder", id: "ladder", model: 'https://cdn.shopify.com/3d/models/00ba5b320dc83fe8/ladder-tr148-ext.glb'},
           {name: "8020 cross bar", id: "cross_bar", model: 'https://cdn.shopify.com/3d/models/543cc594a487aecf/8020_cross.glb'},
           {name: "F45-300 Awning", id: "awning", model: "https://cdn.shopify.com/3d/models/85085b43be1cd9cf/awning.glb"},
           {name: "F45-350 Awning", id: "awning_350", model: "https://cdn.shopify.com/3d/models/431a3b45d712597f/awning_350.glb"},
           {name: "Tyri Light Bar", id: "light_bar", model: "https://cdn.shopify.com/3d/models/446727d744111fcc/light_bar.glb"},
-          {name: "Diode Dynamics Light Bar", id: "light_bar_copy", model: "https://cdn.shopify.com/3d/models/7de4edf3ac049e1e/light_bar_1.glb"}
+          {name: "Diode Dynamics Light Bar", id: "light_bar_copy", model: "https://cdn.shopify.com/3d/models/7de4edf3ac049e1e/light_bar_1.glb"},
+          {name: "Deck Panels(Medium) - 2 length wise", id: "mk20-l2", model: "https://cdn.shopify.com/3d/models/c283b63c9eaef7bd/mk20-l2.glb"},
+          {name: "Deck Panels(Medium) - 3 width wise", id: "mk20-w3", model: "https://cdn.shopify.com/3d/models/30941932346f43a7/mk20-w3.glb"},
+          {name: "Deck Panels(Medium) - fit maxxfan", id: "mk20-maxxair", model: "https://cdn.shopify.com/3d/models/e5827b72fd891d4e/mk20-w2-maxxair.glb"},
+          {name: "Deck Panels(Large) - 3 width wise", id: "mk22-w3", model: "https://cdn.shopify.com/3d/models/6bbc46eee67042ad/mk22-w3.glb"},
+          {name: "Deck Panels(Small) - fit AC unit", id: "mk23-ac", model: "https://cdn.shopify.com/3d/models/ba54ea390ddcff2c/mk23-ac.glb"},
         ]
         initVan(vanModelLink, shadowLink, rackModel, crossbarXpos, workPlaneValues, ladderPlaneValues, rackYPos, rackXPos, crossbarModel);
         break;
 
       case "45730334834907":
         vanModelLink = "https://cdn.shopify.com/3d/models/f93eb4eb2fe0a35e/van-tr148-ext.glb";
-        shadowLink = "https://cdn.shopify.com/s/files/1/0412/9898/5124/files/ford_ao.png?v=1711858184";
-        rackModel = 'https://cdn.shopify.com/3d/models/278cf2f4a6faa586/transit148-ext-rack-lightbar.glb'
+        shadowLink = "https://cdn.shopify.com/s/files/1/0412/9898/5124/files/transit-ext.png?v=1733115711";
+        rackModel = 'https://cdn.shopify.com/3d/models/61d73fc11a628165/new_transit148-ext-rack-lightbar.glb'
         crossbarModel = 'https://cdn.shopify.com/3d/models/543cc594a487aecf/8020_cross.glb';
         ladderPos = [-0.9, 1.316, -1.012]
         crossbarXpos = -3.29
@@ -3265,21 +3949,36 @@
         movingOffset = 0.365;
         owningPosZ = 0.84
         typeOfVan = "fordtransit"
+        lightbarXPos = 0.4
+        awningArea = [0.98, -3.39]
         selectableProducts = [
           {name: "Dometic RTX", id: "airconditioner", model: "https://cdn.shopify.com/3d/models/3fc52045eaa806f8/airconditioner-d.glb"},
-          {name: "Dometic Penguin II", id: "airconditioner-p", model: "https://cdn.shopify.com/3d/models/c599289fb8ed77b8/airconditioner-10.glb"},
-          {name: "Maxxair Deluxe", id: "maxxair", model: "https://cdn.shopify.com/3d/models/c3eeb44577bd8f6a/maxxair.glb"},
+          {% comment %} {name: "Dometic Penguin II", id: "airconditioner-p", model: "https://cdn.shopify.com/3d/models/c599289fb8ed77b8/airconditioner-10.glb"}, {% endcomment %}
+          {name: "VELIT 2000R", id: "airconditioner-v1", model: "https://cdn.shopify.com/3d/models/c55e579406be72d1/airconditioner-v1.glb"},
+          {name: "VELIT 2000R MINI", id: "airconditioner-v2", model: "https://cdn.shopify.com/3d/models/575a822893d82486/airconditioner-v2.glb"},
+          {name: "Nomadic Innovations AC X2", id: "airconditioner-x2", model: "https://cdn.shopify.com/3d/models/8f9f98cdd33f3a4f/airconditioner-x2.glb"},
+          {name: "Nomadic Innovations AC X3", id: "airconditioner-x3", model: "https://cdn.shopify.com/3d/models/fa056a2235adba37/airconditioner-x3.glb"},
+          {name: "Maxxair Deluxe", id: "maxxair", model: "https://cdn.shopify.com/3d/models/9f3e8c568b76b1f4/maxxair-2.glb"},
           {name: "Rich Solar Panel 250w", id: "solar_panel250", model: "https://cdn.shopify.com/3d/models/5b0bf30f3bc0bc5b/250W.glb"},
           {name: "Rich Solar Panel 200w", id: "solar_panel200", model: "https://cdn.shopify.com/3d/models/41179ec7afded29e/200W.glb"},
-          {name: "Rich Solar Panel 100w", id: "solar_panel100", model: "https://cdn.shopify.com/3d/models/1d5da2011f6c3f84/100W.glb"},
+          {name: "Rich Solar Panel 100w", id: "solar_panel100", model: "https://cdn.shopify.com/3d/models/bba013cfe5d76ce7/100W-1.glb"},
           {name: "Rich Solar Panel 50w", id: "solar_panel50", model: "https://cdn.shopify.com/3d/models/cfce53c8523cbc41/55W.glb"},
           {name: "Rich Solar Panel 30w", id: "solar_panel30", model: "https://cdn.shopify.com/3d/models/dfcf1aaf24802514/30W.glb"},
+          {name: "NewPowa Solar Panel 250w", id: "new_solar250", model: "https://cdn.shopify.com/3d/models/c428d2a3aaa669d2/250W_newpowa.glb"},
+          {name: "NewPowa Solar Panel 220w", id: "new_solar220", model: "https://cdn.shopify.com/3d/models/d0869d71e3574000/220W_newpowa.glb"},
+          {name: "NewPowa Solar Panel 200w", id: "new_solar200", model: "https://cdn.shopify.com/3d/models/7745111021b38644/200W_newpowa.glb"},
+          {name: "NewPowa Solar Panel 100w", id: "new_solar100", model: "https://cdn.shopify.com/3d/models/5d5e861aa0b3b30a/100W_newpowa.glb"},
           {name: "Side Mount Ladder", id: "ladder", model: 'https://cdn.shopify.com/3d/models/00ba5b320dc83fe8/ladder-tr148-ext.glb'},
           {name: "8020 cross bar", id: "cross_bar", model: 'https://cdn.shopify.com/3d/models/543cc594a487aecf/8020_cross.glb'},
           {name: "F45-300 Awning", id: "awning", model: "https://cdn.shopify.com/3d/models/85085b43be1cd9cf/awning.glb"},
           {name: "F45-350 Awning", id: "awning_350", model: "https://cdn.shopify.com/3d/models/431a3b45d712597f/awning_350.glb"},
           {name: "Tyri Light Bar", id: "light_bar", model: "https://cdn.shopify.com/3d/models/446727d744111fcc/light_bar.glb"},
-          {name: "Diode Dynamics Light Bar", id: "light_bar_copy", model: "https://cdn.shopify.com/3d/models/7de4edf3ac049e1e/light_bar_1.glb"}
+          {name: "Diode Dynamics Light Bar", id: "light_bar_copy", model: "https://cdn.shopify.com/3d/models/7de4edf3ac049e1e/light_bar_1.glb"},
+          {name: "Deck Panels(Medium) - 2 length wise", id: "mk20-l2", model: "https://cdn.shopify.com/3d/models/c283b63c9eaef7bd/mk20-l2.glb"},
+          {name: "Deck Panels(Medium) - 3 width wise", id: "mk20-w3", model: "https://cdn.shopify.com/3d/models/30941932346f43a7/mk20-w3.glb"},
+          {name: "Deck Panels(Medium) - fit maxxfan", id: "mk20-maxxair", model: "https://cdn.shopify.com/3d/models/e5827b72fd891d4e/mk20-w2-maxxair.glb"},
+          {name: "Deck Panels(Large) - 3 width wise", id: "mk22-w3", model: "https://cdn.shopify.com/3d/models/6bbc46eee67042ad/mk22-w3.glb"},
+          {name: "Deck Panels(Small) - fit AC unit", id: "mk23-ac", model: "https://cdn.shopify.com/3d/models/ba54ea390ddcff2c/mk23-ac.glb"},
         ]
 
         initVan(vanModelLink, shadowLink, rackModel, crossbarXpos, workPlaneValues, ladderPlaneValues, rackYPos, rackXPos, crossbarModel);
@@ -3287,34 +3986,46 @@
       
       case "45730446835931":
         vanModelLink = "https://cdn.shopify.com/3d/models/4f78aa938db8d413/sprinter-2.glb";
-        shadowLink = "https://cdn.shopify.com/s/files/1/0412/9898/5124/files/ford_ao.png?v=1711858184";
-        rackModel = 'https://cdn.shopify.com/3d/models/414b4cbfb82128d7/sprinter-rack.glb'
+        shadowLink = "https://cdn.shopify.com/s/files/1/0412/9898/5124/files/sprinter.png?v=1733116281";
+        rackModel = 'https://cdn.shopify.com/3d/models/c7be56e9f2b42a7e/new_sprinter-rack.glb'
         crossbarModel = "https://cdn.shopify.com/3d/models/a6ed7ffc8e144cab/sprinter_crossbar.glb";
         crossbarXpos = -2.885
         workPlaneValues = [3, 0.01, 1.55];
         ladderPlaneValues = [3, 2, 0.01];
         ladderPos = [-1.1986, 1.5314, -0.9777]
         vanArea = [-12.785, 114.55]
-        cutOffArea = [0, 18.25, 22.27, 40.2, 44.21, 56.85, 60.87, 80.67, 84.68, 104.49];0
-        vanDiff = -4.05
+        cutOffArea = [0, 18.25, 22.27, 40.2, 44.21, 56.85, 60.87, 80.67, 84.68, 104.49];
+        vanDiff = 13.38
         rackYPos = 2.728
         rackXPos = -0.98
         movingOffset = 0.3325;
         crossbarWidth = 1.6
         owningPosZ = 0.78
         typeOfVan = "sprinter"
+        awningArea = [0.98, -3.00]
         selectableProducts = [
           {name: "Dometic RTX", id: "airconditioner", model: "https://cdn.shopify.com/3d/models/3fc52045eaa806f8/airconditioner-d.glb"},
-          {name: "Dometic Penguin II", id: "airconditioner-p", model: "https://cdn.shopify.com/3d/models/c599289fb8ed77b8/airconditioner-10.glb"},
-          {name: "Maxxair Deluxe", id: "maxxair", model: "https://cdn.shopify.com/3d/models/c3eeb44577bd8f6a/maxxair.glb"},
+          {% comment %} {name: "Dometic Penguin II", id: "airconditioner-p", model: "https://cdn.shopify.com/3d/models/c599289fb8ed77b8/airconditioner-10.glb"}, {% endcomment %}
+          {name: "VELIT 2000R", id: "airconditioner-v1", model: "https://cdn.shopify.com/3d/models/c55e579406be72d1/airconditioner-v1.glb"},
+          {name: "VELIT 2000R MINI", id: "airconditioner-v2", model: "https://cdn.shopify.com/3d/models/575a822893d82486/airconditioner-v2.glb"},
+          {name: "Nomadic Innovations AC X2", id: "airconditioner-x2", model: "https://cdn.shopify.com/3d/models/8f9f98cdd33f3a4f/airconditioner-x2.glb"},
+          {name: "Nomadic Innovations AC X3", id: "airconditioner-x3", model: "https://cdn.shopify.com/3d/models/fa056a2235adba37/airconditioner-x3.glb"},
+          {name: "Maxxair Deluxe", id: "maxxair", model: "https://cdn.shopify.com/3d/models/9f3e8c568b76b1f4/maxxair-2.glb"},
           {name: "Rich Solar Panel 220w", id: "solar_panel220", model: "https://cdn.shopify.com/3d/models/6f1510b8b1557a69/sp-solar220.glb"},
           {name: "Rich Solar Panel 100w", id: "solar_panel100", model: "https://cdn.shopify.com/3d/models/502c0ee744921a4a/sp-solar100.glb"},
-          {name: "Side Mount Ladder", id: "ladder", model: "https://cdn.shopify.com/3d/models/4b3781227196c6fb/ladder-sprinter.glb"},
+          {name: "NewPowa Solar Panel 250w", id: "new_solar250", model: "https://cdn.shopify.com/3d/models/904757785c51a77a/250W_newpowa_sp.glb"},
+          {name: "NewPowa Solar Panel 220w", id: "new_solar220", model: "https://cdn.shopify.com/3d/models/3084b3452d33bf20/220W_newpowa_sp.glb"},
+          {name: "NewPowa Solar Panel 200w", id: "new_solar200", model: "https://cdn.shopify.com/3d/models/d2ecc74512cb4b57/200W_newpowa_sp.glb"},
+          {name: "NewPowa Solar Panel 100w", id: "new_solar100", model: "https://cdn.shopify.com/3d/models/d676eedc944c3e99/100W_newpowa_sp.glb"},
+          {name: "Side Mount Ladder", id: "sp_ladder", model: "https://cdn.shopify.com/3d/models/4b3781227196c6fb/ladder-sprinter.glb"},
           {name: "8020 cross bar", id: "cross_bar", model: "https://cdn.shopify.com/3d/models/a6ed7ffc8e144cab/sprinter_crossbar.glb"},
           {name: "F45-300 Awning", id: "awning", model: "https://cdn.shopify.com/3d/models/85085b43be1cd9cf/awning.glb"},
           {name: "F45-350 Awning", id: "awning_350", model: "https://cdn.shopify.com/3d/models/431a3b45d712597f/awning_350.glb"},
           {name: "Tyri Light Bar", id: "light_bar", model: "https://cdn.shopify.com/3d/models/446727d744111fcc/light_bar.glb"},
-          {name: "Diode Dynamics Light Bar", id: "light_bar_copy", model: "https://cdn.shopify.com/3d/models/7de4edf3ac049e1e/light_bar_1.glb"}
+          {name: "Diode Dynamics Light Bar", id: "light_bar_copy", model: "https://cdn.shopify.com/3d/models/7de4edf3ac049e1e/light_bar_1.glb"},
+          {name: "Deck Panels(Medium) - 2 length wise", id: "mk20-l2", model: "https://cdn.shopify.com/3d/models/834971040114a1af/mk20-l2-sp.glb"},
+          {name: "Deck Panels(Medium) - 3 width wise", id: "mk20-w3", model: "https://cdn.shopify.com/3d/models/436df7ea66129642/mk20-w3-sp.glb"},
+          {name: "Deck Panels(Large) - 3 width wise", id: "mk22-w3", model: "https://cdn.shopify.com/3d/models/26f539fd1a696c38/mk22-w3-sp.glb"},
         ]
         solar100Product = {...availableProducts[15]};
         solar100Product.xRadius = 8
@@ -3325,8 +4036,8 @@
       
       case "45910413181147":
         vanModelLink = "https://cdn.shopify.com/3d/models/4f78aa938db8d413/sprinter-2.glb";
-        shadowLink = "https://cdn.shopify.com/s/files/1/0412/9898/5124/files/ford_ao.png?v=1711858184";
-        rackModel = 'https://cdn.shopify.com/3d/models/414b4cbfb82128d7/sprinter-rack.glb'
+        shadowLink = "https://cdn.shopify.com/s/files/1/0412/9898/5124/files/sprinter.png?v=1733116281";
+        rackModel = 'https://cdn.shopify.com/3d/models/99a1fdcc9ad2adbe/sprinter-rack-rightbar.glb'
         crossbarModel = "https://cdn.shopify.com/3d/models/a6ed7ffc8e144cab/sprinter_crossbar.glb";
         crossbarXpos = -2.885
         workPlaneValues = [3, 0.01, 1.55];
@@ -3334,26 +4045,256 @@
         ladderPos = [-1.1986, 1.5314, -0.9777]
         vanArea = [-12.785, 114.55]
         cutOffArea = [0, 18.25, 22.27, 40.2, 44.21, 56.85, 60.87, 80.67, 84.68, 104.49];
-        vanDiff = -4.05
+        vanDiff = 13.38
         rackYPos = 2.728
         rackXPos = -0.98
         movingOffset = 0.3325;
         crossbarWidth = 1.6
         owningPosZ = 0.78
         typeOfVan = "sprinter"
+        lightbarXPos = 0.376
+        awningArea = [0.98, -3.00]
         selectableProducts = [
           {name: "Dometic RTX", id: "airconditioner", model: "https://cdn.shopify.com/3d/models/3fc52045eaa806f8/airconditioner-d.glb"},
-          {name: "Dometic Penguin II", id: "airconditioner-p", model: "https://cdn.shopify.com/3d/models/c599289fb8ed77b8/airconditioner-10.glb"},
-          {name: "Maxxair Deluxe", id: "maxxair", model: "https://cdn.shopify.com/3d/models/c3eeb44577bd8f6a/maxxair.glb"},
+          {% comment %} {name: "Dometic Penguin II", id: "airconditioner-p", model: "https://cdn.shopify.com/3d/models/c599289fb8ed77b8/airconditioner-10.glb"}, {% endcomment %}
+          {name: "VELIT 2000R", id: "airconditioner-v1", model: "https://cdn.shopify.com/3d/models/c55e579406be72d1/airconditioner-v1.glb"},
+          {name: "VELIT 2000R MINI", id: "airconditioner-v2", model: "https://cdn.shopify.com/3d/models/575a822893d82486/airconditioner-v2.glb"},
+          {name: "Nomadic Innovations AC X2", id: "airconditioner-x2", model: "https://cdn.shopify.com/3d/models/8f9f98cdd33f3a4f/airconditioner-x2.glb"},
+          {name: "Nomadic Innovations AC X3", id: "airconditioner-x3", model: "https://cdn.shopify.com/3d/models/fa056a2235adba37/airconditioner-x3.glb"},
+          {name: "Maxxair Deluxe", id: "maxxair", model: "https://cdn.shopify.com/3d/models/9f3e8c568b76b1f4/maxxair-2.glb"},
           {name: "Rich Solar Panel 220w", id: "solar_panel220", model: "https://cdn.shopify.com/3d/models/6f1510b8b1557a69/sp-solar220.glb"},
           {% comment %} {name: "Rich Solar Panel 200w", id: "solar_panel200", model: "https://cdn.shopify.com/3d/models/196b6231fc1b7b37/sp-solar200.glb"}, {% endcomment %}
           {name: "Rich Solar Panel 100w", id: "solar_panel100", model: "https://cdn.shopify.com/3d/models/502c0ee744921a4a/sp-solar100.glb"},
-          {name: "Side Mount Ladder", id: "ladder", model: "https://cdn.shopify.com/3d/models/4b3781227196c6fb/ladder-sprinter.glb"},
+          {name: "NewPowa Solar Panel 250w", id: "new_solar250", model: "https://cdn.shopify.com/3d/models/904757785c51a77a/250W_newpowa_sp.glb"},
+          {name: "NewPowa Solar Panel 220w", id: "new_solar220", model: "https://cdn.shopify.com/3d/models/3084b3452d33bf20/220W_newpowa_sp.glb"},
+          {name: "NewPowa Solar Panel 200w", id: "new_solar200", model: "https://cdn.shopify.com/3d/models/d2ecc74512cb4b57/200W_newpowa_sp.glb"},
+          {name: "NewPowa Solar Panel 100w", id: "new_solar100", model: "https://cdn.shopify.com/3d/models/d676eedc944c3e99/100W_newpowa_sp.glb"},
+          {name: "Side Mount Ladder", id: "sp_ladder", model: "https://cdn.shopify.com/3d/models/4b3781227196c6fb/ladder-sprinter.glb"},
           {name: "8020 cross bar", id: "cross_bar", model: "https://cdn.shopify.com/3d/models/a6ed7ffc8e144cab/sprinter_crossbar.glb"},
           {name: "F45-300 Awning", id: "awning", model: "https://cdn.shopify.com/3d/models/85085b43be1cd9cf/awning.glb"},
           {name: "F45-350 Awning", id: "awning_350", model: "https://cdn.shopify.com/3d/models/431a3b45d712597f/awning_350.glb"},
           {name: "Tyri Light Bar", id: "light_bar", model: "https://cdn.shopify.com/3d/models/446727d744111fcc/light_bar.glb"},
-          {name: "Diode Dynamics Light Bar", id: "light_bar_copy", model: "https://cdn.shopify.com/3d/models/7de4edf3ac049e1e/light_bar_1.glb"}
+          {name: "Diode Dynamics Light Bar", id: "light_bar_copy", model: "https://cdn.shopify.com/3d/models/7de4edf3ac049e1e/light_bar_1.glb"},
+          {name: "Deck Panels(Medium) - 2 length wise", id: "mk20-l2", model: "https://cdn.shopify.com/3d/models/834971040114a1af/mk20-l2-sp.glb"},
+          {name: "Deck Panels(Medium) - 3 width wise", id: "mk20-w3", model: "https://cdn.shopify.com/3d/models/436df7ea66129642/mk20-w3-sp.glb"},
+          {name: "Deck Panels(Large) - 3 width wise", id: "mk22-w3", model: "https://cdn.shopify.com/3d/models/26f539fd1a696c38/mk22-w3-sp.glb"},
+        ]
+        solar100Product = {...availableProducts[15]};
+        solar100Product.xRadius = 8
+        availableProducts[15] = solar100Product;
+
+        initVan(vanModelLink, shadowLink, rackModel, crossbarXpos, workPlaneValues, ladderPlaneValues, rackYPos, rackXPos, crossbarModel);
+        break;
+
+      {% comment %} Sprinter 170 {% endcomment %}
+      case "45730446901467":
+        vanModelLink = "https://cdn.shopify.com/3d/models/5dc70b5924a2ae5c/sprinter-170.glb";
+        shadowLink = "https://cdn.shopify.com/s/files/1/0412/9898/5124/files/sprinter.png?v=1733116281";
+        rackModel = 'https://cdn.shopify.com/3d/models/8f0cedd046b26892/new_sp-170-rack.glb'
+        crossbarModel = "https://cdn.shopify.com/3d/models/a6ed7ffc8e144cab/sprinter_crossbar.glb";
+        crossbarXpos = -3.655
+        workPlaneValues = [3, 0.01, 1.55];
+        ladderPlaneValues = [3, 2, 0.01];
+        ladderPos = [-1.1986, 1.5314, -0.9777]
+        vanArea = [-21.185, 144.62]
+        cutOffArea = [0, 18.57, 22.59, 40.52, 44.54, 57.18, 61.19, 81, 85.01, 104.81, 109.23, 128.64, 132.65, 152.45];
+        vanDiff = 23.43
+        rackYPos = 2.738
+        rackXPos = -1.068
+        movingOffset = 0.5425;
+        crossbarWidth = 1.6
+        owningPosZ = 0.78
+        typeOfVan = "sprinter"
+        lightbarXPos = 0.376
+        awningArea = [1.16, -3.91]
+        selectableProducts = [
+          {name: "Dometic RTX", id: "airconditioner", model: "https://cdn.shopify.com/3d/models/3fc52045eaa806f8/airconditioner-d.glb"},
+          {% comment %} {name: "Dometic Penguin II", id: "airconditioner-p", model: "https://cdn.shopify.com/3d/models/c599289fb8ed77b8/airconditioner-10.glb"}, {% endcomment %}
+          {name: "VELIT 2000R", id: "airconditioner-v1", model: "https://cdn.shopify.com/3d/models/c55e579406be72d1/airconditioner-v1.glb"},
+          {name: "VELIT 2000R MINI", id: "airconditioner-v2", model: "https://cdn.shopify.com/3d/models/575a822893d82486/airconditioner-v2.glb"},
+          {name: "Nomadic Innovations AC X2", id: "airconditioner-x2", model: "https://cdn.shopify.com/3d/models/8f9f98cdd33f3a4f/airconditioner-x2.glb"},
+          {name: "Nomadic Innovations AC X3", id: "airconditioner-x3", model: "https://cdn.shopify.com/3d/models/fa056a2235adba37/airconditioner-x3.glb"},
+          {name: "Maxxair Deluxe", id: "maxxair", model: "https://cdn.shopify.com/3d/models/9f3e8c568b76b1f4/maxxair-2.glb"},
+          {name: "Rich Solar Panel 220w", id: "solar_panel220", model: "https://cdn.shopify.com/3d/models/6f1510b8b1557a69/sp-solar220.glb"},
+          {% comment %} {name: "Rich Solar Panel 200w", id: "solar_panel200", model: "https://cdn.shopify.com/3d/models/196b6231fc1b7b37/sp-solar200.glb"}, {% endcomment %}
+          {name: "Rich Solar Panel 100w", id: "solar_panel100", model: "https://cdn.shopify.com/3d/models/502c0ee744921a4a/sp-solar100.glb"},
+          {name: "NewPowa Solar Panel 250w", id: "new_solar250", model: "https://cdn.shopify.com/3d/models/904757785c51a77a/250W_newpowa_sp.glb"},
+          {name: "NewPowa Solar Panel 220w", id: "new_solar220", model: "https://cdn.shopify.com/3d/models/3084b3452d33bf20/220W_newpowa_sp.glb"},
+          {name: "NewPowa Solar Panel 200w", id: "new_solar200", model: "https://cdn.shopify.com/3d/models/d2ecc74512cb4b57/200W_newpowa_sp.glb"},
+          {name: "NewPowa Solar Panel 100w", id: "new_solar100", model: "https://cdn.shopify.com/3d/models/d676eedc944c3e99/100W_newpowa_sp.glb"},
+          {name: "Side Mount Ladder", id: "sp_ladder", model: "https://cdn.shopify.com/3d/models/4b3781227196c6fb/ladder-sprinter.glb"},
+          {name: "8020 cross bar", id: "cross_bar", model: "https://cdn.shopify.com/3d/models/a6ed7ffc8e144cab/sprinter_crossbar.glb"},
+          {name: "F45-300 Awning", id: "awning", model: "https://cdn.shopify.com/3d/models/85085b43be1cd9cf/awning.glb"},
+          {name: "F45-350 Awning", id: "awning_350", model: "https://cdn.shopify.com/3d/models/431a3b45d712597f/awning_350.glb"},
+          {name: "F45-400 Awning", id: "awning_400", model: "https://cdn.shopify.com/3d/models/ea6426d022ef91ed/awning_400.glb"},
+          {name: "F45-450 Awning", id: "awning_450", model: "https://cdn.shopify.com/3d/models/d0287e16f76cad27/awning_450.glb"},
+          {name: "Tyri Light Bar", id: "light_bar", model: "https://cdn.shopify.com/3d/models/446727d744111fcc/light_bar.glb"},
+          {name: "Diode Dynamics Light Bar", id: "light_bar_copy", model: "https://cdn.shopify.com/3d/models/7de4edf3ac049e1e/light_bar_1.glb"},
+          {name: "Deck Panels(Medium) - 2 length wise", id: "mk20-l2", model: "https://cdn.shopify.com/3d/models/834971040114a1af/mk20-l2-sp.glb"},
+          {name: "Deck Panels(Medium) - 3 width wise", id: "mk20-w3", model: "https://cdn.shopify.com/3d/models/436df7ea66129642/mk20-w3-sp.glb"},
+          {name: "Deck Panels(Large) - 3 width wise", id: "mk22-w3", model: "https://cdn.shopify.com/3d/models/26f539fd1a696c38/mk22-w3-sp.glb"},
+        ]
+        solar100Product = {...availableProducts[15]};
+        solar100Product.xRadius = 8
+        availableProducts[15] = solar100Product;
+
+        initVan(vanModelLink, shadowLink, rackModel, crossbarXpos, workPlaneValues, ladderPlaneValues, rackYPos, rackXPos, crossbarModel);
+        break;
+      
+      case "45910413213915":
+        vanModelLink = "https://cdn.shopify.com/3d/models/5dc70b5924a2ae5c/sprinter-170.glb";
+        shadowLink = "https://cdn.shopify.com/s/files/1/0412/9898/5124/files/sprinter.png?v=1733116281";
+        rackModel = 'https://cdn.shopify.com/3d/models/5f7fc71c5cf659db/sp-170-rack-lightbar-1.glb'
+        crossbarModel = "https://cdn.shopify.com/3d/models/a6ed7ffc8e144cab/sprinter_crossbar.glb";
+        crossbarXpos = -3.655
+        workPlaneValues = [3, 0.01, 1.55];
+        ladderPlaneValues = [3, 2, 0.01];
+        ladderPos = [-1.1986, 1.5314, -0.9777]
+        vanArea = [-21.185, 144.62]
+        cutOffArea = [0, 18.57, 22.59, 40.52, 44.54, 57.18, 61.19, 81, 85.01, 104.81, 109.23, 128.64, 132.65, 152.45];
+        vanDiff = 23.43
+        rackYPos = 2.738
+        rackXPos = -1.043
+        movingOffset = 0.5425;
+        crossbarWidth = 1.6
+        owningPosZ = 0.78
+        typeOfVan = "sprinter"
+        lightbarXPos = 0.58907
+        awningArea = [1.16, -3.91]
+        selectableProducts = [
+          {name: "Dometic RTX", id: "airconditioner", model: "https://cdn.shopify.com/3d/models/3fc52045eaa806f8/airconditioner-d.glb"},
+          {% comment %} {name: "Dometic Penguin II", id: "airconditioner-p", model: "https://cdn.shopify.com/3d/models/c599289fb8ed77b8/airconditioner-10.glb"}, {% endcomment %}
+          {name: "VELIT 2000R", id: "airconditioner-v1", model: "https://cdn.shopify.com/3d/models/c55e579406be72d1/airconditioner-v1.glb"},
+          {name: "VELIT 2000R MINI", id: "airconditioner-v2", model: "https://cdn.shopify.com/3d/models/575a822893d82486/airconditioner-v2.glb"},
+          {name: "Nomadic Innovations AC X2", id: "airconditioner-x2", model: "https://cdn.shopify.com/3d/models/8f9f98cdd33f3a4f/airconditioner-x2.glb"},
+          {name: "Nomadic Innovations AC X3", id: "airconditioner-x3", model: "https://cdn.shopify.com/3d/models/fa056a2235adba37/airconditioner-x3.glb"},
+          {name: "Maxxair Deluxe", id: "maxxair", model: "https://cdn.shopify.com/3d/models/9f3e8c568b76b1f4/maxxair-2.glb"},
+          {name: "Rich Solar Panel 220w", id: "solar_panel220", model: "https://cdn.shopify.com/3d/models/6f1510b8b1557a69/sp-solar220.glb"},
+          {% comment %} {name: "Rich Solar Panel 200w", id: "solar_panel200", model: "https://cdn.shopify.com/3d/models/196b6231fc1b7b37/sp-solar200.glb"}, {% endcomment %}
+          {name: "Rich Solar Panel 100w", id: "solar_panel100", model: "https://cdn.shopify.com/3d/models/502c0ee744921a4a/sp-solar100.glb"},
+          {name: "NewPowa Solar Panel 250w", id: "new_solar250", model: "https://cdn.shopify.com/3d/models/904757785c51a77a/250W_newpowa_sp.glb"},
+          {name: "NewPowa Solar Panel 220w", id: "new_solar220", model: "https://cdn.shopify.com/3d/models/3084b3452d33bf20/220W_newpowa_sp.glb"},
+          {name: "NewPowa Solar Panel 200w", id: "new_solar200", model: "https://cdn.shopify.com/3d/models/d2ecc74512cb4b57/200W_newpowa_sp.glb"},
+          {name: "NewPowa Solar Panel 100w", id: "new_solar100", model: "https://cdn.shopify.com/3d/models/d676eedc944c3e99/100W_newpowa_sp.glb"},
+          {name: "Side Mount Ladder", id: "sp_ladder", model: "https://cdn.shopify.com/3d/models/4b3781227196c6fb/ladder-sprinter.glb"},
+          {name: "8020 cross bar", id: "cross_bar", model: "https://cdn.shopify.com/3d/models/a6ed7ffc8e144cab/sprinter_crossbar.glb"},
+          {name: "F45-300 Awning", id: "awning", model: "https://cdn.shopify.com/3d/models/85085b43be1cd9cf/awning.glb"},
+          {name: "F45-350 Awning", id: "awning_350", model: "https://cdn.shopify.com/3d/models/431a3b45d712597f/awning_350.glb"},
+          {name: "F45-400 Awning", id: "awning_400", model: "https://cdn.shopify.com/3d/models/ea6426d022ef91ed/awning_400.glb"},
+          {name: "F45-450 Awning", id: "awning_450", model: "https://cdn.shopify.com/3d/models/d0287e16f76cad27/awning_450.glb"},
+          {name: "Tyri Light Bar", id: "light_bar", model: "https://cdn.shopify.com/3d/models/446727d744111fcc/light_bar.glb"},
+          {name: "Diode Dynamics Light Bar", id: "light_bar_copy", model: "https://cdn.shopify.com/3d/models/7de4edf3ac049e1e/light_bar_1.glb"},
+          {name: "Deck Panels(Medium) - 2 length wise", id: "mk20-l2", model: "https://cdn.shopify.com/3d/models/834971040114a1af/mk20-l2-sp.glb"},
+          {name: "Deck Panels(Medium) - 3 width wise", id: "mk20-w3", model: "https://cdn.shopify.com/3d/models/436df7ea66129642/mk20-w3-sp.glb"},
+          {name: "Deck Panels(Large) - 3 width wise", id: "mk22-w3", model: "https://cdn.shopify.com/3d/models/26f539fd1a696c38/mk22-w3-sp.glb"},
+        ]
+        solar100Product = {...availableProducts[15]};
+        solar100Product.xRadius = 8
+        availableProducts[15] = solar100Product;
+
+        initVan(vanModelLink, shadowLink, rackModel, crossbarXpos, workPlaneValues, ladderPlaneValues, rackYPos, rackXPos, crossbarModel);
+        break;
+
+      case "45730446967003":
+        vanModelLink = "https://cdn.shopify.com/3d/models/279afc757895c1b2/sprinter-170-ext.glb";
+        shadowLink = "https://cdn.shopify.com/s/files/1/0412/9898/5124/files/sprinter.png?v=1733116281";
+        rackModel = 'https://cdn.shopify.com/3d/models/8c30524c68a1c6a9/sp-170ext-rack.glb'
+        crossbarModel = "https://cdn.shopify.com/3d/models/a6ed7ffc8e144cab/sprinter_crossbar.glb";
+        crossbarXpos = -4.06
+        workPlaneValues = [3, 0.01, 1.55];
+        ladderPlaneValues = [3, 2, 0.01];
+        ladderPos = [-1.1986, 1.5314, -0.9777]
+        vanArea = [-21.185, 160.4]
+        cutOffArea = [0, 18.57, 22.59, 40.52, 44.54, 57.18, 61.19, 81, 85.01, 104.81, 109.23, 128.64, 132.65, 152.45];
+        vanDiff = 23.43
+        rackYPos = 2.738
+        rackXPos = -1.068
+        movingOffset = 0.5425;
+        crossbarWidth = 1.6
+        owningPosZ = 0.78
+        typeOfVan = "sprinter"
+        lightbarXPos = 0.376
+        awningArea = [1.14, -4.3]
+        selectableProducts = [
+          {name: "Dometic RTX", id: "airconditioner", model: "https://cdn.shopify.com/3d/models/3fc52045eaa806f8/airconditioner-d.glb"},
+          {% comment %} {name: "Dometic Penguin II", id: "airconditioner-p", model: "https://cdn.shopify.com/3d/models/c599289fb8ed77b8/airconditioner-10.glb"}, {% endcomment %}
+          {name: "VELIT 2000R", id: "airconditioner-v1", model: "https://cdn.shopify.com/3d/models/c55e579406be72d1/airconditioner-v1.glb"},
+          {name: "VELIT 2000R MINI", id: "airconditioner-v2", model: "https://cdn.shopify.com/3d/models/575a822893d82486/airconditioner-v2.glb"},
+          {name: "Nomadic Innovations AC X2", id: "airconditioner-x2", model: "https://cdn.shopify.com/3d/models/8f9f98cdd33f3a4f/airconditioner-x2.glb"},
+          {name: "Nomadic Innovations AC X3", id: "airconditioner-x3", model: "https://cdn.shopify.com/3d/models/fa056a2235adba37/airconditioner-x3.glb"},
+          {name: "Maxxair Deluxe", id: "maxxair", model: "https://cdn.shopify.com/3d/models/9f3e8c568b76b1f4/maxxair-2.glb"},
+          {name: "Rich Solar Panel 220w", id: "solar_panel220", model: "https://cdn.shopify.com/3d/models/6f1510b8b1557a69/sp-solar220.glb"},
+          {% comment %} {name: "Rich Solar Panel 200w", id: "solar_panel200", model: "https://cdn.shopify.com/3d/models/196b6231fc1b7b37/sp-solar200.glb"}, {% endcomment %}
+          {name: "Rich Solar Panel 100w", id: "solar_panel100", model: "https://cdn.shopify.com/3d/models/502c0ee744921a4a/sp-solar100.glb"},
+          {name: "NewPowa Solar Panel 250w", id: "new_solar250", model: "https://cdn.shopify.com/3d/models/904757785c51a77a/250W_newpowa_sp.glb"},
+          {name: "NewPowa Solar Panel 220w", id: "new_solar220", model: "https://cdn.shopify.com/3d/models/3084b3452d33bf20/220W_newpowa_sp.glb"},
+          {name: "NewPowa Solar Panel 200w", id: "new_solar200", model: "https://cdn.shopify.com/3d/models/d2ecc74512cb4b57/200W_newpowa_sp.glb"},
+          {name: "NewPowa Solar Panel 100w", id: "new_solar100", model: "https://cdn.shopify.com/3d/models/d676eedc944c3e99/100W_newpowa_sp.glb"},
+          {name: "Side Mount Ladder", id: "sp_ladder", model: "https://cdn.shopify.com/3d/models/4b3781227196c6fb/ladder-sprinter.glb"},
+          {name: "8020 cross bar", id: "cross_bar", model: "https://cdn.shopify.com/3d/models/a6ed7ffc8e144cab/sprinter_crossbar.glb"},
+          {name: "F45-300 Awning", id: "awning", model: "https://cdn.shopify.com/3d/models/85085b43be1cd9cf/awning.glb"},
+          {name: "F45-350 Awning", id: "awning_350", model: "https://cdn.shopify.com/3d/models/431a3b45d712597f/awning_350.glb"},
+          {name: "F45-400 Awning", id: "awning_400", model: "https://cdn.shopify.com/3d/models/ea6426d022ef91ed/awning_400.glb"},
+          {name: "F45-450 Awning", id: "awning_450", model: "https://cdn.shopify.com/3d/models/d0287e16f76cad27/awning_450.glb"},
+          {name: "Tyri Light Bar", id: "light_bar", model: "https://cdn.shopify.com/3d/models/446727d744111fcc/light_bar.glb"},
+          {name: "Diode Dynamics Light Bar", id: "light_bar_copy", model: "https://cdn.shopify.com/3d/models/7de4edf3ac049e1e/light_bar_1.glb"},
+          {name: "Deck Panels(Medium) - 2 length wise", id: "mk20-l2", model: "https://cdn.shopify.com/3d/models/834971040114a1af/mk20-l2-sp.glb"},
+          {name: "Deck Panels(Medium) - 3 width wise", id: "mk20-w3", model: "https://cdn.shopify.com/3d/models/436df7ea66129642/mk20-w3-sp.glb"},
+          {name: "Deck Panels(Large) - 3 width wise", id: "mk22-w3", model: "https://cdn.shopify.com/3d/models/26f539fd1a696c38/mk22-w3-sp.glb"},
+        ]
+        solar100Product = {...availableProducts[15]};
+        solar100Product.xRadius = 8
+        availableProducts[15] = solar100Product;
+
+        initVan(vanModelLink, shadowLink, rackModel, crossbarXpos, workPlaneValues, ladderPlaneValues, rackYPos, rackXPos, crossbarModel);
+        break;
+
+      case "45910413246683":
+        vanModelLink = "https://cdn.shopify.com/3d/models/279afc757895c1b2/sprinter-170-ext.glb";
+        shadowLink = "https://cdn.shopify.com/s/files/1/0412/9898/5124/files/sprinter.png?v=1733116281";
+        rackModel = 'https://cdn.shopify.com/3d/models/bba50bba903c3ab4/sp-170ext-rack-light-1.glb'
+        crossbarModel = "https://cdn.shopify.com/3d/models/a6ed7ffc8e144cab/sprinter_crossbar.glb";
+        crossbarXpos = -4.06
+        workPlaneValues = [3, 0.01, 1.55];
+        ladderPlaneValues = [3, 2, 0.01];
+        ladderPos = [-1.1986, 1.5314, -0.9777]
+        vanArea = [-21.185, 160.4]
+        cutOffArea = [0, 18.57, 22.59, 40.52, 44.54, 57.18, 61.19, 81, 85.01, 104.81, 109.23, 128.64, 132.65, 152.45];
+        vanDiff = 23.43
+        rackYPos = 2.738
+        rackXPos = -1.068
+        movingOffset = 0.5425;
+        crossbarWidth = 1.6
+        owningPosZ = 0.78
+        typeOfVan = "sprinter"
+        lightbarXPos = 0.57
+        awningArea = [1.14, -4.3]
+        selectableProducts = [
+          {name: "Dometic RTX", id: "airconditioner", model: "https://cdn.shopify.com/3d/models/3fc52045eaa806f8/airconditioner-d.glb"},
+          {% comment %} {name: "Dometic Penguin II", id: "airconditioner-p", model: "https://cdn.shopify.com/3d/models/c599289fb8ed77b8/airconditioner-10.glb"}, {% endcomment %}
+          {name: "VELIT 2000R", id: "airconditioner-v1", model: "https://cdn.shopify.com/3d/models/c55e579406be72d1/airconditioner-v1.glb"},
+          {name: "VELIT 2000R MINI", id: "airconditioner-v2", model: "https://cdn.shopify.com/3d/models/575a822893d82486/airconditioner-v2.glb"},
+          {name: "Nomadic Innovations AC X2", id: "airconditioner-x2", model: "https://cdn.shopify.com/3d/models/8f9f98cdd33f3a4f/airconditioner-x2.glb"},
+          {name: "Nomadic Innovations AC X3", id: "airconditioner-x3", model: "https://cdn.shopify.com/3d/models/fa056a2235adba37/airconditioner-x3.glb"},
+          {name: "Maxxair Deluxe", id: "maxxair", model: "https://cdn.shopify.com/3d/models/9f3e8c568b76b1f4/maxxair-2.glb"},
+          {name: "Rich Solar Panel 220w", id: "solar_panel220", model: "https://cdn.shopify.com/3d/models/6f1510b8b1557a69/sp-solar220.glb"},
+          {% comment %} {name: "Rich Solar Panel 200w", id: "solar_panel200", model: "https://cdn.shopify.com/3d/models/196b6231fc1b7b37/sp-solar200.glb"}, {% endcomment %}
+          {name: "Rich Solar Panel 100w", id: "solar_panel100", model: "https://cdn.shopify.com/3d/models/502c0ee744921a4a/sp-solar100.glb"},
+          {name: "NewPowa Solar Panel 250w", id: "new_solar250", model: "https://cdn.shopify.com/3d/models/904757785c51a77a/250W_newpowa_sp.glb"},
+          {name: "NewPowa Solar Panel 220w", id: "new_solar220", model: "https://cdn.shopify.com/3d/models/3084b3452d33bf20/220W_newpowa_sp.glb"},
+          {name: "NewPowa Solar Panel 200w", id: "new_solar200", model: "https://cdn.shopify.com/3d/models/d2ecc74512cb4b57/200W_newpowa_sp.glb"},
+          {name: "NewPowa Solar Panel 100w", id: "new_solar100", model: "https://cdn.shopify.com/3d/models/d676eedc944c3e99/100W_newpowa_sp.glb"},
+          {name: "Side Mount Ladder", id: "sp_ladder", model: "https://cdn.shopify.com/3d/models/4b3781227196c6fb/ladder-sprinter.glb"},
+          {name: "8020 cross bar", id: "cross_bar", model: "https://cdn.shopify.com/3d/models/a6ed7ffc8e144cab/sprinter_crossbar.glb"},
+          {name: "F45-300 Awning", id: "awning", model: "https://cdn.shopify.com/3d/models/85085b43be1cd9cf/awning.glb"},
+          {name: "F45-350 Awning", id: "awning_350", model: "https://cdn.shopify.com/3d/models/431a3b45d712597f/awning_350.glb"},
+          {name: "F45-400 Awning", id: "awning_400", model: "https://cdn.shopify.com/3d/models/ea6426d022ef91ed/awning_400.glb"},
+          {name: "F45-450 Awning", id: "awning_450", model: "https://cdn.shopify.com/3d/models/d0287e16f76cad27/awning_450.glb"},
+          {name: "Tyri Light Bar", id: "light_bar", model: "https://cdn.shopify.com/3d/models/446727d744111fcc/light_bar.glb"},
+          {name: "Diode Dynamics Light Bar", id: "light_bar_copy", model: "https://cdn.shopify.com/3d/models/7de4edf3ac049e1e/light_bar_1.glb"},
+          {name: "Deck Panels(Medium) - 2 length wise", id: "mk20-l2", model: "https://cdn.shopify.com/3d/models/834971040114a1af/mk20-l2-sp.glb"},
+          {name: "Deck Panels(Medium) - 3 width wise", id: "mk20-w3", model: "https://cdn.shopify.com/3d/models/436df7ea66129642/mk20-w3-sp.glb"},
+          {name: "Deck Panels(Large) - 3 width wise", id: "mk22-w3", model: "https://cdn.shopify.com/3d/models/26f539fd1a696c38/mk22-w3-sp.glb"},       
         ]
         solar100Product = {...availableProducts[15]};
         solar100Product.xRadius = 8
@@ -3375,18 +4316,14 @@
 {
   "name": "t:sections.model-visualization.name",
   "class": "section spacing-section",
-  "settings": [
-   
-  ],
+  "settings": [],
   "presets": [
     {
       "name": "t:sections.model-visualization.presets.name"
     }
   ],
   "disabled_on": {
-    "groups": [
-      "custom.overlay"
-    ]
+    "groups": ["custom.overlay"]
   }
 }
 {% endschema %}
