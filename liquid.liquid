@@ -850,9 +850,20 @@
 
       .mouse-navigation {
         position: absolute;
-    	top: 120px;
-    	left: 20px;
+    	  top: 120px;
+    	  left: 20px;
         z-index: 1000;
+      }
+      .contact-text{
+        font-size: 18px;
+    	  text-shadow: 0px 0px 4px #fff;
+    	  color: black;
+        text-align: center;
+        line-height: 1.2;
+        margin-top: 16px;
+      }
+      .contact-text a{
+        color: #E64B38;
       }
   </style>
 </head>
@@ -903,6 +914,7 @@
   <div id="configurator-container">
     <div class="van-detail">
       <h2 id="rack_title">Ford Transit Roof Rack - Premium - 148 High Roof</h2>
+      <h3 class="contact-text">For custom layout or support contact us - <a href="mailto:csr@unakagearco.com" >csr@unakagearco.com</a></h3>
     </div>
     <div id="container"></div>
     <div class="items-container">
@@ -1276,6 +1288,12 @@
             { type: 'Premium + Light Bar', id: '45730334834907' },
           ],
         },
+        {
+          type: '148 Medium',
+          variants: [
+            { type: 'Premium', id: '45730334539995' },
+          ],
+        },
       ],
     },
     {
@@ -1470,9 +1488,9 @@
       "htmlId": "", "type": "rack", "availability": true, "handle": "ford-transit-roof-rack", "id": 45730334671067,
       "price": 0, "quantity": 1, "xRadius": null, "handles": ["ford-transit-roof-rack", "mercedes-sprinter-roof-rack"],
       "availableVariants": [
-        45730334671067, 45730334703835, 45730334802139, 45730334834907,
+        45730334671067, 45730334703835, 45730334802139, 45730334834907, 45730334539995,
         45730446835931, 45910413181147, 45730446901467, 45910413213915,
-        45730446967003, 45910413246683
+        45730446967003, 45910413246683, 
       ]
     },
     {
@@ -1578,11 +1596,17 @@
     },
     {
       "htmlId": "airconditioner-x2", "type": "air_conditioner_x2", "handle": "", "id": null,
-      "price": 0, "quantity": 0, "xRadius": 14.03
+      "price": 0, "quantity": 0, "xRadius": 14.03,
+      "title": "X2: Compact Off-Grid DC Rooftop Air Conditioner",
+      "url": "https://nomadicinnovations.com/products/x2-12v-24v-48v-compact-rooftop-air-conditioner",
+      "image": "https://cdn.shopify.com/s/files/1/0412/9898/5124/files/airconditioner-x2.jpg?v=1740996273&width=50",
     },
     {
       "htmlId": "airconditioner-x3", "type": "air_conditioner_x3", "handle": "", "id": null,
-      "price": 0, "quantity": 0, "xRadius": 15.78
+      "price": 0, "quantity": 0, "xRadius": 15.78,
+      "title": "X3: High Capacity Off-Grid DC Rooftop Air Conditioner",
+      "url": "https://nomadicinnovations.com/products/x3-12v-24v-48v-off-grid-rooftop-air-conditioner",
+      "image": "https://cdn.shopify.com/s/files/1/0412/9898/5124/files/airconditioner-x3.jpg?v=1740996273&width=50",
     },
     {
       "htmlId": "sp_ladder", "type": "sp_ladder", "availability": true,
@@ -1751,7 +1775,7 @@
             const xPos = Math.min(movingOffset - selectedFeatureWidth / 2, Math.max((- vanArea[1] * 0.0254) + widthOfObject/2, coords.x));
             collidableMeshList = updateColliderList();
             const checkCollision = isCrossBarCollied(bbox1, collidableMeshList, xPos, selectedFeature.name);
-            if(isValueInScale(coords.x * 1000 / 25.4 * -1, cutOffArea, 7.001, vanDiff - 4.85)  >= 0 && !checkCollision) {
+            if(isValueInScale(coords.x * 1000 / 25.4 * -1, cutOffArea, 6.801, vanDiff - 4.85)  >= 0 && !checkCollision) {
               selectedFeature.parent.position.x = xPos;
               selectedFeature.parent.position.z = 0;
               updateModelState(2, selectedFeature.name, xPos) 
@@ -1762,7 +1786,7 @@
             const xPos = Math.min(movingOffset - selectedFeatureWidth / 2, Math.max((- vanArea[1] * 0.0254) + widthOfObject/2, coords.x));
             collidableMeshList = updateColliderList();
             const checkCollision = isCrossBarCollied(bbox1, collidableMeshList, xPos, selectedFeature.name);
-            if(isValueInScale(coords.x * 1000 / 25.4 * -1, cutOffArea, 7.001, vanDiff - 4.85)  >= 0 && !checkCollision) {
+            if(isValueInScale(coords.x * 1000 / 25.4 * -1, cutOffArea, 6.801, vanDiff - 4.85)  >= 0 && !checkCollision) {
               selectedFeature.parent.position.x = xPos;
               selectedFeature.parent.position.z = 0;
               updateModelState(2, selectedFeature.name, xPos) 
@@ -2419,12 +2443,17 @@
 			positionZ = 0;
 
 			if(selectedItem.type == 'solar30' || selectedItem.type == 'mk23-ac') {
-				let acItem = availableProducts.filter(product => product.type == 'air_conditioner' || product.type == 'air_conditioner_v1' || product.type == 'air_conditioner_v2' || product.type == 'air_conditioner_x2' || product.type == 'air_conditioner_x3')[0];
-        console.log({acItem})
-				if (selectedItem.quantity >= acItem.quantity) return false;
+        console.log(availableProducts)
+				let acItems = availableProducts.filter(product => product.type == 'air_conditioner' || product.type == 'air_conditioner_v1' || product.type == 'air_conditioner_v2' || product.type == 'air_conditioner_x2' || product.type == 'air_conditioner_x3');
+        let acItemsCount = 0
+        acItems.map(acItem => {
+          acItemsCount += acItem.quantity
+        })
+        
+				if (selectedItem.quantity >= acItemsCount) return false;
 
 				let acModels = scene.children.filter((group) => group?.children[0]?.name == "air_conditioner" || group?.children[0]?.name == "air_conditioner_v1" || group?.children[0]?.name == 'air_conditioner_v2' || group?.children[0]?.name == 'air_conditioner_x2' || group?.children[0]?.name == 'air_conditioner_x3');
-        console.log({acModels})
+        console.log({acModels, acItemsCount})
         
         let solarModels = scene.children.filter((group) => group?.children[0]?.name == "solar30" || group?.children[0]?.name == "mk23-ac");
 
@@ -3284,13 +3313,30 @@
         }
       } else {
 
-        const models = scene.children.filter((group) => group?.children[0]?.name == "8020_crossbar" || group?.children[0]?.name == "maxxair");
-        const boundingBoxes = models.map((model) => {
-          return getModelBoundingBox(model)
-        });
-        const nearestBox = boundingBoxes.find(box => box.max.x == boundingBox.max.x && box.min.x == boundingBox.min.x)
+        {% comment %} const models = scene.children.filter((group) => group?.children[0]?.name == "8020_crossbar" || group?.children[0]?.name == "mk20-l2" || group?.children[0]?.name == "mk20-w3" || group?.children[0]?.name == "mk22-w3"); {% endcomment %}
+
+        let nearestBox = null
+
+        const acNames = ['maxxair', 'air_conditioner', "air_conditioner_v1", "air_conditioner_v2", "air_conditioner_x2", "air_conditioner_x3"]
+        const crossbarNames = ["8020_crossbar", "mk20-l2", "mk20-w3", "mk22-w3", "mk20-maxxair", "mk23-ac"]
+
+        console.log(selectedBoxName)
+        if(acNames.includes(selectedBoxName)) {
+          const crossbarModels = scene.children.filter((group) => crossbarNames.includes(group?.children[0]?.name));
+          const crossBarBoundingBoxes = crossbarModels.map((model) => {
+            return getModelBoundingBox(model)
+          });
+          nearestBox = crossBarBoundingBoxes.find(box => box.max.x == boundingBox.max.x && box.min.x == boundingBox.min.x)
+        } else if(crossbarNames.includes(selectedBoxName)) {
+          const acModels = scene.children.filter((group) => acNames.includes(group?.children[0]?.name));
+          const acBoundingBoxes = acModels.map((model) => {
+            return getModelBoundingBox(model)
+          });
+          nearestBox = acBoundingBoxes.find(box => box.max.x == boundingBox.max.x && box.min.x == boundingBox.min.x)
+        }
+
         if(nearestBox) {
-          if((xPos - widthOfObject/2) < boundingBox.max.x - 0.11 && (xPos + widthOfObject/2) > boundingBox.min.x + 0.11) {
+          if((xPos - widthOfObject/2) < boundingBox.max.x - 0.04 && (xPos + widthOfObject/2) > boundingBox.min.x + 0.04) {
             collisionDetected = true;
             break;
           }
@@ -3769,7 +3815,7 @@
         const selectedRack = product.products.find((rack) => rack.variants.find(variant => variant.id == selectedVan));
         const selectedProduct = selectedRack.variants.find((variant) => variant.id == selectedVan);
         
-        let newProduct = {...selectedRack, type: product.type, id: selectedProduct.id, price: selectedProduct.price / 100, image: selectedProduct?.featured_image.src, quantity: 1, availability: true};
+        let newProduct = {...selectedRack, type: product.type, id: selectedProduct.id, price: selectedProduct.price / 100, image: selectedProduct?.featured_image?.src, quantity: 1, availability: true};
         console.log(newProduct)
         document.getElementById("rack_title").innerHTML = selectedProduct?.title;
         return newProduct;
@@ -3936,6 +3982,58 @@
         vanModelLink = "https://cdn.shopify.com/3d/models/f93eb4eb2fe0a35e/van-tr148-ext.glb";
         shadowLink = "https://cdn.shopify.com/s/files/1/0412/9898/5124/files/transit-ext.png?v=1733115711";
         rackModel = 'https://cdn.shopify.com/3d/models/61d73fc11a628165/new_transit148-ext-rack-lightbar.glb'
+        crossbarModel = 'https://cdn.shopify.com/3d/models/543cc594a487aecf/8020_cross.glb';
+        ladderPos = [-0.9, 1.316, -1.012]
+        crossbarXpos = -3.29
+        workPlaneValues = [3, 0.01, 1.55];
+        ladderPlaneValues = [3, 2, 0.01];
+        vanArea = [-14.535, 129.527]
+        cutOffArea = [3.2, 25.7, 32.09, 64.72, 71.11, 85.19, 91.58, 101.33, 107.72, 124.72];
+        vanDiff = -1.6
+        rackYPos = 2.59
+        rackXPos = -0.8
+        movingOffset = 0.365;
+        owningPosZ = 0.84
+        typeOfVan = "fordtransit"
+        lightbarXPos = 0.4
+        awningArea = [0.98, -3.39]
+        selectableProducts = [
+          {name: "Dometic RTX", id: "airconditioner", model: "https://cdn.shopify.com/3d/models/3fc52045eaa806f8/airconditioner-d.glb"},
+          {% comment %} {name: "Dometic Penguin II", id: "airconditioner-p", model: "https://cdn.shopify.com/3d/models/c599289fb8ed77b8/airconditioner-10.glb"}, {% endcomment %}
+          {name: "VELIT 2000R", id: "airconditioner-v1", model: "https://cdn.shopify.com/3d/models/c55e579406be72d1/airconditioner-v1.glb"},
+          {name: "VELIT 2000R MINI", id: "airconditioner-v2", model: "https://cdn.shopify.com/3d/models/575a822893d82486/airconditioner-v2.glb"},
+          {name: "Nomadic Innovations AC X2", id: "airconditioner-x2", model: "https://cdn.shopify.com/3d/models/8f9f98cdd33f3a4f/airconditioner-x2.glb"},
+          {name: "Nomadic Innovations AC X3", id: "airconditioner-x3", model: "https://cdn.shopify.com/3d/models/fa056a2235adba37/airconditioner-x3.glb"},
+          {name: "Maxxair Deluxe", id: "maxxair", model: "https://cdn.shopify.com/3d/models/9f3e8c568b76b1f4/maxxair-2.glb"},
+          {name: "Rich Solar Panel 250w", id: "solar_panel250", model: "https://cdn.shopify.com/3d/models/5b0bf30f3bc0bc5b/250W.glb"},
+          {name: "Rich Solar Panel 200w", id: "solar_panel200", model: "https://cdn.shopify.com/3d/models/41179ec7afded29e/200W.glb"},
+          {name: "Rich Solar Panel 100w", id: "solar_panel100", model: "https://cdn.shopify.com/3d/models/bba013cfe5d76ce7/100W-1.glb"},
+          {name: "Rich Solar Panel 50w", id: "solar_panel50", model: "https://cdn.shopify.com/3d/models/cfce53c8523cbc41/55W.glb"},
+          {name: "Rich Solar Panel 30w", id: "solar_panel30", model: "https://cdn.shopify.com/3d/models/dfcf1aaf24802514/30W.glb"},
+          {name: "NewPowa Solar Panel 250w", id: "new_solar250", model: "https://cdn.shopify.com/3d/models/c428d2a3aaa669d2/250W_newpowa.glb"},
+          {name: "NewPowa Solar Panel 220w", id: "new_solar220", model: "https://cdn.shopify.com/3d/models/d0869d71e3574000/220W_newpowa.glb"},
+          {name: "NewPowa Solar Panel 200w", id: "new_solar200", model: "https://cdn.shopify.com/3d/models/7745111021b38644/200W_newpowa.glb"},
+          {name: "NewPowa Solar Panel 100w", id: "new_solar100", model: "https://cdn.shopify.com/3d/models/5d5e861aa0b3b30a/100W_newpowa.glb"},
+          {name: "Side Mount Ladder", id: "ladder", model: 'https://cdn.shopify.com/3d/models/00ba5b320dc83fe8/ladder-tr148-ext.glb'},
+          {name: "8020 cross bar", id: "cross_bar", model: 'https://cdn.shopify.com/3d/models/543cc594a487aecf/8020_cross.glb'},
+          {name: "F45-300 Awning", id: "awning", model: "https://cdn.shopify.com/3d/models/85085b43be1cd9cf/awning.glb"},
+          {name: "F45-350 Awning", id: "awning_350", model: "https://cdn.shopify.com/3d/models/431a3b45d712597f/awning_350.glb"},
+          {name: "Tyri Light Bar", id: "light_bar", model: "https://cdn.shopify.com/3d/models/446727d744111fcc/light_bar.glb"},
+          {name: "Diode Dynamics Light Bar", id: "light_bar_copy", model: "https://cdn.shopify.com/3d/models/7de4edf3ac049e1e/light_bar_1.glb"},
+          {name: "Deck Panels(Medium) - 2 length wise", id: "mk20-l2", model: "https://cdn.shopify.com/3d/models/c283b63c9eaef7bd/mk20-l2.glb"},
+          {name: "Deck Panels(Medium) - 3 width wise", id: "mk20-w3", model: "https://cdn.shopify.com/3d/models/30941932346f43a7/mk20-w3.glb"},
+          {name: "Deck Panels(Medium) - fit maxxfan", id: "mk20-maxxair", model: "https://cdn.shopify.com/3d/models/e5827b72fd891d4e/mk20-w2-maxxair.glb"},
+          {name: "Deck Panels(Large) - 3 width wise", id: "mk22-w3", model: "https://cdn.shopify.com/3d/models/6bbc46eee67042ad/mk22-w3.glb"},
+          {name: "Deck Panels(Small) - fit AC unit", id: "mk23-ac", model: "https://cdn.shopify.com/3d/models/ba54ea390ddcff2c/mk23-ac.glb"},
+        ]
+
+        initVan(vanModelLink, shadowLink, rackModel, crossbarXpos, workPlaneValues, ladderPlaneValues, rackYPos, rackXPos, crossbarModel);
+        break;
+
+      case "45730334539995": // transit 148 medium
+        vanModelLink = "https://cdn.shopify.com/3d/models/2fc93f4c707f5742/van-tr148-m.glb";
+        shadowLink = "https://cdn.shopify.com/s/files/1/0412/9898/5124/files/transit-ext.png?v=1733115711";
+        rackModel = 'https://cdn.shopify.com/3d/models/d3745952c3e59d06/transit_148_medium-roof.glb'
         crossbarModel = 'https://cdn.shopify.com/3d/models/543cc594a487aecf/8020_cross.glb';
         ladderPos = [-0.9, 1.316, -1.012]
         crossbarXpos = -3.29
