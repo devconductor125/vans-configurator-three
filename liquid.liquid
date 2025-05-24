@@ -2,112 +2,159 @@
   <meta charset="utf-8">
   <title>Van Configurator</title>
   <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
   <style>
-      #shopify-chat {
-        display: none;
-      }
-      .footer-group {
-        display: none !important;
-      }
+    .item-box {
+      position: relative;
+    }
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      bottom: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: white;
+      min-width: 200px;
+      box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+      z-index: 1000;
+      border-radius: 8px;
+      padding: 8px;
+      margin-bottom: 8px;
+    }
+    .item-box:hover .dropdown-content {
+      display: block;
+    }
+    .dropdown-item {
+      display: flex;
+      align-items: center;
+      padding: 8px;
+      cursor: pointer;
+      transition: background-color 0.2s;
+      border-radius: 4px;
+    }
+    .dropdown-item:hover {
+      background-color: #f5f5f5;
+    }
+    .dropdown-item .item-img {
+      width: 40px;
+      height: 40px;
+      margin-right: 8px;
+    }
+    .dropdown-item .item-name {
+      flex: 1;
+      margin: 0;
+    }
+    .dropdown-item .carted-item {
+      width: 20px;
+      height: 20px;
+      font-size: 10px;
+    }
+    #shopify-chat {
+      display: none;
+    }
+    .footer-group {
+      display: none !important;
+    }
     .threejs-container {
-    	position: fixed;
-        z-index: 100;
-        top: 0px;
-        left: 0px;
-    	background: linear-gradient(180deg, #fff 60%, #e4e4e4) !important;
-    	margin: 0;
-    	color: #333;
-    	font-family: Monospace;
-    	font-size: 13px;
-    	line-height: 24px;
-    	overscroll-behavior: none;
-    	-webkit-user-select: none;
-    	-moz-user-select: none;
-    	-ms-user-select: none;
-    	user-select: none;
-    	overflow: hidden;
-        width: 100vw;
-        margin: 0 auto;
-        margin-bottom: 50px;
-        height: 100vh;
-    	display: flex;
+      position: fixed;
+      z-index: 100;
+      top: 0px;
+      left: 0px;
+      background: linear-gradient(180deg, #fff 60%, #e4e4e4) !important;
+      margin: 0;
+      color: #333;
+      font-family: Monospace;
+      font-size: 13px;
+      line-height: 24px;
+      overscroll-behavior: none;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      overflow: hidden;
+      width: 100vw;
+      margin: 0 auto;
+      margin-bottom: 50px;
+      height: 100vh;
+      display: flex;
     }
     #configurator-container {
-    	width: calc(100vw - 300px);
+      width: calc(100vw - 300px);
     }
     #side-section {
-    	width: 300px;
-    	height: calc(100vh - 30px);
-    	z-index: 1;
-        position: absolute;
-    	background-color: white;
-        top: 15px;
-        right: 15px;
-        border-radius: 15px;
+      width: 300px;
+      height: calc(100vh - 30px);
+      z-index: 1;
+      position: absolute;
+      background-color: white;
+      top: 15px;
+      right: 15px;
+      border-radius: 15px;
     }
     .d-flex {
-    	display: flex;
+      display: flex;
     }
     .items-container {
-    	position: absolute;
-    	bottom: 16px;
-    	left: 50%;
-    	transform: translateX(-50%);
-        max-width: 800px;
+      position: absolute;
+      bottom: 16px;
+      left: 50%;
+      transform: translateX(-50%);
+      max-width: 800px;
+      width: 100%;
+      z-index: 1000;
     }
     .item-box {
-    	margin-left: 8px;
-    	margin-right: 8px;
-    	border-radius: 15px;
-    	text-align: center;
-    	cursor: grab;
-    	opacity: 0.8;
-    	transition: opacity .15s ease-in-out, transform .08s linear;
-    	position: relative;
-        margin-bottom: 10px;
-        margin-top: 10px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
+      margin-left: 8px;
+      margin-right: 8px;
+      border-radius: 15px;
+      text-align: center;
+      cursor: grab;
+      opacity: 0.8;
+      transition: opacity .15s ease-in-out, transform .08s linear;
+      position: relative;
+      margin-bottom: 10px;
+      margin-top: 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
-      .item-box .item-name {
-        margin-top: 5px;
-        font-weight: 700;
-      }
-    .item-box .carted-item {
-    	position: absolute;
-    	top: -5px;
-    	right: -5px;
-    	background-color: red;
-    	border-radius: 50%;
-    	align-items: center;
-    	justify-content: center;
-    	width: 25px;
-    	height: 25px;
-    	color: white;
-        display: none;
+    .item-box .item-name {
+      margin-top: 5px;
+      font-weight: 700;
+    }
+    .carted-item {
+      position: absolute;
+      top: -5px;
+      right: -5px;
+      background-color: red;
+      border-radius: 50%;
+      align-items: center;
+      justify-content: center;
+      width: 25px;
+      height: 25px;
+      color: white;
+      display: none;
     }
     .item-box:active {
-    	cursor: grabbing;
-    	cursor: -moz-grabbing;
-    	cursor: -webkit-grabbing;
+      cursor: grabbing;
+      cursor: -moz-grabbing;
+      cursor: -webkit-grabbing;
     }
     .item-box:hover {
-    	opacity: 1;
-    	transform: scale(1.04);
+      opacity: 1;
+      transform: scale(1.04);
     }
     .item-img {
-    	width: 100px;
-    	height: 100px;
-    	border-radius: 15px;
-    	background-size: cover;
-    	box-shadow: 0.6px 0.6px 1.9px rgba(0, 0, 0, .035), 5px 5px 15px rgba(0, 0, 0, .07);
+      width: 100px;
+      height: 100px;
+      border-radius: 15px;
+      background-size: cover;
+      box-shadow: 0.6px 0.6px 1.9px rgba(0, 0, 0, .035), 5px 5px 15px rgba(0, 0, 0, .07);
     }
     p {
-    	font-size: 11px;
-    	line-height: 1.5;
-    	margin-bottom: 12px;
+      font-size: 11px;
+      line-height: 1.5;
+      margin-bottom: 12px;
     }
     #airconditioner {
       background-image: url('https://cdn.shopify.com/s/files/1/0412/9898/5124/files/airconditioner-1.jpg?v=1720191621&width=100');
@@ -120,11 +167,11 @@
 
     #solar_panel250 {
       background-image: url('https://cdn.shopify.com/s/files/1/0412/9898/5124/files/250W.jpg?v=1724133040&width=100');
-    display: block;
+      display: block;
     }
     #solar_panel220 {
       background-image: url('https://cdn.shopify.com/s/files/1/0412/9898/5124/files/250W.jpg?v=1724133040&width=100');
-    display: block;
+      display: block;
     }
 
     #solar_panel200 {
@@ -134,7 +181,7 @@
 
     #solar_panel100 {
       background-image: url('https://cdn.shopify.com/s/files/1/0412/9898/5124/files/100W.jpg?v=1724041152&width=100');
-    display: block;
+      display: block;
     }
 
     #solar_panel50 {
@@ -232,661 +279,865 @@
       background-image: url('https://cdn.shopify.com/s/files/1/0412/9898/5124/files/mk23-ac.jpg?v=1746550324&width=100');
       display: block;
     }
-
     button {
-    	cursor: pointer;
-    	display: flex;
-    	justify-content: center;
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
     }
-      button[disabled] {
-        opacity: 0.5;
-        cursor: not-allowed;
-      }
+    button[disabled] {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
     .action-btn-list {
-    	position: absolute;
-        transform: translateY(-50%);
-        top: 50%;
-    	left: 48px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        padding: 16px 8px;
-        border-radius: 35px;
-        background-color: #E64B38;
+      position: absolute;
+      transform: translateY(-50%);
+      top: 50%;
+      left: 48px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 16px 8px;
+      border-radius: 35px;
+      background-color: #E64B38;
     }
     .action-btn-list button {
-    	width: 40px;
-    	height: 40px;
-    	display: flex;
-    	align-items: center;
-    	justify-content: center;
-    	background: #333;
-    	border-radius: 22px;
-    	border: none;
-        background: none;
-        margin: 8px 0px
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #333;
+      border-radius: 22px;
+      border: none;
+      background: none;
+      margin: 8px 0px
     }
     .text-center {
-    	text-align: center;
+      text-align: center;
     }
     .mb-3 {
-    	margin-bottom: 8px;
+      margin-bottom: 8px;
     }
     .text-title1 {
-    	color: #333;
-    	opacity: 0;
-    	animation: textAnimation 2s linear 3s infinite alternate;
+      color: #333;
+      opacity: 0;
+      animation: textAnimation 2s linear 3s infinite alternate;
     }
     .text-body1 {
-    	color: #333;
-    	font-size: 20px;
+      color: #333;
+      font-size: 20px;
     }
     .items-container>div:first-child {
-    	position: relative;
-    	text-align: center;
+      position: relative;
+      text-align: center;
     }
     @keyframes textAnimation {
-    	0% {
-    		opacity: 0;
-    	}
+      0% {
+        opacity: 0;
+      }
 
-    	100% {
-    		opacity: 0.7;
-    	}
+      100% {
+        opacity: 0.7;
+      }
     }
-      #configurator-container {
-        position: relative;
-        border-radius: 20px;
-      }
-      .item-container .announce-bar {
-        margin-bottom: 20px !important;
-      }
+    #configurator-container {
+      position: relative;
+      border-radius: 20px;
+    }
+    .item-container .announce-bar {
+      margin-bottom: 20px !important;
+    }
     .van-detail {
-    	position: absolute;
-    	top: 40px;
-    	left: 50%;
-    	transform: translateX(-50%);
+      position: absolute;
+      top: 40px;
+      left: 50%;
+      transform: translateX(-50%);
     }
     #rack_title {
-    	font-size: 28px;
-    	text-shadow: 0px 0px 4px #fff;
-    	color: black;
-        text-align: center;
-        line-height: 34px;
+      font-size: 28px;
+      text-shadow: 0px 0px 4px #fff;
+      color: black;
+      text-align: center;
+      line-height: 34px;
     }
     .tooltip .tooltiptext {
-    	visibility: hidden;
-    	width: 120px;
-    	background-color: rgba(17, 12, 46, 1);
-    	color: #fff;
-    	text-align: center;
-    	border-radius: 6px;
-    	padding: 5px 0;
-    	top: 35%;
-      	margin-left: 10px;
-    	position: absolute;
-    	z-index: 1;
-    	transform: translateY(-23%);
-        left: 100%;
+      visibility: hidden;
+      width: 120px;
+      background-color: rgba(17, 12, 46, 1);
+      color: #fff;
+      text-align: center;
+      border-radius: 6px;
+      padding: 5px 0;
+      top: 35%;
+      margin-left: 10px;
+      position: absolute;
+      z-index: 1;
+      transform: translateY(-23%);
+      left: 100%;
     }
     .tooltip:hover .tooltiptext {
-    	visibility: visible;
+      visibility: visible;
     }
     .tooltip .tooltiptext:before {
-    	content: "";
-    	display: block;
-    	width: 0;
-    	height: 0;
-    	border-top: 9px solid transparent;
-    	border-bottom: 9px solid transparent;
-    	border-left: 9px solid rgba(17,9, 46, 1);
-    	position: absolute;
-    	left: -9px;
-    	top: 50%;
-    	transform: rotate(180deg) translateY(50%);
+      content: "";
+      display: block;
+      width: 0;
+      height: 0;
+      border-top: 9px solid transparent;
+      border-bottom: 9px solid transparent;
+      border-left: 9px solid rgba(17,9, 46, 1);
+      position: absolute;
+      left: -9px;
+      top: 50%;
+      transform: rotate(180deg) translateY(50%);
     }
-      .left-tooltip {
-    	position: relative;
+    .left-tooltip {
+      position: relative;
     }
     .left-tooltip .tooltiptext {
-    	visibility: hidden;
-    	width: 120px;
-    	background-color: rgba(17, 12, 46, 1);
-    	color: #fff;
-    	text-align: center;
-    	border-radius: 6px;
-    	padding: 5px 0;
-    	top: 35%;
-      	margin-left: 10px;
-    	position: absolute;
-    	z-index: 1;
-        left: 100%;
-    	margin-right: 8px;
-    	transform: translateY(-30%);
+      visibility: hidden;
+      width: 120px;
+      background-color: rgba(17, 12, 46, 1);
+      color: #fff;
+      text-align: center;
+      border-radius: 6px;
+      padding: 5px 0;
+      top: 35%;
+      margin-left: 10px;
+      position: absolute;
+      z-index: 1;
+      left: 100%;
+      margin-right: 8px;
+      transform: translateY(-30%);
     }
     .left-tooltip:hover .tooltiptext {
-    	visibility: visible;
+      visibility: visible;
     }
     .left-tooltip .tooltiptext:after {
-    	content: "";
-    	display: block;
-    	width: 0;
-    	height: 0;
-    	border-top: 8px solid transparent;
-    	border-bottom: 8px solid transparent;
-    	border-left: 8px solid rgba(17, 9, 46, 1);
-    	position: absolute;
-    	top: 50%;
-    	transform: rotate(180deg) translateY(50%);
-    	left: -6px;
+      content: "";
+      display: block;
+      width: 0;
+      height: 0;
+      border-top: 8px solid transparent;
+      border-bottom: 8px solid transparent;
+      border-left: 8px solid rgba(17, 9, 46, 1);
+      position: absolute;
+      top: 50%;
+      transform: rotate(180deg) translateY(50%);
+      left: -6px;
     }
-      [data-tab-content] {
-    	display: none;
+    [data-tab-content] {
+      display: none;
     }
     .active[data-tab-content] {
-    	display: block;
+      display: block;
     }
     .tabs {
-    	display: flex;
-    	justify-content: space-around;
-    	list-style-type: none;
-    	margin: 0;
-    	padding: 0;
-    	border-bottom: 1px solid black;
-    	position: absolute;
-    	width: 300px;
-    	height: 50px;
+      display: flex;
+      justify-content: space-around;
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+      border-bottom: 1px solid black;
+      position: absolute;
+      width: 300px;
+      height: 50px;
     }
     .tab {
-    	cursor: pointer;
-    	padding: 10px;
-    	width: 100%;
-    	text-align: center;
+      cursor: pointer;
+      padding: 10px;
+      width: 100%;
+      text-align: center;
         border-right: 1px solid #676767;
     }
     .tab.active {
-    	background-color: #676767;
-    	color: white;
+      background-color: #676767;
+      color: white;
     }
     .tab:hover {
-    	background-color: #AAA;
+      background-color: #AAA;
     }
     .tab-content {
-    	height: calc(100vh - 150px);
-    	overflow-y: auto;
-    	margin-top: 50px;
-    	margin-bottom: 100px;
-    	padding: 10px 10px;
+      height: calc(100vh - 150px);
+      overflow-y: auto;
+      margin-top: 50px;
+      margin-bottom: 100px;
+      padding: 10px 10px;
     }
     .checkout-area {
-    	position: absolute;
-    	height: 100px;
-    	bottom: 0;
-    	width: 300px;
-    	border-top: 1px solid #333;
-        border-bottom-left-radius: 15px;
-        border-bottom-right-radius: 15px;
+      position: absolute;
+      height: 100px;
+      bottom: 0;
+      width: 300px;
+      border-top: 1px solid #333;
+      border-bottom-left-radius: 15px;
+      border-bottom-right-radius: 15px;
     }
     .checkout-area button {
-    	justify-content: center;
-    	font-family: "Josefin Sans", sans-serif;
-    	border-radius: 30px;
-    	border: 0;
-    	letter-spacing: 1px;
-    	color: #fff;
-    	background: #E64B38;
-    	padding: 9px;
-    	white-space: nowrap;
-    	font-size: 16px;
-    	line-height: 1;
-    	text-transform: uppercase;
-    	transition: all 0.15s ease;
-    	text-decoration: none;
-    	display: flex;
-    	align-items: center;
-    	margin: 0 auto;
-    	width: 90%;
-        font-weight: 700;
-        margin-top: 6px;
+      justify-content: center;
+      font-family: "Josefin Sans", sans-serif;
+      border-radius: 30px;
+      border: 0;
+      letter-spacing: 1px;
+      color: #fff;
+      background: #E64B38;
+      padding: 9px;
+      white-space: nowrap;
+      font-size: 16px;
+      line-height: 1;
+      text-transform: uppercase;
+      transition: all 0.15s ease;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      margin: 0 auto;
+      width: 90%;
+      font-weight: 700;
+      margin-top: 6px;
     }
     .checkout-area button:hover {
-    	-webkit-transform: translateY(-1px);
+      -webkit-transform: translateY(-1px);
         transform: translateY(-1px);
-    	background: #FE371F;
+      background: #FE371F;
     }
     #products-detail {
-    	display: flex;
-    	justify-content: space-between;
-    	margin: 0 auto;
-    	width: 90%;
-    	margin-top: 10px;
-    	margin-bottom: 4px;
-    	font-size: 16px;
-    	font-weight: bold;
+      display: flex;
+      justify-content: space-between;
+      margin: 0 auto;
+      width: 90%;
+      margin-top: 10px;
+      margin-bottom: 4px;
+      font-size: 16px;
+      font-weight: bold;
     }
-      .unaka-logo {
-    	position: absolute;
-    	top: 20px;
-    	left: 30px;
-        z-index: 10;
+    .unaka-logo {
+      position: absolute;
+      top: 20px;
+      left: 30px;
+      z-index: 10;
     }
-      .build-item {
-    	margin-top: 12px;
-        border-bottom: 2px solid rgb(134, 134, 134);
-        padding-bottom: 10px;
+    .build-item {
+      margin-top: 12px;
+      border-bottom: 2px solid rgb(134, 134, 134);
+      padding-bottom: 10px;
     }
     .build-item .item-overview {
-    	display: flex;
-    	align-items: center;
-        justify-content: space-between;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
     }
-      .item-overview .product-info {
-        display: flex;
-        align-items: center;
-      }
+    .item-overview .product-info {
+      display: flex;
+      align-items: center;
+    }
     .item-overview .item-name {
-    	font-size: 12px;
-    	display: -webkit-box;
-    	-webkit-line-clamp: 2;
-    	-webkit-box-orient: vertical;
-    	overflow: hidden;
-    	text-overflow: ellipsis;
-    	word-break: break-all;
-        font-weight: bold;
-        color: black;
-        margin-left: 6px;
-        text-decoration: underline;
-        line-height: 16px;
+      font-size: 12px;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      word-break: break-all;
+      font-weight: bold;
+      color: black;
+      margin-left: 6px;
+      text-decoration: underline;
+      line-height: 16px;
     }
-      .item-overview .remove-product {
-        margin-left: 8px;
-        border-radius: 4px;
-        font-size: 22px;
-      }
+    .item-overview .remove-product {
+      margin-left: 8px;
+      border-radius: 4px;
+      font-size: 22px;
+    }
     .item-overview img {
-    	border: 1px solid rgb(134, 133, 133);
-      	border-radius: 6px;
-    	margin-right: 6px;
+      border: 1px solid rgb(134, 133, 133);
+      border-radius: 6px;
+      margin-right: 6px;
     }
     .build-item .item-variants {
-    	margin-top: 6px;
-    	display: flex;
-    	flex-direction: column;
-    	margin-left: 12px;
+      margin-top: 6px;
+      display: flex;
+      flex-direction: column;
+      margin-left: 12px;
     }
     .item-variants .variant {
-    	display: flex;
-    	align-items: center;
-    	justify-content: space-between;
-        margin: 4px 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin: 4px 0;
     }
-      .item-variants .variant .selected-variant{
-    	color: rgb(230, 75, 56);
-        font-weight: bold;
+    .item-variants .variant .selected-variant{
+      color: rgb(230, 75, 56);
+      font-weight: bold;
     }
     .item-variants .variant div {
-    	display: flex;
-    	align-items: center;
+      display: flex;
+      align-items: center;
     }
     .item-variants .variant input{
-    	margin: 0;
-    	margin-right: 4px;
+      margin: 0;
+      margin-right: 4px;
     }
-      .item-variants .variant .price{
-    	font-weight: bold;
+    .item-variants .variant .price{
+      font-weight: bold;
     }
-      .item-variants .variant label{
-    	letter-spacing: -0.3px;
-        font-size: 11px;
-        line-height: 18px;
+    .item-variants .variant label{
+      letter-spacing: -0.3px;
+      font-size: 11px;
+      line-height: 18px;
     }
     .build-item .divider {
-    	border: 1px solid rgb(159, 159, 159);
+      border: 1px solid rgb(159, 159, 159);
     }
-      #viewHelper {
-        display: flex;
-      }
-      #side-collapse {
-    	display: none;
+    #viewHelper {
+      display: flex;
     }
-      .select-colors {
-    	display: flex;
-    	flex-wrap: wrap;
+    #side-collapse {
+      display: none;
+    }
+    .select-colors {
+      display: flex;
+      flex-wrap: wrap;
     }
     .color-item {
-        display: block !important;
-    	width: 24px;
-    	height: 24px;
-    	border-radius: 20px;
-    	border: 2px solid #c94747;
-    	margin: 3px;
-    	cursor: pointer;
-    	opacity: 0.7;
+      display: block !important;
+      width: 24px;
+      height: 24px;
+      border-radius: 20px;
+      border: 2px solid #c94747;
+      margin: 3px;
+      cursor: pointer;
+      opacity: 0.7;
     }
     .color-item.color-selected {
-    	opacity: 1;
+      opacity: 1;
     }
-
-      @media only screen and (max-width: 1250px) {
-        .items-container {
-          max-width: 576px;
-        }
+    @media only screen and (max-width: 1250px) {
+      .items-container {
+        max-width: 576px;
       }
-
-
+    }
     @media only screen and (max-width: 1350px) {
-    	.item-img {
-    		width: 80px;
-    		height: 80px;
-    	}
+      .item-img {
+        width: 80px;
+        height: 80px;
+      }
     }
     @media only screen and (max-width: 1024px) {
-    	{% comment %} .item-img {
-    		width: 70px;
-    		height: 70px;
-    		margin-bottom: 10px;
-    	}
-    	.item-name {
-    		display: none;
-    	} {% endcomment %}
-    	#configurator-container {
-    		width: 100vw;
-    	}
-    	#side-section {
-    		position: absolute;
-    		right: -300px;
-    		transition: right .4s;
-    		transition-timing-function: linear;
-    	}
-    	.van-detail {
-    		display: none;
-    	}
-    	.text-title1 {
-    		display: none;
-    	}
-    	.action-btn-list {
-    		/* bottom: 160px; */
-    		right: 8px;
-    	}
-    	.unaka-logo img{
-    		width: 60px;
-    	}
-    	#viewHelper {
-    		display: none;
-    	}
-    	#side-collapse {
-    		display: block;
-    		position: absolute;
-    		top: 30vh;
-    		left: -36px;
-      		border: none;
-    		width: 36px;
-    		background-color: white;
-    		border-top-left-radius: 10px;
-    		border-bottom-left-radius: 10px;
-    	}
-    	#side-collapse div {
-    		padding: 14px 8px;
-    		transition: all .2s;
-    		z-index: 10;
-    	}
-    	#side-collapse div svg{
-    		transform: scaleY(2);
-    	}
-    	#side-collapse div.collapsed {
-    		text-align: left;
-    	}
-    	#side-collapse div.expanded {
-    		transform: rotate(180deg);
-    		text-align: right;
-    	}
+      #configurator-container {
+        width: 100vw;
+      }
+      #side-section {
+        position: absolute;
+        right: -300px;
+        transition: right .4s;
+        transition-timing-function: linear;
+      }
+      .van-detail {
+        display: none;
+      }
+      .text-title1 {
+        display: none;
+      }
+      .action-btn-list {
+        right: 8px;
+      }
+      .unaka-logo img{
+        width: 60px;
+      }
+      #viewHelper {
+        display: none;
+      }
+      #side-collapse {
+        display: block;
+        position: absolute;
+        top: 30vh;
+        left: -36px;
+        border: none;
+        width: 36px;
+        background-color: white;
+        border-top-left-radius: 10px;
+        border-bottom-left-radius: 10px;
+      }
+      #side-collapse div {
+        padding: 14px 8px;
+        transition: all .2s;
+        z-index: 10;
+      }
+      #side-collapse div svg{
+        transform: scaleY(2);
+      }
+      #side-collapse div.collapsed {
+        text-align: left;
+      }
+      #side-collapse div.expanded {
+        transform: rotate(180deg);
+        text-align: right;
+      }
     }
-
-      #select-template {
-    	padding-top: 10px;
+    #select-template {
+      padding-top: 10px;
     }
     #select-template .selectable {
-    	display: flex;
-    	justify-content: center;
-    	margin-top: 20px;
-    	cursor: pointer;
+      display: flex;
+      justify-content: center;
+      margin-top: 20px;
+      cursor: pointer;
     }
-      .not-sell {
-        color: red;
-        font-size: 12px;
-        line-height: 16px;
-      }
-      .loox-float-toggler-container .closeBtn{
-        background-color: white;
-        position: absolute;
-        top: 9px;
-        right: 40px;
-        z-index: 1;
-        /* color: white; */
-        /* padding: 5px; */
-        width: 18px;
-        height: 18px;
-        display: flex;
-        justify-content: center;
-        /* align-items: center; */
-        /* font-size: 14px; */
-        border-radius: 10px;
-        cursor: pointer;
+    .not-sell {
+      color: red;
+      font-size: 12px;
+      line-height: 16px;
+    }
+    .loox-float-toggler-container .closeBtn{
+      background-color: white;
+      position: absolute;
+      top: 9px;
+      right: 40px;
+      z-index: 1;
+      /* color: white; */
+      /* padding: 5px; */
+      width: 18px;
+      height: 18px;
+      display: flex;
+      justify-content: center;
+      /* align-items: center; */
+      /* font-size: 14px; */
+      border-radius: 10px;
+      cursor: pointer;
+    }
+
+    .loox-float-toggler-container {
+      display: none !important;
+    }
+
+    .swiper {
+      width: 100%;
+      height: 100%;
+      padding: 8px 0;
+    }
+
+    .swiper-slide {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .swiper-button-next,
+    .swiper-button-prev {
+      top: 0;
+      width: 40px;
+      height: 100%;
+      color: #37393a;
+      display: flex !important;
+    }
+
+    .swiper-button-prev {
+      left: -32px;
+    }
+
+    .swiper-button-next {
+      right: -32px;
+    }
+
+    @media only screen and (max-width: 700px) {
+      .items-container {
+        max-width: 100%;
       }
 
-      .loox-float-toggler-container {
-        display: none !important;
+      .item-img {
+        width: 70px;
+        height: 70px;
       }
 
-      .swiper {
-        width: 100%;
-        height: 100%;
-        padding: 8px 0;
-      }
-
-      .swiper-slide {
-        display: flex;
-        justify-content: center;
-        align-items: center;
+      .item-name {
+        display: none;
       }
 
       .swiper-button-next,
       .swiper-button-prev {
-        top: 0;
-        width: 40px;
-        height: 100%;
-        color: #37393a;
-        display: flex !important;
+        display: none;
       }
+    }
+    .d-none {
+      display: none !important;
+    }
+    .d-block {
+      display: block !important;
+    }
+    .d-flex {
+      display: flex !important;
+    }
+    #van_modal_area {
+      height: 100vh;
+      z-index: 1000;
+      width: 100vw;
+      display: flex;
+      position: absolute;
+      align-items: center;
+      justify-content: center;
+      background-color: #3a3a3a6b;
+    }
 
-      .swiper-button-prev {
-        left: -32px;
-      }
+    .van_modal_content {
+      min-width: 400px;
+      border-radius: 8px;
+      padding: 24px 24px;
+      background-color: white;
+      max-width: 560px;
+    }
+    .van_modal_content p {
+      font-size: 20px;
+      margin: 10px 0px;
+      font-weight: bold;
+    }
+    #van_modal_select {
+      width: 100%;
+      height: 40px;
+      margin: 20px 0px;
+      border: 1px solid #333;
+      border-radius: 6px;
+    }
+    .selectables {
+      width: 100%;
+      padding: 10px;
+    }
+    .van-selectable {
+      width: 100%;
+      height: 40px;
+      margin: 10px 0px;
+      border: 1px solid #333;
+      border-radius: 6px;
+    }
+    .van_select_trigger {
+      margin-top: 20px;
+      display: flex;
+      justify-content: end;
+    }
+    .van_select_trigger button{
+      margin-left: 10px;
+      justify-content: center;
+      font-family: "Josefin Sans", sans-serif;
+      border-radius: 8px;
+      border: 0;
+      letter-spacing: 1px;
+      color: #fff;
+      background: #246eea;
+      padding: 10px 16px;
+      white-space: nowrap;
+      font-size: 12px;
+      line-height: 1;
+      text-transform: uppercase;
+      transition: all 0.15s ease;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+    }
+    .van_select_trigger #van_reset_trigger {
+      background: #343a40;
+    }
+    .sidebar-header {
+      background-color: #F9AD18;
+      border-top-left-radius: 15px;
+      border-top-right-radius: 15px;
+      text-align: center;
+      font-size: 24px;
+      padding: 16px;
+      font-weight: 700;
+    }
+    .sidebar-vancolor {
+      padding: 10px;
+    }
+    .sidebar-vancolor .vancolor-title {
+      font-size: 18px;
+      padding-left: 5px;
+      font-weight: 700;
+    }
+    #build-list {
+      padding: 14px;
+      overflow-y: auto;
+      height: calc(100vh - 285px);
 
-      .swiper-button-next {
-        right: -32px;
-      }
+    }
+    #build-list::-webkit-scrollbar-track
+    {
+      border-radius: 10px;
+      background-color: #a6a6a6;
+    }
 
-      @media only screen and (max-width: 700px) {
-        .items-container {
-          max-width: 100%;
-        }
+    #build-list::-webkit-scrollbar
+    {
+      width: 12px;
+      background-color: white;
+    }
 
-        .item-img {
-          width: 70px;
-          height: 70px;
-        }
+    #build-list::-webkit-scrollbar-thumb
+    {
+      border-radius: 10px;
+      background-color: #F9AD18;
+    }
+    .buildlist-title {
+      font-size: 18px;
+      padding-left: 5px;
+      font-weight: 700;
+      padding-left: 14px;
+    }
 
-        .item-name {
-          display: none;
-        }
+    .mouse-navigation {
+      position: absolute;
+      top: 120px;
+      left: 20px;
+      z-index: 1000;
+    }
+    .contact-text{
+      font-size: 18px;
+      text-shadow: 0px 0px 4px #fff;
+      color: black;
+      text-align: center;
+      line-height: 1.2;
+      margin-top: 16px;
+    }
+    .contact-text a{
+      color: #E64B38;
+    }
 
-        .swiper-button-next,
-        .swiper-button-prev {
-          display: none;
-        }
-      }
-      .d-none {
-        display: none !important;
-      }
-      .d-block {
-        display: block !important;
-      }
+    .item-box {
+      position: relative;
+    }
 
-      #van_modal_area {
-        height: 100vh;
-        z-index: 1000;
-        width: 100vw;
-        display: flex;
-        position: absolute;
-        align-items: center;
-        justify-content: center;
-        background-color: #3a3a3a6b;
-      }
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      bottom: 100%;
+      left: 0;
+      background-color: white;
+      min-width: 200px;
+      box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+      z-index: 1000;
+      border-radius: 4px;
+      padding: 8px;
+    }
 
-      .van_modal_content {
-        min-width: 400px;
-        border-radius: 8px;
-        padding: 24px 24px;
-        background-color: white;
-        max-width: 560px;
-      }
-      .van_modal_content p {
-        font-size: 20px;
-        margin: 10px 0px;
-        font-weight: bold;
-      }
-      #van_modal_select {
-        width: 100%;
-        height: 40px;
-        margin: 20px 0px;
-        border: 1px solid #333;
-        border-radius: 6px;
-      }
-      .selectables {
-        width: 100%;
+    .item-box:hover .dropdown-content {
+      display: block;
+    }
+
+    .dropdown-item {
+      display: flex;
+      align-items: center;
+      padding: 8px;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+
+    .dropdown-item:hover {
+      background-color: #f5f5f5;
+    }
+
+    .dropdown-item .item-img {
+      width: 40px;
+      height: 40px;
+      margin-right: 8px;
+    }
+
+    .dropdown-item .item-name {
+      flex: 1;
+    }
+        /* additional css start */
+    #airconditioners {
+      background-image: url('https://cdn.shopify.com/s/files/1/0412/9898/5124/files/airconditioner-2.jpg?v=1728792937&width=100');
+      display: block;
+    }
+
+    #fans {
+      background-image: url('https://cdn.shopify.com/s/files/1/0412/9898/5124/files/maxxair.jpg?v=1711798448&width=100');
+      display: block;
+    }
+
+    #solar-panels {
+      background-image: url('https://cdn.shopify.com/s/files/1/0412/9898/5124/files/250W.jpg?v=1724133040&width=100');
+      display: block;
+    }
+
+    #awnings {
+      background-image: url('https://cdn.shopify.com/s/files/1/0412/9898/5124/files/awning.jpg?v=1723579211&width=100');
+      display: block;
+    }
+
+    #lights {
+      background-image: url('https://cdn.shopify.com/s/files/1/0412/9898/5124/files/light_bar.jpg?v=1725399706&width=100');
+      display: block;
+    }
+
+    #accessories {
+      background-image: url('https://cdn.shopify.com/s/files/1/0412/9898/5124/files/ladder.jpg?v=1714006260&width=100');
+      display: block;
+    }
+    #deck-panels {
+      background-image: url('https://cdn.shopify.com/s/files/1/0412/9898/5124/files/mk20-l2.jpg?v=1746456445&width=100');
+      display: block;
+    }
+    .product-dropdown {
+      position: absolute;
+      bottom: 100%;
+      left: 50%;
+      max-height: 400px;
+      transform: translateX(-50%);
+      width: auto;
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+      padding: 12px 6px;
+      margin-bottom: 15px;
+      z-index: 1000;
+      display: none;
+      pointer-events: none;
+      overflow: auto;
+    }
+
+    .product-dropdown.active {
+      display: block;
+      pointer-events: auto;
+    }
+
+    .dropdown-title {
+      font-size: 14px;
+      font-weight: bold;
+      margin-bottom: 10px;
+      text-align: center;
+      color: #333;
+    }
+
+    .dropdown-items {
+      display: grid;
+      grid-template-columns: repeat(1, 1fr);
+    }
+
+    .dropdown-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+
+    .dropdown-item:hover {
+      transform: translateY(-3px);
+    }
+
+    .dropdown-item-img {
+      width: 80px;
+      height: 80px;
+      border-radius: 10px;
+      background-size: cover;
+      margin-bottom: 5px;
+      position: relative;
+      transition: all 0.2s ease;
+      box-shadow: 0.6px 0.6px 1.9px rgba(0, 0, 0, .035), 5px 5px 15px rgba(0, 0, 0, .07);
+    }
+
+    .dropdown-item:hover .dropdown-item-img {
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    .dropdown-item-name {
+      font-size: 10px;
+      line-height: 1.2;
+      color: #333;
+      text-align: center;
+      font-weight: 700;
+    }
+
+    /* Custom scrollbar styling */
+    .product-dropdown::-webkit-scrollbar {
+      width: 8px;
+      background-color: transparent;
+    }
+    .product-dropdown::-webkit-scrollbar-track {
+      background-color: #f1f1f1;
+      border-radius: 10px;
+      margin: 5px;
+    }
+    .product-dropdown::-webkit-scrollbar-thumb {
+      background-color: #F9AD18;
+      border-radius: 10px;
+      border: 2px solid #f1f1f1;
+    }
+
+    .product-dropdown::-webkit-scrollbar-thumb:hover {
+      background-color: #e69c15;
+    }
+    /* Overlay for closing dropdown when clicking outside */
+    .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: transparent;
+      z-index: 999;
+      display: none;
+    }
+
+    /* Category indicator */
+    .category-indicator {
+      position: absolute;
+      top: -8px;
+      right: -8px;
+      background-color: #4CAF50;
+      color: white;
+      font-size: 10px;
+      padding: 2px 6px;
+      border-radius: 10px;
+      z-index: 5;
+    }
+
+    .swiper {
+      overflow: visible !important;
+      overflow-x: clip !important;
+    }
+    .swiper-slide{
+      width: auto;
+    }
+    /* Responsive adjustments for dropdowns */
+    @media only screen and (max-width: 700px) {
+      .product-dropdown {
+        width: 200px;
         padding: 10px;
       }
-      .van-selectable {
-        width: 100%;
-        height: 40px;
-        margin: 10px 0px;
-        border: 1px solid #333;
-        border-radius: 6px;
+
+      .dropdown-item-img {
+        width: 60px;
+        height: 60px;
       }
-      .van_select_trigger {
-        margin-top: 20px;
-        display: flex;
-        justify-content: end;
-      }
-      .van_select_trigger button{
-        margin-left: 10px;
-        justify-content: center;
-        font-family: "Josefin Sans", sans-serif;
-        border-radius: 8px;
-        border: 0;
-        letter-spacing: 1px;
-        color: #fff;
-        background: #246eea;
-        padding: 10px 16px;
-        white-space: nowrap;
+
+      .dropdown-title {
         font-size: 12px;
-        line-height: 1;
-        text-transform: uppercase;
-        transition: all 0.15s ease;
-        text-decoration: none;
-        display: flex;
-        align-items: center;
       }
-      .van_select_trigger #van_reset_trigger {
-        background: #343a40;
-      }
-      .sidebar-header {
-        background-color: #F9AD18;
-        border-top-left-radius: 15px;
-        border-top-right-radius: 15px;
-        text-align: center;
-        font-size: 24px;
-        padding: 16px;
-        font-weight: 700;
-      }
-      .sidebar-vancolor {
-        padding: 10px;
-      }
-      .sidebar-vancolor .vancolor-title {
-        font-size: 18px;
-        padding-left: 5px;
-        font-weight: 700;
-      }
-      #build-list {
-        padding: 14px;
-        overflow-y: auto;
-        height: calc(100vh - 285px);
-
-      }
-      #build-list::-webkit-scrollbar-track
-      {
-        border-radius: 10px;
-        background-color: #a6a6a6;
-      }
-
-      #build-list::-webkit-scrollbar
-      {
-        width: 12px;
-        background-color: white;
-      }
-
-      #build-list::-webkit-scrollbar-thumb
-      {
-        border-radius: 10px;
-        background-color: #F9AD18;
-      }
-      .buildlist-title {
-        font-size: 18px;
-        padding-left: 5px;
-        font-weight: 700;
-        padding-left: 14px;
-      }
-
-      .mouse-navigation {
-        position: absolute;
-    	  top: 120px;
-    	  left: 20px;
-        z-index: 1000;
-      }
-      .contact-text{
-        font-size: 18px;
-    	  text-shadow: 0px 0px 4px #fff;
-    	  color: black;
-        text-align: center;
-        line-height: 1.2;
-        margin-top: 16px;
-      }
-      .contact-text a{
-        color: #E64B38;
-      }
+    }
   </style>
 </head>
 <div id="van_modal_area">
   <div class="van_modal_content">
     <p>Select Van</p>
-      {% comment %} <select id="van_modal_select">
+    {% comment %}
+      <select id="van_modal_select">
         <option> Premium / Ford Transit 148 High Roof</option>
-      </select> {% endcomment %}
+      </select>
+    {% endcomment %}
 
     <div class="selectables">
       <select id="vanType" class="van-selectable">
         <option value="">Select Van</option>
       </select>
-  
+
       <select id="vanSize" class="van-selectable" disabled>
         <option value="">Select Size</option>
       </select>
-  
+
       <select id="vanVariant" class="van-selectable" disabled>
         <option value="">Select Roof Rack</option>
       </select>
-  
+
       <div class="van_select_trigger">
         <button id="van_reset_trigger">Reset</button>
         <button id="van_select_trigger">Select</button>
@@ -914,192 +1165,210 @@
   <div id="configurator-container">
     <div class="van-detail">
       <h2 id="rack_title">Ford Transit Roof Rack - Premium - 148 High Roof</h2>
-      <h3 class="contact-text">For custom layout or support contact us - <a href="mailto:csr@unakagearco.com" >csr@unakagearco.com</a></h3>
+      <h3 class="contact-text">
+        For custom layout or support contact us - <a href="mailto:csr@unakagearco.com">csr@unakagearco.com</a>
+      </h3>
     </div>
     <div id="container"></div>
+    <div class="overlay" id="overlay"></div>
+
     <div class="items-container">
       <div class="swiper">
         <div class="swiper-wrapper drag-items" id="selectableProducts">
+          <!-- Air Conditioners Group -->
           <div class="swiper-slide">
-            <div class="item-box">
-              <div class="item-img" id="airconditioner" draggable="false">
-                <div class="carted-item">1</div>
-              </div>
+            <div class="item-box" data-category="airconditioners">
+              <div class="item-img" id="airconditioners" draggable="false"></div>
               <div class="item-name">
-                <p>Dometic RTX</p>
+                <p>Air Conditioners</p>
               </div>
-            </div>
-          </div>
-          {% comment %} <div class="swiper-slide">
-            <div class="item-box">
-              <div class="item-img" id="airconditioner-p" draggable="false">
-                <div class="carted-item">1</div>
-              </div>
-              <div class="item-name">
-                <p>Dometic Penguin II</p>
-              </div>
-            </div>
-          </div> {% endcomment %}
 
-          <div class="swiper-slide">
-            <div class="item-box">
-              <div class="item-img" id="airconditioner-x2" draggable="false">
-                <div class="carted-item">1</div>
-              </div>
-              <div class="item-name">
-                <p>Nomadic Innovations AC X2</p>
-              </div>
-            </div>
-          </div>
-          <div class="swiper-slide">
-            <div class="item-box">
-              <div class="item-img" id="airconditioner-x3" draggable="false">
-                <div class="carted-item">1</div>
-              </div>
-              <div class="item-name">
-                <p>Nomadic Innovations AC X3</p>
+              <!-- Dropdown for Air Conditioners -->
+              <div class="product-dropdown" id="airconditioners-dropdown">
+                <div class="dropdown-title">Air Conditioners</div>
+                <div class="dropdown-items">
+                  <div class="dropdown-item">
+                    <div class="dropdown-item-img" id="airconditioner">
+                      <div class="carted-item">1</div>
+                    </div>
+                    <div class="dropdown-item-name">Dometic RTX</div>
+                  </div>
+                  <div class="dropdown-item">
+                    <div class="dropdown-item-img" id="airconditioner-x2">
+                      <div class="carted-item">1</div>
+                    </div>
+                    <div class="dropdown-item-name">Nomadic Innovations AC X2</div>
+                  </div>
+                  <div class="dropdown-item">
+                    <div class="dropdown-item-img" id="airconditioner-x3">
+                      <div class="carted-item">1</div>
+                    </div>
+                    <div class="dropdown-item-name">Nomadic Innovations AC X3</div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
 
+          <!-- Ventilation Group -->
           <div class="swiper-slide">
-            <div class="item-box">
-              <div class="item-img" id="maxxair" draggable="false">
-                <div class="carted-item">1</div>
-              </div>
+            <div class="item-box" data-category="ventilation">
+              <div class="item-img" id="fans" draggable="false"></div>
               <div class="item-name">
-                <p>Maxxair Deluxe</p>
+                <p>Fans</p>
+              </div>
+
+              <!-- Dropdown for Ventilation -->
+              <div class="product-dropdown" id="ventilation-dropdown">
+                <div class="dropdown-title">Fans</div>
+                <div class="dropdown-items">
+                  <div class="dropdown-item">
+                    <div class="dropdown-item-img" id="maxxair">
+                      <div class="carted-item">1</div>
+                    </div>
+                    <div class="dropdown-item-name">Maxxair Deluxe</div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
+
+          <!-- Solar Panels Group -->
           <div class="swiper-slide">
-            <div class="item-box">
-              <div class="item-img" id="solar_panel250" draggable="false">
-                <div class="carted-item">1</div>
-              </div>
+            <div class="item-box" data-category="solar">
+              <div class="item-img" id="solar-panels" draggable="false"></div>
               <div class="item-name">
-                <p>Rich Solar Panel 250w</p>
+                <p>Solar Panels</p>
+              </div>
+
+              <!-- Dropdown for Solar Panels -->
+              <div class="product-dropdown" id="solar-dropdown">
+                <div class="dropdown-title">Solar Panels</div>
+                <div class="dropdown-items">
+                  <div class="dropdown-item">
+                    <div class="dropdown-item-img" id="solar_panel250">
+                      <div class="carted-item">1</div>
+                    </div>
+                    <div class="dropdown-item-name">Rich Solar Panel 250w</div>
+                  </div>
+                  <div class="dropdown-item">
+                    <div class="dropdown-item-img" id="solar_panel200">
+                      <div class="carted-item">1</div>
+                    </div>
+                    <div class="dropdown-item-name">Rich Solar Panel 200w</div>
+                  </div>
+                  <div class="dropdown-item">
+                    <div class="dropdown-item-img" id="solar_panel100">
+                      <div class="carted-item">1</div>
+                    </div>
+                    <div class="dropdown-item-name">Rich Solar Panel 100w</div>
+                  </div>
+                  <div class="dropdown-item">
+                    <div class="dropdown-item-img" id="solar_panel50">
+                      <div class="carted-item">1</div>
+                    </div>
+                    <div class="dropdown-item-name">Rich Solar Panel 50w</div>
+                  </div>
+                  <div class="dropdown-item">
+                    <div class="dropdown-item-img" id="solar_panel30">
+                      <div class="carted-item">1</div>
+                    </div>
+                    <div class="dropdown-item-name">Rich Solar Panel 30w</div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
+
+          <!-- Awnings Group -->
           <div class="swiper-slide">
-            <div class="item-box">
-              <div class="item-img" id="solar_panel200" draggable="false">
-                <div class="carted-item">1</div>
-              </div>
+            <div class="item-box" data-category="awning">
+              <div class="item-img" id="awnings" draggable="false"></div>
               <div class="item-name">
-                <p>Rich Solar Panel 200w</p>
+                <p>Awnings</p>
+              </div>
+
+              <!-- Dropdown for Awnings -->
+              <div class="product-dropdown" id="awning-dropdown">
+                <div class="dropdown-title">Awnings</div>
+                <div class="dropdown-items">
+                  <div class="dropdown-item">
+                    <div class="dropdown-item-img" id="awning">
+                      <div class="carted-item">1</div>
+                    </div>
+                    <div class="dropdown-item-name">F45-300 Awning</div>
+                  </div>
+                  <div class="dropdown-item">
+                    <div class="dropdown-item-img" id="awning_350">
+                      <div class="carted-item">1</div>
+                    </div>
+                    <div class="dropdown-item-name">F45-350 Awning</div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
+
+          <!-- Light Bars Group -->
           <div class="swiper-slide">
-            <div class="item-box">
-              <div class="item-img" id="solar_panel100" draggable="false">
-                <div class="carted-item">1</div>
-              </div>
+            <div class="item-box" data-category="light">
+              <div class="item-img" id="lights" draggable="false"></div>
               <div class="item-name">
-                <p>Rich Solar Panel 100w</p>
+                <p>Light Bars</p>
+              </div>
+
+              <!-- Dropdown for Light Bars -->
+              <div class="product-dropdown" id="light-dropdown">
+                <div class="dropdown-title">Light Bars</div>
+                <div class="dropdown-items">
+                  <div class="dropdown-item">
+                    <div class="dropdown-item-img" id="light_bar">
+                      <div class="carted-item">1</div>
+                    </div>
+                    <div class="dropdown-item-name">Tyri Light Bar</div>
+                  </div>
+                  <div class="dropdown-item">
+                    <div class="dropdown-item-img" id="light_bar_copy">
+                      <div class="carted-item">1</div>
+                    </div>
+                    <div class="dropdown-item-name">Diode Dynamics Light Bar</div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
+
+          <!-- Accessories Group -->
           <div class="swiper-slide">
-            <div class="item-box">
-              <div class="item-img" id="solar_panel50" draggable="false">
-                <div class="carted-item">1</div>
-              </div>
+            <div class="item-box" data-category="accessories">
+              <div class="item-img" id="accessories" draggable="false"></div>
               <div class="item-name">
-                <p>Rich Solar Panel 50w</p>
+                <p>Accessories</p>
               </div>
-            </div>
-          </div>
-          <div class="swiper-slide">
-            <div class="item-box">
-              <div class="item-img" id="solar_panel30" draggable="false">
-                <div class="carted-item">1</div>
-              </div>
-              <div class="item-name">
-                <p>Rich Solar Panel 30w</p>
-              </div>
-            </div>
-          </div>
-          <div class="swiper-slide">
-            <div class="item-box">
-              <div class="item-img" id="ladder" draggable="false">
-                <div class="carted-item">1</div>
-              </div>
-              <div class="item-name">
-                <p>Side Mount Ladder</p>
-              </div>
-            </div>
-          </div>
-          <div class="swiper-slide" style="display: none">
-            <div class="item-box">
-              <div class="item-img" id="solar_cross_bar" draggable="false">
-                <div class="carted-item">1</div>
-              </div>
-              <div class="item-name">
-                <p>Solar cross bar</p>
-              </div>
-            </div>
-          </div>
-          <div class="swiper-slide">
-            <div class="item-box">
-              <div class="item-img" id="cross_bar" draggable="false">
-                <div class="carted-item">1</div>
-              </div>
-              <div class="item-name">
-                <p>8020 cross bar</p>
-              </div>
-            </div>
-          </div>
-          <div class="swiper-slide">
-            <div class="item-box">
-              <div class="item-img" id="awning" draggable="false">
-                <div class="carted-item">1</div>
-              </div>
-              <div class="item-name">
-                <p>F45-300 Awning</p>
-              </div>
-            </div>
-          </div>
-          <div class="swiper-slide">
-            <div class="item-box">
-              <div class="item-img" id="awning_350" draggable="false">
-                <div class="carted-item">1</div>
-              </div>
-              <div class="item-name">
-                <p>F45-350 Awning</p>
-              </div>
-            </div>
-          </div>
-          <div class="swiper-slide">
-            <div class="item-box">
-              <div class="item-img" id="light_bar" draggable="false">
-                <div class="carted-item">1</div>
-              </div>
-              <div class="item-name">
-                <p>Tyri Light Bar</p>
-              </div>
-            </div>
-          </div>
-          <div class="swiper-slide">
-            <div class="item-box">
-              <div class="item-img" id="light_bar_copy" draggable="false">
-                <div class="carted-item">1</div>
-              </div>
-              <div class="item-name">
-                <p>Diode Dynamics Light Bar</p>
-              </div>
-            </div>
-          </div>
-          <div class="swiper-slide">
-            <div class="item-box">
-              <div class="item-img left-tooltip" id="light_bar_test" draggable="false">
-                <span class="tooltiptext">asdasdasda</span>
-                <div class="carted-item">1</div>
-              </div>
-              <div class="item-name">
-                <p>Test Tool tip</p>
+
+              <!-- Dropdown for Accessories -->
+              <div class="product-dropdown" id="accessories-dropdown">
+                <div class="dropdown-title">Accessories</div>
+                <div class="dropdown-items">
+                  <div class="dropdown-item">
+                    <div class="dropdown-item-img" id="ladder">
+                      <div class="carted-item">1</div>
+                    </div>
+                    <div class="dropdown-item-name">Side Mount Ladder</div>
+                  </div>
+                  <div class="dropdown-item">
+                    <div class="dropdown-item-img" id="cross_bar">
+                      <div class="carted-item">1</div>
+                    </div>
+                    <div class="dropdown-item-name">8020 cross bar</div>
+                  </div>
+                  <div class="dropdown-item">
+                    <div class="dropdown-item-img" id="solar_cross_bar">
+                      <div class="carted-item">1</div>
+                    </div>
+                    <div class="dropdown-item-name">Solar cross bar</div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -1269,6 +1538,7 @@
 
 <script async src="https://unpkg.com/es-module-shims@1.3.0/dist/es-module-shims.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js" async></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js" ></script>
 <script>
   const vanSelections = [
     {
@@ -1290,9 +1560,7 @@
         },
         {
           type: '148 Medium',
-          variants: [
-            { type: 'Premium', id: '45730334539995' },
-          ],
+          variants: [{ type: 'Premium', id: '45730334539995' }],
         },
       ],
     },
@@ -1328,7 +1596,7 @@
   const vanSizeSelect = document.getElementById('vanSize');
   const vanVariantSelect = document.getElementById('vanVariant');
   const resetButton = document.getElementById('van_reset_trigger');
-  const selectButton = document.getElementById("van_select_trigger");
+  const selectButton = document.getElementById('van_select_trigger');
 
   // Populate van type dropdown
   vanSelections.forEach((van) => {
@@ -1377,14 +1645,15 @@
     }
   });
 
-  resetButton.addEventListener('click', function() {
-    vanTypeSelect.value = "";
+  resetButton.addEventListener('click', function () {
+    vanTypeSelect.value = '';
     vanSizeSelect.innerHTML = '<option value="">Select Size</option>';
     vanSizeSelect.disabled = true;
     vanVariantSelect.innerHTML = '<option value="">Select Roof Rack</option>';
     vanVariantSelect.disabled = true;
   });
 </script>
+
 <script
   type="module"
 >
@@ -1412,10 +1681,10 @@
       //   slidesPerView: 4,
       //   // spaceBetween: 40,
       // },
-      1250: {
+      {% comment %} 1250: {
         slidesPerView: 6,
         // spaceBetween: 50,
-      },
+      }, {% endcomment %}
     },
   });
 
@@ -1490,7 +1759,7 @@
       "availableVariants": [
         45730334671067, 45730334703835, 45730334802139, 45730334834907, 45730334539995,
         45730446835931, 45910413181147, 45730446901467, 45910413213915,
-        45730446967003, 45910413246683, 
+        45730446967003, 45910413246683
       ]
     },
     {
@@ -1678,25 +1947,54 @@
   });
 
   let selectableProducts = [
-    {name: "Dometic RTX", id: "airconditioner", model: "https://cdn.shopify.com/3d/models/3fc52045eaa806f8/airconditioner-d.glb"},
-    {% comment %} {name: "Dometic Penguin II", id: "airconditioner-p", model: "https://cdn.shopify.com/3d/models/c599289fb8ed77b8/airconditioner-10.glb"}, {% endcomment %}
-    {name: "VELIT 2000R", id: "airconditioner-v1", model: "https://cdn.shopify.com/3d/models/c55e579406be72d1/airconditioner-v1.glb"},
-    {name: "VELIT 2000R MINI", id: "airconditioner-v2", model: "https://cdn.shopify.com/3d/models/575a822893d82486/airconditioner-v2.glb"},
-    {name: "Nomadic Innovations AC X2", id: "airconditioner-x2", model: "https://cdn.shopify.com/3d/models/8f9f98cdd33f3a4f/airconditioner-x2.glb"},
-    {name: "Nomadic Innovations AC X3", id: "airconditioner-x3", model: "https://cdn.shopify.com/3d/models/fa056a2235adba37/airconditioner-x3.glb"},
-    {name: "Maxxair Deluxe", id: "maxxair", model: "https://cdn.shopify.com/3d/models/9f3e8c568b76b1f4/maxxair-2.glb"},
-    {name: "Rich Solar Panel 250w", id: "solar_panel250", model: "https://cdn.shopify.com/3d/models/5b0bf30f3bc0bc5b/250W.glb"},
-    {name: "Rich Solar Panel 200w", id: "solar_panel200", model: "https://cdn.shopify.com/3d/models/41179ec7afded29e/200W.glb"},
-    {name: "Rich Solar Panel 100w", id: "solar_panel100", model: "https://cdn.shopify.com/3d/models/bba013cfe5d76ce7/100W-1.glb"},
-    {name: "Rich Solar Panel 50w", id: "solar_panel50", model: "https://cdn.shopify.com/3d/models/cfce53c8523cbc41/55W.glb"},
-    {name: "Rich Solar Panel 30w", id: "solar_panel30", model: "https://cdn.shopify.com/3d/models/dfcf1aaf24802514/30W.glb"},
-    {name: "Side Mount Ladder", id: "ladder", model: ""},
-    {name: "8020 cross bar", id: "cross_bar", model: "https://cdn.shopify.com/3d/models/543cc594a487aecf/8020_cross.glb"},
-    {name: "F45-300 Awning", id: "awning", model: "https://cdn.shopify.com/3d/models/85085b43be1cd9cf/awning.glb"},
-    {name: "F45-350 Awning", id: "awning_350", model: "https://cdn.shopify.com/3d/models/431a3b45d712597f/awning_350.glb"},
-    {name: "Tyri Light Bar", id: "light_bar", model: "https://cdn.shopify.com/3d/models/446727d744111fcc/light_bar.glb"},
-    {name: "Diode Dynamics Light Bar", id: "light_bar_copy", model: "https://cdn.shopify.com/3d/models/7de4edf3ac049e1e/light_bar_1.glb"}
-  ]
+    {
+      id: "airconditioners",
+      products: [
+          { name: "Dometic RTX", id: "airconditioner", model: "https://cdn.shopify.com/3d/models/3fc52045eaa806f8/airconditioner-d.glb" },
+          { name: "VELIT 2000R", id: "airconditioner-v1", model: "https://cdn.shopify.com/3d/models/c55e579406be72d1/airconditioner-v1.glb" },
+          { name: "VELIT 2000R MINI", id: "airconditioner-v2", model: "https://cdn.shopify.com/3d/models/575a822893d82486/airconditioner-v2.glb" },
+          { name: "Nomadic Innovations AC X2", id: "airconditioner-x2", model: "https://cdn.shopify.com/3d/models/8f9f98cdd33f3a4f/airconditioner-x2.glb" },
+          { name: "Nomadic Innovations AC X3", id: "airconditioner-x3", model: "https://cdn.shopify.com/3d/models/fa056a2235adba37/airconditioner-x3.glb" }
+      ]
+    },
+    {
+      id: "fans",
+      products: [
+          { name: "Maxxair Deluxe", id: "maxxair", model: "https://cdn.shopify.com/3d/models/9f3e8c568b76b1f4/maxxair-2.glb" }
+      ]
+    },
+    {
+      id: "solar-panels",
+      products: [
+          { name: "Rich Solar Panel 250w", id: "solar_panel250", model: "https://cdn.shopify.com/3d/models/5b0bf30f3bc0bc5b/250W.glb" },
+          { name: "Rich Solar Panel 200w", id: "solar_panel200", model: "https://cdn.shopify.com/3d/models/41179ec7afded29e/200W.glb" },
+          { name: "Rich Solar Panel 100w", id: "solar_panel100", model: "https://cdn.shopify.com/3d/models/bba013cfe5d76ce7/100W-1.glb" },
+          { name: "Rich Solar Panel 50w", id: "solar_panel50", model: "https://cdn.shopify.com/3d/models/cfce53c8523cbc41/55W.glb" },
+          { name: "Rich Solar Panel 30w", id: "solar_panel30", model: "https://cdn.shopify.com/3d/models/dfcf1aaf24802514/30W.glb" }
+      ]
+    },
+    {
+      id: "accessories",
+      products: [
+          { name: "Side Mount Ladder", id: "ladder", model: "" },
+          { name: "8020 cross bar", id: "cross_bar", model: "https://cdn.shopify.com/3d/models/543cc594a487aecf/8020_cross.glb" }
+      ]
+    },
+    {
+      id: "awnings",
+      products: [
+          { name: "F45-300 Awning", id: "awning", model: "https://cdn.shopify.com/3d/models/85085b43be1cd9cf/awning.glb" },
+          { name: "F45-350 Awning", id: "awning_350", model: "https://cdn.shopify.com/3d/models/431a3b45d712597f/awning_350.glb" }
+      ]
+    },
+    {
+      id: "lights",
+      products: [
+          { name: "Tyri Light Bar", id: "light_bar", model: "https://cdn.shopify.com/3d/models/446727d744111fcc/light_bar.glb" },
+          { name: "Diode Dynamics Light Bar", id: "light_bar_copy", model: "https://cdn.shopify.com/3d/models/7de4edf3ac049e1e/light_bar_1.glb" }
+      ]
+    }
+  ];
 
   canvasContainer.addEventListener('mousemove', (event) => {
     if (selectedFeature) {
@@ -1752,7 +2050,7 @@
             const xPos = Math.min(movingOffset - selectedFeatureWidth / 2, Math.max((- vanArea[1] * 0.0254) + widthOfObject/2, coords.x));
             collidableMeshList = updateColliderList();
             const checkCollision = isCrossBarCollied(bbox1, collidableMeshList, xPos, selectedFeature.name);
-            if(isValueInScale(coords.x * 1000 / 25.4 * -1, cutOffArea, 7.001, vanDiff)  >= 0 && !checkCollision) {
+            if(isValueInScale(coords.x * 1000 / 25.4 * -1, cutOffArea, 6.801, vanDiff)  >= 0 && !checkCollision) {
               updateSolarArea(xPos, selectedFeature.name, 2)
               selectedFeature.parent.position.x = xPos;
               selectedFeature.parent.position.z = 0;
@@ -1764,7 +2062,7 @@
             const xPos = Math.min(movingOffset - selectedFeatureWidth / 2, Math.max((- vanArea[1] * 0.0254) + widthOfObject/2, coords.x));
             collidableMeshList = updateColliderList();
             const checkCollision = isCrossBarCollied(bbox1, collidableMeshList, xPos, selectedFeature.name);
-            if(isValueInScale(coords.x * 1000 / 25.4 * -1, cutOffArea, 7.001, vanDiff)  >= 0 && !checkCollision) {
+            if(isValueInScale(coords.x * 1000 / 25.4 * -1, cutOffArea, 6.801, vanDiff)  >= 0 && !checkCollision) {
               selectedFeature.parent.position.x = xPos;
               selectedFeature.parent.position.z = 0;
               updateModelState(2, selectedFeature.name, xPos) 
@@ -1806,7 +2104,7 @@
             const xPos = Math.min(movingOffset - selectedFeatureWidth / 2, Math.max((- vanArea[1] * 0.0254) + widthOfObject/2, coords.x));
             collidableMeshList = updateColliderList();
             const checkCollision = isCrossBarCollied(bbox1, collidableMeshList, xPos, selectedFeature.name);
-            if(isValueInScale(coords.x * 1000 / 25.4 * -1, cutOffArea, 7, vanDiff) >= 0 && !checkCollision){
+            if(isValueInScale(coords.x * 1000 / 25.4 * -1, cutOffArea, 6.801, vanDiff) >= 0 && !checkCollision){
               updateSolarArea(xPos, selectedFeature.name, 2)
               selectedFeature.parent.position.x = xPos;
               selectedFeature.parent.position.z = 0;
@@ -2132,7 +2430,7 @@
 
   document.getElementById('resetButton').addEventListener('click', resetConfig);
 
-  var productElements = document.getElementsByClassName("item-img");
+  var productElements = document.getElementsByClassName("dropdown-item-img");
 
 	for (var i = 0; i < productElements.length; i++) {
     productElements[i].addEventListener('click', event => { handleClickProduct(event); handleEnableResetBtn(); }, false);
@@ -2362,18 +2660,18 @@
     let smallestDiffGreaterThanX = Infinity;
 
     boxesArr.forEach(box => {
-        const maxDiff = Math.abs(box.max.x - xValue);
-        const minDiff = Math.abs(box.min.x - xValue);
+      const maxDiff = Math.abs(box.max.x - xValue);
+      const minDiff = Math.abs(box.min.x - xValue);
 
-        if (box.max.x < xValue && maxDiff < smallestDiffLessThanX) {
-            smallestDiffLessThanX = maxDiff;
-            itemLessThanX = box;
-        }
+      if (box.max.x < xValue && maxDiff < smallestDiffLessThanX) {
+          smallestDiffLessThanX = maxDiff;
+          itemLessThanX = box;
+      }
 
-        if (box.min.x > xValue && minDiff < smallestDiffGreaterThanX) {
-            smallestDiffGreaterThanX = minDiff;
-            itemGreaterThanX = box;
-        }
+      if (box.min.x > xValue && minDiff < smallestDiffGreaterThanX) {
+          smallestDiffGreaterThanX = minDiff;
+          itemGreaterThanX = box;
+      }
     });
 
     if (itemGreaterThanX && itemLessThanX) {
@@ -2383,22 +2681,22 @@
     } else if (itemLessThanX) {
         return [itemLessThanX];
     } else {
-        // If no items satisfy the conditions, return the nearest single item
-        let nearestItem = null;
-        let smallestDifference = Infinity;
+      // If no items satisfy the conditions, return the nearest single item
+      let nearestItem = null;
+      let smallestDifference = Infinity;
 
-        boxesArr.forEach(box => {
-            const minDifference = Math.abs(box.min.x - xValue);
-            const maxDifference = Math.abs(box.max.x - xValue);
-            const currentDifference = Math.min(minDifference, maxDifference);
+      boxesArr.forEach(box => {
+          const minDifference = Math.abs(box.min.x - xValue);
+          const maxDifference = Math.abs(box.max.x - xValue);
+          const currentDifference = Math.min(minDifference, maxDifference);
 
-            if (currentDifference < smallestDifference) {
-                smallestDifference = currentDifference;
-                nearestItem = box;
-            }
-        });
+          if (currentDifference < smallestDifference) {
+              smallestDifference = currentDifference;
+              nearestItem = box;
+          }
+      });
 
-        return [nearestItem];
+      return [nearestItem];
     }
   }
 
@@ -2438,7 +2736,8 @@
         positionY = vanRoofHeight + 0.04;
         positionZ = 0;
       } else return false;
-		} else{
+		} 
+    else{
 			positionY = vanRoofHeight;
 			positionZ = 0;
 
@@ -2620,7 +2919,10 @@
 			}
 		}
 
-    loadItemDirectory = selectableProducts.filter(item => item.id == event.target.id)[0]?.model;
+    loadItemDirectory = selectableProducts
+    .flatMap(category => category.products) // Flatten the array to access products directly
+    .filter(product => product.id === event.target.id)[0]?.model; // Filter by the product ID
+
 
 		{% comment %} switch (event.target.id) {
       case "airconditioner":
@@ -2785,7 +3087,7 @@
 		solar35Area = [];
 		solar55Area = [];
 
-    updateCartState()
+    updateCartState(productList)
     updateBuildState(productList)
     calculatePrice(productList)
   }
@@ -3127,10 +3429,11 @@
     }
     updateBuildState(availableProducts);
     calculatePrice(availableProducts)
-    updateCartState();
+    updateCartState(availableProducts);
   }
 
-  function updateCartState() {
+  function updateCartState(availableProducts) {
+    console.log("call updatecartstate func")
     let totalItems = 0;
     availableProducts.map((product) => {
       let productAmount = product.quantity; 
@@ -3138,16 +3441,19 @@
         if(productAmount <= 2) productAmount = 0;
         else productAmount -= 2;
       }
+      console.log("product", product);
       totalItems += productAmount
+      console.log("totalItems", totalItems);
       if(product.htmlId != "") {
         if(document.getElementById(product.htmlId)) {
-          let dragItem = document.getElementById(product.htmlId).childNodes[0];
+          let dragItem = document.getElementById(product.htmlId).querySelector(".carted-item");
+          console.log("dragItem", product.quantity);
           if (product.quantity > 0) {
-            dragItem.innerHTML = product?.quantity.toString();
+            dragItem.innerHTML = product.quantity.toString();
             dragItem.classList.remove("d-none");
-            dragItem.classList.add("d-block");
+            dragItem.classList.add("d-flex");
           } else {
-            dragItem.classList.remove("d-block");
+            dragItem.classList.remove("d-flex");
             dragItem.classList.add("d-none");
           }
         }
@@ -3634,7 +3940,7 @@
         if(quantity > 0) availableProducts[toRemoveIndex].quantity = quantity - 1;
         updateBuildState(availableProducts)
         calculatePrice(availableProducts)
-        updateCartState();
+        updateCartState(availableProducts);
       } else {
         const toRemoveModel = availableProducts.find((product) => product.type == targetType)?.model;
         scene.remove(toRemoveModel);
@@ -3714,18 +4020,111 @@
 
     let selectableProductsText = ""
 
-    console.log(selectableProducts)
     for (const productItem of selectableProducts) {
-      selectableProductsText += '<div class="swiper-slide"><div class="item-box"><div class="item-img" id="' + productItem.id + '" draggable="false"><div class="carted-item">1</div></div><div class="item-name"><p>'+ productItem.name +'</p></div></div></div>';
+      let productDropdownItemDetails = "";
+      for (const productDropdownItem of productItem.products) {
+        productDropdownItemDetails += `
+            <div class="dropdown-item">
+                <div class="dropdown-item-img" id="` + productDropdownItem.id + `">
+                    <div class="carted-item">1</div>
+                </div>
+                <div class="dropdown-item-name">` + productDropdownItem.name + `</div>
+            </div>
+        `
+    }
+
+    selectableProductsText += `
+        <div class="swiper-slide">
+            <div class="item-box" data-category="` + productItem.id + `">
+                <div class="item-img" id="` + productItem.id + `" draggable="false"></div>
+                <div class="item-name">
+                    <p style="text-transform:capitalize">` + productItem.id + `</p>
+                </div>
+                <div class="product-dropdown" id="` + productItem.id + `-dropdown">
+                    <div class="dropdown-title" style="text-transform:capitalize">` + productItem.id + `</div>
+                    <div class="dropdown-items">
+                        `+ productDropdownItemDetails + `
+                    </div >
+                </div >
+            </div >
+        </div > `;
     }
     document.getElementById("selectableProducts").innerHTML = selectableProductsText;
-
-    productElements = document.getElementsByClassName("item-img");
+    swiper.update();
 
     for (var i = 0; i < productElements.length; i++) {
       productElements[i].addEventListener('click', event => { handleClickProduct(event); handleEnableResetBtn(); }, false);
     }
 
+    const itemBoxes = document.querySelectorAll('.item-box');
+    const overlay = document.getElementById('overlay');
+    let activeDropdown = null;
+
+    // Function to close all dropdowns
+    function closeAllDropdowns() {
+      // Remove active class from all item images
+      document.querySelectorAll('.item-img').forEach(img => {
+          img.classList.remove('active');
+      });
+
+      // Hide all dropdowns
+      document.querySelectorAll('.product-dropdown').forEach(dropdown => {
+          dropdown.classList.remove('active');
+      });
+
+      // Hide overlay
+      overlay.style.display = 'none';
+      activeDropdown = null;
+    }
+
+    // Add click event to category items
+    itemBoxes.forEach(box => {
+      const category = box.getAttribute('data-category');
+      if (!category) return; // Skip if no category
+
+      const dropdown = document.getElementById(`${category}-dropdown`);
+      const itemImg = box.querySelector('.item-img');
+
+      if (!dropdown) {
+        console.error(`Dropdown not found for category: ${category} `);
+        return;
+      }
+
+      itemImg.addEventListener('click', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+
+        // If this dropdown is already active, close it
+        if (activeDropdown === dropdown) {
+            closeAllDropdowns();
+            return;
+        }
+
+        // Close any open dropdown
+        closeAllDropdowns();
+
+        // Add active class to this item
+        this.classList.add('active');
+
+        // Open this dropdown
+        dropdown.classList.add('active');
+        overlay.style.display = 'block';
+        activeDropdown = dropdown;
+      });
+    });
+
+    // Close dropdown when clicking outside
+    overlay.addEventListener('click', closeAllDropdowns);
+
+    // Add click functionality to dropdown items
+    document.querySelectorAll('.dropdown-item').forEach(item => {
+      item.addEventListener('click', function (e) {
+          e.stopPropagation();
+
+          const productId = this.querySelector('.dropdown-item-name').textContent.split(' ')[1];
+          const productName = this.querySelector('.dropdown-item-name').textContent;
+      });
+    });
     await loader.load(vanModelLink, function (gltf) {
       carModel = gltf.scene;
       carModel.traverse(function (node) {
@@ -3830,7 +4229,7 @@
         vanModelLink = "https://cdn.shopify.com/3d/models/713d5b23692645f2/van-tr148.glb";
         shadowLink = "https://cdn.shopify.com/s/files/1/0412/9898/5124/files/transit-148.png?v=1733113860";
         shadowLink = "https://cdn.shopify.com/s/files/1/0412/9898/5124/files/transit-148.png?v=1733113860";
-        rackModel = 'https://cdn.shopify.com/3d/models/0c3af9215b3f3bef/new_tr-148_lightbar.glb'
+        rackModel = 'https://cdn.shopify.com/3d/models/9ec7af085980c73f/148_lightbar_-v2.glb'
         crossbarModel = 'https://cdn.shopify.com/3d/models/543cc594a487aecf/8020_cross.glb';
         ladderPos = [-1, 1.435, -1.012]
         crossbarXpos = -2.68
@@ -3847,40 +4246,75 @@
         typeOfVan = "fordtransit"
         awningArea = [0.778, -2.93]
         selectableProducts = [
-          {name: "Dometic RTX", id: "airconditioner", model: "https://cdn.shopify.com/3d/models/3fc52045eaa806f8/airconditioner-d.glb"},
-          {% comment %} {name: "Dometic Penguin II", id: "airconditioner-p", model: "https://cdn.shopify.com/3d/models/c599289fb8ed77b8/airconditioner-10.glb"}, {% endcomment %}
-          {name: "VELIT 2000R", id: "airconditioner-v1", model: "https://cdn.shopify.com/3d/models/c55e579406be72d1/airconditioner-v1.glb"},
-          {name: "VELIT 2000R MINI", id: "airconditioner-v2", model: "https://cdn.shopify.com/3d/models/575a822893d82486/airconditioner-v2.glb"},
-          {name: "Nomadic Innovations AC X2", id: "airconditioner-x2", model: "https://cdn.shopify.com/3d/models/8f9f98cdd33f3a4f/airconditioner-x2.glb"},
-          {name: "Nomadic Innovations AC X3", id: "airconditioner-x3", model: "https://cdn.shopify.com/3d/models/fa056a2235adba37/airconditioner-x3.glb"},
-          {name: "Maxxair Deluxe", id: "maxxair", model: "https://cdn.shopify.com/3d/models/9f3e8c568b76b1f4/maxxair-2.glb"},
-          {name: "Rich Solar Panel 250w", id: "solar_panel250", model: "https://cdn.shopify.com/3d/models/5b0bf30f3bc0bc5b/250W.glb"},
-          {name: "Rich Solar Panel 200w", id: "solar_panel200", model: "https://cdn.shopify.com/3d/models/41179ec7afded29e/200W.glb"},
-          {name: "Rich Solar Panel 100w", id: "solar_panel100", model: "https://cdn.shopify.com/3d/models/bba013cfe5d76ce7/100W-1.glb"},
-          {name: "Rich Solar Panel 50w", id: "solar_panel50", model: "https://cdn.shopify.com/3d/models/cfce53c8523cbc41/55W.glb"},
-          {name: "Rich Solar Panel 30w", id: "solar_panel30", model: "https://cdn.shopify.com/3d/models/dfcf1aaf24802514/30W.glb"},
-          {name: "NewPowa Solar Panel 250w", id: "new_solar250", model: "https://cdn.shopify.com/3d/models/c428d2a3aaa669d2/250W_newpowa.glb"},
-          {name: "NewPowa Solar Panel 220w", id: "new_solar220", model: "https://cdn.shopify.com/3d/models/d0869d71e3574000/220W_newpowa.glb"},
-          {name: "NewPowa Solar Panel 200w", id: "new_solar200", model: "https://cdn.shopify.com/3d/models/7745111021b38644/200W_newpowa.glb"},
-          {name: "NewPowa Solar Panel 100w", id: "new_solar100", model: "https://cdn.shopify.com/3d/models/5d5e861aa0b3b30a/100W_newpowa.glb"},
-          {name: "Side Mount Ladder", id: "ladder", model: "https://cdn.shopify.com/3d/models/5098230f535f0020/ladder-tr148.glb"},
-          {name: "8020 cross bar", id: "cross_bar", model: "https://cdn.shopify.com/3d/models/543cc594a487aecf/8020_cross.glb"},
-          {name: "F45-300 Awning", id: "awning", model: "https://cdn.shopify.com/3d/models/85085b43be1cd9cf/awning.glb"},
-          {name: "F45-350 Awning", id: "awning_350", model: "https://cdn.shopify.com/3d/models/431a3b45d712597f/awning_350.glb"},
-          {name: "Tyri Light Bar", id: "light_bar", model: "https://cdn.shopify.com/3d/models/446727d744111fcc/light_bar.glb"},
-          {name: "Deck Panels(Medium) - 2 length wise", id: "mk20-l2", model: "https://cdn.shopify.com/3d/models/c283b63c9eaef7bd/mk20-l2.glb"},
-          {name: "Deck Panels(Medium) - 3 width wise", id: "mk20-w3", model: "https://cdn.shopify.com/3d/models/30941932346f43a7/mk20-w3.glb"},
-          {name: "Deck Panels(Medium) - fit maxxfan", id: "mk20-maxxair", model: "https://cdn.shopify.com/3d/models/e5827b72fd891d4e/mk20-w2-maxxair.glb"},
-          {name: "Deck Panels(Large) - 3 width wise", id: "mk22-w3", model: "https://cdn.shopify.com/3d/models/6bbc46eee67042ad/mk22-w3.glb"},
-          {name: "Deck Panels(Small) - fit AC unit", id: "mk23-ac", model: "https://cdn.shopify.com/3d/models/ba54ea390ddcff2c/mk23-ac.glb"},
-        ]
+          {
+            id: "airconditioners",
+            products: [
+              { name: "Dometic RTX", id: "airconditioner", model: "https://cdn.shopify.com/3d/models/3fc52045eaa806f8/airconditioner-d.glb" },
+              { name: "VELIT 2000R", id: "airconditioner-v1", model: "https://cdn.shopify.com/3d/models/c55e579406be72d1/airconditioner-v1.glb" },
+              { name: "VELIT 2000R MINI", id: "airconditioner-v2", model: "https://cdn.shopify.com/3d/models/575a822893d82486/airconditioner-v2.glb" },
+              { name: "Nomadic Innovations AC X2", id: "airconditioner-x2", model: "https://cdn.shopify.com/3d/models/8f9f98cdd33f3a4f/airconditioner-x2.glb" },
+              { name: "Nomadic Innovations AC X3", id: "airconditioner-x3", model: "https://cdn.shopify.com/3d/models/fa056a2235adba37/airconditioner-x3.glb" }
+            ]
+          },
+          {
+            id: "fans",
+            products: [
+              { name: "Maxxair Deluxe", id: "maxxair", model: "https://cdn.shopify.com/3d/models/9f3e8c568b76b1f4/maxxair-2.glb" }
+            ]
+          },
+          {
+            id: "solar-panels",
+            products: [
+              { name: "Rich Solar Panel 250w", id: "solar_panel250", model: "https://cdn.shopify.com/3d/models/5b0bf30f3bc0bc5b/250W.glb" },
+              { name: "Rich Solar Panel 200w", id: "solar_panel200", model: "https://cdn.shopify.com/3d/models/41179ec7afded29e/200W.glb" },
+              { name: "Rich Solar Panel 100w", id: "solar_panel100", model: "https://cdn.shopify.com/3d/models/bba013cfe5d76ce7/100W-1.glb" },
+              { name: "Rich Solar Panel 50w", id: "solar_panel50", model: "https://cdn.shopify.com/3d/models/cfce53c8523cbc41/55W.glb" },
+              { name: "Rich Solar Panel 30w", id: "solar_panel30", model: "https://cdn.shopify.com/3d/models/dfcf1aaf24802514/30W.glb" },
+              { name: "NewPowa Solar Panel 250w", id: "new_solar250", model: "https://cdn.shopify.com/3d/models/c428d2a3aaa669d2/250W_newpowa.glb" },
+              { name: "NewPowa Solar Panel 220w", id: "new_solar220", model: "https://cdn.shopify.com/3d/models/d0869d71e3574000/220W_newpowa.glb" },
+              { name: "NewPowa Solar Panel 200w", id: "new_solar200", model: "https://cdn.shopify.com/3d/models/7745111021b38644/200W_newpowa.glb" },
+              { name: "NewPowa Solar Panel 100w", id: "new_solar100", model: "https://cdn.shopify.com/3d/models/5d5e861aa0b3b30a/100W_newpowa.glb" }
+            ]
+          },
+          {
+            id: "accessories",
+            products: [
+              { name: "Side Mount Ladder", id: "ladder", model: "https://cdn.shopify.com/3d/models/0009a829fc99c0cf/transit_ladder_v2.glb" },
+              { name: "8020 cross bar", id: "cross_bar", model: "https://cdn.shopify.com/3d/models/543cc594a487aecf/8020_cross.glb" }
+            ]
+          },
+          {
+            id: "awnings",
+            products: [
+              { name: "F45-300 Awning", id: "awning", model: "https://cdn.shopify.com/3d/models/85085b43be1cd9cf/awning.glb" },
+              { name: "F45-350 Awning", id: "awning_350", model: "https://cdn.shopify.com/3d/models/431a3b45d712597f/awning_350.glb" }
+            ]
+          },
+          {
+            id: "lights",
+            products: [
+              { name: "Tyri Light Bar", id: "light_bar", model: "https://cdn.shopify.com/3d/models/446727d744111fcc/light_bar.glb" },
+              { name: "Diode Dynamics Light Bar", id: "light_bar_copy", model: "https://cdn.shopify.com/3d/models/7de4edf3ac049e1e/light_bar_1.glb" }
+            ]
+          },
+          {
+            id: "deck-panels",
+            products: [
+              { name: "Deck Panels(Medium) - 2 length wise", id: "mk20-l2", model: "https://cdn.shopify.com/3d/models/c283b63c9eaef7bd/mk20-l2.glb" },
+              { name: "Deck Panels(Medium) - 3 width wise", id: "mk20-w3", model: "https://cdn.shopify.com/3d/models/30941932346f43a7/mk20-w3.glb" },
+              { name: "Deck Panels(Medium) - fit maxxfan", id: "mk20-maxxair", model: "https://cdn.shopify.com/3d/models/e5827b72fd891d4e/mk20-w2-maxxair.glb" },
+              { name: "Deck Panels(Large) - 3 width wise", id: "mk22-w3", model: "https://cdn.shopify.com/3d/models/6bbc46eee67042ad/mk22-w3.glb" },
+              { name: "Deck Panels(Small) - fit AC unit", id: "mk23-ac", model: "https://cdn.shopify.com/3d/models/ba54ea390ddcff2c/mk23-ac.glb" }
+            ]
+          }
+        ];
         initVan(vanModelLink, shadowLink, rackModel, crossbarXpos, workPlaneValues, ladderPlaneValues, rackYPos, rackXPos, crossbarModel)
         break;
 
       case "45730334671067":
         vanModelLink = "https://cdn.shopify.com/3d/models/713d5b23692645f2/van-tr148.glb";
         shadowLink = "https://cdn.shopify.com/s/files/1/0412/9898/5124/files/transit-148.png?v=1733113860";
-        rackModel = 'https://cdn.shopify.com/3d/models/090519801c768619/new_tr-148_premium.glb'
+        rackModel = 'https://cdn.shopify.com/3d/models/cb78c2d5a0675b86/148_rack-v2.glb'
         crossbarModel = 'https://cdn.shopify.com/3d/models/543cc594a487aecf/8020_cross.glb';
         ladderPos = [-1.02, 1.4, -1.012]
         crossbarXpos = -2.68
@@ -3897,41 +4331,68 @@
         typeOfVan = "fordtransit"
         awningArea = [0.778, -2.93]
         selectableProducts = [
-          {name: "Dometic RTX", id: "airconditioner", model: "https://cdn.shopify.com/3d/models/3fc52045eaa806f8/airconditioner-d.glb"},
-          {% comment %} {name: "Dometic Penguin II", id: "airconditioner-p", model: "https://cdn.shopify.com/3d/models/c599289fb8ed77b8/airconditioner-10.glb"}, {% endcomment %}
-          {name: "VELIT 2000R", id: "airconditioner-v1", model: "https://cdn.shopify.com/3d/models/c55e579406be72d1/airconditioner-v1.glb"},
-          {name: "VELIT 2000R MINI", id: "airconditioner-v2", model: "https://cdn.shopify.com/3d/models/575a822893d82486/airconditioner-v2.glb"},
-          {name: "Nomadic Innovations AC X2", id: "airconditioner-x2", model: "https://cdn.shopify.com/3d/models/8f9f98cdd33f3a4f/airconditioner-x2.glb"},
-          {name: "Nomadic Innovations AC X3", id: "airconditioner-x3", model: "https://cdn.shopify.com/3d/models/fa056a2235adba37/airconditioner-x3.glb"},
-          {name: "Maxxair Deluxe", id: "maxxair", model: "https://cdn.shopify.com/3d/models/9f3e8c568b76b1f4/maxxair-2.glb"},
-          {name: "Rich Solar Panel 250w", id: "solar_panel250", model: "https://cdn.shopify.com/3d/models/5b0bf30f3bc0bc5b/250W.glb"},
-          {name: "Rich Solar Panel 200w", id: "solar_panel200", model: "https://cdn.shopify.com/3d/models/41179ec7afded29e/200W.glb"},
-          {name: "Rich Solar Panel 100w", id: "solar_panel100", model: "https://cdn.shopify.com/3d/models/bba013cfe5d76ce7/100W-1.glb"},
-          {name: "Rich Solar Panel 50w", id: "solar_panel50", model: "https://cdn.shopify.com/3d/models/cfce53c8523cbc41/55W.glb"},
-          {name: "Rich Solar Panel 30w", id: "solar_panel30", model: "https://cdn.shopify.com/3d/models/dfcf1aaf24802514/30W.glb"},
-          {name: "NewPowa Solar Panel 250w", id: "new_solar250", model: "https://cdn.shopify.com/3d/models/c428d2a3aaa669d2/250W_newpowa.glb"},
-          {name: "NewPowa Solar Panel 220w", id: "new_solar220", model: "https://cdn.shopify.com/3d/models/d0869d71e3574000/220W_newpowa.glb"},
-          {name: "NewPowa Solar Panel 200w", id: "new_solar200", model: "https://cdn.shopify.com/3d/models/7745111021b38644/200W_newpowa.glb"},
-          {name: "NewPowa Solar Panel 100w", id: "new_solar100", model: "https://cdn.shopify.com/3d/models/5d5e861aa0b3b30a/100W_newpowa.glb"},
-          {name: "Side Mount Ladder", id: "ladder", model: "https://cdn.shopify.com/3d/models/5098230f535f0020/ladder-tr148.glb"},
-          {name: "8020 cross bar", id: "cross_bar", model: "https://cdn.shopify.com/3d/models/543cc594a487aecf/8020_cross.glb"},
-          {name: "F45-300 Awning", id: "awning", model: "https://cdn.shopify.com/3d/models/85085b43be1cd9cf/awning.glb"},
-          {name: "F45-350 Awning", id: "awning_350", model: "https://cdn.shopify.com/3d/models/431a3b45d712597f/awning_350.glb"},
-          {name: "Tyri Light Bar", id: "light_bar", model: "https://cdn.shopify.com/3d/models/446727d744111fcc/light_bar.glb"},
-          {name: "Diode Dynamics Light Bar", id: "light_bar_copy", model: "https://cdn.shopify.com/3d/models/7de4edf3ac049e1e/light_bar_1.glb"},
-          {name: "Deck Panels(Medium) - 2 length wise", id: "mk20-l2", model: "https://cdn.shopify.com/3d/models/c283b63c9eaef7bd/mk20-l2.glb"},
-          {name: "Deck Panels(Medium) - 3 width wise", id: "mk20-w3", model: "https://cdn.shopify.com/3d/models/30941932346f43a7/mk20-w3.glb"},
-          {name: "Deck Panels(Medium) - fit maxxfan", id: "mk20-maxxair", model: "https://cdn.shopify.com/3d/models/e5827b72fd891d4e/mk20-w2-maxxair.glb"},
-          {name: "Deck Panels(Large) - 3 width wise", id: "mk22-w3", model: "https://cdn.shopify.com/3d/models/6bbc46eee67042ad/mk22-w3.glb"},
-          {name: "Deck Panels(Small) - fit AC unit", id: "mk23-ac", model: "https://cdn.shopify.com/3d/models/ba54ea390ddcff2c/mk23-ac.glb"},
-        ]
+          {
+            id: "airconditioners",
+            products: [
+              { name: "Dometic RTX", id: "airconditioner", model: "https://cdn.shopify.com/3d/models/3fc52045eaa806f8/airconditioner-d.glb" },
+              { name: "VELIT 2000R", id: "airconditioner-v1", model: "https://cdn.shopify.com/3d/models/c55e579406be72d1/airconditioner-v1.glb" },
+              { name: "VELIT 2000R MINI", id: "airconditioner-v2", model: "https://cdn.shopify.com/3d/models/575a822893d82486/airconditioner-v2.glb" },
+              { name: "Nomadic Innovations AC X2", id: "airconditioner-x2", model: "https://cdn.shopify.com/3d/models/8f9f98cdd33f3a4f/airconditioner-x2.glb" },
+              { name: "Nomadic Innovations AC X3", id: "airconditioner-x3", model: "https://cdn.shopify.com/3d/models/fa056a2235adba37/airconditioner-x3.glb" }
+            ]
+          },
+          {
+              id: "fans",
+              products: [
+                  { name: "Maxxair Deluxe", id: "maxxair", model: "https://cdn.shopify.com/3d/models/9f3e8c568b76b1f4/maxxair-2.glb" }
+              ]
+          },
+          {
+            id: "solar-panels",
+            products: [
+              { name: "Rich Solar Panel 250w", id: "solar_panel250", model: "https://cdn.shopify.com/3d/models/5b0bf30f3bc0bc5b/250W.glb" },
+              { name: "Rich Solar Panel 200w", id: "solar_panel200", model: "https://cdn.shopify.com/3d/models/41179ec7afded29e/200W.glb" },
+              { name: "Rich Solar Panel 100w", id: "solar_panel100", model: "https://cdn.shopify.com/3d/models/bba013cfe5d76ce7/100W-1.glb" },
+              { name: "Rich Solar Panel 50w", id: "solar_panel50", model: "https://cdn.shopify.com/3d/models/cfce53c8523cbc41/55W.glb" },
+              { name: "Rich Solar Panel 30w", id: "solar_panel30", model: "https://cdn.shopify.com/3d/models/dfcf1aaf24802514/30W.glb" },
+              { name: "NewPowa Solar Panel 250w", id: "new_solar250", model: "https://cdn.shopify.com/3d/models/c428d2a3aaa669d2/250W_newpowa.glb" },
+              { name: "NewPowa Solar Panel 220w", id: "new_solar220", model: "https://cdn.shopify.com/3d/models/d0869d71e3574000/220W_newpowa.glb" },
+              { name: "NewPowa Solar Panel 200w", id: "new_solar200", model: "https://cdn.shopify.com/3d/models/7745111021b38644/200W_newpowa.glb" },
+              { name: "NewPowa Solar Panel 100w", id: "new_solar100", model: "https://cdn.shopify.com/3d/models/5d5e861aa0b3b30a/100W_newpowa.glb" }
+            ]
+          },
+          {
+            id: "accessories",
+            products: [
+              { name: "Side Mount Ladder", id: "ladder", model: "https://cdn.shopify.com/3d/models/0009a829fc99c0cf/transit_ladder_v2.glb" },
+              { name: "8020 cross bar", id: "cross_bar", model: "https://cdn.shopify.com/3d/models/543cc594a487aecf/8020_cross.glb" }
+            ]
+          },
+          {
+            id: "awnings",
+            products: [
+              { name: "F45-300 Awning", id: "awning", model: "https://cdn.shopify.com/3d/models/85085b43be1cd9cf/awning.glb" },
+              { name: "F45-350 Awning", id: "awning_350", model: "https://cdn.shopify.com/3d/models/431a3b45d712597f/awning_350.glb" }
+            ]
+          },
+          {
+            id: "deck-panels",
+            products: [
+              { name: "Deck Panels(Medium) - 2 length wise", id: "mk20-l2", model: "https://cdn.shopify.com/3d/models/c283b63c9eaef7bd/mk20-l2.glb" },
+              { name: "Deck Panels(Medium) - 3 width wise", id: "mk20-w3", model: "https://cdn.shopify.com/3d/models/30941932346f43a7/mk20-w3.glb" },
+              { name: "Deck Panels(Medium) - fit maxxfan", id: "mk20-maxxair", model: "https://cdn.shopify.com/3d/models/e5827b72fd891d4e/mk20-w2-maxxair.glb" },
+              { name: "Deck Panels(Large) - 3 width wise", id: "mk22-w3", model: "https://cdn.shopify.com/3d/models/6bbc46eee67042ad/mk22-w3.glb" },
+              { name: "Deck Panels(Small) - fit AC unit", id: "mk23-ac", model: "https://cdn.shopify.com/3d/models/ba54ea390ddcff2c/mk23-ac.glb" }
+            ]
+          }
+        ];
         initVan(vanModelLink, shadowLink, rackModel, crossbarXpos, workPlaneValues, ladderPlaneValues, rackYPos, rackXPos, crossbarModel);
         break;
 
       case "45730334802139":
         vanModelLink = "https://cdn.shopify.com/3d/models/f93eb4eb2fe0a35e/van-tr148-ext.glb";
         shadowLink = "https://cdn.shopify.com/s/files/1/0412/9898/5124/files/transit-ext.png?v=1733115711";
-        rackModel = 'https://cdn.shopify.com/3d/models/333f1d019a87f907/new_transit148-ext-rack.glb'
+        rackModel = 'https://cdn.shopify.com/3d/models/a2d58eb309a8c441/148_ext_rack-v2.glb'
         crossbarModel = 'https://cdn.shopify.com/3d/models/543cc594a487aecf/8020_cross.glb';
         ladderPos = [-0.9, 1.316, -1.012]
         crossbarXpos = -3.29
@@ -3947,41 +4408,68 @@
         typeOfVan = "fordtransit"
         awningArea = [0.98, -3.39]
         selectableProducts = [
-          {name: "Dometic RTX", id: "airconditioner", model: "https://cdn.shopify.com/3d/models/3fc52045eaa806f8/airconditioner-d.glb"},
-          {% comment %} {name: "Dometic Penguin II", id: "airconditioner-p", model: "https://cdn.shopify.com/3d/models/c599289fb8ed77b8/airconditioner-10.glb"}, {% endcomment %}
-          {name: "VELIT 2000R", id: "airconditioner-v1", model: "https://cdn.shopify.com/3d/models/c55e579406be72d1/airconditioner-v1.glb"},
-          {name: "VELIT 2000R MINI", id: "airconditioner-v2", model: "https://cdn.shopify.com/3d/models/575a822893d82486/airconditioner-v2.glb"},
-          {name: "Nomadic Innovations AC X2", id: "airconditioner-x2", model: "https://cdn.shopify.com/3d/models/8f9f98cdd33f3a4f/airconditioner-x2.glb"},
-          {name: "Nomadic Innovations AC X3", id: "airconditioner-x3", model: "https://cdn.shopify.com/3d/models/fa056a2235adba37/airconditioner-x3.glb"},
-          {name: "Maxxair Deluxe", id: "maxxair", model: "https://cdn.shopify.com/3d/models/9f3e8c568b76b1f4/maxxair-2.glb"},
-          {name: "Rich Solar Panel 250w", id: "solar_panel250", model: "https://cdn.shopify.com/3d/models/5b0bf30f3bc0bc5b/250W.glb"},
-          {name: "Rich Solar Panel 200w", id: "solar_panel200", model: "https://cdn.shopify.com/3d/models/41179ec7afded29e/200W.glb"},
-          {name: "Rich Solar Panel 100w", id: "solar_panel100", model: "https://cdn.shopify.com/3d/models/bba013cfe5d76ce7/100W-1.glb"},
-          {name: "Rich Solar Panel 50w", id: "solar_panel50", model: "https://cdn.shopify.com/3d/models/cfce53c8523cbc41/55W.glb"},
-          {name: "Rich Solar Panel 30w", id: "solar_panel30", model: "https://cdn.shopify.com/3d/models/dfcf1aaf24802514/30W.glb"},
-          {name: "NewPowa Solar Panel 250w", id: "new_solar250", model: "https://cdn.shopify.com/3d/models/c428d2a3aaa669d2/250W_newpowa.glb"},
-          {name: "NewPowa Solar Panel 220w", id: "new_solar220", model: "https://cdn.shopify.com/3d/models/d0869d71e3574000/220W_newpowa.glb"},
-          {name: "NewPowa Solar Panel 200w", id: "new_solar200", model: "https://cdn.shopify.com/3d/models/7745111021b38644/200W_newpowa.glb"},
-          {name: "NewPowa Solar Panel 100w", id: "new_solar100", model: "https://cdn.shopify.com/3d/models/5d5e861aa0b3b30a/100W_newpowa.glb"},
-          {name: "Side Mount Ladder", id: "ladder", model: 'https://cdn.shopify.com/3d/models/00ba5b320dc83fe8/ladder-tr148-ext.glb'},
-          {name: "8020 cross bar", id: "cross_bar", model: 'https://cdn.shopify.com/3d/models/543cc594a487aecf/8020_cross.glb'},
-          {name: "F45-300 Awning", id: "awning", model: "https://cdn.shopify.com/3d/models/85085b43be1cd9cf/awning.glb"},
-          {name: "F45-350 Awning", id: "awning_350", model: "https://cdn.shopify.com/3d/models/431a3b45d712597f/awning_350.glb"},
-          {name: "Tyri Light Bar", id: "light_bar", model: "https://cdn.shopify.com/3d/models/446727d744111fcc/light_bar.glb"},
-          {name: "Diode Dynamics Light Bar", id: "light_bar_copy", model: "https://cdn.shopify.com/3d/models/7de4edf3ac049e1e/light_bar_1.glb"},
-          {name: "Deck Panels(Medium) - 2 length wise", id: "mk20-l2", model: "https://cdn.shopify.com/3d/models/c283b63c9eaef7bd/mk20-l2.glb"},
-          {name: "Deck Panels(Medium) - 3 width wise", id: "mk20-w3", model: "https://cdn.shopify.com/3d/models/30941932346f43a7/mk20-w3.glb"},
-          {name: "Deck Panels(Medium) - fit maxxfan", id: "mk20-maxxair", model: "https://cdn.shopify.com/3d/models/e5827b72fd891d4e/mk20-w2-maxxair.glb"},
-          {name: "Deck Panels(Large) - 3 width wise", id: "mk22-w3", model: "https://cdn.shopify.com/3d/models/6bbc46eee67042ad/mk22-w3.glb"},
-          {name: "Deck Panels(Small) - fit AC unit", id: "mk23-ac", model: "https://cdn.shopify.com/3d/models/ba54ea390ddcff2c/mk23-ac.glb"},
-        ]
+          {
+            id: "airconditioners",
+            products: [
+              { name: "Dometic RTX", id: "airconditioner", model: "https://cdn.shopify.com/3d/models/3fc52045eaa806f8/airconditioner-d.glb" },
+              { name: "VELIT 2000R", id: "airconditioner-v1", model: "https://cdn.shopify.com/3d/models/c55e579406be72d1/airconditioner-v1.glb" },
+              { name: "VELIT 2000R MINI", id: "airconditioner-v2", model: "https://cdn.shopify.com/3d/models/575a822893d82486/airconditioner-v2.glb" },
+              { name: "Nomadic Innovations AC X2", id: "airconditioner-x2", model: "https://cdn.shopify.com/3d/models/8f9f98cdd33f3a4f/airconditioner-x2.glb" },
+              { name: "Nomadic Innovations AC X3", id: "airconditioner-x3", model: "https://cdn.shopify.com/3d/models/fa056a2235adba37/airconditioner-x3.glb" }
+            ]
+          },
+          {
+            id: "fans",
+            products: [
+              { name: "Maxxair Deluxe", id: "maxxair", model: "https://cdn.shopify.com/3d/models/9f3e8c568b76b1f4/maxxair-2.glb" }
+            ]
+          },
+          {
+            id: "solar-panels",
+            products: [
+              { name: "Rich Solar Panel 250w", id: "solar_panel250", model: "https://cdn.shopify.com/3d/models/5b0bf30f3bc0bc5b/250W.glb" },
+              { name: "Rich Solar Panel 200w", id: "solar_panel200", model: "https://cdn.shopify.com/3d/models/41179ec7afded29e/200W.glb" },
+              { name: "Rich Solar Panel 100w", id: "solar_panel100", model: "https://cdn.shopify.com/3d/models/bba013cfe5d76ce7/100W-1.glb" },
+              { name: "Rich Solar Panel 50w", id: "solar_panel50", model: "https://cdn.shopify.com/3d/models/cfce53c8523cbc41/55W.glb" },
+              { name: "Rich Solar Panel 30w", id: "solar_panel30", model: "https://cdn.shopify.com/3d/models/dfcf1aaf24802514/30W.glb" },
+              { name: "NewPowa Solar Panel 250w", id: "new_solar250", model: "https://cdn.shopify.com/3d/models/c428d2a3aaa669d2/250W_newpowa.glb" },
+              { name: "NewPowa Solar Panel 220w", id: "new_solar220", model: "https://cdn.shopify.com/3d/models/d0869d71e3574000/220W_newpowa.glb" },
+              { name: "NewPowa Solar Panel 200w", id: "new_solar200", model: "https://cdn.shopify.com/3d/models/7745111021b38644/200W_newpowa.glb" },
+              { name: "NewPowa Solar Panel 100w", id: "new_solar100", model: "https://cdn.shopify.com/3d/models/5d5e861aa0b3b30a/100W_newpowa.glb" }
+            ]
+          },
+          {
+            id: "accessories",
+            products: [
+              { name: "Side Mount Ladder", id: "ladder", model: 'https://cdn.shopify.com/3d/models/00ba5b320dc83fe8/ladder-tr148-ext.glb' },
+              { name: "8020 cross bar", id: "cross_bar", model: 'https://cdn.shopify.com/3d/models/543cc594a487aecf/8020_cross.glb' }
+            ]
+          },
+          {
+            id: "awnings",
+            products: [
+              { name: "F45-300 Awning", id: "awning", model: "https://cdn.shopify.com/3d/models/85085b43be1cd9cf/awning.glb" },
+              { name: "F45-350 Awning", id: "awning_350", model: "https://cdn.shopify.com/3d/models/431a3b45d712597f/awning_350.glb" }
+            ]
+          },
+          {
+            id: "deck-panels",
+            products: [
+              { name: "Deck Panels(Medium) - 2 length wise", id: "mk20-l2", model: "https://cdn.shopify.com/3d/models/c283b63c9eaef7bd/mk20-l2.glb" },
+              { name: "Deck Panels(Medium) - 3 width wise", id: "mk20-w3", model: "https://cdn.shopify.com/3d/models/30941932346f43a7/mk20-w3.glb" },
+              { name: "Deck Panels(Medium) - fit maxxfan", id: "mk20-maxxair", model: "https://cdn.shopify.com/3d/models/e5827b72fd891d4e/mk20-w2-maxxair.glb" },
+              { name: "Deck Panels(Large) - 3 width wise", id: "mk22-w3", model: "https://cdn.shopify.com/3d/models/6bbc46eee67042ad/mk22-w3.glb" },
+              { name: "Deck Panels(Small) - fit AC unit", id: "mk23-ac", model: "https://cdn.shopify.com/3d/models/ba54ea390ddcff2c/mk23-ac.glb" }
+            ]
+          }
+        ];
         initVan(vanModelLink, shadowLink, rackModel, crossbarXpos, workPlaneValues, ladderPlaneValues, rackYPos, rackXPos, crossbarModel);
         break;
 
       case "45730334834907":
         vanModelLink = "https://cdn.shopify.com/3d/models/f93eb4eb2fe0a35e/van-tr148-ext.glb";
         shadowLink = "https://cdn.shopify.com/s/files/1/0412/9898/5124/files/transit-ext.png?v=1733115711";
-        rackModel = 'https://cdn.shopify.com/3d/models/61d73fc11a628165/new_transit148-ext-rack-lightbar.glb'
+        rackModel = 'https://cdn.shopify.com/3d/models/5596f73169ab258b/148_ext_lightbar-v2.glb'
         crossbarModel = 'https://cdn.shopify.com/3d/models/543cc594a487aecf/8020_cross.glb';
         ladderPos = [-0.9, 1.316, -1.012]
         crossbarXpos = -3.29
@@ -3998,89 +4486,151 @@
         lightbarXPos = 0.4
         awningArea = [0.98, -3.39]
         selectableProducts = [
-          {name: "Dometic RTX", id: "airconditioner", model: "https://cdn.shopify.com/3d/models/3fc52045eaa806f8/airconditioner-d.glb"},
-          {% comment %} {name: "Dometic Penguin II", id: "airconditioner-p", model: "https://cdn.shopify.com/3d/models/c599289fb8ed77b8/airconditioner-10.glb"}, {% endcomment %}
-          {name: "VELIT 2000R", id: "airconditioner-v1", model: "https://cdn.shopify.com/3d/models/c55e579406be72d1/airconditioner-v1.glb"},
-          {name: "VELIT 2000R MINI", id: "airconditioner-v2", model: "https://cdn.shopify.com/3d/models/575a822893d82486/airconditioner-v2.glb"},
-          {name: "Nomadic Innovations AC X2", id: "airconditioner-x2", model: "https://cdn.shopify.com/3d/models/8f9f98cdd33f3a4f/airconditioner-x2.glb"},
-          {name: "Nomadic Innovations AC X3", id: "airconditioner-x3", model: "https://cdn.shopify.com/3d/models/fa056a2235adba37/airconditioner-x3.glb"},
-          {name: "Maxxair Deluxe", id: "maxxair", model: "https://cdn.shopify.com/3d/models/9f3e8c568b76b1f4/maxxair-2.glb"},
-          {name: "Rich Solar Panel 250w", id: "solar_panel250", model: "https://cdn.shopify.com/3d/models/5b0bf30f3bc0bc5b/250W.glb"},
-          {name: "Rich Solar Panel 200w", id: "solar_panel200", model: "https://cdn.shopify.com/3d/models/41179ec7afded29e/200W.glb"},
-          {name: "Rich Solar Panel 100w", id: "solar_panel100", model: "https://cdn.shopify.com/3d/models/bba013cfe5d76ce7/100W-1.glb"},
-          {name: "Rich Solar Panel 50w", id: "solar_panel50", model: "https://cdn.shopify.com/3d/models/cfce53c8523cbc41/55W.glb"},
-          {name: "Rich Solar Panel 30w", id: "solar_panel30", model: "https://cdn.shopify.com/3d/models/dfcf1aaf24802514/30W.glb"},
-          {name: "NewPowa Solar Panel 250w", id: "new_solar250", model: "https://cdn.shopify.com/3d/models/c428d2a3aaa669d2/250W_newpowa.glb"},
-          {name: "NewPowa Solar Panel 220w", id: "new_solar220", model: "https://cdn.shopify.com/3d/models/d0869d71e3574000/220W_newpowa.glb"},
-          {name: "NewPowa Solar Panel 200w", id: "new_solar200", model: "https://cdn.shopify.com/3d/models/7745111021b38644/200W_newpowa.glb"},
-          {name: "NewPowa Solar Panel 100w", id: "new_solar100", model: "https://cdn.shopify.com/3d/models/5d5e861aa0b3b30a/100W_newpowa.glb"},
-          {name: "Side Mount Ladder", id: "ladder", model: 'https://cdn.shopify.com/3d/models/00ba5b320dc83fe8/ladder-tr148-ext.glb'},
-          {name: "8020 cross bar", id: "cross_bar", model: 'https://cdn.shopify.com/3d/models/543cc594a487aecf/8020_cross.glb'},
-          {name: "F45-300 Awning", id: "awning", model: "https://cdn.shopify.com/3d/models/85085b43be1cd9cf/awning.glb"},
-          {name: "F45-350 Awning", id: "awning_350", model: "https://cdn.shopify.com/3d/models/431a3b45d712597f/awning_350.glb"},
-          {name: "Tyri Light Bar", id: "light_bar", model: "https://cdn.shopify.com/3d/models/446727d744111fcc/light_bar.glb"},
-          {name: "Diode Dynamics Light Bar", id: "light_bar_copy", model: "https://cdn.shopify.com/3d/models/7de4edf3ac049e1e/light_bar_1.glb"},
-          {name: "Deck Panels(Medium) - 2 length wise", id: "mk20-l2", model: "https://cdn.shopify.com/3d/models/c283b63c9eaef7bd/mk20-l2.glb"},
-          {name: "Deck Panels(Medium) - 3 width wise", id: "mk20-w3", model: "https://cdn.shopify.com/3d/models/30941932346f43a7/mk20-w3.glb"},
-          {name: "Deck Panels(Medium) - fit maxxfan", id: "mk20-maxxair", model: "https://cdn.shopify.com/3d/models/e5827b72fd891d4e/mk20-w2-maxxair.glb"},
-          {name: "Deck Panels(Large) - 3 width wise", id: "mk22-w3", model: "https://cdn.shopify.com/3d/models/6bbc46eee67042ad/mk22-w3.glb"},
-          {name: "Deck Panels(Small) - fit AC unit", id: "mk23-ac", model: "https://cdn.shopify.com/3d/models/ba54ea390ddcff2c/mk23-ac.glb"},
-        ]
+          {
+            id: "airconditioners",
+            products: [
+              { name: "Dometic RTX", id: "airconditioner", model: "https://cdn.shopify.com/3d/models/3fc52045eaa806f8/airconditioner-d.glb" },
+              { name: "VELIT 2000R", id: "airconditioner-v1", model: "https://cdn.shopify.com/3d/models/c55e579406be72d1/airconditioner-v1.glb" },
+              { name: "VELIT 2000R MINI", id: "airconditioner-v2", model: "https://cdn.shopify.com/3d/models/575a822893d82486/airconditioner-v2.glb" },
+              { name: "Nomadic Innovations AC X2", id: "airconditioner-x2", model: "https://cdn.shopify.com/3d/models/8f9f98cdd33f3a4f/airconditioner-x2.glb" },
+              { name: "Nomadic Innovations AC X3", id: "airconditioner-x3", model: "https://cdn.shopify.com/3d/models/fa056a2235adba37/airconditioner-x3.glb" }
+            ]
+          },
+          {
+            id: "fans",
+            products: [
+              { name: "Maxxair Deluxe", id: "maxxair", model: "https://cdn.shopify.com/3d/models/9f3e8c568b76b1f4/maxxair-2.glb" }
+            ]
+          },
+          {
+            id: "solar-panels",
+            products: [
+              { name: "Rich Solar Panel 250w", id: "solar_panel250", model: "https://cdn.shopify.com/3d/models/5b0bf30f3bc0bc5b/250W.glb" },
+              { name: "Rich Solar Panel 200w", id: "solar_panel200", model: "https://cdn.shopify.com/3d/models/41179ec7afded29e/200W.glb" },
+              { name: "Rich Solar Panel 100w", id: "solar_panel100", model: "https://cdn.shopify.com/3d/models/bba013cfe5d76ce7/100W-1.glb" },
+              { name: "Rich Solar Panel 50w", id: "solar_panel50", model: "https://cdn.shopify.com/3d/models/cfce53c8523cbc41/55W.glb" },
+              { name: "Rich Solar Panel 30w", id: "solar_panel30", model: "https://cdn.shopify.com/3d/models/dfcf1aaf24802514/30W.glb" },
+              { name: "NewPowa Solar Panel 250w", id: "new_solar250", model: "https://cdn.shopify.com/3d/models/c428d2a3aaa669d2/250W_newpowa.glb" },
+              { name: "NewPowa Solar Panel 220w", id: "new_solar220", model: "https://cdn.shopify.com/3d/models/d0869d71e3574000/220W_newpowa.glb" },
+              { name: "NewPowa Solar Panel 200w", id: "new_solar200", model: "https://cdn.shopify.com/3d/models/7745111021b38644/200W_newpowa.glb" },
+              { name: "NewPowa Solar Panel 100w", id: "new_solar100", model: "https://cdn.shopify.com/3d/models/5d5e861aa0b3b30a/100W_newpowa.glb" }
+            ]
+          },
+          {
+            id: "accessories",
+            products: [
+              { name: "Side Mount Ladder", id: "ladder", model: 'https://cdn.shopify.com/3d/models/00ba5b320dc83fe8/ladder-tr148-ext.glb' },
+              { name: "8020 cross bar", id: "cross_bar", model: 'https://cdn.shopify.com/3d/models/543cc594a487aecf/8020_cross.glb' }
+            ]
+          },
+          {
+            id: "awnings",
+            products: [
+              { name: "F45-300 Awning", id: "awning", model: "https://cdn.shopify.com/3d/models/85085b43be1cd9cf/awning.glb" },
+              { name: "F45-350 Awning", id: "awning_350", model: "https://cdn.shopify.com/3d/models/431a3b45d712597f/awning_350.glb" }
+            ]
+          },
+          {
+            id: "lights",
+            products: [
+              { name: "Tyri Light Bar", id: "light_bar", model: "https://cdn.shopify.com/3d/models/446727d744111fcc/light_bar.glb" },
+              { name: "Diode Dynamics Light Bar", id: "light_bar_copy", model: "https://cdn.shopify.com/3d/models/7de4edf3ac049e1e/light_bar_1.glb" }
+            ]
+          },
+          {
+            id: "deck-panels",
+            products: [
+              { name: "Deck Panels(Medium) - 2 length wise", id: "mk20-l2", model: "https://cdn.shopify.com/3d/models/c283b63c9eaef7bd/mk20-l2.glb" },
+              { name: "Deck Panels(Medium) - 3 width wise", id: "mk20-w3", model: "https://cdn.shopify.com/3d/models/30941932346f43a7/mk20-w3.glb" },
+              { name: "Deck Panels(Medium) - fit maxxfan", id: "mk20-maxxair", model: "https://cdn.shopify.com/3d/models/e5827b72fd891d4e/mk20-w2-maxxair.glb" },
+              { name: "Deck Panels(Large) - 3 width wise", id: "mk22-w3", model: "https://cdn.shopify.com/3d/models/6bbc46eee67042ad/mk22-w3.glb" },
+              { name: "Deck Panels(Small) - fit AC unit", id: "mk23-ac", model: "https://cdn.shopify.com/3d/models/ba54ea390ddcff2c/mk23-ac.glb" }
+            ]
+          }
+        ];
 
         initVan(vanModelLink, shadowLink, rackModel, crossbarXpos, workPlaneValues, ladderPlaneValues, rackYPos, rackXPos, crossbarModel);
         break;
 
       case "45730334539995": // transit 148 medium
-        vanModelLink = "https://cdn.shopify.com/3d/models/2fc93f4c707f5742/van-tr148-m.glb";
+        vanModelLink = "https://cdn.shopify.com/3d/models/31e857084b6dc8ec/van-tr148-m.glb";
         shadowLink = "https://cdn.shopify.com/s/files/1/0412/9898/5124/files/transit-ext.png?v=1733115711";
-        rackModel = 'https://cdn.shopify.com/3d/models/d3745952c3e59d06/transit_148_medium-roof.glb'
+        rackModel = 'https://cdn.shopify.com/3d/models/86423cccef227667/transit_148_medium-roof.glb'
         crossbarModel = 'https://cdn.shopify.com/3d/models/543cc594a487aecf/8020_cross.glb';
         ladderPos = [-0.9, 1.316, -1.012]
-        crossbarXpos = -3.29
+        crossbarXpos = -2.73577 
         workPlaneValues = [3, 0.01, 1.55];
         ladderPlaneValues = [3, 2, 0.01];
-        vanArea = [-14.535, 129.527]
-        cutOffArea = [3.2, 25.7, 32.09, 64.72, 71.11, 85.19, 91.58, 101.33, 107.72, 124.72];
-        vanDiff = -1.6
-        rackYPos = 2.59
-        rackXPos = -0.8
-        movingOffset = 0.365;
+        vanArea = [-17.8, 109.3]
+        cutOffArea = [3.2, 25.7, 32.09, 64.72, 71.11, 85.19];
+        vanDiff = 0
+        rackYPos = 2.525
+        rackXPos = -0.715
+        lightbarXPos = 0.3149
+        movingOffset = 0.45;
         owningPosZ = 0.84
         typeOfVan = "fordtransit"
-        lightbarXPos = 0.4
-        awningArea = [0.98, -3.39]
+        awningArea = [0.778, -2.93]
         selectableProducts = [
-          {name: "Dometic RTX", id: "airconditioner", model: "https://cdn.shopify.com/3d/models/3fc52045eaa806f8/airconditioner-d.glb"},
-          {% comment %} {name: "Dometic Penguin II", id: "airconditioner-p", model: "https://cdn.shopify.com/3d/models/c599289fb8ed77b8/airconditioner-10.glb"}, {% endcomment %}
-          {name: "VELIT 2000R", id: "airconditioner-v1", model: "https://cdn.shopify.com/3d/models/c55e579406be72d1/airconditioner-v1.glb"},
-          {name: "VELIT 2000R MINI", id: "airconditioner-v2", model: "https://cdn.shopify.com/3d/models/575a822893d82486/airconditioner-v2.glb"},
-          {name: "Nomadic Innovations AC X2", id: "airconditioner-x2", model: "https://cdn.shopify.com/3d/models/8f9f98cdd33f3a4f/airconditioner-x2.glb"},
-          {name: "Nomadic Innovations AC X3", id: "airconditioner-x3", model: "https://cdn.shopify.com/3d/models/fa056a2235adba37/airconditioner-x3.glb"},
-          {name: "Maxxair Deluxe", id: "maxxair", model: "https://cdn.shopify.com/3d/models/9f3e8c568b76b1f4/maxxair-2.glb"},
-          {name: "Rich Solar Panel 250w", id: "solar_panel250", model: "https://cdn.shopify.com/3d/models/5b0bf30f3bc0bc5b/250W.glb"},
-          {name: "Rich Solar Panel 200w", id: "solar_panel200", model: "https://cdn.shopify.com/3d/models/41179ec7afded29e/200W.glb"},
-          {name: "Rich Solar Panel 100w", id: "solar_panel100", model: "https://cdn.shopify.com/3d/models/bba013cfe5d76ce7/100W-1.glb"},
-          {name: "Rich Solar Panel 50w", id: "solar_panel50", model: "https://cdn.shopify.com/3d/models/cfce53c8523cbc41/55W.glb"},
-          {name: "Rich Solar Panel 30w", id: "solar_panel30", model: "https://cdn.shopify.com/3d/models/dfcf1aaf24802514/30W.glb"},
-          {name: "NewPowa Solar Panel 250w", id: "new_solar250", model: "https://cdn.shopify.com/3d/models/c428d2a3aaa669d2/250W_newpowa.glb"},
-          {name: "NewPowa Solar Panel 220w", id: "new_solar220", model: "https://cdn.shopify.com/3d/models/d0869d71e3574000/220W_newpowa.glb"},
-          {name: "NewPowa Solar Panel 200w", id: "new_solar200", model: "https://cdn.shopify.com/3d/models/7745111021b38644/200W_newpowa.glb"},
-          {name: "NewPowa Solar Panel 100w", id: "new_solar100", model: "https://cdn.shopify.com/3d/models/5d5e861aa0b3b30a/100W_newpowa.glb"},
-          {name: "Side Mount Ladder", id: "ladder", model: 'https://cdn.shopify.com/3d/models/00ba5b320dc83fe8/ladder-tr148-ext.glb'},
-          {name: "8020 cross bar", id: "cross_bar", model: 'https://cdn.shopify.com/3d/models/543cc594a487aecf/8020_cross.glb'},
-          {name: "F45-300 Awning", id: "awning", model: "https://cdn.shopify.com/3d/models/85085b43be1cd9cf/awning.glb"},
-          {name: "F45-350 Awning", id: "awning_350", model: "https://cdn.shopify.com/3d/models/431a3b45d712597f/awning_350.glb"},
-          {name: "Tyri Light Bar", id: "light_bar", model: "https://cdn.shopify.com/3d/models/446727d744111fcc/light_bar.glb"},
-          {name: "Diode Dynamics Light Bar", id: "light_bar_copy", model: "https://cdn.shopify.com/3d/models/7de4edf3ac049e1e/light_bar_1.glb"},
-          {name: "Deck Panels(Medium) - 2 length wise", id: "mk20-l2", model: "https://cdn.shopify.com/3d/models/c283b63c9eaef7bd/mk20-l2.glb"},
-          {name: "Deck Panels(Medium) - 3 width wise", id: "mk20-w3", model: "https://cdn.shopify.com/3d/models/30941932346f43a7/mk20-w3.glb"},
-          {name: "Deck Panels(Medium) - fit maxxfan", id: "mk20-maxxair", model: "https://cdn.shopify.com/3d/models/e5827b72fd891d4e/mk20-w2-maxxair.glb"},
-          {name: "Deck Panels(Large) - 3 width wise", id: "mk22-w3", model: "https://cdn.shopify.com/3d/models/6bbc46eee67042ad/mk22-w3.glb"},
-          {name: "Deck Panels(Small) - fit AC unit", id: "mk23-ac", model: "https://cdn.shopify.com/3d/models/ba54ea390ddcff2c/mk23-ac.glb"},
-        ]
+          {
+            id: "airconditioners",
+            products: [
+              { name: "Dometic RTX", id: "airconditioner", model: "https://cdn.shopify.com/3d/models/3fc52045eaa806f8/airconditioner-d.glb" },
+              { name: "VELIT 2000R", id: "airconditioner-v1", model: "https://cdn.shopify.com/3d/models/c55e579406be72d1/airconditioner-v1.glb" },
+              { name: "VELIT 2000R MINI", id: "airconditioner-v2", model: "https://cdn.shopify.com/3d/models/575a822893d82486/airconditioner-v2.glb" },
+              { name: "Nomadic Innovations AC X2", id: "airconditioner-x2", model: "https://cdn.shopify.com/3d/models/8f9f98cdd33f3a4f/airconditioner-x2.glb" },
+              { name: "Nomadic Innovations AC X3", id: "airconditioner-x3", model: "https://cdn.shopify.com/3d/models/fa056a2235adba37/airconditioner-x3.glb" }
+            ]
+          },
+          {
+              id: "fans",
+              products: [
+                  { name: "Maxxair Deluxe", id: "maxxair", model: "https://cdn.shopify.com/3d/models/9f3e8c568b76b1f4/maxxair-2.glb" }
+              ]
+          },
+          {
+            id: "solar-panels",
+            products: [
+              { name: "Rich Solar Panel 250w", id: "solar_panel250", model: "https://cdn.shopify.com/3d/models/5b0bf30f3bc0bc5b/250W.glb" },
+              { name: "Rich Solar Panel 200w", id: "solar_panel200", model: "https://cdn.shopify.com/3d/models/41179ec7afded29e/200W.glb" },
+              { name: "Rich Solar Panel 100w", id: "solar_panel100", model: "https://cdn.shopify.com/3d/models/bba013cfe5d76ce7/100W-1.glb" },
+              { name: "Rich Solar Panel 50w", id: "solar_panel50", model: "https://cdn.shopify.com/3d/models/cfce53c8523cbc41/55W.glb" },
+              { name: "Rich Solar Panel 30w", id: "solar_panel30", model: "https://cdn.shopify.com/3d/models/dfcf1aaf24802514/30W.glb" },
+              { name: "NewPowa Solar Panel 250w", id: "new_solar250", model: "https://cdn.shopify.com/3d/models/c428d2a3aaa669d2/250W_newpowa.glb" },
+              { name: "NewPowa Solar Panel 220w", id: "new_solar220", model: "https://cdn.shopify.com/3d/models/d0869d71e3574000/220W_newpowa.glb" },
+              { name: "NewPowa Solar Panel 200w", id: "new_solar200", model: "https://cdn.shopify.com/3d/models/7745111021b38644/200W_newpowa.glb" },
+              { name: "NewPowa Solar Panel 100w", id: "new_solar100", model: "https://cdn.shopify.com/3d/models/5d5e861aa0b3b30a/100W_newpowa.glb" }
+            ]
+          },
+          {
+            id: "accessories",
+            products: [
+              { name: "Side Mount Ladder", id: "ladder", model: "https://cdn.shopify.com/3d/models/0009a829fc99c0cf/transit_ladder_v2.glb" },
+              { name: "8020 cross bar", id: "cross_bar", model: "https://cdn.shopify.com/3d/models/543cc594a487aecf/8020_cross.glb" }
+            ]
+          },
+          {
+            id: "awnings",
+            products: [
+              { name: "F45-300 Awning", id: "awning", model: "https://cdn.shopify.com/3d/models/85085b43be1cd9cf/awning.glb" },
+              { name: "F45-350 Awning", id: "awning_350", model: "https://cdn.shopify.com/3d/models/431a3b45d712597f/awning_350.glb" }
+            ]
+          },
+          {
+            id: "deck-panels",
+            products: [
+              { name: "Deck Panels(Medium) - 2 length wise", id: "mk20-l2", model: "https://cdn.shopify.com/3d/models/c283b63c9eaef7bd/mk20-l2.glb" },
+              { name: "Deck Panels(Medium) - 3 width wise", id: "mk20-w3", model: "https://cdn.shopify.com/3d/models/30941932346f43a7/mk20-w3.glb" },
+              { name: "Deck Panels(Medium) - fit maxxfan", id: "mk20-maxxair", model: "https://cdn.shopify.com/3d/models/e5827b72fd891d4e/mk20-w2-maxxair.glb" },
+              { name: "Deck Panels(Large) - 3 width wise", id: "mk22-w3", model: "https://cdn.shopify.com/3d/models/6bbc46eee67042ad/mk22-w3.glb" },
+              { name: "Deck Panels(Small) - fit AC unit", id: "mk23-ac", model: "https://cdn.shopify.com/3d/models/ba54ea390ddcff2c/mk23-ac.glb" }
+            ]
+          }
+        ];
 
         initVan(vanModelLink, shadowLink, rackModel, crossbarXpos, workPlaneValues, ladderPlaneValues, rackYPos, rackXPos, crossbarModel);
         break;
+      
       
       case "45730446835931":
         vanModelLink = "https://cdn.shopify.com/3d/models/4f78aa938db8d413/sprinter-2.glb";
@@ -4102,29 +4652,56 @@
         typeOfVan = "sprinter"
         awningArea = [0.98, -3.00]
         selectableProducts = [
-          {name: "Dometic RTX", id: "airconditioner", model: "https://cdn.shopify.com/3d/models/3fc52045eaa806f8/airconditioner-d.glb"},
-          {% comment %} {name: "Dometic Penguin II", id: "airconditioner-p", model: "https://cdn.shopify.com/3d/models/c599289fb8ed77b8/airconditioner-10.glb"}, {% endcomment %}
-          {name: "VELIT 2000R", id: "airconditioner-v1", model: "https://cdn.shopify.com/3d/models/c55e579406be72d1/airconditioner-v1.glb"},
-          {name: "VELIT 2000R MINI", id: "airconditioner-v2", model: "https://cdn.shopify.com/3d/models/575a822893d82486/airconditioner-v2.glb"},
-          {name: "Nomadic Innovations AC X2", id: "airconditioner-x2", model: "https://cdn.shopify.com/3d/models/8f9f98cdd33f3a4f/airconditioner-x2.glb"},
-          {name: "Nomadic Innovations AC X3", id: "airconditioner-x3", model: "https://cdn.shopify.com/3d/models/fa056a2235adba37/airconditioner-x3.glb"},
-          {name: "Maxxair Deluxe", id: "maxxair", model: "https://cdn.shopify.com/3d/models/9f3e8c568b76b1f4/maxxair-2.glb"},
-          {name: "Rich Solar Panel 220w", id: "solar_panel220", model: "https://cdn.shopify.com/3d/models/6f1510b8b1557a69/sp-solar220.glb"},
-          {name: "Rich Solar Panel 100w", id: "solar_panel100", model: "https://cdn.shopify.com/3d/models/502c0ee744921a4a/sp-solar100.glb"},
-          {name: "NewPowa Solar Panel 250w", id: "new_solar250", model: "https://cdn.shopify.com/3d/models/904757785c51a77a/250W_newpowa_sp.glb"},
-          {name: "NewPowa Solar Panel 220w", id: "new_solar220", model: "https://cdn.shopify.com/3d/models/3084b3452d33bf20/220W_newpowa_sp.glb"},
-          {name: "NewPowa Solar Panel 200w", id: "new_solar200", model: "https://cdn.shopify.com/3d/models/d2ecc74512cb4b57/200W_newpowa_sp.glb"},
-          {name: "NewPowa Solar Panel 100w", id: "new_solar100", model: "https://cdn.shopify.com/3d/models/d676eedc944c3e99/100W_newpowa_sp.glb"},
-          {name: "Side Mount Ladder", id: "sp_ladder", model: "https://cdn.shopify.com/3d/models/4b3781227196c6fb/ladder-sprinter.glb"},
-          {name: "8020 cross bar", id: "cross_bar", model: "https://cdn.shopify.com/3d/models/a6ed7ffc8e144cab/sprinter_crossbar.glb"},
-          {name: "F45-300 Awning", id: "awning", model: "https://cdn.shopify.com/3d/models/85085b43be1cd9cf/awning.glb"},
-          {name: "F45-350 Awning", id: "awning_350", model: "https://cdn.shopify.com/3d/models/431a3b45d712597f/awning_350.glb"},
-          {name: "Tyri Light Bar", id: "light_bar", model: "https://cdn.shopify.com/3d/models/446727d744111fcc/light_bar.glb"},
-          {name: "Diode Dynamics Light Bar", id: "light_bar_copy", model: "https://cdn.shopify.com/3d/models/7de4edf3ac049e1e/light_bar_1.glb"},
-          {name: "Deck Panels(Medium) - 2 length wise", id: "mk20-l2", model: "https://cdn.shopify.com/3d/models/834971040114a1af/mk20-l2-sp.glb"},
-          {name: "Deck Panels(Medium) - 3 width wise", id: "mk20-w3", model: "https://cdn.shopify.com/3d/models/436df7ea66129642/mk20-w3-sp.glb"},
-          {name: "Deck Panels(Large) - 3 width wise", id: "mk22-w3", model: "https://cdn.shopify.com/3d/models/26f539fd1a696c38/mk22-w3-sp.glb"},
-        ]
+          {
+              id: "airconditioners",
+              products: [
+                  { name: "Dometic RTX", id: "airconditioner", model: "https://cdn.shopify.com/3d/models/3fc52045eaa806f8/airconditioner-d.glb" },
+                  { name: "VELIT 2000R", id: "airconditioner-v1", model: "https://cdn.shopify.com/3d/models/c55e579406be72d1/airconditioner-v1.glb" },
+                  { name: "VELIT 2000R MINI", id: "airconditioner-v2", model: "https://cdn.shopify.com/3d/models/575a822893d82486/airconditioner-v2.glb" },
+                  { name: "Nomadic Innovations AC X2", id: "airconditioner-x2", model: "https://cdn.shopify.com/3d/models/8f9f98cdd33f3a4f/airconditioner-x2.glb" },
+                  { name: "Nomadic Innovations AC X3", id: "airconditioner-x3", model: "https://cdn.shopify.com/3d/models/fa056a2235adba37/airconditioner-x3.glb" }
+              ]
+          },
+          {
+              id: "fans",
+              products: [
+                  { name: "Maxxair Deluxe", id: "maxxair", model: "https://cdn.shopify.com/3d/models/9f3e8c568b76b1f4/maxxair-2.glb" }
+              ]
+          },
+          {
+              id: "solar-panels",
+              products: [
+                  { name: "Rich Solar Panel 220w", id: "solar_panel220", model: "https://cdn.shopify.com/3d/models/6f1510b8b1557a69/sp-solar220.glb" },
+                  { name: "Rich Solar Panel 100w", id: "solar_panel100", model: "https://cdn.shopify.com/3d/models/502c0ee744921a4a/sp-solar100.glb" },
+                  { name: "NewPowa Solar Panel 250w", id: "new_solar250", model: "https://cdn.shopify.com/3d/models/904757785c51a77a/250W_newpowa_sp.glb" },
+                  { name: "NewPowa Solar Panel 220w", id: "new_solar220", model: "https://cdn.shopify.com/3d/models/3084b3452d33bf20/220W_newpowa_sp.glb" },
+                  { name: "NewPowa Solar Panel 200w", id: "new_solar200", model: "https://cdn.shopify.com/3d/models/d2ecc74512cb4b57/200W_newpowa_sp.glb" },
+                  { name: "NewPowa Solar Panel 100w", id: "new_solar100", model: "https://cdn.shopify.com/3d/models/d676eedc944c3e99/100W_newpowa_sp.glb" }
+              ]
+          },
+          {
+              id: "accessories",
+              products: [
+                  { name: "Side Mount Ladder", id: "sp_ladder", model: "https://cdn.shopify.com/3d/models/a4e44d1fe1561320/sprinter_ladder_v2.glb" },
+                  { name: "8020 cross bar", id: "cross_bar", model: "https://cdn.shopify.com/3d/models/a6ed7ffc8e144cab/sprinter_crossbar.glb" }
+              ]
+          },
+          {
+              id: "awnings",
+              products: [
+                  { name: "F45-300 Awning", id: "awning", model: "https://cdn.shopify.com/3d/models/85085b43be1cd9cf/awning.glb" },
+                  { name: "F45-350 Awning", id: "awning_350", model: "https://cdn.shopify.com/3d/models/431a3b45d712597f/awning_350.glb" }
+              ]
+          },
+          {
+              id: "deck-panels",
+              products: [
+                  { name: "Deck Panels(Medium) - 2 length wise", id: "mk20-l2", model: "https://cdn.shopify.com/3d/models/834971040114a1af/mk20-l2-sp.glb" },
+                  { name: "Deck Panels(Medium) - 3 width wise", id: "mk20-w3", model: "https://cdn.shopify.com/3d/models/436df7ea66129642/mk20-w3-sp.glb" },
+                  { name: "Deck Panels(Large) - 3 width wise", id: "mk22-w3", model: "https://cdn.shopify.com/3d/models/26f539fd1a696c38/mk22-w3-sp.glb" }
+              ]
+          }
+        ];
         solar100Product = {...availableProducts[15]};
         solar100Product.xRadius = 8
         availableProducts[15] = solar100Product;
@@ -4153,30 +4730,63 @@
         lightbarXPos = 0.376
         awningArea = [0.98, -3.00]
         selectableProducts = [
-          {name: "Dometic RTX", id: "airconditioner", model: "https://cdn.shopify.com/3d/models/3fc52045eaa806f8/airconditioner-d.glb"},
-          {% comment %} {name: "Dometic Penguin II", id: "airconditioner-p", model: "https://cdn.shopify.com/3d/models/c599289fb8ed77b8/airconditioner-10.glb"}, {% endcomment %}
-          {name: "VELIT 2000R", id: "airconditioner-v1", model: "https://cdn.shopify.com/3d/models/c55e579406be72d1/airconditioner-v1.glb"},
-          {name: "VELIT 2000R MINI", id: "airconditioner-v2", model: "https://cdn.shopify.com/3d/models/575a822893d82486/airconditioner-v2.glb"},
-          {name: "Nomadic Innovations AC X2", id: "airconditioner-x2", model: "https://cdn.shopify.com/3d/models/8f9f98cdd33f3a4f/airconditioner-x2.glb"},
-          {name: "Nomadic Innovations AC X3", id: "airconditioner-x3", model: "https://cdn.shopify.com/3d/models/fa056a2235adba37/airconditioner-x3.glb"},
-          {name: "Maxxair Deluxe", id: "maxxair", model: "https://cdn.shopify.com/3d/models/9f3e8c568b76b1f4/maxxair-2.glb"},
-          {name: "Rich Solar Panel 220w", id: "solar_panel220", model: "https://cdn.shopify.com/3d/models/6f1510b8b1557a69/sp-solar220.glb"},
-          {% comment %} {name: "Rich Solar Panel 200w", id: "solar_panel200", model: "https://cdn.shopify.com/3d/models/196b6231fc1b7b37/sp-solar200.glb"}, {% endcomment %}
-          {name: "Rich Solar Panel 100w", id: "solar_panel100", model: "https://cdn.shopify.com/3d/models/502c0ee744921a4a/sp-solar100.glb"},
-          {name: "NewPowa Solar Panel 250w", id: "new_solar250", model: "https://cdn.shopify.com/3d/models/904757785c51a77a/250W_newpowa_sp.glb"},
-          {name: "NewPowa Solar Panel 220w", id: "new_solar220", model: "https://cdn.shopify.com/3d/models/3084b3452d33bf20/220W_newpowa_sp.glb"},
-          {name: "NewPowa Solar Panel 200w", id: "new_solar200", model: "https://cdn.shopify.com/3d/models/d2ecc74512cb4b57/200W_newpowa_sp.glb"},
-          {name: "NewPowa Solar Panel 100w", id: "new_solar100", model: "https://cdn.shopify.com/3d/models/d676eedc944c3e99/100W_newpowa_sp.glb"},
-          {name: "Side Mount Ladder", id: "sp_ladder", model: "https://cdn.shopify.com/3d/models/4b3781227196c6fb/ladder-sprinter.glb"},
-          {name: "8020 cross bar", id: "cross_bar", model: "https://cdn.shopify.com/3d/models/a6ed7ffc8e144cab/sprinter_crossbar.glb"},
-          {name: "F45-300 Awning", id: "awning", model: "https://cdn.shopify.com/3d/models/85085b43be1cd9cf/awning.glb"},
-          {name: "F45-350 Awning", id: "awning_350", model: "https://cdn.shopify.com/3d/models/431a3b45d712597f/awning_350.glb"},
-          {name: "Tyri Light Bar", id: "light_bar", model: "https://cdn.shopify.com/3d/models/446727d744111fcc/light_bar.glb"},
-          {name: "Diode Dynamics Light Bar", id: "light_bar_copy", model: "https://cdn.shopify.com/3d/models/7de4edf3ac049e1e/light_bar_1.glb"},
-          {name: "Deck Panels(Medium) - 2 length wise", id: "mk20-l2", model: "https://cdn.shopify.com/3d/models/834971040114a1af/mk20-l2-sp.glb"},
-          {name: "Deck Panels(Medium) - 3 width wise", id: "mk20-w3", model: "https://cdn.shopify.com/3d/models/436df7ea66129642/mk20-w3-sp.glb"},
-          {name: "Deck Panels(Large) - 3 width wise", id: "mk22-w3", model: "https://cdn.shopify.com/3d/models/26f539fd1a696c38/mk22-w3-sp.glb"},
-        ]
+          {
+              id: "airconditioners",
+              products: [
+                  { name: "Dometic RTX", id: "airconditioner", model: "https://cdn.shopify.com/3d/models/3fc52045eaa806f8/airconditioner-d.glb" },
+                  { name: "VELIT 2000R", id: "airconditioner-v1", model: "https://cdn.shopify.com/3d/models/c55e579406be72d1/airconditioner-v1.glb" },
+                  { name: "VELIT 2000R MINI", id: "airconditioner-v2", model: "https://cdn.shopify.com/3d/models/575a822893d82486/airconditioner-v2.glb" },
+                  { name: "Nomadic Innovations AC X2", id: "airconditioner-x2", model: "https://cdn.shopify.com/3d/models/8f9f98cdd33f3a4f/airconditioner-x2.glb" },
+                  { name: "Nomadic Innovations AC X3", id: "airconditioner-x3", model: "https://cdn.shopify.com/3d/models/fa056a2235adba37/airconditioner-x3.glb" }
+              ]
+          },
+          {
+              id: "fans",
+              products: [
+                  { name: "Maxxair Deluxe", id: "maxxair", model: "https://cdn.shopify.com/3d/models/9f3e8c568b76b1f4/maxxair-2.glb" }
+              ]
+          },
+          {
+              id: "solar-panels",
+              products: [
+                  { name: "Rich Solar Panel 220w", id: "solar_panel220", model: "https://cdn.shopify.com/3d/models/6f1510b8b1557a69/sp-solar220.glb" },
+                  { name: "Rich Solar Panel 100w", id: "solar_panel100", model: "https://cdn.shopify.com/3d/models/502c0ee744921a4a/sp-solar100.glb" },
+                  { name: "NewPowa Solar Panel 250w", id: "new_solar250", model: "https://cdn.shopify.com/3d/models/904757785c51a77a/250W_newpowa_sp.glb" },
+                  { name: "NewPowa Solar Panel 220w", id: "new_solar220", model: "https://cdn.shopify.com/3d/models/3084b3452d33bf20/220W_newpowa_sp.glb" },
+                  { name: "NewPowa Solar Panel 200w", id: "new_solar200", model: "https://cdn.shopify.com/3d/models/d2ecc74512cb4b57/200W_newpowa_sp.glb" },
+                  { name: "NewPowa Solar Panel 100w", id: "new_solar100", model: "https://cdn.shopify.com/3d/models/d676eedc944c3e99/100W_newpowa_sp.glb" }
+              ]
+          },
+          {
+              id: "accessories",
+              products: [
+                  { name: "Side Mount Ladder", id: "sp_ladder", model: "https://cdn.shopify.com/3d/models/a4e44d1fe1561320/sprinter_ladder_v2.glb" },
+                  { name: "8020 cross bar", id: "cross_bar", model: "https://cdn.shopify.com/3d/models/a6ed7ffc8e144cab/sprinter_crossbar.glb" }
+              ]
+          },
+          {
+              id: "awnings",
+              products: [
+                  { name: "F45-300 Awning", id: "awning", model: "https://cdn.shopify.com/3d/models/85085b43be1cd9cf/awning.glb" },
+                  { name: "F45-350 Awning", id: "awning_350", model: "https://cdn.shopify.com/3d/models/431a3b45d712597f/awning_350.glb" }
+              ]
+          },
+          {
+              id: "lights",
+              products: [
+                  { name: "Tyri Light Bar", id: "light_bar", model: "https://cdn.shopify.com/3d/models/446727d744111fcc/light_bar.glb" },
+                  { name: "Diode Dynamics Light Bar", id: "light_bar_copy", model: "https://cdn.shopify.com/3d/models/7de4edf3ac049e1e/light_bar_1.glb" }
+              ]
+          },
+          {
+              id: "deck-panels",
+              products: [
+                  { name: "Deck Panels(Medium) - 2 length wise", id: "mk20-l2", model: "https://cdn.shopify.com/3d/models/834971040114a1af/mk20-l2-sp.glb" },
+                  { name: "Deck Panels(Medium) - 3 width wise", id: "mk20-w3", model: "https://cdn.shopify.com/3d/models/436df7ea66129642/mk20-w3-sp.glb" },
+                  { name: "Deck Panels(Large) - 3 width wise", id: "mk22-w3", model: "https://cdn.shopify.com/3d/models/26f539fd1a696c38/mk22-w3-sp.glb" }
+              ]
+          }
+        ];
         solar100Product = {...availableProducts[15]};
         solar100Product.xRadius = 8
         availableProducts[15] = solar100Product;
@@ -4206,32 +4816,58 @@
         lightbarXPos = 0.376
         awningArea = [1.16, -3.91]
         selectableProducts = [
-          {name: "Dometic RTX", id: "airconditioner", model: "https://cdn.shopify.com/3d/models/3fc52045eaa806f8/airconditioner-d.glb"},
-          {% comment %} {name: "Dometic Penguin II", id: "airconditioner-p", model: "https://cdn.shopify.com/3d/models/c599289fb8ed77b8/airconditioner-10.glb"}, {% endcomment %}
-          {name: "VELIT 2000R", id: "airconditioner-v1", model: "https://cdn.shopify.com/3d/models/c55e579406be72d1/airconditioner-v1.glb"},
-          {name: "VELIT 2000R MINI", id: "airconditioner-v2", model: "https://cdn.shopify.com/3d/models/575a822893d82486/airconditioner-v2.glb"},
-          {name: "Nomadic Innovations AC X2", id: "airconditioner-x2", model: "https://cdn.shopify.com/3d/models/8f9f98cdd33f3a4f/airconditioner-x2.glb"},
-          {name: "Nomadic Innovations AC X3", id: "airconditioner-x3", model: "https://cdn.shopify.com/3d/models/fa056a2235adba37/airconditioner-x3.glb"},
-          {name: "Maxxair Deluxe", id: "maxxair", model: "https://cdn.shopify.com/3d/models/9f3e8c568b76b1f4/maxxair-2.glb"},
-          {name: "Rich Solar Panel 220w", id: "solar_panel220", model: "https://cdn.shopify.com/3d/models/6f1510b8b1557a69/sp-solar220.glb"},
-          {% comment %} {name: "Rich Solar Panel 200w", id: "solar_panel200", model: "https://cdn.shopify.com/3d/models/196b6231fc1b7b37/sp-solar200.glb"}, {% endcomment %}
-          {name: "Rich Solar Panel 100w", id: "solar_panel100", model: "https://cdn.shopify.com/3d/models/502c0ee744921a4a/sp-solar100.glb"},
-          {name: "NewPowa Solar Panel 250w", id: "new_solar250", model: "https://cdn.shopify.com/3d/models/904757785c51a77a/250W_newpowa_sp.glb"},
-          {name: "NewPowa Solar Panel 220w", id: "new_solar220", model: "https://cdn.shopify.com/3d/models/3084b3452d33bf20/220W_newpowa_sp.glb"},
-          {name: "NewPowa Solar Panel 200w", id: "new_solar200", model: "https://cdn.shopify.com/3d/models/d2ecc74512cb4b57/200W_newpowa_sp.glb"},
-          {name: "NewPowa Solar Panel 100w", id: "new_solar100", model: "https://cdn.shopify.com/3d/models/d676eedc944c3e99/100W_newpowa_sp.glb"},
-          {name: "Side Mount Ladder", id: "sp_ladder", model: "https://cdn.shopify.com/3d/models/4b3781227196c6fb/ladder-sprinter.glb"},
-          {name: "8020 cross bar", id: "cross_bar", model: "https://cdn.shopify.com/3d/models/a6ed7ffc8e144cab/sprinter_crossbar.glb"},
-          {name: "F45-300 Awning", id: "awning", model: "https://cdn.shopify.com/3d/models/85085b43be1cd9cf/awning.glb"},
-          {name: "F45-350 Awning", id: "awning_350", model: "https://cdn.shopify.com/3d/models/431a3b45d712597f/awning_350.glb"},
-          {name: "F45-400 Awning", id: "awning_400", model: "https://cdn.shopify.com/3d/models/ea6426d022ef91ed/awning_400.glb"},
-          {name: "F45-450 Awning", id: "awning_450", model: "https://cdn.shopify.com/3d/models/d0287e16f76cad27/awning_450.glb"},
-          {name: "Tyri Light Bar", id: "light_bar", model: "https://cdn.shopify.com/3d/models/446727d744111fcc/light_bar.glb"},
-          {name: "Diode Dynamics Light Bar", id: "light_bar_copy", model: "https://cdn.shopify.com/3d/models/7de4edf3ac049e1e/light_bar_1.glb"},
-          {name: "Deck Panels(Medium) - 2 length wise", id: "mk20-l2", model: "https://cdn.shopify.com/3d/models/834971040114a1af/mk20-l2-sp.glb"},
-          {name: "Deck Panels(Medium) - 3 width wise", id: "mk20-w3", model: "https://cdn.shopify.com/3d/models/436df7ea66129642/mk20-w3-sp.glb"},
-          {name: "Deck Panels(Large) - 3 width wise", id: "mk22-w3", model: "https://cdn.shopify.com/3d/models/26f539fd1a696c38/mk22-w3-sp.glb"},
-        ]
+          {
+              id: "airconditioners",
+              products: [
+                  { name: "Dometic RTX", id: "airconditioner", model: "https://cdn.shopify.com/3d/models/3fc52045eaa806f8/airconditioner-d.glb" },
+                  { name: "VELIT 2000R", id: "airconditioner-v1", model: "https://cdn.shopify.com/3d/models/c55e579406be72d1/airconditioner-v1.glb" },
+                  { name: "VELIT 2000R MINI", id: "airconditioner-v2", model: "https://cdn.shopify.com/3d/models/575a822893d82486/airconditioner-v2.glb" },
+                  { name: "Nomadic Innovations AC X2", id: "airconditioner-x2", model: "https://cdn.shopify.com/3d/models/8f9f98cdd33f3a4f/airconditioner-x2.glb" },
+                  { name: "Nomadic Innovations AC X3", id: "airconditioner-x3", model: "https://cdn.shopify.com/3d/models/fa056a2235adba37/airconditioner-x3.glb" }
+              ]
+          },
+          {
+              id: "fans",
+              products: [
+                  { name: "Maxxair Deluxe", id: "maxxair", model: "https://cdn.shopify.com/3d/models/9f3e8c568b76b1f4/maxxair-2.glb" }
+              ]
+          },
+          {
+              id: "solar-panels",
+              products: [
+                  { name: "Rich Solar Panel 220w", id: "solar_panel220", model: "https://cdn.shopify.com/3d/models/6f1510b8b1557a69/sp-solar220.glb" },
+                  { name: "Rich Solar Panel 100w", id: "solar_panel100", model: "https://cdn.shopify.com/3d/models/502c0ee744921a4a/sp-solar100.glb" },
+                  { name: "NewPowa Solar Panel 250w", id: "new_solar250", model: "https://cdn.shopify.com/3d/models/904757785c51a77a/250W_newpowa_sp.glb" },
+                  { name: "NewPowa Solar Panel 220w", id: "new_solar220", model: "https://cdn.shopify.com/3d/models/3084b3452d33bf20/220W_newpowa_sp.glb" },
+                  { name: "NewPowa Solar Panel 200w", id: "new_solar200", model: "https://cdn.shopify.com/3d/models/d2ecc74512cb4b57/200W_newpowa_sp.glb" },
+                  { name: "NewPowa Solar Panel 100w", id: "new_solar100", model: "https://cdn.shopify.com/3d/models/d676eedc944c3e99/100W_newpowa_sp.glb" }
+              ]
+          },
+          {
+              id: "accessories",
+              products: [
+                  { name: "Side Mount Ladder", id: "sp_ladder", model: "https://cdn.shopify.com/3d/models/a4e44d1fe1561320/sprinter_ladder_v2.glb" },
+                  { name: "8020 cross bar", id: "cross_bar", model: "https://cdn.shopify.com/3d/models/a6ed7ffc8e144cab/sprinter_crossbar.glb" }
+              ]
+          },
+          {
+              id: "awnings",
+              products: [
+                  { name: "F45-300 Awning", id: "awning", model: "https://cdn.shopify.com/3d/models/85085b43be1cd9cf/awning.glb" },
+                  { name: "F45-350 Awning", id: "awning_350", model: "https://cdn.shopify.com/3d/models/431a3b45d712597f/awning_350.glb" },
+                  { name: "F45-400 Awning", id: "awning_400", model: "https://cdn.shopify.com/3d/models/ea6426d022ef91ed/awning_400.glb" },
+                  { name: "F45-450 Awning", id: "awning_450", model: "https://cdn.shopify.com/3d/models/d0287e16f76cad27/awning_450.glb" }
+              ]
+          },
+          {
+              id: "deck-panels",
+              products: [
+                  { name: "Deck Panels(Medium) - 2 length wise", id: "mk20-l2", model: "https://cdn.shopify.com/3d/models/834971040114a1af/mk20-l2-sp.glb" },
+                  { name: "Deck Panels(Medium) - 3 width wise", id: "mk20-w3", model: "https://cdn.shopify.com/3d/models/436df7ea66129642/mk20-w3-sp.glb" },
+                  { name: "Deck Panels(Large) - 3 width wise", id: "mk22-w3", model: "https://cdn.shopify.com/3d/models/26f539fd1a696c38/mk22-w3-sp.glb" }
+              ]
+          }
+        ];
         solar100Product = {...availableProducts[15]};
         solar100Product.xRadius = 8
         availableProducts[15] = solar100Product;
@@ -4260,32 +4896,65 @@
         lightbarXPos = 0.58907
         awningArea = [1.16, -3.91]
         selectableProducts = [
-          {name: "Dometic RTX", id: "airconditioner", model: "https://cdn.shopify.com/3d/models/3fc52045eaa806f8/airconditioner-d.glb"},
-          {% comment %} {name: "Dometic Penguin II", id: "airconditioner-p", model: "https://cdn.shopify.com/3d/models/c599289fb8ed77b8/airconditioner-10.glb"}, {% endcomment %}
-          {name: "VELIT 2000R", id: "airconditioner-v1", model: "https://cdn.shopify.com/3d/models/c55e579406be72d1/airconditioner-v1.glb"},
-          {name: "VELIT 2000R MINI", id: "airconditioner-v2", model: "https://cdn.shopify.com/3d/models/575a822893d82486/airconditioner-v2.glb"},
-          {name: "Nomadic Innovations AC X2", id: "airconditioner-x2", model: "https://cdn.shopify.com/3d/models/8f9f98cdd33f3a4f/airconditioner-x2.glb"},
-          {name: "Nomadic Innovations AC X3", id: "airconditioner-x3", model: "https://cdn.shopify.com/3d/models/fa056a2235adba37/airconditioner-x3.glb"},
-          {name: "Maxxair Deluxe", id: "maxxair", model: "https://cdn.shopify.com/3d/models/9f3e8c568b76b1f4/maxxair-2.glb"},
-          {name: "Rich Solar Panel 220w", id: "solar_panel220", model: "https://cdn.shopify.com/3d/models/6f1510b8b1557a69/sp-solar220.glb"},
-          {% comment %} {name: "Rich Solar Panel 200w", id: "solar_panel200", model: "https://cdn.shopify.com/3d/models/196b6231fc1b7b37/sp-solar200.glb"}, {% endcomment %}
-          {name: "Rich Solar Panel 100w", id: "solar_panel100", model: "https://cdn.shopify.com/3d/models/502c0ee744921a4a/sp-solar100.glb"},
-          {name: "NewPowa Solar Panel 250w", id: "new_solar250", model: "https://cdn.shopify.com/3d/models/904757785c51a77a/250W_newpowa_sp.glb"},
-          {name: "NewPowa Solar Panel 220w", id: "new_solar220", model: "https://cdn.shopify.com/3d/models/3084b3452d33bf20/220W_newpowa_sp.glb"},
-          {name: "NewPowa Solar Panel 200w", id: "new_solar200", model: "https://cdn.shopify.com/3d/models/d2ecc74512cb4b57/200W_newpowa_sp.glb"},
-          {name: "NewPowa Solar Panel 100w", id: "new_solar100", model: "https://cdn.shopify.com/3d/models/d676eedc944c3e99/100W_newpowa_sp.glb"},
-          {name: "Side Mount Ladder", id: "sp_ladder", model: "https://cdn.shopify.com/3d/models/4b3781227196c6fb/ladder-sprinter.glb"},
-          {name: "8020 cross bar", id: "cross_bar", model: "https://cdn.shopify.com/3d/models/a6ed7ffc8e144cab/sprinter_crossbar.glb"},
-          {name: "F45-300 Awning", id: "awning", model: "https://cdn.shopify.com/3d/models/85085b43be1cd9cf/awning.glb"},
-          {name: "F45-350 Awning", id: "awning_350", model: "https://cdn.shopify.com/3d/models/431a3b45d712597f/awning_350.glb"},
-          {name: "F45-400 Awning", id: "awning_400", model: "https://cdn.shopify.com/3d/models/ea6426d022ef91ed/awning_400.glb"},
-          {name: "F45-450 Awning", id: "awning_450", model: "https://cdn.shopify.com/3d/models/d0287e16f76cad27/awning_450.glb"},
-          {name: "Tyri Light Bar", id: "light_bar", model: "https://cdn.shopify.com/3d/models/446727d744111fcc/light_bar.glb"},
-          {name: "Diode Dynamics Light Bar", id: "light_bar_copy", model: "https://cdn.shopify.com/3d/models/7de4edf3ac049e1e/light_bar_1.glb"},
-          {name: "Deck Panels(Medium) - 2 length wise", id: "mk20-l2", model: "https://cdn.shopify.com/3d/models/834971040114a1af/mk20-l2-sp.glb"},
-          {name: "Deck Panels(Medium) - 3 width wise", id: "mk20-w3", model: "https://cdn.shopify.com/3d/models/436df7ea66129642/mk20-w3-sp.glb"},
-          {name: "Deck Panels(Large) - 3 width wise", id: "mk22-w3", model: "https://cdn.shopify.com/3d/models/26f539fd1a696c38/mk22-w3-sp.glb"},
-        ]
+          {
+              id: "airconditioners",
+              products: [
+                  { name: "Dometic RTX", id: "airconditioner", model: "https://cdn.shopify.com/3d/models/3fc52045eaa806f8/airconditioner-d.glb" },
+                  { name: "VELIT 2000R", id: "airconditioner-v1", model: "https://cdn.shopify.com/3d/models/c55e579406be72d1/airconditioner-v1.glb" },
+                  { name: "VELIT 2000R MINI", id: "airconditioner-v2", model: "https://cdn.shopify.com/3d/models/575a822893d82486/airconditioner-v2.glb" },
+                  { name: "Nomadic Innovations AC X2", id: "airconditioner-x2", model: "https://cdn.shopify.com/3d/models/8f9f98cdd33f3a4f/airconditioner-x2.glb" },
+                  { name: "Nomadic Innovations AC X3", id: "airconditioner-x3", model: "https://cdn.shopify.com/3d/models/fa056a2235adba37/airconditioner-x3.glb" }
+              ]
+          },
+          {
+              id: "fans",
+              products: [
+                  { name: "Maxxair Deluxe", id: "maxxair", model: "https://cdn.shopify.com/3d/models/9f3e8c568b76b1f4/maxxair-2.glb" }
+              ]
+          },
+          {
+              id: "solar-panels",
+              products: [
+                  { name: "Rich Solar Panel 220w", id: "solar_panel220", model: "https://cdn.shopify.com/3d/models/6f1510b8b1557a69/sp-solar220.glb" },
+                  { name: "Rich Solar Panel 100w", id: "solar_panel100", model: "https://cdn.shopify.com/3d/models/502c0ee744921a4a/sp-solar100.glb" },
+                  { name: "NewPowa Solar Panel 250w", id: "new_solar250", model: "https://cdn.shopify.com/3d/models/904757785c51a77a/250W_newpowa_sp.glb" },
+                  { name: "NewPowa Solar Panel 220w", id: "new_solar220", model: "https://cdn.shopify.com/3d/models/3084b3452d33bf20/220W_newpowa_sp.glb" },
+                  { name: "NewPowa Solar Panel 200w", id: "new_solar200", model: "https://cdn.shopify.com/3d/models/d2ecc74512cb4b57/200W_newpowa_sp.glb" },
+                  { name: "NewPowa Solar Panel 100w", id: "new_solar100", model: "https://cdn.shopify.com/3d/models/d676eedc944c3e99/100W_newpowa_sp.glb" }
+              ]
+          },
+          {
+              id: "accessories",
+              products: [
+                  { name: "Side Mount Ladder", id: "sp_ladder", model: "https://cdn.shopify.com/3d/models/a4e44d1fe1561320/sprinter_ladder_v2.glb" },
+                  { name: "8020 cross bar", id: "cross_bar", model: "https://cdn.shopify.com/3d/models/a6ed7ffc8e144cab/sprinter_crossbar.glb" }
+              ]
+          },
+          {
+              id: "awnings",
+              products: [
+                  { name: "F45-300 Awning", id: "awning", model: "https://cdn.shopify.com/3d/models/85085b43be1cd9cf/awning.glb" },
+                  { name: "F45-350 Awning", id: "awning_350", model: "https://cdn.shopify.com/3d/models/431a3b45d712597f/awning_350.glb" },
+                  { name: "F45-400 Awning", id: "awning_400", model: "https://cdn.shopify.com/3d/models/ea6426d022ef91ed/awning_400.glb" },
+                  { name: "F45-450 Awning", id: "awning_450", model: "https://cdn.shopify.com/3d/models/d0287e16f76cad27/awning_450.glb" }
+              ]
+          },
+          {
+              id: "lights",
+              products: [
+                  { name: "Tyri Light Bar", id: "light_bar", model: "https://cdn.shopify.com/3d/models/446727d744111fcc/light_bar.glb" },
+                  { name: "Diode Dynamics Light Bar", id: "light_bar_copy", model: "https://cdn.shopify.com/3d/models/7de4edf3ac049e1e/light_bar_1.glb" }
+              ]
+          },
+          {
+              id: "deck-panels",
+              products: [
+                  { name: "Deck Panels(Medium) - 2 length wise", id: "mk20-l2", model: "https://cdn.shopify.com/3d/models/834971040114a1af/mk20-l2-sp.glb" },
+                  { name: "Deck Panels(Medium) - 3 width wise", id: "mk20-w3", model: "https://cdn.shopify.com/3d/models/436df7ea66129642/mk20-w3-sp.glb" },
+                  { name: "Deck Panels(Large) - 3 width wise", id: "mk22-w3", model: "https://cdn.shopify.com/3d/models/26f539fd1a696c38/mk22-w3-sp.glb" }
+              ]
+          }
+        ];
         solar100Product = {...availableProducts[15]};
         solar100Product.xRadius = 8
         availableProducts[15] = solar100Product;
@@ -4293,6 +4962,7 @@
         initVan(vanModelLink, shadowLink, rackModel, crossbarXpos, workPlaneValues, ladderPlaneValues, rackYPos, rackXPos, crossbarModel);
         break;
 
+      {% comment %} Sprinter 170 {% endcomment %}
       case "45730446967003":
         vanModelLink = "https://cdn.shopify.com/3d/models/279afc757895c1b2/sprinter-170-ext.glb";
         shadowLink = "https://cdn.shopify.com/s/files/1/0412/9898/5124/files/sprinter.png?v=1733116281";
@@ -4314,32 +4984,58 @@
         lightbarXPos = 0.376
         awningArea = [1.14, -4.3]
         selectableProducts = [
-          {name: "Dometic RTX", id: "airconditioner", model: "https://cdn.shopify.com/3d/models/3fc52045eaa806f8/airconditioner-d.glb"},
-          {% comment %} {name: "Dometic Penguin II", id: "airconditioner-p", model: "https://cdn.shopify.com/3d/models/c599289fb8ed77b8/airconditioner-10.glb"}, {% endcomment %}
-          {name: "VELIT 2000R", id: "airconditioner-v1", model: "https://cdn.shopify.com/3d/models/c55e579406be72d1/airconditioner-v1.glb"},
-          {name: "VELIT 2000R MINI", id: "airconditioner-v2", model: "https://cdn.shopify.com/3d/models/575a822893d82486/airconditioner-v2.glb"},
-          {name: "Nomadic Innovations AC X2", id: "airconditioner-x2", model: "https://cdn.shopify.com/3d/models/8f9f98cdd33f3a4f/airconditioner-x2.glb"},
-          {name: "Nomadic Innovations AC X3", id: "airconditioner-x3", model: "https://cdn.shopify.com/3d/models/fa056a2235adba37/airconditioner-x3.glb"},
-          {name: "Maxxair Deluxe", id: "maxxair", model: "https://cdn.shopify.com/3d/models/9f3e8c568b76b1f4/maxxair-2.glb"},
-          {name: "Rich Solar Panel 220w", id: "solar_panel220", model: "https://cdn.shopify.com/3d/models/6f1510b8b1557a69/sp-solar220.glb"},
-          {% comment %} {name: "Rich Solar Panel 200w", id: "solar_panel200", model: "https://cdn.shopify.com/3d/models/196b6231fc1b7b37/sp-solar200.glb"}, {% endcomment %}
-          {name: "Rich Solar Panel 100w", id: "solar_panel100", model: "https://cdn.shopify.com/3d/models/502c0ee744921a4a/sp-solar100.glb"},
-          {name: "NewPowa Solar Panel 250w", id: "new_solar250", model: "https://cdn.shopify.com/3d/models/904757785c51a77a/250W_newpowa_sp.glb"},
-          {name: "NewPowa Solar Panel 220w", id: "new_solar220", model: "https://cdn.shopify.com/3d/models/3084b3452d33bf20/220W_newpowa_sp.glb"},
-          {name: "NewPowa Solar Panel 200w", id: "new_solar200", model: "https://cdn.shopify.com/3d/models/d2ecc74512cb4b57/200W_newpowa_sp.glb"},
-          {name: "NewPowa Solar Panel 100w", id: "new_solar100", model: "https://cdn.shopify.com/3d/models/d676eedc944c3e99/100W_newpowa_sp.glb"},
-          {name: "Side Mount Ladder", id: "sp_ladder", model: "https://cdn.shopify.com/3d/models/4b3781227196c6fb/ladder-sprinter.glb"},
-          {name: "8020 cross bar", id: "cross_bar", model: "https://cdn.shopify.com/3d/models/a6ed7ffc8e144cab/sprinter_crossbar.glb"},
-          {name: "F45-300 Awning", id: "awning", model: "https://cdn.shopify.com/3d/models/85085b43be1cd9cf/awning.glb"},
-          {name: "F45-350 Awning", id: "awning_350", model: "https://cdn.shopify.com/3d/models/431a3b45d712597f/awning_350.glb"},
-          {name: "F45-400 Awning", id: "awning_400", model: "https://cdn.shopify.com/3d/models/ea6426d022ef91ed/awning_400.glb"},
-          {name: "F45-450 Awning", id: "awning_450", model: "https://cdn.shopify.com/3d/models/d0287e16f76cad27/awning_450.glb"},
-          {name: "Tyri Light Bar", id: "light_bar", model: "https://cdn.shopify.com/3d/models/446727d744111fcc/light_bar.glb"},
-          {name: "Diode Dynamics Light Bar", id: "light_bar_copy", model: "https://cdn.shopify.com/3d/models/7de4edf3ac049e1e/light_bar_1.glb"},
-          {name: "Deck Panels(Medium) - 2 length wise", id: "mk20-l2", model: "https://cdn.shopify.com/3d/models/834971040114a1af/mk20-l2-sp.glb"},
-          {name: "Deck Panels(Medium) - 3 width wise", id: "mk20-w3", model: "https://cdn.shopify.com/3d/models/436df7ea66129642/mk20-w3-sp.glb"},
-          {name: "Deck Panels(Large) - 3 width wise", id: "mk22-w3", model: "https://cdn.shopify.com/3d/models/26f539fd1a696c38/mk22-w3-sp.glb"},
-        ]
+          {
+              id: "airconditioners",
+              products: [
+                  { name: "Dometic RTX", id: "airconditioner", model: "https://cdn.shopify.com/3d/models/3fc52045eaa806f8/airconditioner-d.glb" },
+                  { name: "VELIT 2000R", id: "airconditioner-v1", model: "https://cdn.shopify.com/3d/models/c55e579406be72d1/airconditioner-v1.glb" },
+                  { name: "VELIT 2000R MINI", id: "airconditioner-v2", model: "https://cdn.shopify.com/3d/models/575a822893d82486/airconditioner-v2.glb" },
+                  { name: "Nomadic Innovations AC X2", id: "airconditioner-x2", model: "https://cdn.shopify.com/3d/models/8f9f98cdd33f3a4f/airconditioner-x2.glb" },
+                  { name: "Nomadic Innovations AC X3", id: "airconditioner-x3", model: "https://cdn.shopify.com/3d/models/fa056a2235adba37/airconditioner-x3.glb" }
+              ]
+          },
+          {
+              id: "fans",
+              products: [
+                  { name: "Maxxair Deluxe", id: "maxxair", model: "https://cdn.shopify.com/3d/models/9f3e8c568b76b1f4/maxxair-2.glb" }
+              ]
+          },
+          {
+              id: "solar-panels",
+              products: [
+                  { name: "Rich Solar Panel 220w", id: "solar_panel220", model: "https://cdn.shopify.com/3d/models/6f1510b8b1557a69/sp-solar220.glb" },
+                  { name: "Rich Solar Panel 100w", id: "solar_panel100", model: "https://cdn.shopify.com/3d/models/502c0ee744921a4a/sp-solar100.glb" },
+                  { name: "NewPowa Solar Panel 250w", id: "new_solar250", model: "https://cdn.shopify.com/3d/models/904757785c51a77a/250W_newpowa_sp.glb" },
+                  { name: "NewPowa Solar Panel 220w", id: "new_solar220", model: "https://cdn.shopify.com/3d/models/3084b3452d33bf20/220W_newpowa_sp.glb" },
+                  { name: "NewPowa Solar Panel 200w", id: "new_solar200", model: "https://cdn.shopify.com/3d/models/d2ecc74512cb4b57/200W_newpowa_sp.glb" },
+                  { name: "NewPowa Solar Panel 100w", id: "new_solar100", model: "https://cdn.shopify.com/3d/models/d676eedc944c3e99/100W_newpowa_sp.glb" }
+              ]
+          },
+          {
+              id: "accessories",
+              products: [
+                  { name: "Side Mount Ladder", id: "sp_ladder", model: "https://cdn.shopify.com/3d/models/a4e44d1fe1561320/sprinter_ladder_v2.glb" },
+                  { name: "8020 cross bar", id: "cross_bar", model: "https://cdn.shopify.com/3d/models/a6ed7ffc8e144cab/sprinter_crossbar.glb" }
+              ]
+          },
+          {
+              id: "awnings",
+              products: [
+                  { name: "F45-300 Awning", id: "awning", model: "https://cdn.shopify.com/3d/models/85085b43be1cd9cf/awning.glb" },
+                  { name: "F45-350 Awning", id: "awning_350", model: "https://cdn.shopify.com/3d/models/431a3b45d712597f/awning_350.glb" },
+                  { name: "F45-400 Awning", id: "awning_400", model: "https://cdn.shopify.com/3d/models/ea6426d022ef91ed/awning_400.glb" },
+                  { name: "F45-450 Awning", id: "awning_450", model: "https://cdn.shopify.com/3d/models/d0287e16f76cad27/awning_450.glb" }
+              ]
+          },
+          {
+              id: "deck-panels",
+              products: [
+                  { name: "Deck Panels(Medium) - 2 length wise", id: "mk20-l2", model: "https://cdn.shopify.com/3d/models/834971040114a1af/mk20-l2-sp.glb" },
+                  { name: "Deck Panels(Medium) - 3 width wise", id: "mk20-w3", model: "https://cdn.shopify.com/3d/models/436df7ea66129642/mk20-w3-sp.glb" },
+                  { name: "Deck Panels(Large) - 3 width wise", id: "mk22-w3", model: "https://cdn.shopify.com/3d/models/26f539fd1a696c38/mk22-w3-sp.glb" }
+              ]
+          }
+        ];
         solar100Product = {...availableProducts[15]};
         solar100Product.xRadius = 8
         availableProducts[15] = solar100Product;
@@ -4368,32 +5064,59 @@
         lightbarXPos = 0.57
         awningArea = [1.14, -4.3]
         selectableProducts = [
-          {name: "Dometic RTX", id: "airconditioner", model: "https://cdn.shopify.com/3d/models/3fc52045eaa806f8/airconditioner-d.glb"},
-          {% comment %} {name: "Dometic Penguin II", id: "airconditioner-p", model: "https://cdn.shopify.com/3d/models/c599289fb8ed77b8/airconditioner-10.glb"}, {% endcomment %}
-          {name: "VELIT 2000R", id: "airconditioner-v1", model: "https://cdn.shopify.com/3d/models/c55e579406be72d1/airconditioner-v1.glb"},
-          {name: "VELIT 2000R MINI", id: "airconditioner-v2", model: "https://cdn.shopify.com/3d/models/575a822893d82486/airconditioner-v2.glb"},
-          {name: "Nomadic Innovations AC X2", id: "airconditioner-x2", model: "https://cdn.shopify.com/3d/models/8f9f98cdd33f3a4f/airconditioner-x2.glb"},
-          {name: "Nomadic Innovations AC X3", id: "airconditioner-x3", model: "https://cdn.shopify.com/3d/models/fa056a2235adba37/airconditioner-x3.glb"},
-          {name: "Maxxair Deluxe", id: "maxxair", model: "https://cdn.shopify.com/3d/models/9f3e8c568b76b1f4/maxxair-2.glb"},
-          {name: "Rich Solar Panel 220w", id: "solar_panel220", model: "https://cdn.shopify.com/3d/models/6f1510b8b1557a69/sp-solar220.glb"},
-          {% comment %} {name: "Rich Solar Panel 200w", id: "solar_panel200", model: "https://cdn.shopify.com/3d/models/196b6231fc1b7b37/sp-solar200.glb"}, {% endcomment %}
-          {name: "Rich Solar Panel 100w", id: "solar_panel100", model: "https://cdn.shopify.com/3d/models/502c0ee744921a4a/sp-solar100.glb"},
-          {name: "NewPowa Solar Panel 250w", id: "new_solar250", model: "https://cdn.shopify.com/3d/models/904757785c51a77a/250W_newpowa_sp.glb"},
-          {name: "NewPowa Solar Panel 220w", id: "new_solar220", model: "https://cdn.shopify.com/3d/models/3084b3452d33bf20/220W_newpowa_sp.glb"},
-          {name: "NewPowa Solar Panel 200w", id: "new_solar200", model: "https://cdn.shopify.com/3d/models/d2ecc74512cb4b57/200W_newpowa_sp.glb"},
-          {name: "NewPowa Solar Panel 100w", id: "new_solar100", model: "https://cdn.shopify.com/3d/models/d676eedc944c3e99/100W_newpowa_sp.glb"},
-          {name: "Side Mount Ladder", id: "sp_ladder", model: "https://cdn.shopify.com/3d/models/4b3781227196c6fb/ladder-sprinter.glb"},
-          {name: "8020 cross bar", id: "cross_bar", model: "https://cdn.shopify.com/3d/models/a6ed7ffc8e144cab/sprinter_crossbar.glb"},
-          {name: "F45-300 Awning", id: "awning", model: "https://cdn.shopify.com/3d/models/85085b43be1cd9cf/awning.glb"},
-          {name: "F45-350 Awning", id: "awning_350", model: "https://cdn.shopify.com/3d/models/431a3b45d712597f/awning_350.glb"},
-          {name: "F45-400 Awning", id: "awning_400", model: "https://cdn.shopify.com/3d/models/ea6426d022ef91ed/awning_400.glb"},
-          {name: "F45-450 Awning", id: "awning_450", model: "https://cdn.shopify.com/3d/models/d0287e16f76cad27/awning_450.glb"},
-          {name: "Tyri Light Bar", id: "light_bar", model: "https://cdn.shopify.com/3d/models/446727d744111fcc/light_bar.glb"},
-          {name: "Diode Dynamics Light Bar", id: "light_bar_copy", model: "https://cdn.shopify.com/3d/models/7de4edf3ac049e1e/light_bar_1.glb"},
-          {name: "Deck Panels(Medium) - 2 length wise", id: "mk20-l2", model: "https://cdn.shopify.com/3d/models/834971040114a1af/mk20-l2-sp.glb"},
-          {name: "Deck Panels(Medium) - 3 width wise", id: "mk20-w3", model: "https://cdn.shopify.com/3d/models/436df7ea66129642/mk20-w3-sp.glb"},
-          {name: "Deck Panels(Large) - 3 width wise", id: "mk22-w3", model: "https://cdn.shopify.com/3d/models/26f539fd1a696c38/mk22-w3-sp.glb"},       
-        ]
+          {
+              id: "airconditioners",
+              products: [
+                  { name: "Dometic RTX", id: "airconditioner", model: "https://cdn.shopify.com/3d/models/3fc52045eaa806f8/airconditioner-d.glb" },
+                  { name: "VELIT 2000R", id: "airconditioner-v1", model: "https://cdn.shopify.com/3d/models/c55e579406be72d1/airconditioner-v1.glb" },
+                  { name: "VELIT 2000R MINI", id: "airconditioner-v2", model: "https://cdn.shopify.com/3d/models/575a822893d82486/airconditioner-v2.glb" },
+                  { name: "Nomadic Innovations AC X2", id: "airconditioner-x2", model: "https://cdn.shopify.com/3d/models/8f9f98cdd33f3a4f/airconditioner-x2.glb" },
+                  { name: "Nomadic Innovations AC X3", id: "airconditioner-x3", model: "https://cdn.shopify.com/3d/models/fa056a2235adba37/airconditioner-x3.glb" }
+              ]
+          },
+          {
+              id: "solar-panels",
+              products: [
+                  { name: "Rich Solar Panel 220w", id: "solar_panel220", model: "https://cdn.shopify.com/3d/models/6f1510b8b1557a69/sp-solar220.glb" },
+                  { name: "Rich Solar Panel 100w", id: "solar_panel100", model: "https://cdn.shopify.com/3d/models/502c0ee744921a4a/sp-solar100.glb" },
+                  { name: "NewPowa Solar Panel 250w", id: "new_solar250", model: "https://cdn.shopify.com/3d/models/904757785c51a77a/250W_newpowa_sp.glb" },
+                  { name: "NewPowa Solar Panel 220w", id: "new_solar220", model: "https://cdn.shopify.com/3d/models/3084b3452d33bf20/220W_newpowa_sp.glb" },
+                  { name: "NewPowa Solar Panel 200w", id: "new_solar200", model: "https://cdn.shopify.com/3d/models/d2ecc74512cb4b57/200W_newpowa_sp.glb" },
+                  { name: "NewPowa Solar Panel 100w", id: "new_solar100", model: "https://cdn.shopify.com/3d/models/d676eedc944c3e99/100W_newpowa_sp.glb" }
+              ]
+          },
+          {
+              id: "accessories",
+              products: [
+                  { name: "Side Mount Ladder", id: "sp_ladder", model: "https://cdn.shopify.com/3d/models/a4e44d1fe1561320/sprinter_ladder_v2.glb" },
+                  { name: "8020 cross bar", id: "cross_bar", model: "https://cdn.shopify.com/3d/models/a6ed7ffc8e144cab/sprinter_crossbar.glb" }
+              ]
+          },
+          {
+              id: "awnings",
+              products: [
+                  { name: "F45-300 Awning", id: "awning", model: "https://cdn.shopify.com/3d/models/85085b43be1cd9cf/awning.glb" },
+                  { name: "F45-350 Awning", id: "awning_350", model: "https://cdn.shopify.com/3d/models/431a3b45d712597f/awning_350.glb" },
+                  { name: "F45-400 Awning", id: "awning_400", model: "https://cdn.shopify.com/3d/models/ea6426d022ef91ed/awning_400.glb" },
+                  { name: "F45-450 Awning", id: "awning_450", model: "https://cdn.shopify.com/3d/models/d0287e16f76cad27/awning_450.glb" }
+              ]
+          },
+          {
+            id: "lights",
+            products: [
+                { name: "Tyri Light Bar", id: "light_bar", model: "https://cdn.shopify.com/3d/models/446727d744111fcc/light_bar.glb" },
+                { name: "Diode Dynamics Light Bar", id: "light_bar_copy", model: "https://cdn.shopify.com/3d/models/7de4edf3ac049e1e/light_bar_1.glb" }
+            ]
+          },
+          {
+              id: "deck-panels",
+              products: [
+                  { name: "Deck Panels(Medium) - 2 length wise", id: "mk20-l2", model: "https://cdn.shopify.com/3d/models/834971040114a1af/mk20-l2-sp.glb" },
+                  { name: "Deck Panels(Medium) - 3 width wise", id: "mk20-w3", model: "https://cdn.shopify.com/3d/models/436df7ea66129642/mk20-w3-sp.glb" },
+                  { name: "Deck Panels(Large) - 3 width wise", id: "mk22-w3", model: "https://cdn.shopify.com/3d/models/26f539fd1a696c38/mk22-w3-sp.glb" }
+              ]
+          }
+        ];
         solar100Product = {...availableProducts[15]};
         solar100Product.xRadius = 8
         availableProducts[15] = solar100Product;
@@ -4405,8 +5128,10 @@
     calculatePrice(availableProducts)
 
     document.getElementById("van_modal_area").style.display = 'none'
-  }
 
+
+    
+  }
   init();
 </script>
 
