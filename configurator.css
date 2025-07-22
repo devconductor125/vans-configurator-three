@@ -1,0 +1,1412 @@
+.item-box {
+  position: relative;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: white;
+  min-width: 200px;
+  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  border-radius: 8px;
+  padding: 8px;
+  margin-bottom: 8px;
+}
+
+.item-box:hover .dropdown-content {
+  display: block;
+}
+
+.dropdown-item {
+  display: flex;
+  align-items: center;
+  padding: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  border-radius: 4px;
+}
+
+.dropdown-item:hover {
+  background-color: #f5f5f5;
+}
+
+.dropdown-item .item-img {
+  width: 40px;
+  height: 40px;
+  margin-right: 8px;
+}
+
+.dropdown-item .item-name {
+  flex: 1;
+  margin: 0;
+}
+
+.dropdown-item .carted-item {
+  width: 20px;
+  height: 20px;
+  font-size: 10px;
+}
+
+#shopify-chat {
+  display: none;
+}
+
+.footer-group {
+  display: none !important;
+}
+
+.threejs-container {
+  position: fixed;
+  z-index: 100;
+  top: 0px;
+  left: 0px;
+  background: linear-gradient(180deg, #fff 60%, #e4e4e4) !important;
+  margin: 0;
+  color: #333;
+  font-family: Monospace;
+  font-size: 13px;
+  line-height: 24px;
+  overscroll-behavior: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  overflow: hidden;
+  width: 100vw;
+  margin: 0 auto;
+  margin-bottom: 50px;
+  height: 100vh;
+  display: flex;
+}
+
+#configurator-container {
+  width: calc(100vw - 300px);
+}
+
+#side-section {
+  width: 300px;
+  height: calc(100vh - 30px);
+  z-index: 1;
+  position: absolute;
+  background-color: white;
+  top: 15px;
+  right: 15px;
+  border-radius: 15px;
+}
+
+.d-flex {
+  display: flex;
+}
+
+.items-container {
+  position: absolute;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  max-width: 800px;
+  width: 100%;
+  z-index: 1000;
+}
+
+.item-box {
+  margin-left: 8px;
+  margin-right: 8px;
+  border-radius: 15px;
+  text-align: center;
+  cursor: grab;
+  opacity: 0.8;
+  transition: opacity .15s ease-in-out, transform .08s linear;
+  position: relative;
+  margin-bottom: 10px;
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.item-box .item-name {
+  margin-top: 5px;
+  font-weight: 700;
+}
+
+.carted-item {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  background-color: red;
+  border-radius: 50%;
+  align-items: center;
+  justify-content: center;
+  width: 25px;
+  height: 25px;
+  color: white;
+  display: none;
+}
+
+.item-box:active {
+  cursor: grabbing;
+  cursor: -moz-grabbing;
+  cursor: -webkit-grabbing;
+}
+
+.item-box:hover {
+  opacity: 1;
+  transform: scale(1.04);
+}
+
+.item-img {
+  width: 100px;
+  height: 100px;
+  border-radius: 15px;
+  background-size: cover;
+  box-shadow: 0.6px 0.6px 1.9px rgba(0, 0, 0, .035), 5px 5px 15px rgba(0, 0, 0, .07);
+}
+
+p {
+  font-size: 11px;
+  line-height: 1.5;
+  margin-bottom: 12px;
+}
+
+#airconditioner {
+  background-image: url('https://cdn.shopify.com/s/files/1/0412/9898/5124/files/airconditioner-1.jpg?v=1720191621&width=100');
+  display: block;
+}
+
+#maxxair {
+  background-image: url('https://cdn.shopify.com/s/files/1/0412/9898/5124/files/maxxair_daccff0b-7bc9-499d-a356-b71ca301dae1.jpg?v=1749003996&width=100');
+  display: block;
+}
+
+#solar_panel250 {
+  background-image: url('https://cdn.shopify.com/s/files/1/0412/9898/5124/files/250W.jpg?v=1724133040&width=100');
+  display: block;
+}
+
+#solar_panel220 {
+  background-image: url('https://cdn.shopify.com/s/files/1/0412/9898/5124/files/250W.jpg?v=1724133040&width=100');
+  display: block;
+}
+
+#solar_panel200 {
+  background-image: url('https://cdn.shopify.com/s/files/1/0412/9898/5124/files/200W.jpg?v=1711798448&width=100');
+  display: block;
+}
+
+#solar_panel100 {
+  background-image: url('https://cdn.shopify.com/s/files/1/0412/9898/5124/files/100W.jpg?v=1724041152&width=100');
+  display: block;
+}
+
+#solar_panel50 {
+  background-image: url('https://cdn.shopify.com/s/files/1/0412/9898/5124/files/55W.jpg?v=1711798448&width=100');
+  display: block;
+}
+
+#solar_panel30 {
+  background-image: url('https://cdn.shopify.com/s/files/1/0412/9898/5124/files/30W.jpg?v=1711798448&width=100');
+  display: block;
+}
+/* adddddddddddddddded code start */
+#transit_surf_pole {
+  background-image: url('https://cdn.shopify.com/s/files/1/0412/9898/5124/files/transit_surf_pole.png?v=1752796070&width=100');
+  display: block;
+}
+#stowed_surf_hook {
+  background-image: url('https://cdn.shopify.com/s/files/1/0412/9898/5124/files/surf_pole_hook.png?v=1752843311&width=100');
+  display: block;
+}
+/* addddddddddddddded code end */
+#ladder,
+#ladder_tr_medium {
+  background-image: url('https://cdn.shopify.com/s/files/1/0412/9898/5124/files/ladder.jpg?v=1714006260&width=100');
+  display: block;
+}
+
+#sp_ladder {
+  background-image: url('https://cdn.shopify.com/s/files/1/0412/9898/5124/files/ladder.jpg?v=1714006260&width=100');
+  display: block;
+}
+
+#cross_bar {
+  background-image: url('https://cdn.shopify.com/s/files/1/0412/9898/5124/files/8020_cross.jpg?v=1717205308&width=100');
+  display: block;
+}
+
+#solar_cross_bar {
+  background-image: url('https://cdn.shopify.com/s/files/1/0412/9898/5124/files/solar_cross.jpg?v=1720093315&width=100');
+  display: block;
+}
+
+#awning {
+  background-image: url('https://cdn.shopify.com/s/files/1/0412/9898/5124/files/awning.jpg?v=1723579211&width=100');
+  display: block;
+}
+
+#awning_350 {
+  background-image: url('https://cdn.shopify.com/s/files/1/0412/9898/5124/files/awning.jpg?v=1723579211&width=100');
+  display: block;
+}
+
+#awning_400 {
+  background-image: url('https://cdn.shopify.com/s/files/1/0412/9898/5124/files/awning.jpg?v=1723579211&width=100');
+  display: block;
+}
+
+#awning_450 {
+  background-image: url('https://cdn.shopify.com/s/files/1/0412/9898/5124/files/awning.jpg?v=1723579211&width=100');
+  display: block;
+}
+
+#light_bar {
+  background-image: url('https://cdn.shopify.com/s/files/1/0412/9898/5124/files/light_bar.jpg?v=1725399706&width=100');
+  display: block;
+}
+
+#light_bar_copy {
+  background-image: url('https://cdn.shopify.com/s/files/1/0412/9898/5124/files/light_bar_old.jpg?v=1727721984&width=100');
+  display: block;
+}
+
+#airconditioner-p {
+  background-image: url('https://cdn.shopify.com/s/files/1/0412/9898/5124/files/airconditioner-2.jpg?v=1728792937&width=100');
+  display: block;
+}
+
+#airconditioner-v1 {
+  background-image: url('https://cdn.shopify.com/s/files/1/0412/9898/5124/files/ac-velit1.jpg?v=1738722003&width=100');
+  display: block;
+}
+
+#airconditioner-v2 {
+  background-image: url('https://cdn.shopify.com/s/files/1/0412/9898/5124/files/ac-velit2.jpg?v=1738722060&width=100');
+  display: block;
+}
+
+#airconditioner-x2 {
+  background-image: url('https://cdn.shopify.com/s/files/1/0412/9898/5124/files/airconditioner-x2.jpg?v=1740996273&width=100');
+  display: block;
+}
+
+#airconditioner-x3 {
+  background-image: url('https://cdn.shopify.com/s/files/1/0412/9898/5124/files/airconditioner-x3.jpg?v=1740996273&width=100');
+  display: block;
+}
+
+#new_solar250,
+#new_solar220,
+#new_solar200,
+#new_solar100 {
+  background-image: url('https://cdn.shopify.com/s/files/1/0412/9898/5124/files/newpowa-100W.jpg?v=1744304137&width=100');
+  display: block;
+}
+
+#mk20-maxxair {
+  background-image: url('https://cdn.shopify.com/s/files/1/0412/9898/5124/files/mk20-maxxair.jpg?v=1746457329&width=100');
+  display: block;
+}
+
+#mk20-l2 {
+  background-image: url('https://cdn.shopify.com/s/files/1/0412/9898/5124/files/mk20-l2.jpg?v=1746456445&width=100');
+  display: block;
+}
+
+#mk20-w3 {
+  background-image: url('https://cdn.shopify.com/s/files/1/0412/9898/5124/files/mk20-w3.jpg?v=1746457659&width=100');
+  display: block;
+}
+
+#mk22-w3 {
+  background-image: url('https://cdn.shopify.com/s/files/1/0412/9898/5124/files/mk22-w3.jpg?v=1746550450&width=100');
+  display: block;
+}
+
+#mk23-ac {
+  background-image: url('https://cdn.shopify.com/s/files/1/0412/9898/5124/files/mk23-ac.jpg?v=1746550324&width=100');
+  display: block;
+}
+
+#rear-ladder-system {
+  background-image: url('https://cdn.shopify.com/s/files/1/0412/9898/5124/files/rear_ladder_group_img.jpg?v=1748045520&width=100');
+  display: block;
+}
+
+#ds_base_kit {
+  background-image: url('https://cdn.shopify.com/s/files/1/0412/9898/5124/files/ds_base_kit.jpg?v=1748045522&width=100');
+  display: block;
+}
+
+#ps_base_kit {
+  background-image: url('https://cdn.shopify.com/s/files/1/0412/9898/5124/files/ps_base_kit.jpg?v=1748045521&width=100');
+  display: block;
+}
+
+#ds_ladder_extension,
+#ps_ladder_extension {
+  background-image: url('https://cdn.shopify.com/s/files/1/0412/9898/5124/files/extension.jpg?v=1748045519&width=100');
+  display: block;
+}
+
+#ds_easy_step,
+#ps_easy_step {
+  background-image: url('https://cdn.shopify.com/s/files/1/0412/9898/5124/files/easy_step.jpg?v=1748045519&width=100');
+  display: block;
+}
+
+#ds_tire_carrier,
+#ps_tire_carrier {
+  background-image: url('https://cdn.shopify.com/s/files/1/0412/9898/5124/files/tire_carrier.jpg?v=1748045519&width=100');
+  display: block;
+}
+
+#ds_wheel,
+#ps_wheel {
+  background-image: url('https://cdn.shopify.com/s/files/1/0412/9898/5124/files/wheel.jpg?v=1748045520&width=100');
+  display: block;
+}
+
+#sp_wheel_ladder {
+  background-image: url('https://cdn.shopify.com/s/files/1/0412/9898/5124/files/sp-wheel-ladder.jpg?v=1748268037&width=100');
+  display: block;
+}
+
+#air_conditioner_jet {
+  background-image: url('https://cdn.shopify.com/s/files/1/0412/9898/5124/files/ac-freshjet.jpg?v=1753071582&width=100');
+  display: block;
+}
+
+button {
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+}
+
+button[disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.action-btn-list {
+  position: absolute;
+  transform: translateY(-50%);
+  top: 50%;
+  left: 48px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 16px 8px;
+  border-radius: 35px;
+  background-color: #E64B38;
+}
+
+.action-btn-list button {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #333;
+  border-radius: 22px;
+  border: none;
+  background: none;
+  margin: 8px 0px
+}
+
+.text-center {
+  text-align: center;
+}
+
+.mb-3 {
+  margin-bottom: 8px;
+}
+
+.text-title1 {
+  color: #333;
+  opacity: 0;
+  animation: textAnimation 2s linear 3s infinite alternate;
+}
+
+.text-body1 {
+  color: #333;
+  font-size: 20px;
+}
+
+.items-container>div:first-child {
+  position: relative;
+  text-align: center;
+}
+
+@keyframes textAnimation {
+  0% {
+      opacity: 0;
+  }
+
+  100% {
+      opacity: 0.7;
+  }
+}
+
+#configurator-container {
+  position: relative;
+  border-radius: 20px;
+}
+
+.item-container .announce-bar {
+  margin-bottom: 20px !important;
+}
+
+.van-detail {
+  position: absolute;
+  top: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+#rack_title {
+  font-size: 28px;
+  text-shadow: 0px 0px 4px #fff;
+  color: black;
+  text-align: center;
+  line-height: 34px;
+}
+
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 120px;
+  background-color: rgba(17, 12, 46, 1);
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+  top: 35%;
+  margin-left: 10px;
+  position: absolute;
+  z-index: 1;
+  transform: translateY(-23%);
+  left: 100%;
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+}
+
+.tooltip .tooltiptext:before {
+  content: "";
+  display: block;
+  width: 0;
+  height: 0;
+  border-top: 9px solid transparent;
+  border-bottom: 9px solid transparent;
+  border-left: 9px solid rgba(17, 9, 46, 1);
+  position: absolute;
+  left: -9px;
+  top: 50%;
+  transform: rotate(180deg) translateY(50%);
+}
+
+.left-tooltip {
+  position: relative;
+}
+
+.left-tooltip .tooltiptext {
+  visibility: hidden;
+  width: 120px;
+  background-color: rgba(17, 12, 46, 1);
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+  top: 35%;
+  margin-left: 10px;
+  position: absolute;
+  z-index: 1;
+  left: 100%;
+  margin-right: 8px;
+  transform: translateY(-30%);
+}
+
+.left-tooltip:hover .tooltiptext {
+  visibility: visible;
+}
+
+.left-tooltip .tooltiptext:after {
+  content: "";
+  display: block;
+  width: 0;
+  height: 0;
+  border-top: 8px solid transparent;
+  border-bottom: 8px solid transparent;
+  border-left: 8px solid rgba(17, 9, 46, 1);
+  position: absolute;
+  top: 50%;
+  transform: rotate(180deg) translateY(50%);
+  left: -6px;
+}
+
+[data-tab-content] {
+  display: none;
+}
+
+.active[data-tab-content] {
+  display: block;
+}
+
+.tabs {
+  display: flex;
+  justify-content: space-around;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  border-bottom: 1px solid black;
+  position: absolute;
+  width: 300px;
+  height: 50px;
+}
+
+.tab {
+  cursor: pointer;
+  padding: 10px;
+  width: 100%;
+  text-align: center;
+  border-right: 1px solid #676767;
+}
+
+.tab.active {
+  background-color: #676767;
+  color: white;
+}
+
+.tab:hover {
+  background-color: #AAA;
+}
+
+.tab-content {
+  height: calc(100vh - 150px);
+  overflow-y: auto;
+  margin-top: 50px;
+  margin-bottom: 100px;
+  padding: 10px 10px;
+}
+
+.checkout-area {
+  position: absolute;
+  height: 100px;
+  bottom: 0;
+  width: 300px;
+  border-top: 1px solid #333;
+  border-bottom-left-radius: 15px;
+  border-bottom-right-radius: 15px;
+}
+
+.checkout-area button {
+  justify-content: center;
+  font-family: "Josefin Sans", sans-serif;
+  border-radius: 30px;
+  border: 0;
+  letter-spacing: 1px;
+  color: #fff;
+  background: #E64B38;
+  padding: 9px;
+  white-space: nowrap;
+  font-size: 16px;
+  line-height: 1;
+  text-transform: uppercase;
+  transition: all 0.15s ease;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  margin: 0 auto;
+  width: 90%;
+  font-weight: 700;
+  margin-top: 6px;
+}
+
+.checkout-area button:hover {
+  -webkit-transform: translateY(-1px);
+  transform: translateY(-1px);
+  background: #FE371F;
+}
+
+#products-detail {
+  display: flex;
+  justify-content: space-between;
+  margin: 0 auto;
+  width: 90%;
+  margin-top: 10px;
+  margin-bottom: 4px;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.unaka-logo {
+  position: absolute;
+  top: 20px;
+  left: 30px;
+  z-index: 10;
+}
+
+.build-item {
+  margin-top: 12px;
+  border-bottom: 2px solid rgb(134, 134, 134);
+  padding-bottom: 10px;
+}
+
+.build-item .item-overview {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.item-overview .product-info {
+  display: flex;
+  align-items: center;
+}
+
+.item-overview .item-name {
+  font-size: 12px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-break: break-all;
+  font-weight: bold;
+  color: black;
+  margin-left: 6px;
+  text-decoration: underline;
+  line-height: 16px;
+}
+
+.item-overview .remove-product {
+  margin-left: 8px;
+  border-radius: 4px;
+  font-size: 22px;
+}
+
+.item-overview img {
+  border: 1px solid rgb(134, 133, 133);
+  border-radius: 6px;
+  margin-right: 6px;
+}
+
+.build-item .item-variants {
+  margin-top: 6px;
+  display: flex;
+  flex-direction: column;
+  margin-left: 12px;
+}
+
+.item-variants .variant {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 4px 0;
+}
+
+.item-variants .variant .selected-variant {
+  color: rgb(230, 75, 56);
+  font-weight: bold;
+}
+
+.item-variants .variant div {
+  display: flex;
+  align-items: center;
+}
+
+.item-variants .variant input {
+  margin: 0;
+  margin-right: 4px;
+}
+
+.item-variants .variant .price {
+  font-weight: bold;
+}
+
+.item-variants .variant label {
+  letter-spacing: -0.3px;
+  font-size: 11px;
+  line-height: 18px;
+}
+
+.build-item .divider {
+  border: 1px solid rgb(159, 159, 159);
+}
+
+#viewHelper {
+  display: flex;
+}
+
+#side-collapse {
+  display: none;
+}
+
+.select-colors {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.color-item {
+  display: block !important;
+  width: 24px;
+  height: 24px;
+  border-radius: 20px;
+  border: 2px solid #c94747;
+  margin: 3px;
+  cursor: pointer;
+  opacity: 0.7;
+}
+
+.color-item.color-selected {
+  opacity: 1;
+}
+
+@media only screen and (max-width: 1250px) {
+  .items-container {
+      max-width: 576px;
+  }
+}
+
+@media only screen and (max-width: 1350px) {
+  .item-img {
+      width: 80px;
+      height: 80px;
+  }
+}
+
+@media only screen and (max-width: 1024px) {
+  #configurator-container {
+      width: 100vw;
+  }
+
+  #side-section {
+      position: absolute;
+      right: -300px;
+      transition: right .4s;
+      transition-timing-function: linear;
+  }
+
+  .van-detail {
+      display: none;
+  }
+
+  .text-title1 {
+      display: none;
+  }
+
+  .action-btn-list {
+      right: 8px;
+  }
+
+  .unaka-logo img {
+      width: 60px;
+  }
+
+  #viewHelper {
+      display: none;
+  }
+
+  #side-collapse {
+      display: block;
+      position: absolute;
+      top: 30vh;
+      left: -36px;
+      border: none;
+      width: 36px;
+      background-color: white;
+      border-top-left-radius: 10px;
+      border-bottom-left-radius: 10px;
+  }
+
+  #side-collapse div {
+      padding: 14px 8px;
+      transition: all .2s;
+      z-index: 10;
+  }
+
+  #side-collapse div svg {
+      transform: scaleY(2);
+  }
+
+  #side-collapse div.collapsed {
+      text-align: left;
+  }
+
+  #side-collapse div.expanded {
+      transform: rotate(180deg);
+      text-align: right;
+  }
+}
+
+#select-template {
+  padding-top: 10px;
+}
+
+#select-template .selectable {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  cursor: pointer;
+}
+
+.not-sell {
+  color: red;
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.loox-float-toggler-container .closeBtn {
+  background-color: white;
+  position: absolute;
+  top: 9px;
+  right: 40px;
+  z-index: 1;
+  /* color: white; */
+  /* padding: 5px; */
+  width: 18px;
+  height: 18px;
+  display: flex;
+  justify-content: center;
+  /* align-items: center; */
+  /* font-size: 14px; */
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.loox-float-toggler-container {
+  display: none !important;
+}
+
+.swiper {
+  width: 100%;
+  height: 100%;
+  padding: 8px 0;
+}
+
+.swiper-slide {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.swiper-button-next,
+.swiper-button-prev {
+  top: 0;
+  width: 40px;
+  height: 100%;
+  color: #37393a;
+  display: flex !important;
+}
+
+.swiper-button-prev {
+  left: -32px;
+}
+
+.swiper-button-next {
+  right: -32px;
+}
+
+@media only screen and (max-width: 700px) {
+  .items-container {
+      max-width: 100%;
+  }
+
+  .item-img {
+      width: 70px;
+      height: 70px;
+  }
+
+  .item-name {
+      display: none;
+  }
+
+  .swiper-button-next,
+  .swiper-button-prev {
+      display: none;
+  }
+}
+
+.d-none {
+  display: none !important;
+}
+
+.d-block {
+  display: block !important;
+}
+
+.d-flex {
+  display: flex !important;
+}
+
+#van_modal_area {
+  height: 100vh;
+  z-index: 1000;
+  width: 100vw;
+  display: flex;
+  position: absolute;
+  align-items: center;
+  justify-content: center;
+  background-color: #3a3a3a6b;
+}
+
+.van_modal_content {
+  min-width: 500px;
+  border-radius: 8px;
+  padding: 24px 24px;
+  background-color: white;
+  max-width: 560px;
+}
+
+.van_modal_content p {
+  font-size: 20px;
+  margin: 10px 0px;
+  font-weight: bold;
+}
+
+#van_modal_select {
+  width: 100%;
+  height: 40px;
+  margin: 20px 0px;
+  border: 1px solid #333;
+  border-radius: 6px;
+}
+
+.selectables {
+  width: 100%;
+  padding: 10px;
+}
+
+.van-selectable {
+  width: 100%;
+  height: 40px;
+  margin: 10px 0px;
+  border: 1px solid #333;
+  border-radius: 6px;
+}
+
+.van_select_trigger {
+  margin-top: 20px;
+  display: flex;
+  justify-content: end;
+}
+
+.van_select_trigger button {
+  margin-left: 10px;
+  justify-content: center;
+  font-family: "Josefin Sans", sans-serif;
+  border-radius: 8px;
+  border: 0;
+  letter-spacing: 1px;
+  color: #fff;
+  background: #246eea;
+  padding: 10px 16px;
+  white-space: nowrap;
+  font-size: 12px;
+  line-height: 1;
+  text-transform: uppercase;
+  transition: all 0.15s ease;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+}
+
+.van_select_trigger #van_reset_trigger {
+  background: #343a40;
+}
+
+.sidebar-header {
+  background-color: #F9AD18;
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+  text-align: center;
+  font-size: 24px;
+  padding: 16px;
+  font-weight: 700;
+}
+
+.sidebar-vancolor {
+  padding: 10px;
+}
+
+.sidebar-vancolor .vancolor-title {
+  font-size: 18px;
+  padding-left: 5px;
+  font-weight: 700;
+}
+
+#build-list {
+  padding: 14px;
+  overflow-y: auto;
+  height: calc(100vh - 285px);
+
+}
+
+#build-list::-webkit-scrollbar-track {
+  border-radius: 10px;
+  background-color: #a6a6a6;
+}
+
+#build-list::-webkit-scrollbar {
+  width: 12px;
+  background-color: white;
+}
+
+#build-list::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background-color: #F9AD18;
+}
+
+.buildlist-title {
+  font-size: 18px;
+  padding-left: 5px;
+  font-weight: 700;
+  padding-left: 14px;
+}
+
+.mouse-navigation {
+  position: absolute;
+  top: 120px;
+  left: 20px;
+  z-index: 1000;
+}
+
+.contact-text {
+  font-size: 18px;
+  text-shadow: 0px 0px 4px #fff;
+  color: black;
+  text-align: center;
+  line-height: 1.2;
+  margin-top: 16px;
+}
+
+.contact-text a {
+  color: #E64B38;
+}
+
+.item-box {
+  position: relative;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  bottom: 100%;
+  left: 0;
+  background-color: white;
+  min-width: 200px;
+  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  border-radius: 4px;
+  padding: 8px;
+}
+
+.item-box:hover .dropdown-content {
+  display: block;
+}
+
+.dropdown-item {
+  display: flex;
+  align-items: center;
+  padding: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.dropdown-item:hover {
+  background-color: #f5f5f5;
+}
+
+.dropdown-item .item-img {
+  width: 40px;
+  height: 40px;
+  margin-right: 8px;
+}
+
+.dropdown-item .item-name {
+  flex: 1;
+}
+
+/* additional css start */
+#airconditioners {
+  background-image: url('https://cdn.shopify.com/s/files/1/0412/9898/5124/files/airconditioners.jpg?v=1749003996&width=100');
+  display: block;
+}
+
+#fans {
+  background-image: url('https://cdn.shopify.com/s/files/1/0412/9898/5124/files/maxxair_daccff0b-7bc9-499d-a356-b71ca301dae1.jpg?v=1749003996&width=100');
+  display: block;
+}
+
+#solar-panels {
+  background-image: url('https://cdn.shopify.com/s/files/1/0412/9898/5124/files/250W.jpg?v=1724133040&width=100');
+  display: block;
+}
+
+#awnings {
+  background-image: url('https://cdn.shopify.com/s/files/1/0412/9898/5124/files/awning.jpg?v=1723579211&width=100');
+  display: block;
+}
+
+#lights {
+  background-image: url('https://cdn.shopify.com/s/files/1/0412/9898/5124/files/light_bar.jpg?v=1725399706&width=100');
+  display: block;
+}
+
+#accessories {
+  background-image: url('https://cdn.shopify.com/s/files/1/0412/9898/5124/files/8020_cross.jpg?v=1717205308&width=100');
+  display: block;
+}
+
+#deck-panels {
+  background-image: url('https://cdn.shopify.com/s/files/1/0412/9898/5124/files/mk20-l2.jpg?v=1746456445&width=100');
+  display: block;
+}
+
+.product-dropdown {
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  max-height: 400px;
+  transform: translateX(-50%);
+  width: auto;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+  padding: 12px 6px;
+  margin-bottom: 15px;
+  z-index: 1000;
+  display: none;
+  pointer-events: none;
+  overflow: auto;
+}
+
+.product-dropdown.active {
+  display: block;
+  pointer-events: auto;
+}
+
+.dropdown-title {
+  font-size: 14px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  text-align: center;
+  color: #333;
+}
+
+.dropdown-items {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+}
+
+.dropdown-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.dropdown-item:hover {
+  transform: translateY(-3px);
+}
+
+.dropdown-item-img {
+  width: 80px;
+  height: 80px;
+  border-radius: 10px;
+  background-size: cover;
+  margin-bottom: 5px;
+  position: relative;
+  transition: all 0.2s ease;
+  box-shadow: 0.6px 0.6px 1.9px rgba(0, 0, 0, .035), 5px 5px 15px rgba(0, 0, 0, .07);
+}
+
+.dropdown-item:hover .dropdown-item-img {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.dropdown-item-name {
+  font-size: 10px;
+  line-height: 1.2;
+  color: #333;
+  text-align: center;
+  font-weight: 700;
+}
+
+/* Custom scrollbar styling */
+.product-dropdown::-webkit-scrollbar {
+  width: 8px;
+  background-color: transparent;
+}
+
+.product-dropdown::-webkit-scrollbar-track {
+  background-color: #f1f1f1;
+  border-radius: 10px;
+  margin: 5px;
+}
+
+.product-dropdown::-webkit-scrollbar-thumb {
+  background-color: #F9AD18;
+  border-radius: 10px;
+  border: 2px solid #f1f1f1;
+}
+
+.product-dropdown::-webkit-scrollbar-thumb:hover {
+  background-color: #e69c15;
+}
+
+/* Overlay for closing dropdown when clicking outside */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: transparent;
+  z-index: 999;
+  display: none;
+}
+
+/* Category indicator */
+.category-indicator {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background-color: #4CAF50;
+  color: white;
+  font-size: 10px;
+  padding: 2px 6px;
+  border-radius: 10px;
+  z-index: 5;
+}
+
+.swiper {
+  overflow: visible !important;
+  overflow-x: clip !important;
+}
+
+.swiper-slide {
+  width: auto;
+}
+
+/* Responsive adjustments for dropdowns */
+@media only screen and (max-width: 700px) {
+  .product-dropdown {
+      width: 200px;
+      padding: 10px;
+  }
+
+  .dropdown-item-img {
+      width: 60px;
+      height: 60px;
+  }
+
+  .dropdown-title {
+      font-size: 12px;
+  }
+}
+
+#ds_base_kit_items,
+#ps_base_kit_items {
+  display: none;
+}
+
+/* added css for popup modal */
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(5px);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeIn 0.3s ease;
+}
+
+.popup-overlay.show {
+  display: flex;
+}
+
+.popup-content {
+  background: linear-gradient(145deg, #ffffff, #f8f9fa);
+  padding: 40px;
+  border-radius: 20px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  text-align: center;
+  max-width: 400px;
+  width: 90%;
+  transform: scale(0.7);
+  animation: popupScale 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.popup-icon {
+  width: 80px;
+  height: 80px;
+  background: linear-gradient(135deg, #ff6b35, #f7931e);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px;
+  font-size: 35px;
+  color: white;
+  box-shadow: 0 10px 30px rgba(255, 107, 53, 0.3);
+}
+
+.popup-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 15px;
+}
+
+.popup-message {
+  font-size: 16px;
+  color: #666;
+  margin-bottom: 30px;
+  line-height: 1.5;
+}
+
+.popup-close {
+  background: linear-gradient(135deg, #e64b38, #f9ad18);
+  color: white;
+  border: none;
+  padding: 12px 30px;
+  border-radius: 25px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin: auto;
+}
+
+.popup-close:hover {
+  background: linear-gradient(135deg, #e64b38, #f9ad18);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(255, 107, 53, 0.3);
+}
+
+@keyframes fadeIn {
+  from {
+      opacity: 0;
+  }
+
+  to {
+      opacity: 1;
+  }
+}
+
+@keyframes popupScale {
+  to {
+      transform: scale(1);
+  }
+}
